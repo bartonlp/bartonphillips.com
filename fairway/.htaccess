@@ -1,0 +1,10 @@
+Options -Indexes +Includes +FollowSymLinks
+
+Order Deny,Allow
+Deny from All
+
+AuthName "Fairway Cabins"
+AuthType Basic
+AuthUserFile /home/bartonlp/bartonphillips.com/htdocs/fairway/.htpasswd
+require valid-user
+Satisfy Any

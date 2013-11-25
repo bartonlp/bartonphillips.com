@@ -1,0 +1,234 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-gb">
+<meta name="Author" content="R.H. van Gent">
+<meta name="Generator" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Perpetual Easter Calculator: Julian/Gregorian Easter Sunday and Jewish 
+Passover</title>
+<script type="text/javascript" src="js/easter-passover.js"></script>
+<link href="css/arialstyle.css" type="text/css" rel="stylesheet">
+</head>
+
+<body onload="setyear();">
+
+<h1><a name="top"><font size="4" color="#FF0000"><a href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">JavaScript Easter Sunday/Jewish 
+Passover Calculator</a></font></a></h1>
+
+<p><font size="3">The following JavaScript calculator determines the dates of 
+Julian and Gregorian Easter Sunday and the date and weekday of the first day of 
+the Jewish Passover feast (15&nbsp;Nisan) for a given year. Also given are the 
+Paschal Full Moon date and miscellaneous computistical parameters such as the 
+dominical letter, the golden number (or epact), and the martyrology letter 
+according to the Julian and the Gregorian calendrical reckoning.</font></p>
+
+<form name="eastercalc">
+<table align="center" border="1" cols="1" bgcolor="#CCCCCC">
+  <tr align="center">
+    <td><table align="center" border="0" cellspacing="0" cellpadding="5" cols="8">
+        <caption align="center"><font size="3" color="#FF0000"><b>Easter 
+		Sunday/Jewish Passover Calculator</b></font></caption>
+        <tr align="center">
+          <td colspan="3" align="center"><font size="2"><b>Year&nbsp;(Anno&nbsp;Domini)</b></font></td>
+          <td align="left" colspan="5"><font size="2"><b>
+			Show&nbsp;Gregorian&nbsp;dates&nbsp;before&nbsp;1583&nbsp;<select name="proleptic" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"><option value=1>
+			no<option value=2>yes</select></b></font></td>
+        </tr>
+        <tr align="center">
+          <td align="right"><img src="images/buttonminus_off.gif" name="button1" onmouseout="movepic('button1','images/buttonminus_off.gif')" 
+            onmouseover="movepic('button1','images/buttonminus_on.gif')" alt="step down the year" onmousedown="subtractoneyear();" 
+            height="18" width="24"></td>
+          <td><input type="text" name="year" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+          <td align="left"><img src="images/buttonplus_off.gif" name="button2" onmouseout="movepic('button2','images/buttonplus_off.gif')" 
+            onmouseover="movepic('button2','images/buttonplus_on.gif')" alt="step up the year" onmousedown="addoneyear();" 
+            height="18" width="24"></td>
+        <td align="left" colspan="5"><font size="2"><b>Offset between Julian and 
+		Gregorian calendar&nbsp;<input type="text" name="delc" size="2" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"> days</b></font></td>
+      </tr>
+      <tr>
+        <td colspan="3"><font size="2"><b>Update calculator&nbsp;<img src="images/cbutton_off.gif" name="button3" 
+          onmouseout="movepic('button3','images/cbutton_off.gif')" onmouseover="movepic('button3','images/cbutton_on.gif')" 
+          alt="update the calculator" onmousedown="easter_passover();" height="18" width="24"></b></font></td>
+        <td colspan="5"><font size="2"><b>Julian&nbsp;Easter&nbsp;mode&nbsp;<select name="julianmode" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"><option value=1>
+		Dionysian<option value=2>Armenian/Non-Chalcedonian</select></b></font></td>
+      </tr>
+      <tr>
+        <td colspan="8"><hr width="100%" size="1"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><font size="2"><b>Dominical&nbsp;letter</b></font></td>
+        <td><font size="2"><b>Julian&nbsp;reckoning</b></font></td>
+        <td><input type="text" name="domletj" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+        <td><font size="2"><b>Gregorian&nbsp;reckoning</b></font></td>
+        <td><input type="text" name="domletg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><font size="2"><b>Lunar&nbsp;age&nbsp;parameter</b></font></td>
+        <td><font size="2"><b>Golden&nbsp;number</b></font></td>
+        <td><input type="text" name="numaur" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+        <td><font size="2"><b>Gregorian&nbsp;epact</b></font></td>
+        <td><input type="text" name="epact" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><font size="2"><b>Martyrology&nbsp;letter</b></font></td>
+        <td><font size="2"><b>Julian&nbsp;reckoning</b></font></td>
+        <td><input type="text" name="litmartyrj" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+        <td><font size="2"><b>Gregorian&nbsp;reckoning</b></font></td>
+        <td><input type="text" name="litmartyrg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+      </tr>
+      <tr>
+        <td colspan="8"><hr width="100%" size="1"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><font size="2"><b>Julian&nbsp;reckoning</b></font></td>
+        <td colspan="2" align="center"><font size="2"><b>Julian&nbsp;calendar&nbsp;date</b></font></td>
+        <td>&nbsp;</td>
+        <td colspan="2" align="center"><font size="2"><b>Gregorian&nbsp;calendar&nbsp;date</b></font></td>
+      </tr>
+      <tr align="center">
+        <td align="left" colspan="3"><font size="2"><b>Paschal&nbsp;Full&nbsp;Moon&nbsp;(<i>luna&nbsp;XIV</i>)</b></font></td>
+        <td colspan="2"><input type="text" name="fmdayj" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="fmmonj" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+        <td colspan="2"><input type="text" name="fmdayjg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="fmmonjg" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+      </tr>
+      <tr align="center">
+        <td align="left" colspan="3"><font size="2"><b>Easter&nbsp;Sunday</b></font></td>
+        <td colspan="2"><input type="text" name="dayj" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="monj" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+        <td colspan="2"><input type="text" name="dayjg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="monjg" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+      </tr>
+      <tr>
+        <td colspan="8"><hr width="100%" size="1"></td>
+      </tr>
+      <tr align="center">
+        <td colspan="3" align="left"><font size="2"><b>Gregorian&nbsp;reckoning</b></font></td>
+        <td>&nbsp;</td>
+        <td colspan="3"><font size="2"><b>Gregorian&nbsp;calendar&nbsp;date</b></font></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr align="center">
+        <td colspan="3" align="left"><font size="2"><b>Paschal&nbsp;Full&nbsp;Moon&nbsp;(<i>luna&nbsp;XIV</i>)</b></font></td>
+        <td>&nbsp;</td>
+        <td colspan="3"><input type="text" name="fmdayg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="fmmong" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr align="center">
+        <td colspan="3" align="left"><font size="2"><b>Easter&nbsp;Sunday</b></font></td>
+        <td>&nbsp;</td>
+        <td colspan="3"><input type="text" name="dayg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="mong" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="8"><hr width="100%" size="1"></td>
+      </tr>
+      <tr align="center">
+        <td colspan="3" align="left"><font size="2"><b>Jewish&nbsp;Passover&nbsp;Feast</b></font></td>
+        <td colspan="2" align="left"><font size="2"><b>15&nbsp;Nisan&nbsp;<input type="text" name="amundi" size="5" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">&nbsp;AM</b></font></td>
+        <td colspan="3"><input type="text" name="weekd" size="5" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="dayh" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">
+            <input type="text" name="monh" size="3" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"></td>
+      </tr>
+      <tr>
+        <td colspan="8"><hr width="100%" size="1"></td>
+      </tr>
+      <tr align="left">
+        <td colspan="5"><font size="2"><b>From Gregorian until Julian Easter 
+		Sunday</b></font></td>
+        <td colspan="3"><font size="2"><b><input type="text" name="deljg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">&nbsp;days</b></font></td>
+      </tr>
+      <tr align="left">
+        <td colspan="5"><font size="2"><b>From Passover until Gregorian Easter 
+		Sunday</b></font></td>
+        <td colspan="3"><font size="2"><b><input type="text" name="delhg" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold">&nbsp;days</b></font></td>
+      </tr>
+      <tr align="left">
+        <td colspan="5"><font size="2"><b>From Passover until Julian Easter 
+		Sunday</b></font></td>
+        <td colspan="3"><font size="2"><b><input type="text" name="delhj" size="1" style="text-align: center; font-family: arial; font-size: 8pt; font-weight: bold"> days</b></font></td>
+      </tr>
+      <tr>
+        <td colspan="8" align="right"><font size="1" color="#FF0000"><b>
+		©&nbsp;R.H.&nbsp;van&nbsp;Gent&nbsp;(2010)</b></font></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p><font size="3">The first day of the Jewish Passover feast is given according 
+to the Julian calendar up to 1582 (AM&nbsp;5342/43) and according to the Gregorian 
+calendar from 1583 (AM&nbsp;5343/44) onwards. Note that the Jewish Paschal Full Moon 
+always falls on 14&nbsp;Nisan.</font></p>
+
+<h1><a name="top"><font size="3" color="#FF0000">Valid from When to When?</font></a></h1>
+
+<p><font size="3">The JavaScript Easter Sunday/Jewish Passover calculator is 
+based on mathematical algorithms similar to those first devised by the German 
+mathematician Carl Friedrich Gauss (1777-1855).</font></p>
+
+<p><font size="3">The Gaussian algorithm for calculating the first day of the 
+Jewish Passover feast (15&nbsp;Nisan) is equivalent with the method currently 
+employed in the rabbinic (or cyclic) Jewish calendar, which according to 
+tradition was introduced by Hillel the Patriarch (Hillel&nbsp;II) in AD&nbsp;358/359 
+(AM&nbsp;4119). However, there is evidence (cf. Stern, 2001) that up to the 
+10th&nbsp;century&nbsp;AD several versions of the Jewish calendar existed simultaneously 
+and textual evidence suggests that some of the underlying parameters and 
+postponement rules currently employed in the rabbinic Jewish calendar were 
+probably not introduced until the mid-9th&nbsp;century&nbsp;AD.</font></p>
+
+<p><font size="3">The Julian Easter algorithm should not be used before <i>c</i>.&nbsp;AD&nbsp;530 
+as it differs slightly from the computations of the Christians of Alexandria and 
+from the 532-year cycle of Victorius of Aquitaine that was used in the western 
+parts of Europe up to the 8th&nbsp;century&nbsp;AD. Of course there will also be 
+differences with the Easter dates computed from the earlier Paschal tables 
+(based on 16- and 84-year cycles) that were previously adopted in the Western 
+Roman Empire.</font></p>
+
+<blockquote><font size="2" color="#FF0000"><b>Note: A slightly different Easter 
+	reckoning is followed to this day by some Eastern Orthodox Churches, notably 
+	the Armenian Orthodox Church, the Syrian Orthodox Church (known as the 
+	Jacobites) and the Church of the East (known as the Nestorians). The latter 
+	are also known as the Non-Chalcedonian churches and, as the Armenian 
+	Orthodox Church, are located near the eastern border of the former Byzantine 
+	Empire.</b></font></blockquote>
+
+<blockquote><font size="2" color="#FF0000"><b>These churches place the Paschal 
+	Full Moon on 6&nbsp;April (instead of 5&nbsp;April) when the golden number is 1 and 
+	when this happens to fall on a Sunday (i.e. when the dominical letter is E) 
+	Easter Sunday is observed a week later on 13&nbsp;April (instead of 6&nbsp;April). 
+	This happens four times in each 532-year cycle and since the introduction of 
+	the Dionysian Easter reckoning this has occurred in 570, 665, 760, 1007, 
+	1102, 1197, 1292, 1539, 1634 (23&nbsp;April New Style), 1729 (24&nbsp;April NS) and 
+	1824 (25&nbsp;April NS). The next cases (up to 2500) will be in 2071 (26&nbsp;April 
+	NS), 2166 (27&nbsp;April NS), 2261 (28&nbsp;April NS) and 2356 (29&nbsp;April NS).</b></font></blockquote>
+
+<p><font size="3">Gregorian Easter Sunday dates are only defined for the years 
+following the Gregorian calendar reform in 1582. In the default mode the 
+Easter/Passover calculator therefore does not output Gregorian Easter Sunday 
+dates before 1583 as these are meaningless for chronological purposes, but if so 
+desired the calculator can also output proleptic Gregorian calendar dates.</font></p>
+
+<p><font size="3">Assuming no change in the current rules for calculating the 
+dates for Passover and Easter Sunday in the Jewish and Gregorian calendars, the 
+Easter/Passover calculator should produce valid results up to at least AD&nbsp;9999.</font></p>
+
+<blockquote><font size="2" color="#FF0000"><b>Note: The Easter/Passover 
+	calculator should NOT be used to date key events in the life of Jesus Christ 
+	or other early Christians as it is based on strictly cyclical algorithms 
+	that were not introduced until many centuries later.</b></font></blockquote>
+
+<hr width="100%" size="1">
+
+</body>
+</html>

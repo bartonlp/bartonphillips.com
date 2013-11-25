@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+ <channel>
+  <title>Barton Phillips Home Page</title>
+  <link>http://www.bartonphillips.com</link>
+  <description>Barton Phillips Home Page News</description>
+  <lastBuildDate>Sat, 23 Jan 2010 02:23:08 GMT</lastBuildDate>
+  <generator>rssfeed.pl by Barton Phillips</generator>
+   <item>
+     <title>PHP Slide Show Class</title>
+     <link>http://www.bartonphillips.com/index.php#phpslideshow</link>
+     <description>&lt;p&gt;You can find a &lt;b&gt;Slide Show Class&lt;/b&gt; that I wrote on &lt;a href="http://www.phpclasses.org/browse/author/592640.html"&gt;&lt;img src="http://www.bartonphillips.com/images/phpclasses-logo.gif" alt="php classes logo" /&gt;&lt;/a&gt;&lt;/p&gt; </description>
+     <pubDate>Tue, 5 May 2009 20:08:14 GMT</pubDate>
+   </item>
+   <item>
+     <title>PHP MySql Slide Show Class</title>
+     <link>http://www.bartonphillips.com/index.php#mysqlslideshow</link>
+     <description>&lt;p&gt;&lt;a target="_blank" href="mysqlslideshow"&gt;Demo and Examples&lt;/a&gt;&lt;/p&gt; </description>
+     <pubDate>Sat, 23 Jan 2010 02:23:08 GMT</pubDate>
+   </item>
+ </channel>
+</rss>

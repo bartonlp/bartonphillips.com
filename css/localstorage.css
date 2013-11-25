@@ -1,0 +1,39 @@
+<style type="text/css">
+body > pre {
+        padding: 0.1em 0.5em 0.3em 0.7em;
+        border-left: 11px solid #ccc;
+        margin: 1.7em 0 1.7em 0.3em;
+        overflow: auto;
+        width: 93%;
+}
+div.cnt {
+        text-align: center;
+}
+span.cnt {
+        text-align: center;
+        border: 1px solid black;
+        padding: 10px;
+}
+#showsource {
+        border: 1px solid black;
+        padding: 5px;
+}
+#showjs {
+        border: 1px solid black;
+        padding: 5px;
+}
+#warning {
+        display: inline;
+        font-size: 30px;
+        background-color: pink;
+}
+.error, #noscript-warning {
+        background-color: red;
+        color: white;
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+}
+</style>

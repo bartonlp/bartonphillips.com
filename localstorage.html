@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LocalStorage Example</title>
+  <!-- METAs -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="Author"
+     content="Barton L. Phillips, mailto:barton@bartonphillips.org">
+  <meta name="description"
+     content="LocalStorage Example. Resize a big image using JavaScript">
+  <meta name="keywords"
+     content="LocalStorage, Resize IMAGE with JavaScript">
+
+  <!-- We don't want to cache the image we load the first time. -->  
+  <meta http-equiv="Cache-Control", content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Cache-Control" content="No-Cache">
+  <meta http-equiv="Pragma" content="No-Cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- jQuery from Google site -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+  <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
+  <script type="text/javascript" src="js/shCore.js"></script>
+  <script type="text/javascript" src="js/shBrushJScript.js"></script>
+  <script type="text/javascript" src="js/shBrushXml.js"></script>
+  <script type="text/javascript">SyntaxHighlighter.all();</script>
+  <link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+
+  <!-- Our stuff -->
+  <script type="text/javascript" src="js/localstorage.js"></script>
+  <link rel="stylesheet" href="css/blp.css" type="text/css" title="blp default" >
+  <link type="text/css" rel="stylesheet" href="css/localstorage.css"/>
+</head>
+<body>
+<div>
+   <img id='blpimg' src="blp-image.png" alt="Barton's Picture">
+   <img id='linuxcounter' src="images/146624.png" alt="linux counter image.">
+</div>
+
+<div id="warnings"></div>
+<div class="cnt"><span class="cnt">IMAGE NOT LOADED YET</span></div>
+<h1>LocalStorage Example: Resize a big image in JavaScript</h1>
+<p id="size">Size of the picture</p>
+<p>To remove the localStorage and start over <button id="reload">Click Here</button> and
+   notice the difference in load time.</p>
+<div><img id="image" src=""></div>
+<p>The first time this page is viewed the image is loaded from the web. The image is 1.6 Meg and takes
+   a while to load. We then resize the image via a &lt;canvas&gt; to a 500 pixel wide image. We get the
+   image URI which is the image data encoded as a base64 string. The URI is saved in
+   localStorage.</p>
+<p>The next time the page is accessed via the same browser the image is loaded from localStorage.
+   The base64 URI is 457,054 bytes versus 1,653,948 bytes for the original image.
+   Even if the original image is cached by the browser the cache file is still
+   1.6 Meg while the base64 URI is 458k.</p>
+<h3>A More Detailed Explanation</h3>
+<p>I used the JQuery library (framework) to make the JavaScript a little easier. I use the local
+   storage 'length' property to tell me if this is the first time the page has been loaded:</p>
+<pre>
+if(localStorage.length) { ... } // already been here at least once
+else { ... } // this is the very first time here
+</pre>
+<p>When the page is initally loaded localStorage.length is zero. I Create the image object and
+   load the image:</p>
+<pre>
+var image = new Image;
+image.src = "/images/CIMG00020.JPG"; // 1.6 Meg file, width=3,264, height=2,448
+</pre>
+<p>This is pretty standard stuff. You can access localStorage as an object
+   <code>localStorage.clickcount</code>
+   as an array <code>localStorage['clickcount']</code>
+   or via functions <code>localStorage.getItem('clickcount')</code>
+   or <code>localStorage.setItem('clickcount', 1)</code>. Also localStorage can only hold
+   strings.</p>
+<p>We now have to wait until the image object is loaded before we can proceed to resize it.
+The original image is 3,264 by 2,448 pixels and we want the resized image to be 500 pixels wide.</p>
+<pre>
+$(image).load(function() {
+  var ratio = 500 / this.width; // we are going to scale the image via the width to 500 pixels wide
+  this.width = 500;
+  this.height = this.height * ratio; // we keep the aspect ratio the same as in the original image
+  var canvas = document.createElement("canvas");
+  canvas.width = this.width; // make canvas big enough
+  canvas.height = this.height;
+
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(this, 0, 0, this.width, this.height); // origine 0x0 with width and height as scaled
+  try {
+    var dataUri = canvas.toDataURL(); // get the base64 URI
+    var img = $('#image');
+    img.css({'width': this.width, 'height': this.height});
+    img.attr('src', dataUri);
+  } catch(e) {
+    // if there is an error do something here. e has the reason for the error.
+  }
+
+  // Local Storage is only 5 Meg so we could get an error if the resized image is too big.
+  try {
+    localStorage.setItem('img', dataUri);
+  } catch(e) {
+    // if there is an error do something here. e has the reason for the error.
+  }
+}
+</pre>
+<p>The actual source of this page has some additional logic for errors and fetching the size of the
+   image at various stages.</p>
+<p>The first time the load is quite long and you will notice a pause while the image is loaded. I
+   could have waited to display any of the page until the image logic was done but I wanted to make
+   it easy to see the delay of loading a 1.6 Meg image that is only going to be 500 pixels wide on
+   the page. If you had access to the server where the picture resides you could scale the image
+   many ways, but without access the the image you can still resize the image in JavaScript.</p>
+<p>On subsequent page loads we use the saved base64 URI instead of loading the image via a seperate
+   internet get.</p>
+<pre>
+if(localStorage.length) {
+  localStorage.clickcount = Number(localStorage.clickcount)+1; // add on to count
+
+  // Get the image URI from local storage. This URI is much smaller than the original image.
+      
+  img = localStorage.getItem('img');
+  $("#image").attr('src', img);
+}
+</pre>
+<p>The load time is much faster as you can see.</p>
+<p>I have tested this on Linux with Firefox and Chrome and it works just great. I imagine that there
+   may be problems with various versions of Internet Explorer on MS-Windows as there always are. I
+   would expect this to work OK on Apple Mac's running Safari but I don't have a Mac.</p>
+
+<p><button id="source">Show HTML Source</button></p>
+<p><button id="jssource">Show JS Source</button></p>
+
+<div id="showsource"></div>
+<div id="showjs"></div>
+
+<hr>
+<div style="text-align: center;">
+<p id='lastmodified'>Last Modified&nbsp;Nov 10, 2012 15:55:37 MST</p>
+<p id='contactUs'><a href='mailto:webmaster@bartonphillips.com'>Contact Us</a></p>
+</div>
+<!-- Just won't work without JavaScript-->
+<noscript>
+<div id="noscript-warning">
+   <h1>Without JavaScript the world will not turn.</h1>
+   <p>As implied by the title of this example it just will not work if you have JavaScrips
+      disabled.</p>
+   <p>Your browser has JavaScripts disabled.</p>
+</div>
+</noscript>
+</body>
+</html>

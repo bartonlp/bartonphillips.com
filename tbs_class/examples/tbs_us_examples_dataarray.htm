@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>TinyButStrong</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="tbs_us_examples_0styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160">&nbsp;</td>
+    <td align="center"><span class="title-page">Examples of Array data merge</span></td>
+    <td width="160" align="right"><span class="w3cinfo"><a href="http://validator.w3.org/check?uri=referer" target="_top"> </a></span>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="59"><span class="w3cinfo"><a href="http://validator.w3.org/check?uri=referer" target="_top"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Transitional" width="59" height="21" border="0"></a></span></td>
+          <td width="90" class="w3cinfo">this TBS template is W3C compliant</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<br>
+<table width="500" border="0" align="center" cellpadding="2" cellspacing="0">
+  <tr>
+    <td><span class="title-section2">Example with a simple Array:</span> [blk1.#] displayed lines</td>
+  </tr>
+</table>
+<br>
+<table width="200" border="1" align="center" cellpadding="2" cellspacing="0">
+  <tr bgcolor="#CACACA">
+    <td><strong>Country</strong></td>
+    <td><strong>Prefix</strong></td>
+  </tr>
+  <tr bgcolor="#F0F0F0">
+    <td>[blk1.key;block=tr]</td>
+    <td>[blk1.val]</td>
+  </tr>
+  <tr bgcolor="#E6E6E6">
+    <td>[blk1.key;block=tr]</td>
+    <td>[blk1.val]</td>
+  </tr>
+  <tr bgcolor="#FFCFB9">
+    <td colspan="2">[blk1;block=tr;nodata]There is no data. </td>
+  </tr>
+</table>
+<br>
+<table width="500" border="0" align="center" cellpadding="2" cellspacing="0">
+  <tr>
+    <td><span class="title-section2">Example with a composed Array:</span> [blk2.#] displayed lines</td>
+  </tr>
+</table>
+<br>
+<table width="300" border="1" align="center" cellpadding="2" cellspacing="0">
+  <tr bgcolor="#CACACA">
+    <td width="30"><strong>Position</strong></td>
+    <td><strong>Nickname</strong></td>
+    <td><strong>Score</strong></td>
+    <td><div align="center"><strong>Date</strong></div></td>
+  </tr>
+  <tr bgcolor="#F0F0F0">
+    <td>[blk2.#]</td>
+    <td>[blk2.res_name;block=tr]</td>
+    <td><div align="right">[blk2.res_score]</div></td>
+    <td><div align="center">[blk2.res_date;frm='mm-dd-yy']</div></td>
+  </tr>
+  <tr bgcolor="#E6E6E6">
+    <td>[blk2.#]</td>
+    <td>[blk2.res_name;block=tr]</td>
+    <td><div align="right">[blk2.res_score]</div></td>
+    <td><div align="center">[blk2.res_date;frm='mm-dd-yy']</div></td>
+  </tr>
+  <tr bgcolor="#FFCFB9">
+    <td colspan="4">[blk2;block=tr;nodata]There is no data. </td>
+  </tr>
+</table>
+<br>
+<table width="500" border="0" align="center" cellpadding="2" cellspacing="0">
+  <tr>
+    <td><span class="title-section2">Example with a queried Array:</span> [blk3.#] displayed lines</td>
+  </tr>
+</table>
+<br>
+<table width="300" border="1" align="center" cellpadding="2" cellspacing="0">
+  <tr bgcolor="#CACACA">
+    <td width="30"><strong>Position</strong></td>
+    <td><strong>Nickname</strong></td>
+    <td><strong>Score</strong></td>
+    <td><div align="center"><strong>Date</strong></div></td>
+  </tr>
+  <tr bgcolor="#F0F0F0">
+    <td>[blk3.#]</td>
+    <td>[blk3.res_name;block=tr]</td>
+    <td><div align="right">[blk3.res_score]</div></td>
+    <td><div align="center">[blk3.res_date;frm='mm-dd-yy']</div></td>
+  </tr>
+  <tr bgcolor="#E6E6E6">
+    <td>[blk3.#]</td>
+    <td>[blk3.res_name;block=tr]</td>
+    <td><div align="right">[blk3.res_score]</div></td>
+    <td><div align="center">[blk3.res_date;frm='mm-dd-yy']</div></td>
+  </tr>
+  <tr bgcolor="#FFCFB9">
+    <td colspan="4">[blk3;block=tr;nodata]There is no data. </td>
+  </tr>
+</table>
+</body>
+</html>

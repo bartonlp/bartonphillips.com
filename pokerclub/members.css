@@ -1,0 +1,57 @@
+/* CSS for members.php */
+
+#loginMsg {
+        text-align: center;
+}
+#loginMsg a {
+        font-variant: small-caps;
+        font-size: x-large;
+}
+#parent {
+        border: 4px outset gray;
+        color: white;
+        position: relative;
+        top: -10px;
+        padding-right: 1em;
+        padding-left: 1em;
+        background-color: red;
+}
+#child {
+        display: inline;
+        margin-left: 3px;
+}
+#child a {
+        border: 1px solid black;
+        display: block;
+        padding: 2px 5px;
+        background-color: white; /* #FFFFEE; */
+}        
+
+#todayGuests, #todayGuests * {
+        background-color: white;
+        border: 1px solid black;
+}
+#todayGuests * {
+        padding: 5px;
+}
+
+/* For email.php amd multmail.php */
+
+#mailform table input {
+        width: 100%;
+        border: 0;
+        background-color: #FFC0CB; /* pink; */
+}
+#mailform textarea {
+        width: 100%;
+        border: 0;
+        background-color: #FFC0CB; /* pink; */
+}
+
+#mailform table {
+        width: 100%;
+}
+#mailform .left {
+        text-align: left;
+        width: 20%;
+}

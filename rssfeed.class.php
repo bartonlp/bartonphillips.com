@@ -1,0 +1,59 @@
+<?php
+
+class RssFeed {
+  private $tdb;
+  private $rawdata;
+  
+  public function __construct($data, $isfile=true, $savedata=false) {
+    $this->tdb = array();
+    
+    if($isfile) {
+      $data = file_get_contents($data);
+      if($savedata) {
+        $this->rawdata = $data;
+      }
+    }
+  
+    $parser = xml_parser_create();
+    xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+    xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
+    xml_parse_into_struct($parser, $data, $values, $tags);
+    xml_parser_free($parser);
+
+    foreach($tags as $key=>$val) {
+      if($key == "item") {
+        // each contiguous pair of array entries are the 
+        // lower and upper range for each item definition
+        for ($i=0; $i < count($val); $i+=2) {
+          $offset = $val[$i] + 1;
+          $len = $val[$i + 1] - $offset;
+          $tdb[] = $this->parseVal(array_slice($values, $offset, $len));
+        }
+      } else {
+        continue;
+      }
+    }
+    $this->tdb = $tdb;
+  }
+
+  private function parseVal($vals) {
+    for ($i=0; $i < count($vals); $i++) {
+      $val[$vals[$i]["tag"]] = $vals[$i]["value"];
+    }
+    return $val;
+  }
+
+  public function getDb() {
+    return $this->tdb;
+  }
+
+  public function getItem($inx) {
+    return $this->tdb[$inx];
+  }
+
+  public function getRawData() {
+    return $this->rawdata;
+  }
+}
+    
+?>

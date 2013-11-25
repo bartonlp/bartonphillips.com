@@ -1,0 +1,16 @@
+User-agent: *
+Disallow: resizeimg.php
+Disallow: download.php
+Disallow: blp.i.php
+Disallow: upload/
+Disallow: test/
+Disallow: sqlscripts/
+Disallow: js/
+Disallow: wildernessgroup/
+Disallow: tbs_class/
+Disallow: ckeditor/
+Disallow: admin/
+Disallow: css/
+Disallow: images/
+Disallow: other/
+

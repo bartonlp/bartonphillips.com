@@ -1,0 +1,15 @@
+/* Barton Phillips CSS */
+body {
+  background-color: white;
+  font-family: Garamond, Georgia, Times, "Times New Roman", serif;
+/*  background-image: url('http://www.granbyrotary.org/images/xmassnow.jpg'); 
+  background: url('http://www.granbyrotary.org/images/happy6.gif'); 
+  background-clip:content-box;
+  -webkit-background-clip:content-box;
+  background-position:top; 
+  background-size: 100%; */
+  background-origin:content-box;
+}
+.center {
+        text-align: center;
+}
