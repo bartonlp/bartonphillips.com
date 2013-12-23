@@ -6,7 +6,7 @@ if(file_exists(TOPFILE)) {
 
 $S = new Messiah;
 
-$h->title = "Mountain Messiah";
+$h->title = "Mountain Messiah 2013";
 $h->banner = <<<EOF
 <header id="header">
 <img src="MountainMessiah.png" alt="logo"/><br>
@@ -24,17 +24,25 @@ by George Frederick Handel</p>
 <hr>
 <article class="content">
 <section>
-<h2>Information coming soon for 2013 Messiah.</h2>
-<!--
-<h2>Program</h2>
-</section>
+<p><i>Come lend your voice in song</i><br>
+<i>or</i><br>
+<i>Come and listen along</i></p>
 
+<p>Sunday, December 22<br>
+6:30 PM Pre-event entertainment<br>
+7:00 PM Sing-a-long concert</p>
+<p>Snow Mountain Ranch YMCA of the Rockies Chapel<br>
+Located next to the administration building.</p>
+<p>Messiah scores available at the concert.</p>
+</section>
+<hr>
 <section>
 <h2>Afterglow</h2>
-<a href='mailto:barton@bartonphillips.com?subject=Messiah-Signup&body=Please+supply+Name+and+Email+address'>Sign Up</a></p>
--->
+<p>Holiday goodies, music, and merriment.<br>
+Have cookies? Bring  some to share.</p>
 </section>
 </article>
 $footer
+
 EOF;
 ?>

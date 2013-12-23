@@ -73,12 +73,13 @@ EOF;
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/apc.php">APC Status home</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
+<li><a target="_blnak" href="http://www.working.puppiesnmore.com">PuppiesNmore Working</a></li>
+<li><a target="_blnak" href="http://www.developers.puppiesnmore.com">PuppiesNmore Developers</a></li>
+<li><a target="_blnak" href="http://dedicated559.inmotionhosting.com:2083/cpanellogin">Puppies Cpanel</a></li>
 </ul>
 
 EOF;
-
 }
-
 list($top, $footer) = $S->getPageTopBottom($h, array('msg1'=>"<hr>"));
 
 $ip = $S->ip;
@@ -140,6 +141,8 @@ Leave a comment or feedback about this site.
 <li><a target="_blank" href="toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.myphotochannel.com">www.MyPhotoChannel.com</a><br>
 <li><a target="_blank" href="http://go.myphotochannel.com/">MyPhotoChannel 1and1</a> only a super user</li>
+<li><a target="_blnak" href="http://www.puppiesnmore.com">PuppiesNmore</a></li>
+
 </ul>
 $adminStuff
 <h2>Links to other sites</h2>
