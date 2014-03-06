@@ -18,6 +18,8 @@ $pageHeadText = <<<EOF
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/css/blp.css" type="text/css" title="blp default" />
   <!-- jQuery -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="/js/tracker.js"></script>
   <!-- Custom Scripts -->
   <!-- extra script/style -->
 {$arg['extra']}

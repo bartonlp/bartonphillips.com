@@ -16,7 +16,6 @@ if(!$S) {
   $h->title = "How to write html";
   $h->banner = "<h1>How To Write HTML</h1>";
   $h->extra = <<<EOF
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <style type="text/css">
 .example {
   border: 1px solid red;

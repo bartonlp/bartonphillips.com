@@ -16,16 +16,17 @@ EOL;
 }
 
 $S = new Blp;
+$T = new dbTables($S);
 
 $extra = <<<EOF
 <link rel="stylesheet"  href="css/tablesorter.css" type="text/css">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="js/tablesorter/jquery.tablesorter.js"></script>
 <script src="js/tablesorter/jquery.metadata.js"></script>
 
 <script>
 jQuery(document).ready(function($) {
-  $("#blpmembers, #logagent, #memberpagecnt, #counter").tablesorter().addClass('tablesorter'); // attach class tablesorter to all except our counter
+  $("#blpmembers, #logagent, #memberpagecnt, #counter").tablesorter()
+    .addClass('tablesorter'); // attach class tablesorter to all except our counter
 });
 </script>
   
@@ -45,10 +46,15 @@ list($top, $footer) = $S->getPageTopBottom($h, $b);
 
 $page = file_get_contents("webstats.i.txt");
 
+$sql = "select * from tracker order by ip, starttime";
+list($tracker) = $T->maketable($sql, array('attr'=>array('border'=>'1')));
+
 echo <<<EOF
 $top
 <p>This report is gethered once each hour. Results are limited to 20 records.</p>
 $page
+<h2>Tracker</h2>
+$tracker
 $footer
 EOF;
 ?>

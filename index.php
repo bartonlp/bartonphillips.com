@@ -3,7 +3,7 @@
 define('TOPFILE', $_SERVER['VIRTUALHOST_DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
+} else throw new Exception(TOPFILE . " not found");
 
 $S = new Blp; // takes an array if you want to change defaults
 
@@ -36,7 +36,6 @@ EOF;
 
 if($S->isBlp()) {
   $h->extra .= <<<EOF
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>
 var UpTest = false;
 
@@ -73,8 +72,11 @@ EOF;
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/apc.php">APC Status home</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
+<li><a target="_blank" href="http://www.puppiesnmore.com/cms">PuppiesNmore CMS</a></li>
 <li><a target="_blnak" href="http://www.working.puppiesnmore.com">PuppiesNmore Working</a></li>
+<li><a target="_blank" href="http://www.working.puppiesnmore.com/cms">PuppiesNmore Working CMS</a></li>
 <li><a target="_blnak" href="http://www.developers.puppiesnmore.com">PuppiesNmore Developers</a></li>
+<li><a target="_blank" href="http://www.developers.puppiesnmore.com/cms">PuppiesNmore Developers CMS</a></li>
 <li><a target="_blnak" href="http://dedicated559.inmotionhosting.com:2083/cpanellogin">Puppies Cpanel</a></li>
 </ul>
 

@@ -36,7 +36,7 @@ echo <<<EOF
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
 <title>Contacts</title>
-<script language='JavaScript' type='text/javascript'>
+<script>
 /*<![CDATA[*/
   function re_calc()
   {

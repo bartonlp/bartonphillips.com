@@ -58,7 +58,6 @@ $('#plugger').remove();
 EOF;
 
 $h->extra = <<<EOF
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
   <script type="text/javascript" src="js/shCore.js"></script>
   <script type="text/javascript" src="js/shBrushJScript.js"></script>
