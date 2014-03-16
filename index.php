@@ -1,6 +1,6 @@
 <?php
    // Main page for bartonphillips.com
-define('TOPFILE', $_SERVER['VIRTUALHOST_DOCUMENT_ROOT'] . "/siteautoload.php");
+define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
 } else throw new Exception(TOPFILE . " not found");
@@ -77,7 +77,6 @@ EOF;
 <li><a target="_blank" href="http://www.working.puppiesnmore.com/cms">PuppiesNmore Working CMS</a></li>
 <li><a target="_blnak" href="http://www.developers.puppiesnmore.com">PuppiesNmore Developers</a></li>
 <li><a target="_blank" href="http://www.developers.puppiesnmore.com/cms">PuppiesNmore Developers CMS</a></li>
-<li><a target="_blnak" href="http://dedicated559.inmotionhosting.com:2083/cpanellogin">Puppies Cpanel</a></li>
 </ul>
 
 EOF;
@@ -116,7 +115,7 @@ $top
    Today is: $date</p>
    <hr>
    <p>This page is dynamically generated using PHP on our server at
-   <a target="_blank" href="http://www.lamphost.net/">Lamphost.net</a>.
+   <a target="_blank" href="http://www.inmotionhosting.com/">inmotionhosting.com</a>.
    No JavaScript is used in this page. We collect no COOKIES. We don't track you.
    We do collect anonymous information for page counting etc. However, some of the
    pages we link to do collect tracking information and COOKIES and make extensive use

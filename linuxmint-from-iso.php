@@ -1,6 +1,6 @@
 <?php
 // How to load LinuxMint 15 from iso
-define('TOPFILE', $_SERVER['VIRTUALHOST_DOCUMENT_ROOT'] . "/siteautoload.php");
+define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
 } else throw new Exception(TOPFILE . "not found");

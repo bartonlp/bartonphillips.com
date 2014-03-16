@@ -22,6 +22,10 @@
 <div id="aboutWesssbSite">
 
 <div id="runWith">
+    <p>Designed and Maintained by <a href="http://www.bartonphillips.com">Barton L. Phillips</a><br>
+     Copyright &copy; 2010-2014 Barton L. Phillips</p>
+  
+
 	<p>This site is hosted by <a href="http://www.lamphost.net">
 		 <img width="200" height="40" border="0" align="middle"
 						alt="LAMP Host (www.lamphost.net)"
@@ -36,11 +40,10 @@
 	<p><a href="http://www.php.net"><img src="/images/php-small-white.png" alt="PHP Powered"></a></p>
 	<p><a href="http://www.mozilla.org"><img src="/images/bestviewedwithmozillabig.gif" alt="Best viewed with Mozilla or any other browser"></a></p>
 	<p><a href="http://www.mozilla.org"><img
-	src="http://www.swam.us/images/shirt3-small.gif" alt="Mozilla"></a></p>
+	src="../images/shirt3-small.gif" alt="Mozilla"></a></p>
 	<p><img src="/images/msfree.png" alt="100% Microsoft Free"></p>
 
-	<p><a
-  href="http://www.netcraft.com/whats?host=www.bartonphillips.org">
+	<p><a href="http://www.netcraft.com/whats?host=www.bartonphillips.org">
 	<img src="/images/powered.gif" width=90 height=53 border=0 alt="Powered By ...?"></a>
 	</p>
 </div>

@@ -1,5 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['VIRTUALHOST_DOCUMENT_ROOT'] . "/siteautoload.php");
+define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
 } else throw new Exception(TOPFILE . "not found");
@@ -23,10 +23,10 @@ $pageHead
      Copyright &copy; 2010 <a
      href="mailto:bartonphillips@gmail.com">Barton L. Phillips</a></p>
   
-	<p>This site is hosted by <a href="http://www.lamphost.net">
+	<p>This site is hosted by <a href="http://inmotionhosting.com">
 		 <img width="200" height="40" border="0" align="middle"
-						alt="LAMP Host (www.lamphost.net)"
-						src="http://www.lamphost.net/sites/all/themes/lamphostnet/images/logo.jpg">
+						alt="Inmotion Hosting"
+						src="http://www.inmotionhosting.com/img/logo-imh.svg">
 		 </a>
 		 </p>
 
@@ -41,7 +41,7 @@ $pageHead
 
   <p><a href="http://www.mozilla.org"><img src="images/bestviewedwithmozillabig.gif" alt="Best viewed with Mozilla or any other browser"></a></p>
 	<p><a href="http://www.mozilla.org"><img
-	src="images/shirt3-small.gif" alt="Mozilla"></a></p>
+	src="/images/shirt3-small.gif" alt="Mozilla"></a></p>
 	<p><img src="images/msfree.png" alt="100% Microsoft Free"></p>
 
 	<p><a

@@ -1,7 +1,7 @@
 <?php
    // create a data-url for <script> tag.
    // dynamically create a <script> tag with a data url for the src= item
-define('TOPFILE', $_SERVER['VIRTUALHOST_DOCUMENT_ROOT'] . "/siteautoload.php");
+define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
 } else throw new Exception(TOPFILE . "not found");

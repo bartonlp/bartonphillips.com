@@ -1,3 +1,3 @@
 <?php
-require_once("/home/bartonlp/includes/siteautoload.php");
+require_once("/home/barton11/includes/siteautoload.php");
 ?>

@@ -21,8 +21,8 @@ class PokerClub extends SiteClass {
                'siteDomain'=>"$site",
                'subDomain'=>"/pokerclub", // the sub domain part of the setcookie(), the 4th parameter
                'memberTable'=>"pokermembers",
-               'headFile'=>"/home/bartonlp/bartonphillips.com/htdocs/pokerclub/poker.head.i.php",
-               'bannerFile'=>"/home/bartonlp/bartonphillips.com/htdocs/pokerclub/poker.banner.i.php",
+               'headFile'=>"/home/barton11/www/pokerclub/poker.head.i.php",
+               'bannerFile'=>"/home/barton11/www/pokerclub/poker.banner.i.php",
                'aycountwhat'=>"all",
                'databaseClass'=>new Database($dbinfo)
               );  

@@ -22,14 +22,14 @@
    // and one for the site information ($siteinfo). These are used by the Database class and the
    // SiteClass.
    
-define('TOP', '/home/bartonlp'); // on lamphost.net this would be '/home/bartonlp'
+define('TOP', '/home/barton11'); // on lamphost.net this would be '/home/bartonlp'
 define('INCLUDES', TOP."/includes");
 define('DATABASE_ENGINES', INCLUDES."/database-engines");
 define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in siteautoload.php!
 
 // Email info and logfile location
 
-define('LOGFILE', "/home/bartonlp/pub/database.log");
+define('LOGFILE', "/home/barton11/pub/database.log");
 
 define('EMAILADDRESS', "bartonphillips@gmail.com");
 define('EMAILRETURN', "bartonphillips@gmail.com");
@@ -40,9 +40,9 @@ define('EMAILFROM', "webmaster@bartonphillips.com");
 // later
            
 $dbinfo = array('host' => 'localhost',
-                'user' => '3342',
-                'password' => 'lueQu5saig2l',
-                'database' => 'bartonphillipsdotorg',
+                'user' => 'barton11_barton',
+                'password' => '7098653',
+                'database' => 'barton11_bartonphillipsdotorg',
                 'engine' => 'mysqli'
                );
 
@@ -50,7 +50,7 @@ $dbinfo = array('host' => 'localhost',
 // This site has no members so no membertable.
 // See the SiteClass constructor for other possible values like 'count', 'emailDomain' etc.
 
-$siteinfo = array('siteDomain' => "bartonphillips.com",
+$siteinfo = array('siteDomain' => "bartonphillips.org",
                   //'memberTable' => "blpmembers",
                   'headFile' => SITE_INCLUDES."/head.i.php",
                   'bannerFile' => SITE_INCLUDES."/banner.i.php",
