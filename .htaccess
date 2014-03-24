@@ -19,3 +19,4 @@ RewriteRule .* - [F]
 RewriteCond %{REQUEST_URI} ^/webstats.php
 RewriteCond %{REQUEST_METHOD} POST
 RewriteRule .* - [F]
+

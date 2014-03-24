@@ -1,20 +1,5 @@
-# Ignore these items
-*.jpg
-*.JPG
-*.png
-*.PNG
-*.gif
-*.GIF
-*.pdf
-*.PDF
-*.doc
-*.DOC
-/test
-/other
-/images
-/fonts
-/Archive
-/weewx
-webstats.i.txt
-.gitconfig
-
+.ftpquota
+/test/
+/weewx/
+/Archive/
+/other/

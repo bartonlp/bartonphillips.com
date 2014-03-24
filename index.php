@@ -72,11 +72,8 @@ EOF;
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/apc.php">APC Status home</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
-<li><a target="_blank" href="http://www.puppiesnmore.com/cms">PuppiesNmore CMS</a></li>
 <li><a target="_blnak" href="http://www.working.puppiesnmore.com">PuppiesNmore Working</a></li>
 <li><a target="_blank" href="http://www.working.puppiesnmore.com/cms">PuppiesNmore Working CMS</a></li>
-<li><a target="_blnak" href="http://www.developers.puppiesnmore.com">PuppiesNmore Developers</a></li>
-<li><a target="_blank" href="http://www.developers.puppiesnmore.com/cms">PuppiesNmore Developers CMS</a></li>
 </ul>
 
 EOF;
@@ -108,7 +105,7 @@ echo <<<EOF
 $top
 <hr/>
 <p>
-   Our domains are <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
+   Our domains are <i>bartonphillips.net</i>, <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
    You got here via <i>{$_SERVER['SERVER_NAME']}</i>.<br/>$ref
    Your browser's User Agent String: <i>$S->agent</i><br/>
    Your IP Address: <i>$S->ip</i><br/>
@@ -143,6 +140,9 @@ Leave a comment or feedback about this site.
 <li><a target="_blank" href="http://www.myphotochannel.com">www.MyPhotoChannel.com</a><br>
 <li><a target="_blank" href="http://go.myphotochannel.com/">MyPhotoChannel 1and1</a> only a super user</li>
 <li><a target="_blnak" href="http://www.puppiesnmore.com">PuppiesNmore</a></li>
+<li><a target="_blank" href="http://www.puppiesnmore.com/cms">PuppiesNmore CMS</a></li>
+<li><a target="_blnak" href="http://www.petshop.puppiesnmore.com">PuppiesNmore Pet Shop</a></li>
+<li><a target="_blank" href="http://www.petshop.puppiesnmore.com/cms">PuppiesNmore Pet Shop CMS</a></li>
 
 </ul>
 $adminStuff

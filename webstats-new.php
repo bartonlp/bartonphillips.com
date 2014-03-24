@@ -6,7 +6,7 @@ if(file_exists(TOPFILE)) {
 
 $referer = $_SERVER['HTTP_REFERER'];
 
-if(!preg_match("/bartonphillips\.com/", $referer)) {
+if(!preg_match("/bartonphillips\.com|org|net/", $referer)) {
   echo <<<EOL
 <h1>Access Forbiden</h1>
 <p>Please go away.</p>
@@ -28,27 +28,55 @@ jQuery(document).ready(function($) {
   $("#blpmembers, #logagent, #memberpagecnt, #counter, #tracker").tablesorter()
     .addClass('tablesorter'); // attach class tablesorter to all except our counter
 
+  // Tracker
   // Don't show webmaster
 
   var myIp = "$S->myIp";
   $("#tracker td:nth-child(2):contains('"+myIp+"')").parent().hide();
 
+  // Show or Hide Robots function
+
+  function showhidebots(type) {
+    $("#tracker td:nth-child(3)").each(function(i, v) {
+      var agent = $(v).text(), pat = new RegExp("bot|[+]*http|crawl", "i");
+      if(pat.test(agent)) {
+        if(type == "hide") {
+          $(v).parent().hide();
+        } else {
+          $(v).parent().show().css("color", "red"); // Color robots red
+        }
+      }
+    });
+  }
+
+  showhidebots('hide'); // Hide them at startup
+
+  // Put a couple of buttons before the table
 
   $("#tracker").before("<div id='trackerselectdiv'>"+
                        "<button id='showhide'>Show Webmaster</button>"+
+                       "<button id='showhidebots'>Show Robots</button>"+
                        "</div>");
+
+  // ShwoHide Webmaster clicked
 
   $("#showhide").click(function(e) {
     if(this.flag) {
+      // Hide Webmaster
       $("#tracker tr td:nth-child(2):contains("+myIp+")").parent().hide();
       $(this).text("Show Webmaster");
     } else {
       // Show all
       $("#tracker tr").show();
+      if($("#showhiderobots").prop('flag') == false) {
+        showhidebots('hide');
+      }
       $(this).text("Hide Webmaster");
     }
     this.flag = !this.flag;
   });
+
+  // IP address clicked
 
   $("#tracker td:nth-child(2)").click(function(e) {
     if(this.flag) {
@@ -75,6 +103,21 @@ jQuery(document).ready(function($) {
     }
     this.flag = !this.flag;
     return false;
+  });
+
+  // ShowHideBots clicked
+
+  $("#showhidebots").click(function() {
+    if(this.flag) {
+      // hide
+      showhidebots('hide');
+      $("#showhidebots").text("Show Robots");
+    } else {
+      // show
+      showhidebots('show');
+      $("#showhidebots").text("Hide Robots");
+    }
+    this.flag = !this.flag;
   });
 });
   </script>

@@ -12,7 +12,7 @@ $pageHeadText = <<<EOF
      content="Barton Phillips, Granby, Applitec Inc., Rotary, Programming,
         RSS Generator, Poker, Tips and tricks, blog"/>
   <!-- ICONS, RSS -->
-  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="shortcut icon" href="http://www.bartonphillips.org/favicon.ico" />
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/rssfeed.xml" />
   <!-- CSS -->
   <!-- Custom CSS -->

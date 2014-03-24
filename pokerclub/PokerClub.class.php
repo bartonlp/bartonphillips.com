@@ -7,7 +7,7 @@ class PokerClub extends SiteClass {
   //----------------------
   
   public function __construct($x=array()) {
-    global $dbinfo; // from .sitemap.php
+    global $dbinfo, $siteinfo; // from .sitemap.php
 
     Error::setNoEmailErrs(true); // For debugging
     Error::setDevelopment(true); // during development
@@ -16,16 +16,8 @@ class PokerClub extends SiteClass {
 
 
     $site = preg_replace("/www./", '', $_SERVER['SERVER_NAME']); // Because this could be .com or .org
-    
-    $s = array('count'=>true,
-               'siteDomain'=>"$site",
-               'subDomain'=>"/pokerclub", // the sub domain part of the setcookie(), the 4th parameter
-               'memberTable'=>"pokermembers",
-               'headFile'=>"/home/barton11/www/pokerclub/poker.head.i.php",
-               'bannerFile'=>"/home/barton11/www/pokerclub/poker.banner.i.php",
-               'aycountwhat'=>"all",
-               'databaseClass'=>new Database($dbinfo)
-              );  
+    $s = $siteinfo;
+    $s['databaseClass'] = new Database($dbinfo);
 
     // If $x has values then add/modify the $s array
 
@@ -36,24 +28,22 @@ class PokerClub extends SiteClass {
     parent::__construct($s);
   }
 
-  /*
   public function setIdCookie($id) {
-    echo "id=$id<br>";
-    return parent::setIdCookie($id);
+    //echo "id=$id<br>";
+    return parent::setIdCookie($id, 'PokerClub');
   }
-  */
   
   // Called by the constructor
   
   public function checkId() {
-    $id = $_COOKIE['PId'];
+    $id = $_COOKIE['PokerClub'];
     if(!isset($id)) {
       $id = $_COOKIE['SiteId']; // New logic in site.class.php uses SiteId
       if(!isset($id)) {
         return 0;
       }
     }
-    return parent::checkId($id);
+    return parent::checkId($id, 'PokerClub');
   }
 
   public function getUser() {
