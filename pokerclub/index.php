@@ -143,6 +143,19 @@ if($_GET['page'] == 'whoishosting') {
   // Edit who is hosting
   $h->title = "Poker Club";
   $h->banner = "<h1>Who Is Hosting?</h1>";
+  $h->extra = <<<EOF
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/jquery-1.10.4.datepicker.min.js"></script>
+<script>
+jQuery(document).ready(function($) {
+  $("#datepicker").datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+});
+</script>
+EOF;
+
   $top = $S->getPageTop($h);
 
   $n = $S->query("select concat(FName, ' ', LName) from pokermembers");
@@ -161,7 +174,7 @@ $top
 <select name="host">
 $hosts
 </select></td></tr>
-<tr><th>Date</th><td><input type="text" name="date" /> (yyyy-mm-dd)</td></tr>
+<tr><th>Date</th><td><input id='datepicker' type="text" name="date" /> (yyyy-mm-dd)</td></tr>
 <tr><th celspan="2"><input type="submit" value="Submit" /></th></tr>
 </table>
 <input type="hidden" name="page" value="post"/>
