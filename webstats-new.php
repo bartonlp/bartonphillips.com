@@ -25,99 +25,211 @@ $extra = <<<EOF
 
 <script>
 jQuery(document).ready(function($) {
+  var flags = {webmaster: false, robots: false, ip: false , page: false};
+
   $("#blpmembers, #logagent, #memberpagecnt, #counter, #tracker").tablesorter()
     .addClass('tablesorter'); // attach class tablesorter to all except our counter
 
-  // Tracker
   // Don't show webmaster
 
   var myIp = "$S->myIp";
-  $("#tracker td:nth-child(2):contains('"+myIp+"')").parent().hide();
 
-  // Show or Hide Robots function
+  // Check Flags look at other flags
 
-  function showhidebots(type) {
-    $("#tracker td:nth-child(3)").each(function(i, v) {
-      var agent = $(v).text(), pat = new RegExp("bot|[+]*http|crawl", "i");
-      if(pat.test(agent)) {
-        if(type == "hide") {
-          $(v).parent().hide();
-        } else {
-          $(v).parent().show().css("color", "red"); // Color robots red
-        }
+  function checkFlags(flag) {
+    var msg;
+
+    if(flag) { // Flag is true.
+      switch(flag) {
+        case 'webmaster': // default is don't show
+          $(".webmaster").parent().hide();
+          msg = "Show ";
+          flags.webmaster = false;
+          break;
+        case 'robots': // true means we are showing robots
+          $('.robots').parent().hide();
+          msg = "Show ";
+          flags.robots = false;
+          break;
+        case 'ip': // true means only this ip is showing so we want to make all ips show
+          $(".ip").removeClass('ip');
+          $("#tracker tr").show();
+
+          if(flags.page) {
+            $("#tracker td:first-child:not('.page')").parent().hide();
+          }
+             
+          if(!flags.webmaster) {
+            $(".webmaster").parent().hide();
+          }
+          if(!flags.robots) {
+            $(".robots").parent().hide();
+          }
+          msg = "Only ";
+          flags.ip = false;
+             
+          break;
+        case 'page': // true means we are only showing this page
+          $(".page").removeClass('page');
+          $("#tracker tr").show();
+                          
+          if(flags.ip) {
+            $("#tracker td:nth-child(2):not('.ip')").parent().hide();
+          }
+
+          if(!flags.webmaster) {
+            $(".webmaster").parent().hide();
+          }
+          if(!flags.robots) {
+            $(".robots").parent().hide();
+          }
+          msg = "Only ";
+          flags.page = false;
+          break;
       }
-    });
+      $("#"+ flag).text(msg + flag);
+      return;
+    }   
+
+    for(var f in flags) {
+      if(flags[f]) { // if true
+        switch(f) {
+          case 'webmaster':
+            flags.webmaster = false;
+            if(true in flags) {
+              $(".webmaster").parent().not(":hidden").show();
+            } else {
+              $(".webmaster").parent().show();
+            }
+            flags.webmaster = true;
+            msg = "Hide ";
+            break;
+          case 'robots':
+            flags.robots = false;
+            if(true in flags) {
+              $('.robots').parent().not(":hidden").show();
+            } else {
+              $(".robots").parent().show();
+            }
+            flags.robots = true;
+            msg = "Hide ";
+            break;
+          case 'ip': 
+            $("#tracker tr td:nth-child(2):not('.ip')").parent().hide();
+            msg = "All ";
+            break;
+          case 'page':
+            $("#tracker tr td:first-child:not('.page')").parent().hide();
+            msg = "All ";
+            break;
+        }
+        $("#"+ f).text(msg + f);
+      }   
+    }
   }
+ 
+  // To start Webmaster is hidden
 
-  showhidebots('hide'); // Hide them at startup
+  $("#tracker td:nth-child(2)").each(function(i, v) {
+    if($(v).text() == myIp) {
+      $(v).addClass("webmaster").css("color", "green").parent().hide();
+    }
+  });
 
+  // To start Robots are hidden
+
+  $(".bot td:nth-child(3)").addClass('robots').css("color", "red").parent().hide();
+  
   // Put a couple of buttons before the table
 
   $("#tracker").before("<div id='trackerselectdiv'>"+
-                       "<button id='showhide'>Show Webmaster</button>"+
-                       "<button id='showhidebots'>Show Robots</button>"+
+                       "<button id='webmaster'>Show webmaster</button>"+
+                       "<button id='robots'>Show robots</button>"+
+                       "<button id='page'>Only page</button>"+
+                       "<button id='ip'>Only ip</button>"+
                        "</div>");
 
   // ShwoHide Webmaster clicked
 
-  $("#showhide").click(function(e) {
-    if(this.flag) {
-      // Hide Webmaster
-      $("#tracker tr td:nth-child(2):contains("+myIp+")").parent().hide();
-      $(this).text("Show Webmaster");
+  $("#webmaster").click(function(e) {
+    if(flags.webmaster) {
+      checkFlags('webmaster');
     } else {
-      // Show all
-      $("#tracker tr").show();
-      if($("#showhiderobots").prop('flag') == false) {
-        showhidebots('hide');
-      }
-      $(this).text("Hide Webmaster");
+      // Show
+      flags.webmaster = true;
+      // Now show only my IP
+      checkFlags();
     }
-    this.flag = !this.flag;
+    //flags.webmaster = !flags.webmaster;
+  });
+
+  // Page clicked
+
+  $("#tracker td:first-child").click(function(e) {
+    if(flags.page) {
+      checkFlags('page');
+    } else {
+      // show only this page
+      flags.page = true;
+      var page = $(this).text();
+      $("#tracker tr td:first-child").each(function(i, v) {
+        if($(v).text() == page) {
+          $(v).addClass('page');
+        }
+      });
+      checkFlags();
+    }
   });
 
   // IP address clicked
 
   $("#tracker td:nth-child(2)").click(function(e) {
-    if(this.flag) {
-      // show all
-      $("#tracker tr").show();
-      $("#showall").remove();
-      $("#tracker td:nth-child(2):contains('"+myIp+"')").parent().hide();
-      $("#showhide").prop('flag', false);
-      $("#showhide").text("Show Webmaster").show();
+    if(flags.ip) {
+      checkFlags('ip');
     } else {
       // show only IP
+      flags.ip = true;
       var ip = $(this).text();
-      $("#tracker tr").hide();
-      $("#tracker tr td:contains("+ip+")").parent().show();
-      $("#tracker").before("<button id='showall'>Show All</button>");
-      $("#showhide").hide();
-      $("#showall").click(function(e) {
-        $("#tracker tr").show();
-        $(this).remove();
-        $("#tracker td:nth-child(2):contains('"+myIp+"')").parent().hide();
-        $("#showhide").prop('flag', false);
-        $("#showhide").text("Show Webmaster").show();
+      $("#tracker tr td:nth-child(2)").each(function(i, v) {
+        if($(v).text() == ip) {
+          $(v).addClass('ip');
+        }
       });
+      checkFlags();
     }
-    this.flag = !this.flag;
-    return false;
   });
 
   // ShowHideBots clicked
 
-  $("#showhidebots").click(function() {
-    if(this.flag) {
+  $("#robots").click(function() {
+    if(flags.robots) {
       // hide
-      showhidebots('hide');
-      $("#showhidebots").text("Show Robots");
+      checkFlags('robots');
     } else {
       // show
-      showhidebots('show');
-      $("#showhidebots").text("Hide Robots");
+      flags.robots = true;
+      checkFlags();
     }
-    this.flag = !this.flag;
+  });
+
+  $("#ip").click(function() {
+    if(flags.ip) {
+      // hide
+      checkFlags('ip');
+    } else {
+      // show
+      alert("click on the IP address you want to show");
+    }
+  });
+
+  $("#page").click(function() {
+    if(flags.page) {
+      // hide
+      checkFlags('page');
+    } else {
+      // show
+      alert("click on the page you want to show");
+    }
   });
 });
   </script>
@@ -146,6 +258,9 @@ th, td {
 #tracker td:nth-child(2):hover {
   cursor: pointer;
 }
+#tracker td:first-child:hover {
+  cursor: pointer;
+}
 div {
   padding: 10px 0;
 }
@@ -163,6 +278,14 @@ list($top, $footer) = $S->getPageTopBottom($h, $b);
 $page = file_get_contents("webstats.i.txt");
 
 function callback(&$row, &$desc) {
+  global $S;
+
+  $agent = $S->escape($row['agent']);
+
+  if($S->query("select agent from barton11_granbyrotarydotorg.bots2 where agent='$agent'")) {
+    $desc = preg_replace("~<tr>~", "<tr class='bot'>", $desc);
+  }
+  
   $ref = urldecode($row['referrer']);
   // if google then remove the rest because google doesn't have an info in q= any more.
   if(strpos($ref, 'google') !== false) {
@@ -171,8 +294,12 @@ function callback(&$row, &$desc) {
   $row['referrer'] = $ref;
 }
 
+$sql = "select sec_to_time(sum(difftime)/count(*)) from tracker where endtime!='' && hour(difftime)=0";
+$S->query($sql);
+list($av) = $S->fetchrow('num');
+
 $sql = "select page, ip, agent, starttime, endtime, difftime, referrer ".
-       "from tracker order by starttime desc";
+       "from tracker where starttime > date_sub(now(), interval 3 day) order by starttime desc";
 
 list($tracker) = $T->maketable($sql, array('callback'=>callback,
                                            'attr'=>array('id'=>'tracker', 'border'=>'1')));
@@ -183,6 +310,9 @@ $top
 $page
 <h2>Tracker (real time)</h2>
 <p>Click on IP to show only that IP.</p>
+<p>Click on Page to show only that page.</p>
+<p>Average stay time: $av (times over an hour are discarded.)</p>
+<p>Showing only last 3 days.</p>
 $tracker
 $footer
 EOF;

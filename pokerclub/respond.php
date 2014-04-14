@@ -18,6 +18,10 @@ if(!$id) {
   exit();
 }
 
+// Set the cookie also
+
+$S->SetIdCookie($id);
+
 $n = $S->query("select concat(FName, ' ', LName) from pokermembers where id='$id'");
 if(!$n) {
   echo "<h1>ID=$id, Not found in database. ERROR</h1>\n";
@@ -44,8 +48,4 @@ $msg = "$name $response attend Poker Night$date";
 mail("bartonphillips@gmail.com", "Poker Invite Response", $msg, "From: bartonphillips@gmail.com");
 
 $S->query("update pokermembers set canplay='$canplay' where id='$id'");
-
-// Set the cookie also
-
-$S->SetIdCookie($id);
 ?>

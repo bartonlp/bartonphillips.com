@@ -29,7 +29,6 @@ class PokerClub extends SiteClass {
   }
 
   public function setIdCookie($id) {
-    //echo "id=$id<br>";
     return parent::setIdCookie($id, 'PokerClub');
   }
   

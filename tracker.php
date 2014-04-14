@@ -46,7 +46,10 @@ if($_POST['page'] == 'load') {
 
 if($_POST['page'] == 'unload') {
   $id = $_POST['id'];
-  $S->query("update tracker set endtime=now(), difftime=now()-starttime where id=$id");
+  if(!$id) {
+    throw new Exception("tracker.php: NO ID in unload");
+  }
+  $S->query("update tracker set endtime=now(), difftime=timediff(now(),starttime) where id=$id");
   echo "Good By";
   exit();
 }

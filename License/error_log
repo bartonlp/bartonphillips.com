@@ -10,3 +10,27 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/barton11/public_html/License/index.php on line 5
+[04-Apr-2014 22:14:18 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5
+[06-Apr-2014 00:17:17 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5
+[10-Apr-2014 01:01:53 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5
+[12-Apr-2014 03:47:35 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5
+[12-Apr-2014 21:27:11 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5
+[13-Apr-2014 15:10:28 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5

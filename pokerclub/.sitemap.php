@@ -29,7 +29,7 @@ define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in sitea
 
 // Email info and logfile location
 
-define('LOGFILE', "/home/barton11/pub/database.log");
+define('LOGFILE', "/home/barton11/database.log");
 
 define('EMAILADDRESS', "bartonphillips@gmail.com");
 define('EMAILRETURN', "bartonphillips@gmail.com");

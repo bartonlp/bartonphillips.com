@@ -20,3 +20,4 @@ RewriteCond %{REQUEST_URI} ^/webstats.php
 RewriteCond %{REQUEST_METHOD} POST
 RewriteRule .* - [F]
 
+RewriteRule ^download.pdf$ downloadpdf.php [L]

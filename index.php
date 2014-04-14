@@ -68,12 +68,11 @@ EOF;
   $adminStuff = <<<EOF
 <h2>Administration Links</h2>
 <ul>
+<li><a target="_blank" href="http://webmail.bartonphillips.org">WEB Mail for bartonphillips.org</a></li>
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/weewx/">WEEWX home</a></li>
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/apc.php">APC Status home</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
-<li><a target="_blnak" href="http://www.working.puppiesnmore.com">PuppiesNmore Working</a></li>
-<li><a target="_blank" href="http://www.working.puppiesnmore.com/cms">PuppiesNmore Working CMS</a></li>
 </ul>
 
 EOF;
@@ -135,7 +134,6 @@ Leave a comment or feedback about this site.
 <li><a target="_blank" href="http://www.swam.us">South West Aquatic Masters</a></li>
 <li><a target="_blank" href="http://www.tinapurwininsurance.com">Tina Purwin Insurance</a></li>
 <li><a target="_blank" href="http://www.mountainmessiah.com">Mountain Messiah Sing Along</a><br>
-<li><a target="_blank" href="http://www.humanaspect.com">Human Aspect</a><br>
 <li><a target="_blank" href="toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.myphotochannel.com">www.MyPhotoChannel.com</a><br>
 <li><a target="_blank" href="http://go.myphotochannel.com/">MyPhotoChannel 1and1</a> only a super user</li>
@@ -157,10 +155,10 @@ $adminStuff
 <li><a target="_blank" href="http://www.grandnordic.org">Grand Nordic</a> Cross Country Skiing</li>
 <li><a target="_blank" href="http://www.wunderground.com/cgi-bin/findweather/getForecast?query=80446">Weather Unerground
    Granby</a></li>
-<li><a target="_blank" href="http://checkip.dyndns.com/">Check Ip Address</a></li>
 </ul>
 <h2>Helpful Programs and Tips</h2>
 <ul>
+<li><a target="_blank" href="historyofinternet.php">The History and Timeline of the Internet</a></li>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 15 via ISO from Disk</a></li>
 <li><a target="_blank" href="featurescheck.php">Browser Features by Agents</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
@@ -173,6 +171,7 @@ $adminStuff
 <li><a href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">Site with lots of Easter and Passover Information</a><br> 
 <li><a href="urlcountrycodes.php">Find the country give a url country code</a><br>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>
+<li><a target="_blank" href="http://checkip.dyndns.com/">Check Ip Address</a></li>
 </ul>
 <hr/>
 
