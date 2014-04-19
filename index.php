@@ -60,7 +60,7 @@ jQuery(document).ready(function($) {
       this.href = this.href.replace("http://bartonphillips.dyndns.org/", "http://192.168.0.3/");
     }
   });
-});
+);
   </script>
 
 EOF;
@@ -77,6 +77,20 @@ EOF;
 
 EOF;
 }
+$h->extra .= <<<EOF
+  <script src="/js/phpdate.js"></script>
+  <script>
+jQuery(document).ready(function($) {
+  // Date Today
+  setInterval(function() {
+    var d = date("l F j, Y");
+    var t = date("H:i:s"); // from phpdate.js
+    $("#datetoday").html(d+"<br>The Time is: "+t);
+  }, 1000);
+});
+  </script>
+EOF;
+
 list($top, $footer) = $S->getPageTopBottom($h, array('msg1'=>"<hr>"));
 
 $ip = $S->ip;
@@ -108,11 +122,11 @@ $top
    You got here via <i>{$_SERVER['SERVER_NAME']}</i>.<br/>$ref
    Your browser's User Agent String: <i>$S->agent</i><br/>
    Your IP Address: <i>$S->ip</i><br/>
-   Today is: $date</p>
+   Today is: <span id="datetoday">$date</span></p>
    <hr>
    <p>This page is dynamically generated using PHP on our server at
    <a target="_blank" href="http://www.inmotionhosting.com/">inmotionhosting.com</a>.
-   No JavaScript is used in this page. We collect no COOKIES. We don't track you.
+   Almost no JavaScript is used in this page. We collect no COOKIES. We don't track you.
    We do collect anonymous information for page counting etc. However, some of the
    pages we link to do collect tracking information and COOKIES and make extensive use
    of JavaScript.
@@ -156,16 +170,20 @@ $adminStuff
 <li><a target="_blank" href="http://www.wunderground.com/cgi-bin/findweather/getForecast?query=80446">Weather Unerground
    Granby</a></li>
 </ul>
-<h2>Helpful Programs and Tips</h2>
+<h2>About the Internet</h2>
 <ul>
 <li><a target="_blank" href="historyofinternet.php">The History and Timeline of the Internet</a></li>
+<li><a target="_blank" href="howtheinternetworks.php">How the Internet Works</a></li>
+<li><a href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
+</ul>
+<h2>Helpful Programs and Tips</h2>
+<ul>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 15 via ISO from Disk</a></li>
 <li><a target="_blank" href="featurescheck.php">Browser Features by Agents</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags using PHP or JavaScript</a></li>
 <li><a target="_blank" href="localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
 <li><a href="mx330.php">How To Setup The Canon MX330 All-In-One Print/Scan/Copy/Fax For Linux</a></li>
-<li><a href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
 <li><a href="usinghosts.php">Why can't I access my home-hosted website from my own computer</a>? This is a common problem.</li>
 <li><a href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
 <li><a href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">Site with lots of Easter and Passover Information</a><br> 

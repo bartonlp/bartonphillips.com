@@ -3,6 +3,7 @@ Options -Indexes +Includes +FollowSymLinks
 AddType application/x-javascript .js
 AddType text/css .css
 AddType text/xml .xml
+AddType text/cache-manifest .manifest
 
 AddDefaultCharset UTF-8
 

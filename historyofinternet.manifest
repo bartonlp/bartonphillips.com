@@ -1,0 +1,17 @@
+CACHE MANIFEST
+# rev 2
+FALLBACK:
+/ /offline.html
+CACHE:
+http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
+/css/blp.css
+/images/imsai8800.jpg
+/images/8080cpu.jpg
+/images/D8080A-1.jpg
+/images/Apple1.jpg
+/images/kim1.jpg
+/images/6502cpu.jpg
+/images/tubecpu.jpg
+/images/print.gif
+NETWORK:
+*

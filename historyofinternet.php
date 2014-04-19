@@ -12,6 +12,9 @@ $mpdf = new mPDF;
 */
 
 $S = new Blp; // takes an array if you want to change defaults
+
+$h->htmlextra = "manifest='/historyofinternet.manifest'";
+
 $h->extra =<<<EOF
 <style>
 #images table, #images img {
@@ -21,6 +24,9 @@ $h->extra =<<<EOF
   color: red;
   font-weight: bold;
   font-style: italic;
+}
+.future {
+  color: green;
 }
 blockquote {
   margin-top: 10px;
@@ -182,7 +188,8 @@ century and a half.</p>
     <a href="http://en.wikipedia.org/wiki/ENQUIRE">ENQUIRE</a> a hypertext program.
     He also created <a href="http://en.wikipedia.org/wiki/HTML">HTML</a>
     (Hyper Text Markup Language).</li>
-  <li>1981 <a href="http://en.wikipedia.org/wiki/IBM_Personal_Computer">IBM PC</a> first sold.</li>
+  <li>1981 <a href="http://en.wikipedia.org/wiki/IBM_Personal_Computer">IBM PC</a> first sold
+    using the <a href="http://en.wikipedia.org/wiki/Intel_8088">Intel 8088</a>.</li>
   <li>1982
     <ul>
       <li>SMTP (Simple Mail Transport Protical) RFC 821.</li>
@@ -194,7 +201,7 @@ century and a half.</p>
       <li><a href="http://en.wikipedia.org/wiki/Ethernet">Ethernet</a>,
         which was introduced in 1980 was standardized IEEE 802.3.</li>
       <li>Time magazines names the computer as
-        <a href="http://content.time.com/time/covers/0,16641,19830103,00.html:>
+        <a href="http://content.time.com/time/covers/0,16641,19830103,00.html">
           Machine of the Year.
         </a>
       </li>
@@ -205,7 +212,8 @@ century and a half.</p>
       <li>Number of network hosts breaks 1,000</li>
       <li>Apple <a href="http://en.wikipedia.org/wiki/Macintosh">Macintosh</a> released.</li>
       <li><a href="http://en.wikipedia.org/wiki/IBM_Personal_Computer/AT">IBM PC AT</a>
-        released using Intel 80286</li>
+        released using <a href="http://en.wikipedia.org/wiki/Intel_80286">Intel 80286</a>
+        (integrated memory managment and floating point) </li>
       <li>ARPANET backbone via T-1 at 1.5 Mbits/sec.</li>
       <li>POP1 (Post Office Protical 1) RFC 918.</li>
     </ul>
@@ -219,7 +227,7 @@ century and a half.</p>
   <li>1987 Number of network hosts breaks 10,000</li>
   <li>1988
     <ul>
-      <li>ADSL (asymmetric digital subscriber line) patented.</li>
+      <li>ADSL (Asymmetric Digital Subscriber Line) patented.</li>
       <li>POP3 RFC 1081 (the current standard)</li>
     </ul>
   </li>
@@ -254,7 +262,7 @@ century and a half.</p>
   </li>
   <li>1992
     <ul>
-      <li>April: Erwise first graphical browser available for systems other than the
+      <li>April: Erwise browser first graphical browser available for systems other than the
         NeXT computer.</li>
       <li>Number of network hosts breaks 1,000,000</li>
     </ul>
@@ -271,6 +279,9 @@ century and a half.</p>
         Communication Act" of 1991 also known as the Gore Bill.</li>
       <li>June: Cello by Thomas R. Bruce was the first browser for Microsoft Windows.</li>
       <li>August: The NCSA released Mac Mosaic and WinMosaic.</li>
+      <li><a href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a>
+        (Classless Inter-Domain Routing) blocks introduced to replace Classful network (A, B, C)
+        design.</li>
     </ul>
   </li>
   <li><span class="important">1994</span>
@@ -302,7 +313,12 @@ century and a half.</p>
   <li>2000 Apple Computer releases <a href="http://en.wikipedia.org/wiki/Mac_os_x">Mac OS X</a>
     a Unix lookalike operating system.</li>
   <li>2001 January: Wikipedia launched.</li>
-  <li>2004 February: Facebook launched.</li>
+  <li>2004
+    <ul>
+      <li>February: Facebook launched.</li>
+      <li>Internet traffic breaks one exabyte per month</li>
+    </ul>
+  </li>
   <li>2005 YouTube launched.</li>
   <li>2006
     <ul>
@@ -318,16 +334,29 @@ century and a half.</p>
       <li>October 23: AT&T announced the completion of upgrades to OC-768 on
         80,000 fiber-optic wavelength miles of their IP/MPLS (Multiprotocol Label Switching)
         backbone network.</li>
+      <li>IPv6 deployment starts (Summer Olympic Games via IPv6). Work on IPv6 started in the
+        late 1990's when it became clear the IPv4's 4 billion addresses was not going to be
+        enough.</li>
     </ul>
   </li>
+  <li>2010 Internet traffic breaks 21 exabytes per month.</li>
   <li>2012
     <ul>
       <li>December: W3C designated HTML5 as a Candidate Recommendation.</li>
       <li>NEC Corp. broke an ultra-long haul Internet speed record when
         it successfully transmitted data at 1.15 terabits/sec over 6,213 miles.</li>
+      <li>IPv4 exhaustion immanent (4 billion addresses).</li>
     </ul>
   </li>
+  <li><span class="important">2013</span> <a href="http://en.wikipedia.org/wiki/Utah_Data_Center">
+    The National Security Agency</a> (NSA) is revealed to have
+    <a href="http://en.wikipedia.org/wiki/PRISM_(surveillance_program)">secretly</a>
+    collected exabytes (1x10<sup>18</sup> or 100,000 terabyte disk drives) worth of US and
+    fourign citizens data.</li>
   <li>2014 The W3C (World Wide Web Consortium) plans to finalize the HTML 5 standard by July.</li>
+  <li><span class="future">2016</span> It is
+    <a href="http://www.pcmag.com/article2/0,2817,2405038,00.asp">estimated</a>
+    that Internet traffic will reach 1.3 zettabytes per year. About 3.4 billion Internet users.</li>
 </ul>
 </section>
 <section id="speed">

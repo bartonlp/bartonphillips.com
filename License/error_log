@@ -34,3 +34,11 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/barton11/public_html/License/index.php on line 5
+[17-Apr-2014 11:25:20 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5
+[17-Apr-2014 11:39:42 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'Exception' with message '/siteautoload.phpnot found' in /home/barton11/public_html/License/index.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/barton11/public_html/License/index.php on line 5

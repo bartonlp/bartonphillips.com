@@ -1,6 +1,6 @@
 <?php
 $pageHeadText = <<<EOF
-{$arg['preheadcomment']}<head>
+<head>
   <title>{$arg['title']}</title>
   <!-- METAs -->
   <meta charset='utf-8'/>
@@ -16,7 +16,7 @@ $pageHeadText = <<<EOF
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/rssfeed.xml" />
   <!-- CSS -->
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/css/blp.css" type="text/css" title="blp default" />
+  <link rel="stylesheet" href="/css/blp.css" title="blp default" />
   <!-- jQuery -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="/js/tracker.js"></script>
