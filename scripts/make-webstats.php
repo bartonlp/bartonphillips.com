@@ -17,8 +17,6 @@ Error::setNoHtml(true);
 $S = new Database($dbinfo);
 
 $limit = " limit 20";
-$date = date("Y-m-d H:i:s");
-
 $blpips = array();
 
 $t = new dbTables($S);
@@ -29,20 +27,11 @@ list($tbl) = $t->maketable($query, array('callback'=>blpipmake, 'attr'=>array('b
 
 $page = <<<EOF
 <hr/>
-<h2>$date San Diego Time</h2>
 <div id="blpip">
 <p>These are the IP Addresses used by the Webmaster. When these addresses appear in the other tables they are in
 <span style="color: red">RED</span>. Some of these are from the Granby Library (63.238.70.*)</p>
 $tbl
 </div>
-<ul>
-   <li><a href="#table2">Goto Table Two: ip, agent</a></li>
-   <li><a href="#table3">Goto Table Three: memberpagecnt</a></li>
-   <li><a href="#table4">Goto Table Four: counter</a></li>
-   <li><a href="#table5">Goto Table Five: counter2</a></li>
-   <li><a href="#table6">Goto Table Six: daycounts</a></li>
-</ul>   
-
 EOF;
 
 $S->query("select count(*) as num, sum(count) as visits from logip");

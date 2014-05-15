@@ -8,11 +8,13 @@ if(file_exists(TOPFILE)) {
 $S = new Blp; // takes an array if you want to change defaults
 
 $h->title = "Load LinuxMint 15 from ISO";
-$h->banner = "<h1 class='center'>How to Load LinuxMint 15 via ISO from Disk</h1>";
+$h->banner = "<h1 class='center'>How to Load LinuxMint 16 via ISO from Disk</h1>";
 
 list($top, $footer) = $S->getPageTopBottom($h);
 echo <<<EOF
 $top
+<h3>Update 2014-05-03: I originally wrote this for Linux Mint 15 but have just upgraded to Linux Mint
+16 without any problems.</h3>
 
 <p>Instead of burning a CD or using a USB flash stick you can install Linux Mint 15 (and most other
 Linux distributions) from a hard disk. All you need is a small (about 2 GB) extra partition

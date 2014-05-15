@@ -28,7 +28,7 @@ EOF;
 
   // Include GoogleAnalytics
 
-  include_once('analyticstracking.php'); // sets $GoogleAnalytics
+  include_once(DOC_ROOT .'/analyticstracking.php'); // sets $GoogleAnalytics
 
   // WARNING About MSIE!
 
@@ -93,7 +93,8 @@ EOF;
 $pageBannerText .= <<<EOF
 <header>
 <div>
-   <img id='blpimg' src="/blp-image.png" alt="Barton's Picture"/>
+   <a href="http://www.bartonphillips.com">
+     <img id='blpimg' src="/blp-image.png" alt="Barton's Picture"/></a>
    <a href="http://linuxcounter.net/">
    <img id='linuxcounter' src="/images/146624.png" alt="linux counter image."/>
    </a>

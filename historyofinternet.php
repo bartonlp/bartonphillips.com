@@ -13,7 +13,8 @@ $mpdf = new mPDF;
 
 $S = new Blp; // takes an array if you want to change defaults
 
-$h->htmlextra = "manifest='/historyofinternet.manifest'";
+// For the time being NO manifest
+//$h->htmlextra = "manifest='/historyofinternet.manifest'";
 
 $h->extra =<<<EOF
 <style>
@@ -47,7 +48,7 @@ blockquote {
 EOF;
 
 $h->title = "History of the Internet";
-$h->banner = "<h1>History of the Internet</h1>";
+$h->banner = "<h1 class='center'>History of the Internet</h1><hr>";
 list($top, $footer) = $S->getPageTopBottom($h);
 
 $article =<<<EOF
@@ -613,6 +614,19 @@ function printit() {
   window.location='historyofinternet.php?page=print';
 }
 </script>
+
+<div id="otherarticles">
+  <p>Other articles in this series:</p>
+  <ul>
+    <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
+    <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
+    <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
+    <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
+  </ul>
+</div>
+
+<hr>
+  
 $footer
 EOF;
 ?>

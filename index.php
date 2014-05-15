@@ -7,6 +7,12 @@ if(file_exists(TOPFILE)) {
 
 $S = new Blp; // takes an array if you want to change defaults
 
+/*
+if(!($_GET || $_POST)) {
+  header("Last-Modified: ". date("r", getlastmod()));
+}
+*/
+
 $h->extra = <<<EOF
   <style type="text/css">
 #blpimg {
@@ -16,6 +22,12 @@ $h->extra = <<<EOF
 i {
         font-size: 110%;
         font-weight: bold;
+}
+@media (max-width: 600px) {
+  a {
+    font-size: 22px;
+    line-height: 40px;
+  }
 }
   </style>
   
@@ -37,30 +49,28 @@ EOF;
 if($S->isBlp()) {
   $h->extra .= <<<EOF
   <script>
-var UpTest = false;
-
 jQuery(document).ready(function($) {
   // Just do this at startup.
-
+  
   $.ajax({ url: 'http://www.bartonphillips.dyndns.org/uptest.php',
            data: {uptest: 'yes'},
            type: 'get',
            dataType: 'jsonp',
+           timeout: 2000, // two seconds
            success: function(d) {
-             UpTest = d.b;
              console.log("OK", d);
            },
            error: function(e) {
              console.log("ERR",e);
+             e.abort();
+
+             $(".uptest").each(function(i, v) {
+               var x = $(v).attr("href");
+               $(v).attr("href", x.replace("http://bartonphillips.dyndns.org/", "http://192.168.0.3/"));
+             });
            }
   });
-
-  $(".uptest").click(function(e) {
-    if(!UpTest) {
-      this.href = this.href.replace("http://bartonphillips.dyndns.org/", "http://192.168.0.3/");
-    }
-  });
-);
+});
   </script>
 
 EOF;
@@ -72,6 +82,7 @@ EOF;
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/weewx/">WEEWX home</a></li>
 <li><a target="_blank" class="uptest" href="http://bartonphillips.dyndns.org/apc.php">APC Status home</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
+<li><a target="_blank" href="http://www.endpolio.com/webstats.php">Endpolio Web Stats</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
 </ul>
 
@@ -117,6 +128,11 @@ $date = date("l F j, Y");
 echo <<<EOF
 $top
 <hr/>
+<a href="//ipv6.he.net/certification/scoresheet.php?pass_name=bartonlp" target="_blank">
+<img src="images/he-badge.png"
+style="border: 0; width: 128px; height: 128px" alt="IPv6 Certification Badge for bartonlp">
+</img>
+</a>
 <p>
    Our domains are <i>bartonphillips.net</i>, <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
    You got here via <i>{$_SERVER['SERVER_NAME']}</i>.<br/>$ref
@@ -169,57 +185,64 @@ $adminStuff
 <li><a target="_blank" href="http://www.grandnordic.org">Grand Nordic</a> Cross Country Skiing</li>
 <li><a target="_blank" href="http://www.wunderground.com/cgi-bin/findweather/getForecast?query=80446">Weather Unerground
    Granby</a></li>
+<li><a target="_blank" href="https://dashboard.opendns.com/">OpenDNS</a></li>
+<li><a target="_blank" href="http://www.html5rocks.com/en/">
+<img width="100" src="http://www.html5rocks.com/static/images/mastheads/h5r-shadow.png"/> HTML3 Rocks</a></li>
+
+<!-- http://www.html5rocks.com/en/tutorials/es6/promises/#toc-async -->
 </ul>
 <h2>About the Internet</h2>
 <ul>
 <li><a target="_blank" href="historyofinternet.php">The History and Timeline of the Internet</a></li>
 <li><a target="_blank" href="howtheinternetworks.php">How the Internet Works</a></li>
-<li><a href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
+<li><a target="_blank" href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
+<li><a target="_blank" href="buildawebsite.php">So You Want to Build a Website</a></li>
 </ul>
 <h2>Helpful Programs and Tips</h2>
 <ul>
-<li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 15 via ISO from Disk</a></li>
+<li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 16 via ISO from Disk</a></li>
 <li><a target="_blank" href="featurescheck.php">Browser Features by Agents</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags using PHP or JavaScript</a></li>
 <li><a target="_blank" href="localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
-<li><a href="mx330.php">How To Setup The Canon MX330 All-In-One Print/Scan/Copy/Fax For Linux</a></li>
-<li><a href="usinghosts.php">Why can't I access my home-hosted website from my own computer</a>? This is a common problem.</li>
-<li><a href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
-<li><a href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">Site with lots of Easter and Passover Information</a><br> 
-<li><a href="urlcountrycodes.php">Find the country give a url country code</a><br>
+<li><a target="_blank" href="filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
+<li><a target="_blank" href="mx330.php">How <b>NOT TO</b> Setup The Canon MX330 All-In-One Print/Scan/Copy/Fax
+For Linux. <b>Instead buy an HP</b>.</a></li>
+<li><a target="_blank" href="usinghosts.php">Why can't I access my home-hosted website from my own computer</a>? This is a common problem.</li>
+<li><a target="_blank" href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
+<li><a target="_blank" href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">Site with lots of Easter and Passover Information</a><br> 
+<li><a target="_blank" href="urlcountrycodes.php">Find the country give a url country code</a><br>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>
 <li><a target="_blank" href="http://checkip.dyndns.com/">Check Ip Address</a></li>
 </ul>
 <hr/>
 
 <h2>PHP Slide Show Class</h2>
-<p>You can find a <b>Slide Show Class</b> that I wrote on <a
-href="http://www.phpclasses.org/browse/author/592640.html"><img
-src="http://www.bartonphillips.com/images/phpclasses-logo.gif"
+<p>You can find a <b>Slide Show Class</b> that I wrote on
+<a href="target="_blank" http://www.phpclasses.org/browse/author/592640.html">
+<img src="images/phpclasses-logo.gif"
 alt="php classes logo" /></a></p>
 <hr/>
 <h2>PHP MySql Slide Show Class</h2>
-<p>You can find a <b>MySql Slide Show Class</b> that I wrote on <a
-href="http://www.phpclasses.org/browse/author/592640.html"><img
-src="http://www.bartonphillips.com/images/phpclasses-logo.gif"
-alt="php classes logo" /></a></p>
-
+<p>You can find a <b>MySql Slide Show Class</b> that I wrote on
+<a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
+<img src="images/phpclasses-logo.gif" alt="php classes logo" /></a></p>
+<!-- BLP 2014-05-08 -- Removed
 <p>There is a <b>live</b> demonstration and examples: <a target="_blank" href="mysqlslideshow">Demo and Examples</a></p>
-
+-->
 <hr/>
 
 <!-- # SANS Infocon Status -->
 <div style='text-align: center'>
 <p>
 <a target="_blank" href="http://isc.sans.org">
-<img alt="Internet Storm Center Infocon Status"
-src="http://isc.sans.org/images/status.gif" />
+<img width="300" alt="Internet Storm Center Infocon Status"
+src="http://isc.sans.edu/images/status.gif" />
 </a>
 </p>
-<div id="daycount" style="text-align: center; width: 750px; margin: auto auto; border: 1px solid black">
+<div id="daycount" style="text-align: center; width: 100%; margin: auto auto; border: 1px solid black">
 <p>There have been $count hits and $visits visits by $visitors today $date</p>
-<ul style="text-align: left; width: 90%">
+<ul style="text-align: left; width: 80%">
 <li>Hits are each time this page is accessed. If you do three refreshes in a row you have 3 hits.</li>
 <li>Visits are hits that happen 10 minutes appart. Three refresses in a row will not change the number of hits, but if you wait
 10 minutes between refresses (or other accesses) to our site that is a visit.</li>

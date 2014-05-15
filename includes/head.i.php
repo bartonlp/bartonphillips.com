@@ -3,6 +3,7 @@ $pageHeadText = <<<EOF
 <head>
   <title>{$arg['title']}</title>
   <!-- METAs -->
+  <meta name=viewport content="width=device-width, initial-scale=1">
   <meta charset='utf-8'/>
   <meta name="Author"
      content="Barton L. Phillips, mailto:barton@bartonphillips.org"/>
@@ -19,7 +20,7 @@ $pageHeadText = <<<EOF
   <link rel="stylesheet" href="/css/blp.css" title="blp default" />
   <!-- jQuery -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="/js/tracker.js"></script>
+  <script async src="/js/tracker.js"></script>
   <!-- Custom Scripts -->
   <!-- extra script/style -->
 {$arg['extra']}

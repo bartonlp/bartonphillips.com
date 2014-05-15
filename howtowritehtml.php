@@ -1,8 +1,8 @@
 <?php
 // How to write HTML
+// ***************** READ THIS ****************************************
 // Include this in a page that has the siteclass already instantiated.
-// Also NOTE!!! WE NEED jQuery! The Blp class stuff no longer includes jQuery in the head.i.php in
-// the includes directory so we load it here.
+// Also NOTE!!! WE NEED jQuery!
 // IF the site that is including this file has NOT included jQuery this will NOT WORK!
 
 if(!$S) {
@@ -14,7 +14,7 @@ if(!$S) {
 
   $S = new Blp;
   $h->title = "How to write html";
-  $h->banner = "<h1>How To Write HTML</h1>";
+  $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
   $h->extra = <<<EOF
   <style type="text/css">
 .example {
@@ -35,7 +35,6 @@ EOF;
   $dofooter = true;
   echo <<<EOF
 $top
-<hr>
 EOF;
 } else {
   // !!! This file is 'included' by another site. That site MUST already have loaded jQuery!!!
@@ -388,6 +387,17 @@ breaks that will be removed as well as these extra spaces   .</p>
 
 <h2>Preview Area</h2>
 <div id="preview" style="background-color: white; border: 1px solid black; padding: 5px; overflow: auto; height: 200px;"></div>
+<hr>
+<div id="otherarticles">
+  <p>Other articles in this series:</p>
+  <ul>
+    <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
+    <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
+    <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
+    <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
+  </ul>
+</div>
+<hr>
 
 <script>
 jQuery(document).ready(function($) {

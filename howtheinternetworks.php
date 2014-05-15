@@ -7,7 +7,7 @@ if(file_exists(TOPFILE)) {
 $S = new Blp; // takes an array if you want to change defaults
 
 $h->title = "How the Internet Works";
-$h->banner = "<h1>How the Internet Works</h1>";
+$h->banner = "<h1 class='center'>How the Internet Works</h1><hr>";
 $h->extra = <<<EOF
 <style>
 pre {
@@ -231,7 +231,18 @@ Content-Type: text/html; charset=utf-8
 <p>The web server host send the <b>Response</b> information back to the client's IP address.  The
 client's TCP/IP stack takes the returned information apart, finds the port number of the client's
 browser and sends the <b>Response</b> data to the browser.</p>
-  
+
+<hr>
+<div id="otherarticles">
+  <p>Other articles in this series:</p>
+  <ul>
+    <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
+    <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
+    <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
+    <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
+  </ul>
+</div>
+
 <hr>
 <?php echo $footer; ?>
 

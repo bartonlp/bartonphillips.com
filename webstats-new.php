@@ -304,11 +304,36 @@ $sql = "select page, ip, agent, starttime, endtime, difftime, referrer ".
 list($tracker) = $T->maketable($sql, array('callback'=>callback,
                                            'attr'=>array('id'=>'tracker', 'border'=>'1')));
 
+$ddate = preg_replace("/^.*?:\d\d (.).*/", '$1', exec("date"));
+
+$zones = array("E"=>"America/New_York",
+               "C"=>"America/Chicago",
+               "M"=>"America/Denver",
+               "P"=>"America/Los_Angeles"
+              );
+
+date_default_timezone_set($zones[$ddate]);
+$date = date("Y-m-d H:i:s T");
+
+//$S->query("select timediff(now(),convert_tz(now(),@@session.time_zone,'+00:00'))");
+//list($mysqldate) = $S->fetchrow('num');
+
+
 echo <<<EOF
 $top
+$date
 <p>This report is gethered once each hour. Results are limited to 20 records.</p>
+<ul>
+   <li><a href="#table2">Goto Table Two: ip, agent</a></li>
+   <li><a href="#table3">Goto Table Three: memberpagecnt</a></li>
+   <li><a href="#table4">Goto Table Four: counter</a></li>
+   <li><a href="#table5">Goto Table Five: counter2</a></li>
+   <li><a href="#table6">Goto Table Six: daycounts</a></li>
+   <li><a href="#table7">Goto Table seven: tracker</a></li>
+</ul>   
+
 $page
-<h2>Tracker (real time)</h2>
+<h2 id="table7">Tracker (real time)</h2>
 <p>Click on IP to show only that IP.</p>
 <p>Click on Page to show only that page.</p>
 <p>Average stay time: $av (times over an hour are discarded.)</p>
