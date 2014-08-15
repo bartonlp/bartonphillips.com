@@ -143,9 +143,10 @@ if($n) {
 
 // Is it Desktop or Mobile?
 
+$d = date("U");
 if($desktop) {
-  header("location: http://www.bartonphillips.com/weewx/index.html");
+  header("location: http://www.bartonphillips.com/weewx/index.html?t=$d");
 } else {
-  header("location: http://www.bartonphillips.com/weewx/smartphone/index.html");
+  header("location: http://www.bartonphillips.com/weewx/smartphone/index.html?t=$d");
 }
 ?>

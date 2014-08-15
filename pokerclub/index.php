@@ -123,9 +123,11 @@ EOF;
 $footer = $S->getFooter();
 
 if($id = $_GET['id']) {
-  $S->setIdCookie($id);
+  $S->setIdCookie($id); // SetIdCookie is subclassed in PokerClub.class.php to use PokerClub as cookie
   $S->checkId();
 }
+
+// Post who is hosting information
 
 if($_POST['page'] == 'post') {
   // post in table
@@ -138,6 +140,8 @@ if($_POST['page'] == 'post') {
   // also update the last hosted field in pokermembers
   $S->query("update pokermembers set lasthosted='$date' where concat(FName, ' ', LName)='$host'");
 }
+
+// Who is hosting page selected from main page
 
 if($_GET['page'] == 'whoishosting') {
   // Edit who is hosting
@@ -188,37 +192,28 @@ EOF;
 // UPDATE $WhoIsHosting
 
 $user = $S->getUser();
-
-try {
-  $n = $S->query("select * from whoishosting");
-  if($n) {
-    $row = $S->fetchrow('assoc');
-    extract($row);
-    if($host == "OPEN") {
-      $who = "No one signed up yet";
-    } else {
-      $who = "at $host's Home";
-    }
-    $hostinfo = <<<EOF
+$n = $S->query("select * from whoishosting");
+if($n) {
+  $row = $S->fetchrow('assoc');
+  extract($row);
+  if($host == "OPEN") {
+    $who = "No one signed up yet";
+  } else {
+    $who = "at $host's Home";
+  }
+  $hostinfo = <<<EOF
 <div style='text-align: center'>
 <h3>Poker Night for {$date} $who</h3>
 <p>You can sign up now by checking <b>Yes</b> or <b>No</b> below to let us know
    if you can attend or not.</p>
 </div>
 EOF;
-  } else {
-    $hostinfo = <<<EOF
-<p>No one has signed up for the next poker night. To sign up <a href="$S->self?page=whoishosting">Click Here</a></p>
+} else {
+  $hostinfo = <<<EOF
+<p>No one has signed up for the next poker night.
+To sign up <a href="$S->self?page=whoishosting">Click Here</a>
+</p>
 EOF;
-  }
-} catch(Exception $e) {
-  if($e->getCode() != 1146) {
-    throw($e);
-  } else {
-    $hostinfo = <<<EOF
-<p>No one has signed up for the next poker night. To sign up <a href="$S->self?page=whoishosting">Click Here</a></p>
-EOF;
-  }
 }
 
 $WhoIsHosting = <<<EOF
@@ -254,7 +249,7 @@ EOF;
    $S->query("select Email, address, bphone, cphone, bday from pokermembers where id='$S->id'");
    $row = $S->fetchrow('assoc');
    if(!$row) {
-     $S->setIdCookie(0);
+     $S->setIdCookie(0);  // SetIdCookie is subclassed in PokerClub.class.php to use PokerClub as cookie
      echo "<h2>Invalid id. There is not member with id=$S->id</h2><p>Contact the webmaster at bartonphillips@gmail.com.</p>";
      exit();
    }

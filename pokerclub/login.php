@@ -5,6 +5,7 @@ if(file_exists(TOPFILE)) {
 } else throw new Exception(TOPFILE . " not found");
 
 $S = new PokerClub;
+$cache = time(); // force reload of index.php to NOT cache
 
 $footer = $S->getFooter("<hr>");
 
@@ -92,7 +93,7 @@ $top
 <h1>Email Address not found</h1>
 <p>Check the spelling of your <b>Email Address</b>, which is case sensitive. Make sure
 your caps lock is not on. <a href='$S->self'>Try again</a>?</p>
-<p>Or return to our <a href='index.php'>home page</a></p>
+<p>Or return to our <a href='index.php?d=$cache'>home page</a></p>
 $footer
 EOF;
     exit();
@@ -101,14 +102,14 @@ EOF;
   $row = $S->fetchrow('assoc');
 
   $id = $row['id'];
-  $S->SetIdCookie($id);
+  $S->SetIdCookie($id); // SetIdCookie is subclassed in PokerClub.class.php to use PokerClub as cookie
 
   echo <<<EOF
 $top
 <h1>Set Up Cookie</h1>
 <p>You are logged in. We have set a login cookie in your browser so you will not have to login again.</p>
 <p>Please take a moment to update your <a href='updateprofile.php'> user profile</a>. </p>
-<p><a href='index.php'>Return to Home Page</a></p>
+<p><a href='index.php?d=$cache'>Return to Home Page</a></p>
 $footer
 EOF;
     exit;

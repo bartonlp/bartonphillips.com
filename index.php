@@ -1,5 +1,5 @@
 <?php
-   // Main page for bartonphillips.com
+// Main page for bartonphillips.com
 define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
@@ -7,7 +7,7 @@ if(file_exists(TOPFILE)) {
 
 $S = new Blp; // takes an array if you want to change defaults
 
-/*
+/* We can send last-modified if we want. Right now don't
 if(!($_GET || $_POST)) {
   header("Last-Modified: ". date("r", getlastmod()));
 }
@@ -34,24 +34,41 @@ i {
 EOF;
 
 $h->title = "Barton Phillips Home Page";
-$h->banner = "<h1 class='center'>Barton Phillips Home Page</h1>";
+$h->banner = "<h1 class='center'>Barton Phillips Home Page</h1>".
+             "<h2 class='center'><a target='_blank' href='toweewx.php'>My Home Weather Station</a></h2>";
 
 $ref = $_SERVER['HTTP_REFERER'];
 if($ref) {
   if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
   $ref =<<<EOF
-You came to this my site from <i>$ref</i>.<br>
+You came to this site from <i>$ref</i>.<br>
 EOF;
 }
 
 // If it's me add in the admin stuff
 
-if($S->isBlp()) {
+if(true /*$S->isBlp()*/) {
   $h->extra .= <<<EOF
   <script>
-jQuery(document).ready(function($) {
+// BLP 2014-08-13 -- make this winows load not jQuery ready so that tracker.php gets called by
+// tracker.js before this ajax happens. This ajax can take a long time to end if the /etc/hosts
+// localhost has not been set to www.bartonphillips.dyndns.org. The ajax 'timeout' happens within
+// two seconds but the browser continues to wait and the menu bar icon keeps spinning for many
+// secondes.
+
+//jQuery(document).ready(function($) {
+$(window).load(function(e) {
   // Just do this at startup.
-  
+  // NOTE: if this is run on my home desktop and the /etc/hosts file has not been set to have
+  // localhost also be www/bartonphillips.dyndns.org this will get an 'timeout' error after two
+  // seconds BUT the browser will stay busy (the little spinning icon in the menu bar) for many
+  // seconds. NO good way around this as far as I can tell.
+
+  // The logic here is: This ajax call is being made by the local client browser NOT by the server.
+  // If the local client's /etc/hosts file has not been modified (like on a tablet where one does
+  // not have root access to allow that) then this ajax call will timeout in two seconds and change
+  // the ip address to the local ip number.
+
   $.ajax({ url: 'http://www.bartonphillips.dyndns.org/uptest.php',
            data: {uptest: 'yes'},
            type: 'get',
@@ -129,7 +146,7 @@ echo <<<EOF
 $top
 <hr/>
 <a href="//ipv6.he.net/certification/scoresheet.php?pass_name=bartonlp" target="_blank">
-<img src="images/he-badge.png"
+<img src="static/he-badge.png"
 style="border: 0; width: 128px; height: 128px" alt="IPv6 Certification Badge for bartonlp">
 </img>
 </a>
@@ -186,10 +203,7 @@ $adminStuff
 <li><a target="_blank" href="http://www.wunderground.com/cgi-bin/findweather/getForecast?query=80446">Weather Unerground
    Granby</a></li>
 <li><a target="_blank" href="https://dashboard.opendns.com/">OpenDNS</a></li>
-<li><a target="_blank" href="http://www.html5rocks.com/en/">
-<img width="100" src="http://www.html5rocks.com/static/images/mastheads/h5r-shadow.png"/> HTML3 Rocks</a></li>
-
-<!-- http://www.html5rocks.com/en/tutorials/es6/promises/#toc-async -->
+<li><a target="_blank" href="http://www.html5rocks.com/en/">HTML5 Rocks</a></li>
 </ul>
 <h2>About the Internet</h2>
 <ul>
@@ -214,12 +228,14 @@ For Linux. <b>Instead buy an HP</b>.</a></li>
 <li><a target="_blank" href="urlcountrycodes.php">Find the country give a url country code</a><br>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>
 <li><a target="_blank" href="http://checkip.dyndns.com/">Check Ip Address</a></li>
+<li><a target="_blank" href="https://wiki.amahi.org/index.php/Gmail_As_Relay_On_Ubuntu">
+How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
 <hr/>
 
 <h2>PHP Slide Show Class</h2>
 <p>You can find a <b>Slide Show Class</b> that I wrote on
-<a href="target="_blank" http://www.phpclasses.org/browse/author/592640.html">
+<a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
 <img src="images/phpclasses-logo.gif"
 alt="php classes logo" /></a></p>
 <hr/>

@@ -1,19 +1,17 @@
 <?php
-   // For lamphost.net
-
    // Site map
    // This is included by the siteautoload.php which is called from each page file.
    // This file should only be loaded via the siteautoload.php file.
    // This file has the sitemap which defines the various location where things can be found.
    // DOC_ROOT, SITE_ROOT and TARGET_ROOT are defined by the siteautoload.php
 
-   // TOP would be '/home/bartonlp' on lamphost.net because we keep the include file that are
-   // common to all sites in the '/home/bartonlp/includes' directory which also has the
+   // TOP would be '/home/barton11' because we keep the include file that are
+   // common to all sites in the '/home/barton11/includes' directory which also has the
    // 'database-engines' directory.
    // SITE_INCLUDES is under the SITE_ROOT which is where we found the '.sitemap.php' file during
    // our search in siteautoload.php.
-   // On lamphost.net this would be something like
-   // '/home/bartonlp/bartonphillips.com/htdocs' and on our localhost it would be
+   // This would be something like
+   // '/home/barton11/www' and on our localhost it would be
    // '/var/www/bartonphillips.com/' which we would enter into the browser as
    // 'localhost/bartonphillips.com'
    // After the four path defines we have defines for our LOGFILE and the email addresses used to
@@ -22,7 +20,7 @@
    // and one for the site information ($siteinfo). These are used by the Database class and the
    // SiteClass.
    
-define('TOP', '/home/barton11'); // on lamphost.net this would be '/home/bartonlp'
+define('TOP', '/home/barton11'); 
 define('INCLUDES', TOP."/includes");
 define('DATABASE_ENGINES', INCLUDES."/database-engines");
 define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in siteautoload.php!
@@ -51,6 +49,7 @@ $dbinfo = array('host' => 'localhost',
 // See the SiteClass constructor for other possible values like 'count', 'emailDomain' etc.
 
 $siteinfo = array('siteDomain' => "bartonphillips.org",
+                  'subDomain' => "pokerclub", // For setcookie path
                   'memberTable' => "pokermembers",
                   'headFile' => "poker.head.i.php",
                   'bannerFile' => "poker.banner.i.php",
@@ -59,5 +58,4 @@ $siteinfo = array('siteDomain' => "bartonphillips.org",
                   'countMe' => true, // Count BLP
                   'myUri' => "bartonphillips.dyndns.org" // If we are local (at home) then 'localhost'
                  );
-
 ?>

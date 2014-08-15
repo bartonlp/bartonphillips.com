@@ -4,7 +4,7 @@
   var id;
     
   $(window).load(function(e) {
-      // Track the ip/agent/page
+    // Track the ip/agent/page
     var self = window.location.pathname,
       referrer = document.referrer;
 

@@ -16,11 +16,11 @@ Options -Indexes +Includes +FollowSymLinks
 # END EXPIRES
 
 # BEGIN NO Cookies for static items
-<FilesMatch "\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|ico|swf)$">
-	RequestHeader unset Cookie
-	Header unset Cookie
- 	Header unset Set-Cookie
-</FilesMatch>
+# <FilesMatch "\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|ico|swf)$">
+# 	RequestHeader unset Cookie
+# 	Header unset Cookie
+#  	Header unset Set-Cookie
+# </FilesMatch>
 # END NO Cookies
 
 AddType application/x-javascript .js

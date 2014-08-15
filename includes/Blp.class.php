@@ -68,7 +68,7 @@ class Blp extends SiteClass {
         //throw(new Exception("Error: getFooter() argument no valid: ". var_export($a, true)));
       }
     } elseif($n > 1) {
-      $keys = array(msg, w3cmsg, ctrmsg, google);
+      $keys = array(msg, w3cmsg, ctrmsg);
       $ar = array();
       for($i=0; $i < $n; ++$i) {
         $ar[$keys[$i]] = $args[$i];
@@ -78,8 +78,6 @@ class Blp extends SiteClass {
 
     $arg['msg'] = $arg['msg'] . "<p style='text-align: center'>Counter Reset 2012-11-04</p>";
 
-    //$arg['google'] = false;
-    
     return parent::getFooter($arg);
   }
 

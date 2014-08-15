@@ -1,4 +1,7 @@
 <?php
+// Include GoogleAnalytics
+//include_once(DOC_ROOT .'/analyticstracking.php'); // sets $GoogleAnalytics
+
 $pageHeadText = <<<EOF
 <head>
   <title>{$arg['title']}</title>
@@ -11,19 +14,18 @@ $pageHeadText = <<<EOF
      content="{$arg['desc']}"/>
   <meta name="keywords"
      content="Barton Phillips, Granby, Applitec Inc., Rotary, Programming,
-        RSS Generator, Poker, Tips and tricks, blog"/>
+        Poker, Tips and tricks, blog"/>
   <!-- ICONS, RSS -->
   <link rel="shortcut icon" href="http://www.bartonphillips.org/favicon.ico" />
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/rssfeed.xml" />
-  <!-- CSS -->
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/css/blp.css" title="blp default" />
   <!-- jQuery -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script async src="/js/tracker.js"></script>
-  <!-- Custom Scripts -->
   <!-- extra script/style -->
 {$arg['extra']}
+$GoogleAnalytics
 </head>
 EOF;
 ?>

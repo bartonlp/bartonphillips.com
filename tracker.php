@@ -1,7 +1,7 @@
 <?php
 // BLP 2014-03-06 -- ajax for tracker.js
 
-ini_set("error_log", "/tmp/debugblp.txt");
+//ini_set("error_log", "/tmp/debugblp.txt");
 
 define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {

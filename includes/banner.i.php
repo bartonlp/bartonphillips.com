@@ -26,17 +26,12 @@ EOF;
     }
 */
 
-  // Include GoogleAnalytics
-
-  include_once(DOC_ROOT .'/analyticstracking.php'); // sets $GoogleAnalytics
-
   // WARNING About MSIE!
 
   preg_match('/(MSIE.*?);/', $this->agent, $m);
   $msie = $m[1];
 
   $pageBannerText = <<<EOF
-$GoogleAnalytics
 <!--[if lte IE 8]>
 <hr>
 <p style='color: red; background-color: white; border: 1px solid black; padding: 5px;'>
