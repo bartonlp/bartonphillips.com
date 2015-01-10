@@ -1,6 +1,10 @@
 <?php
-// Read in the config tile
-$FILE = __FILE__;
+define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
+if(file_exists(TOPFILE)) {
+  include(TOPFILE);
+} else throw new Exception(TOPFILE . " not found");
+
+$S = new PokerClub;
 
 require_once("member.config");
 
@@ -149,9 +153,9 @@ EOF;
   $y = MAIL_QUERY;
   eval("\$x=\"$y\";");
 
-  $result = Query($x);
+  $S->query($x);
 
-  $row = mysql_fetch_assoc($result);
+  $row = $S->fetchrow('assoc');
 
   $email = $row['Email'];
   $name = "$row[FName] $row[LName]";
@@ -162,9 +166,9 @@ EOF;
     $y = GET_MEMBER;
     eval("\$x=\"$y\";");
 
-    $result = Query($x);
+    $S->query($x);
 
-    $row = mysql_fetch_array($result);
+    $row = $S->fetchrow('assoc');
     $from = $row['Email'];
     $fromName = "$row[FName] $row[LName]";
   }

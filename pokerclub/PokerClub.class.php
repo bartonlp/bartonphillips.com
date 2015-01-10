@@ -35,14 +35,7 @@ class PokerClub extends SiteClass {
   // Called by the constructor
   
   public function checkId() {
-    $id = $_COOKIE['PokerClub'];
-    if(!isset($id)) {
-      $id = $_COOKIE['SiteId']; // New logic in site.class.php uses SiteId
-      if(!isset($id)) {
-        return 0;
-      }
-    }
-    return parent::checkId($id, 'PokerClub');
+    return parent::checkId(null, 'PokerClub');
   }
 
   public function getUser() {

@@ -1,7 +1,5 @@
 <?php
 // Main page for bartonphillips.com
-// BLP 2015-01-10 -- reworked to use sections and put all style in css rather than
-// inline!
 
 define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
@@ -10,46 +8,17 @@ if(file_exists(TOPFILE)) {
 
 $S = new Blp; // takes an array if you want to change defaults
 
-// css/blp.css is included in head.i.php
-
 $h->css = <<<EOF
-  <!-- Local CSS -->
+  <!-- local CSS -->
   <style>
-#browser-info {
-  border-top: 1px solid gray;
-}
-#blog {
-  width: 50%;
-  background-color: #FCF6CF;
-  padding: 20px;
-  margin: auto;
-  border: 1px solid #696969;
-}
-#daycount {
-  text-align: center;
-  width: 90%;
-  margin: auto;
-  border: 1px solid black;
-  background-color: #ECD087;
-  padding-bottom: 20px;
-}
-#daycount ul {
-  width: 80%;
-  text-align: left;
-  margin: auto;
-}
-ul {
-  line-height: 150%;
-  font-size: 1.5em;
-}
 #blpimg {
-  float: left;
-  padding: 5px 10px;
+        float: left;
+        padding: 5px 10px;
 }
 @media (max-width: 600px) {
   a {
-    font-size: 1.375rem; /* rems so we don't get relitive em experience */
-    line-height: 2.5rem;
+    font-size: 22px;
+    line-height: 40px;
   }
 }
 @media (max-width: 400px) {
@@ -59,7 +28,6 @@ ul {
 }
   </style>
 EOF;
-
 $h->script = <<<EOF
   <!-- local script -->
   <script src="/js/phpdate.js"></script>
@@ -89,12 +57,8 @@ jQuery(document).ready(function($) {
 EOF;
 
 $h->title = "Barton Phillips Home Page";
-$h->banner = <<<EOF
-<h1 class='center'>Barton Phillips Home Page</h1>
-<h2 class='center'>
-<a target='_blank' href='toweewx.php'>My Home Weather Station</a>
-</h2>
-EOF;
+$h->banner = "<h1 class='center'>Barton Phillips Home Page</h1>".
+             "<h2 class='center'><a target='_blank' href='toweewx.php'>My Home Weather Station</a></h2>";
 
 $ref = $_SERVER['HTTP_REFERER'];
 
@@ -105,11 +69,10 @@ You came to this site from <i>$ref</i>.<br>
 EOF;
 }
 
-// BLP 2014-10-24 -- changed blp flag to 7098
 // BLP 2014-08-18 -- add blp=8653 as flag
 // If it's me add in the admin stuff
 
-if($S->isBlp() || ($_GET['blp'] == "7098")) {
+if($S->isBlp() || ($_GET['blp'] == "8653")) {
   // BLP 2014-12-02 -- as this is only for admin (me) I am using my local net address
   // 192.168.0.3 for Dell-530
   $adminStuff = <<<EOF
@@ -118,8 +81,10 @@ if($S->isBlp() || ($_GET['blp'] == "7098")) {
 <li><a target="_blank" href="http://webmail.bartonphillips.org">WEB Mail for bartonphillips.org</a></li>
 <li><a target="_blank" class="uptest" href="http://192.168.0.3/weewx/">WEEWX home</a></li>
 <li><a target="_blank" class="uptest" href="http://192.168.0.3/apc.php">APC Status home</a></li>
+<li><a target="_blank" href="http://www.endpolio.com/webstats.php">Endpolio Web Stats</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
 </ul>
+
 EOF;
 }
 
@@ -148,7 +113,12 @@ $date = date("l F j, Y");
 
 echo <<<EOF
 $top
-<section id='browser-info'>
+<hr/>
+<a href="//ipv6.he.net/certification/scoresheet.php?pass_name=bartonlp" target="_blank">
+<img src="static/he-badge.png"
+style="border: 0; width: 128px; height: 128px" alt="IPv6 Certification Badge for bartonlp">
+</img>
+</a>
 <p>
    Our domains are <i>bartonphillips.net</i>, <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
    You got here via <i>{$_SERVER['SERVER_NAME']}</i>.<br/>$ref
@@ -163,15 +133,12 @@ $top
    pages we link to do collect tracking information and COOKIES and make extensive use
    of JavaScript.
 </p> 
-</section>
-
-<section id="blog">
+<div style="width: 50%; background-color: #FCF6CF;padding: 20px; margin: auto; border: 1px solid #696969;">
 <a target="_blank" href="blp-blog.php">My BLOG with tips and tricks</a>.
 Leave a comment or feedback about this site.
-</section>
-
-<section id="links">
-<h2>Visit one of the other web sites designed by Barton Phillips</h2>
+</div>
+<h2 style='clear: both'>
+   Visit one of the other web sites designed by Barton Phillips</h2>
 <ul>
 <li><a target="_blank" href="http://www.granbyrotary.org">The Granby Rotary Club</a></li>
 <li><a target="_blank" href="http://www.endpolio.com">Rotary District 5450 End Polio Campaign</a></li>
@@ -248,29 +215,27 @@ alt="php classes logo" /></a></p>
 <a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
 <img src="images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
-<hr>
+<hr/>
 
 <!-- # SANS Infocon Status -->
-<div>
+<div class='center'>
 <p>
 <a target="_blank" href="https://isc.sans.org">
 <img width="354" height="92" alt="Internet Storm Center Infocon Status"
 src="http://isc.sans.edu/images/status.gif" />
 </a>
 </p>
+</div>
 
-</section>
-
-<section id="daycount">
+<div id="daycount">
 <p>There have been $count hits and $visits visits by $visitors today $date</p>
-<ul>
+<ul style="text-align: left; width: 80%">
 <li>Hits are each time this page is accessed. If you do three refreshes in a row you have 3 hits.</li>
 <li>Visits are hits that happen 10 minutes appart. Three refresses in a row will not change the number of hits, but if you wait
 10 minutes between refresses (or other accesses) to our site that is a visit.</li>
 <li>Visitors are seperate accesses by different IP Addresses.</li>
 </ul>
-</section>
-
+</div>
 $footer
 EOF;
-
+?>

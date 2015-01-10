@@ -1,1 +1,30 @@
-This is a test of this thing.
+<!DOCTYPE html>
+<html>
+<head>
+   <link rel="stylesheet" type="text/css"
+        href="http://fonts.googleapis.com/css?family=Rancho&effect=shadow-multiple">
+    <style>
+      body {
+        font-family: 'Rancho', serif;
+        font-size: 48px;
+      }
+    </style>
+</head>
+<body>
+<h1 class="font-effect-shadow-multiple">Test of Baskerville</h1>
+<p>This should be Baskerville font</p>
+<p id='small' style="font-size: 8px">This is my smallest font which I have set to 8px</p>
+</body>
+<script>
+  function css(element, property) {
+    return window.getComputedStyle(element, null).getPropertyValue(property);
+  }
+  var el = document.querySelector("h1");
+  var h1 = css(el, 'font-size');
+  el = document.querySelector("p");
+  var p = css(el, 'font-size');
+  el = document.querySelector("#small");
+  var small = css(el, 'font-size');
+  console.log("h1: "+h1+", p: "+p+", small: "+small);
+</script>    
+</html>

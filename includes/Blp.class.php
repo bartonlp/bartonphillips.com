@@ -76,7 +76,8 @@ class Blp extends SiteClass {
       $arg = $ar;
     }
 
-    $arg['msg'] = $arg['msg'] . "<p style='text-align: center'>Counter Reset 2012-11-04</p>";
+    $arg['msg'] = $arg['msg'] .
+                  "<p style='text-align: center'>Counter Reset 2012-11-04</p>";
 
     return parent::getFooter($arg);
   }

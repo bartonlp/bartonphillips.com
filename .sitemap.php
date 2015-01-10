@@ -54,7 +54,7 @@ $siteinfo = array('siteDomain' => "bartonphillips.org",
                   //'memberTable' => "blpmembers",
                   'headFile' => SITE_INCLUDES."/head.i.php",
                   'bannerFile' => SITE_INCLUDES."/banner.i.php",
-                  //footerFile => SITE_INCLUDES."/footer.i.php"
+                  'footerFile' => SITE_INCLUDES."/footer.i.php",
                   'count' => true,
                   'countMe' => true, // Count BLP
                   'myUri' => "bartonphillips.dyndns.org" // If we are local (at home) then 'localhost'

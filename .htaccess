@@ -45,3 +45,9 @@ RewriteCond %{REQUEST_METHOD} POST
 RewriteRule .* - [F]
 
 RewriteRule ^download.pdf$ downloadpdf.php [L]
+
+# get rid of semalt and buttons-for-website
+RewriteCond %{HTTP_REFERER} semalt\.com [NC] 
+RewriteRule .* - [F] 
+RewriteCond %{HTTP_REFERER} buttons-for-website\.com [NC] 
+RewriteRule .* - [F] 

@@ -1,6 +1,13 @@
 <?php
+// BLP 2014-09-16 --
 // Read in the config tile
-$FILE = __FILE__;
+
+define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
+if(file_exists(TOPFILE)) {
+  include(TOPFILE);
+} else throw new Exception(TOPFILE . " not found");
+
+$S = new PokerClub;
 
 require_once("member.config");
 
@@ -67,11 +74,11 @@ if(!empty($submit)) {
   $y = MULTI_QUERY;
   eval("\$x=\"$y\";");
 
-  $result = Query($x);
+  $S->query($x);
 
   $PageTitle = "<h2 align='center'>Your message has been sent to:</h2><p>";
 
-  while($row = mysql_fetch_assoc($result)) {
+  while($row = $S->fetchrow('assoc')) {
     extract($row);
     $names["$FName $LName"] = $Email;
     $PageTitle .= "$FName $LName<br/>\n";
@@ -145,28 +152,28 @@ if(!empty($submit)) {
   $y = MULTI_QUERY;
   eval("\$x=\"$y\";");
 
-  $result = Query($x);
+  $S->query($x);
 
   echo <<<EOF
 <p>Sent Message to:
 <ul>
 EOF;
 
-  while($row = mysql_fetch_assoc($result)) {
+  while($row = $S->fetchrow('assoc')) {
     extract($row);
 
     echo <<<EOF
 <li>$FName $LName</li>
 EOF;
-}
+  }  
 
   if($MemberId = GetMemberId()) {
     $y = GET_MEMBER;
     eval("\$x=\"$y\";");
 
-    $result = Query($x);
+    $S->query($x);
 
-    $row = mysql_fetch_array($result);
+    $row = $S->fetchrow('assoc');
     $from = $row['Email'];
     $fromName = "$row[FName] $row[LName]";
   }

@@ -1,4 +1,6 @@
 <?php
+// BLP 2014-11-02 -- make tracker average stay reflect the current state of the table.
+// BLP 2014-08-30 -- change $av to only look at last 3 days and to allow only times less the 2hr.
 define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 if(file_exists(TOPFILE)) {
   include(TOPFILE);
@@ -18,16 +20,24 @@ EOL;
 $S = new Blp;
 $T = new dbTables($S);
 
-$extra = <<<EOF
-<link rel="stylesheet"  href="css/tablesorter.css" type="text/css">
-<script src="js/tablesorter/jquery.tablesorter.js"></script>
-<script src="js/tablesorter/jquery.metadata.js"></script>
+$h->link = <<<EOF
+  <!-- local css links -->
+  <link rel="stylesheet"  href="css/tablesorter.css" type="text/css">
+EOF;
 
-<script>
+$h->extra = <<<EOF
+  <!-- local script files -->
+  <script src="js/tablesorter/jquery.tablesorter.js"></script>
+  <script src="js/tablesorter/jquery.metadata.js"></script>
+EOF;
+
+$h->script = <<<EOF
+  <!-- local inline script -->
+  <script>
 jQuery(document).ready(function($) {
   var flags = {webmaster: false, robots: false, ip: false , page: false};
 
-  $("#blpmembers, #logagent, #memberpagecnt, #counter, #tracker").tablesorter()
+  $("#blpmembers, #logagent, #counter, #tracker").tablesorter()
     .addClass('tablesorter'); // attach class tablesorter to all except our counter
 
   // Don't show webmaster
@@ -88,6 +98,7 @@ jQuery(document).ready(function($) {
           break;
       }
       $("#"+ flag).text(msg + flag);
+      calcAv();
       return;
     }   
 
@@ -126,15 +137,56 @@ jQuery(document).ready(function($) {
         $("#"+ f).text(msg + f);
       }   
     }
+    calcAv();
+  }
+
+  function calcAv() {
+    // Calculate the average time spend using the NOT hidden elements
+    var av = 0, cnt = 0;
+    $("#tracker tbody :not(:hidden) td:nth-child(6)").each(function(i, v) {
+      var t = $(this).text();
+      if(!t) return true; // Continue
+
+      var ar = t.match(/^(\d{2}):(\d{2}):(\d{2})$/);
+      t = parseInt(ar[1], 10) * 3600 + parseInt(ar[2],10) * 60 + parseInt(ar[3],10);
+      if(t > 7200) return true; // Continue if over two hours 
+ 
+      console.log("t: %d", t);
+      av += t;
+      ++cnt;      
+    });
+
+    av = av/cnt; // Average
+   
+    var hours = Math.floor(av / (3600)); 
+   
+    var divisor_for_minutes = av % (3600);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+ 
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+
+    var tm = hours.pad()+":"+minutes.pad()+":"+seconds.pad();
+
+    console.log("av time: ", tm);
+    $("#average").html(tm);
+  }
+
+  Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) {s = "0" + s;}
+    return s;
   }
  
   // To start Webmaster is hidden
 
-  $("#tracker td:nth-child(2)").each(function(i, v) {
+  $("#tracker td:nth-child(2) span.co-ip").each(function(i, v) {
     if($(v).text() == myIp) {
-      $(v).addClass("webmaster").css("color", "green").parent().hide();
+      $(v).parent().addClass("webmaster").css("color", "green").parent().hide();
     }
   });
+
+  calcAv();
 
   // To start Robots are hidden
 
@@ -233,7 +285,10 @@ jQuery(document).ready(function($) {
   });
 });
   </script>
+EOF;
 
+$h->css = <<<EOF
+  <!-- local inline css -->
   <style>
 button {
   -webkit-border-radius: 7px;
@@ -242,11 +297,20 @@ button {
   font-size: 1.2em;
   margin-bottom: 10px;
 }
+.country {
+  border: 1px solid black;
+  padding: 3px;
+  background-color: #8dbdd8;
+}
+.blpip {
+  color: red;
+}
 th, td {
   padding: 5px;
 }
 #tracker {
   width: 100%;
+  font-size: 16px;
 }
 #tracker td:nth-child(4), #tracker td:nth-child(5) {
   width: 5em;
@@ -265,24 +329,48 @@ div {
   padding: 10px 0;
 }
 </style>
-
 EOF;
 
-$h = array('title'=>"Web Statistics", 'extra'=>$extra,
-           'banner'=>"<h1>Web Stats For <b>bartonphillips.com</b></h1>");
+$h->title = "Web Statistics";
+$h->banner = "<h1>Web Stats For <b>bartonphillips.com</b></h1>";
 
-$b = array('msg1'=>"<p>Return to <a href='index.php'>Home Page</a></p>\n<hr/>");
+list($top, $footer) = $S->getPageTopBottom($h,
+  "<p>Return to <a href='index.php'>Home Page</a></p>\n<hr/>");
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+// webstats.i.txt is created by scripts/make-webstats.php
 
 $page = file_get_contents("webstats.i.txt");
 
+// Make tracker right now.
+
+$sql = "select ip from tracker where starttime > date_sub(now(), interval 3 day)";
+
+$S->query($sql);
+$tkipar = array(); // tracker ip array
+
+while(list($tkip) = $S->fetchrow('num')) {
+  $tkipar[] = $tkip;
+}
+
+$list = json_encode($tkipar);
+
+// Get this info from www.bartonlp.com/webstats-new.php
+
+$ipcountry = file_get_contents("http://www.bartonlp.com/webstats-new.php?list=$list");
+$ipcountry = (array)json_decode($ipcountry);
+
+// maketable() callback
+
 function callback(&$row, &$desc) {
-  global $S;
+  global $S, $ipcountry;
 
-  $agent = $S->escape($row['agent']);
+  $ip = $S->escape($row['ip']);
 
-  if($S->query("select agent from barton11_granbyrotarydotorg.bots2 where agent='$agent'")) {
+  $co = $ipcountry[$ip];
+
+  $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
+  
+  if($S->query("select ip from barton11_granbyrotarydotorg.bots where ip='$ip'")) {
     $desc = preg_replace("~<tr>~", "<tr class='bot'>", $desc);
   }
   
@@ -294,15 +382,16 @@ function callback(&$row, &$desc) {
   $row['referrer'] = $ref;
 }
 
-$sql = "select sec_to_time(sum(difftime)/count(*)) from tracker where endtime!='' && hour(difftime)=0";
-$S->query($sql);
-list($av) = $S->fetchrow('num');
-
 $sql = "select page, ip, agent, starttime, endtime, difftime, referrer ".
        "from tracker where starttime > date_sub(now(), interval 3 day) order by starttime desc";
 
 list($tracker) = $T->maketable($sql, array('callback'=>callback,
-                                           'attr'=>array('id'=>'tracker', 'border'=>'1')));
+                                           'attr'=>array('id'=>'tracker',
+                                           'border'=>'1')));
+
+// figure out the timezone of the server by doing 'date' which returns
+// something like: Sun Dec 28 12:14:44 MST 2014
+// Get the first letter of the time zone, like M for MST etc.
 
 $ddate = preg_replace("/^.*?:\d\d (.).*/", '$1', exec("date"));
 
@@ -312,12 +401,12 @@ $zones = array("E"=>"America/New_York",
                "P"=>"America/Los_Angeles"
               );
 
+// Now set the timezone to the appropriate zone
+
 date_default_timezone_set($zones[$ddate]);
 $date = date("Y-m-d H:i:s T");
 
-//$S->query("select timediff(now(),convert_tz(now(),@@session.time_zone,'+00:00'))");
-//list($mysqldate) = $S->fetchrow('num');
-
+// Render the page
 
 echo <<<EOF
 $top
@@ -325,18 +414,17 @@ $date
 <p>This report is gethered once each hour. Results are limited to 20 records.</p>
 <ul>
    <li><a href="#table2">Goto Table Two: ip, agent</a></li>
-   <li><a href="#table3">Goto Table Three: memberpagecnt</a></li>
-   <li><a href="#table4">Goto Table Four: counter</a></li>
-   <li><a href="#table5">Goto Table Five: counter2</a></li>
-   <li><a href="#table6">Goto Table Six: daycounts</a></li>
-   <li><a href="#table7">Goto Table seven: tracker</a></li>
+   <li><a href="#table3">Goto Table Three: counter</a></li>
+   <li><a href="#table4">Goto Table Four: counter2</a></li>
+   <li><a href="#table5">Goto Table Five: daycounts</a></li>
+   <li><a href="#table6">Goto Table Six: tracker</a></li>
 </ul>   
-
 $page
-<h2 id="table7">Tracker (real time)</h2>
-<p>Click on IP to show only that IP.</p>
-<p>Click on Page to show only that page.</p>
-<p>Average stay time: $av (times over an hour are discarded.)</p>
+<h2 id="table6">Tracker (real time)</h2>
+<p>Click on IP to show only that IP.<br>
+Click on Page to show only that page.<br>
+Click on Agent to see Country of IP.<br>
+Average stay time: <span id="average"></span> (times over two hours are discarded.)</p>
 <p>Showing only last 3 days.</p>
 $tracker
 $footer

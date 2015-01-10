@@ -17,6 +17,17 @@ Error::setNoHtml(true);
 $S = new Database($dbinfo);
 
 $limit = " limit 20";
+
+$sql = "select ip from logip order by lasttime desc$limit";
+$S->query($sql);
+$list = array();
+while(list($ip) = $S->fetchrow('num')) {
+  $list[] = $ip;
+}
+$list = json_encode($list);
+$ipcountry = file_get_contents("http://www.bartonlp.com/webstats-new.php?list=$list");
+$ipcountry = (array)json_decode($ipcountry);
+
 $blpips = array();
 
 $t = new dbTables($S);
@@ -67,33 +78,12 @@ list($tbl) = $t->maketable($query,
 
 $page .= <<<EOF
 <div id="table2">
-<a name="table2"></a>
 <a href="#table3">Goto Table3</a>
 <h2>Table Two: from tables <i>logagent</i>. Data for today only.</h2>
 $tbl
 </div>
 
 EOF;
-
-$query = <<<EOF
-select page as Page, agent as Agent, id as ID, ip as IP, count as Count, lasttime as LastTime
-from memberpagecnt order by lasttime desc$limit
-EOF;
-
-list($tbl) = $t->maketable($query, array('callback'=>'blpip',
-                                         'attr'=>array('border'=>"1", 'id'=>"memberpagecnt")));
-
-$page .= <<<EOF
-<div id="table3">
-<a name="table3"></a>
-<a href="#table4">Goto Table4</a>
-<h2>Table Three: from table <i>memberpagecnt</i></h2>
-<p>The member IDs are for the POKER CLUB members.</p>
-$tbl
-</div>
-
-EOF;
-
 $query = <<<EOF
 select filename as Page, count as Count, lasttime as LastTime 
 from counter order by lasttime desc$limit
@@ -101,10 +91,9 @@ EOF;
 list($tbl) = $t->maketable($query, array('attr'=>array('border'=>'1', 'id'=>'counter')));
 
 $page .= <<<EOF
-<div id="table4">
-<a name="table4"></a>
-<a href="#table5">Goto Table5</a>
-<h2>Table Four: from table <i>counter</i></h2>
+<div id="table3">
+<a href="#table4">Goto Table4</a>
+<h2>Table Three: from table <i>counter</i></h2>
 $tbl
 </div>
 
@@ -117,9 +106,8 @@ EOF;
 list($tbl) = $t->maketable($query, array('attr'=>array('border'=>'1', 'id'=>'counter2')));
 
 $page .= <<<EOF
-<div id="table5">
-<a name="table5"></a>
-<a href="#table6">Goto Table6</a>
+<div id="table4">
+<a href="#table5">Goto Table5</a>
 <h2>Table Four: from table <i>counter2</i> for last 7 days</h2>
 $tbl
 </div>
@@ -140,8 +128,7 @@ from daycounts group by date order by date desc$limit";
 list($tbl) = $t->maketable($query, array('footer'=>$ftr, 'attr'=>array('border'=>"1", 'id'=>"daycount")));
 
 $page .= <<<EOF
-<div id="table6">
-<a name="table6"></a>
+<div id="table5">
 <h2>Day Counts</h2>
 <p>Day Counts are for 'index.php" and do NOT include webmaster visits.<br>
 $tbl
@@ -166,12 +153,18 @@ function blpipmake(&$row, &$rowdesc) {
 // If the ip address is in the $blpips array make the ip row say BARTON in red.
 
 function blpip(&$row, &$rowdesc) {
-  $blpips = $GLOBALS['blpips'];
+  global $ipcountry, $blpips;
   
-  if($blpips[$row['IP']]) {
-    $row['IP'] = "<span style='color: red'>{$row['IP']}</span>";
+  $ip = $row['IP'];
+  $country = $ipcountry[$ip];
+
+  $blpclass = '';
+  if($blpips[$ip]) {
+    $blpclass = ' blpip';
   }
 
+  $row['IP'] = "<span class='co-ip$blpclass'>$ip</span><div class='country'>$country</div>";
+  
   $row['Agent'] = escapeltgt($row['Agent']);
 
   return false;

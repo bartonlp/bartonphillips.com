@@ -1,15 +1,47 @@
 /* Barton Phillips CSS */
+@font-face {
+        font-family: liberation;
+        src: url(/fonts/liberation/LiberationSans-Regular.ttf);
+}
+html {
+        max-width: 1200px;
+        margin: auto;
+        font-size: 16px;
+}
 body {
-  background-color: white;
-  font-family: Garamond, Georgia, Times, "Times New Roman", serif;
-/*  background-image: url('http://www.granbyrotary.org/images/xmassnow.jpg'); 
+        background-color: white; 
+        font-family: liberation, serif;
+        font-size: 2em;
+/* Christmas and New Years
+Xmas 
+  background-image: url('http://www.granbyrotary.org/images/xmassnow.jpg');
+New Years 
   background: url('http://www.granbyrotary.org/images/happy6.gif'); 
-  background-clip:content-box;
-  -webkit-background-clip:content-box;
   background-position:top; 
-  background-size: 100%; */
-  background-origin:content-box;
+*/
+}
+footer {
+        text-align: center;
 }
 .center {
         text-align: center;
+}
+ul {
+        line-height: 150%;
+}
+
+@media (min-width: 1024px) {
+        body {
+                font-size: 2em;
+        }
+}
+@media (max-width: 800px) {
+        body {
+                font-size: 1.5em;
+        }
+}
+@media (max-width: 400px) {
+        body {
+                font-size: 1em;
+        }
 }

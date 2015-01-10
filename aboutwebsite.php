@@ -45,7 +45,7 @@ $pageHead
 	<p><img src="images/msfree.png" alt="100% Microsoft Free"></p>
 
 	<p><a
-  href="http://www.netcraft.com/whats?host=www.bartonphillips.com">
+  href="http://www.netcraft.com/whats?url=http://www.bartonphillips.com">
 	<img src="images/powered.gif" width=90 height=53 border=0 alt="Powered By ...?"></a>
 	</p>
 </div>
