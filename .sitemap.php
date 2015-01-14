@@ -1,6 +1,4 @@
 <?php
-   // For lamphost.net
-
    // Site map
    // This is included by the siteautoload.php which is called from each page file.
    // This file should only be loaded via the siteautoload.php file.

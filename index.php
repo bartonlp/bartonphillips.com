@@ -218,7 +218,7 @@ $adminStuff
 </ul>
 <h2>Helpful Programs and Tips</h2>
 <ul>
-<li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 16 via ISO from Disk</a></li>
+<li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 17 via ISO from Disk</a></li>
 <li><a target="_blank" href="featurescheck.php">Browser Features by Agents</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags using PHP or JavaScript</a></li>

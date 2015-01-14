@@ -40,7 +40,7 @@ $pageFooterText = <<<EOF
 Barton Phillips, PO Box 4152, CO 80446-4152</address>
 <address>
 <a
- href='mailto:bartonphillips@gmail.com?to=test@bartonlp.com&subject=test'>bartonphillips@gmail.com
+ href='mailto:bartonphillips@gmail.com'>bartonphillips@gmail.com
 </a>
 </address>
 </div>

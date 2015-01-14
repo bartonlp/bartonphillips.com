@@ -1,20 +1,22 @@
 <?php
-// How to load LinuxMint 15 from iso
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
+// How to load LinuxMint 17 from iso
+require_once($_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 
 $S = new Blp; // takes an array if you want to change defaults
 
-$h->title = "Load LinuxMint 15 from ISO";
-$h->banner = "<h1 class='center'>How to Load LinuxMint 16 via ISO from Disk</h1>";
+$h->title = "Load LinuxMint 17 from ISO";
+$h->banner = "<h1 class='center'>How to Load LinuxMint 17 via ISO from Disk</h1>";
 
 list($top, $footer) = $S->getPageTopBottom($h);
 echo <<<EOF
 $top
-<h3>Update 2014-05-03: I originally wrote this for Linux Mint 15 but have just upgraded to Linux Mint
-16 without any problems.</h3>
+<h3>&lt;Update 2015-01-13&gt;</h3>
+<p>I originally wrote this for Linux Mint 15 but have used the same
+instruction to upgraded to Linux Mint 16 and 17 without any problems.
+Just change the Mint release number and everything should work. In fact this should
+continue to work for susequent versions
+unless Linux Mint changes its ISO filesystem structure significantly.</p>
+<h3>&lt;/Update 2015-01-13&gt;</h3>
 
 <p>Instead of burning a CD or using a USB flash stick you can install Linux Mint 15 (and most other
 Linux distributions) from a hard disk. All you need is a small (about 2 GB) extra partition

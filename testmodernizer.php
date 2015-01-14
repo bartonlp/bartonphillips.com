@@ -1,8 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
 
 $S = new Blp();
 
@@ -54,22 +51,30 @@ list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
 echo <<<EOF
 $top
 <header>
-   <p>Your browser has identified itself as: 
-<span id="browserid">{$S->agent}</span></p>
-   <p>Using the browser's 'User Agent String' is not a great way to determin browser features for
-several reasons. First and formost, the string can be forged very easilly. Therefore it is much
-safer to detect if a browser supports features you wish to use. For example, if you intend to use
-the browser storage feature 'localstorage' you can test to see if it is supported before using it.</p>
+
+<p>Your browser has identified itself as: 
+<span id="browserid">{$S->agent}</span> via its &quot;User Agent String&quot;.</p>
+
+<p>Using the browser's 'User Agent String' is not a great way to determin browser
+features for several reasons. First and formost, the string can be forged very
+easilly. Therefore it is much safer to detect if a browser supports features you wish
+to use. For example, if you intend to use the browser storage feature 'localstorage'
+you can test to see if it is supported before using it.</p>
 
 <pre class="code">
 if(window.localStorage) { ... } // supported
 else { ... } // not supported
 </pre>
 
-   <p>There is a package called Modernizr that does these feature detection tests for you.</p>
-   <p>We use the Modernizr package to determin what features are support and which are not.
-See <a href="http://modernizr.com/">http://modernizr.com</a> for more
+<p>There is a package called Modernizr that does these feature detection tests for
+you.</p>
+
+<p>We use the Modernizr package to determin what features are support and which are
+not.  See <a href="http://modernizr.com/">http://modernizr.com</a> for more
 information on how 'modernizr' works.</p>
+
+<p>Modernizr shows the following features for your browser:</p>
+
 </header>
 <article>
    <table border='1'>
@@ -83,5 +88,6 @@ information on how 'modernizr' works.</p>
 </article>
 $footer
 EOF;
-?>
+
+
 
