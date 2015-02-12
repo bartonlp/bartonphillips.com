@@ -3,7 +3,8 @@
 <head>
   <title>LocalStorage Example</title>
   <!-- METAs -->
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta charset='utf-8'>
   <meta name="Author"
      content="Barton L. Phillips, mailto:barton@bartonphillips.org">
   <meta name="description"
@@ -18,19 +19,19 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- jQuery from Google site -->
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
   <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
-  <script type="text/javascript" src="js/shCore.js"></script>
-  <script type="text/javascript" src="js/shBrushJScript.js"></script>
-  <script type="text/javascript" src="js/shBrushXml.js"></script>
-  <script type="text/javascript">SyntaxHighlighter.all();</script>
-  <link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+  <script src="js/shCore.js"></script>
+  <script src="js/shBrushJScript.js"></script>
+  <script src="js/shBrushXml.js"></script>
+  <script>SyntaxHighlighter.all();</script>
+  <link rel="stylesheet" href="css/shCoreDefault.css"/>
 
   <!-- Our stuff -->
-  <script type="text/javascript" src="js/localstorage.js"></script>
-  <link rel="stylesheet" href="css/blp.css" type="text/css" title="blp default" >
-  <link type="text/css" rel="stylesheet" href="css/localstorage.css"/>
+  <script src="js/localstorage.js"></script>
+  <link rel="stylesheet" href="css/blp.css" title="blp default" >
+  <link rel="stylesheet" href="css/localstorage.css"/>
 </head>
 <body>
 <div>
@@ -39,12 +40,13 @@
 </div>
 
 <div id="warnings"></div>
-<div class="cnt"><span class="cnt">IMAGE NOT LOADED YET</span></div>
+<div class="cnt">IMAGE NOT LOADED YET</div>
 <h1>LocalStorage Example: Resize a big image in JavaScript</h1>
 <p id="size">Size of the picture</p>
 <p>To remove the localStorage and start over <button id="reload">Click Here</button> and
    notice the difference in load time.</p>
-<div><img id="image" src=""></div>
+<div>
+<img id="image" src=""></div>
 <p>The first time this page is viewed the image is loaded from the web. The image is 1.6 Meg and takes
    a while to load. We then resize the image via a &lt;canvas&gt; to a 500 pixel wide image. We get the
    image URI which is the image data encoded as a base64 string. The URI is saved in

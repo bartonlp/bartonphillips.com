@@ -2,10 +2,7 @@
 // BLP 2014-09-16 -- update for barton11 on inmotionhosting
 // Read in the config tile
 
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
+require_once("/var/www/includes/siteautoload.class.php");
 
 $S = new PokerClub;
 
@@ -83,7 +80,6 @@ $Footer
 EOF;
 ?>
 </div>
-
 
 </body>
 </html>

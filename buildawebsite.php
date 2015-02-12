@@ -1,9 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // takes an array if you want to change defaults
 
 $h->title = "So You Want to Build a Website";
@@ -264,4 +260,3 @@ you want -- the sky is the limit. Good luck and have fun.</p>
 
 <?php
 echo $footer;
-?>

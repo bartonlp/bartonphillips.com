@@ -1,10 +1,8 @@
 <?php
 // BLP 2014-11-02 -- make tracker average stay reflect the current state of the table.
 // BLP 2014-08-30 -- change $av to only look at last 3 days and to allow only times less the 2hr.
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
+
+require_once("/var/www/includes/siteautoload.class.php");
 
 $referer = $_SERVER['HTTP_REFERER'];
 
@@ -18,6 +16,7 @@ EOL;
 }
 
 $S = new Blp;
+
 $T = new dbTables($S);
 
 $h->link = <<<EOF
@@ -369,8 +368,8 @@ function callback(&$row, &$desc) {
   $co = $ipcountry[$ip];
 
   $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
-  
-  if($S->query("select ip from barton11_granbyrotarydotorg.bots where ip='$ip'")) {
+
+  if($S->query("select ip from granbyrotarydotorg.bots where ip='$ip'")) {
     $desc = preg_replace("~<tr>~", "<tr class='bot'>", $desc);
   }
   
@@ -429,4 +428,3 @@ Average stay time: <span id="average"></span> (times over two hours are discarde
 $tracker
 $footer
 EOF;
-?>

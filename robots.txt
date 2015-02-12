@@ -1,8 +1,6 @@
 User-agent: *
 Disallow: resizeimg.php
 Disallow: download.php
-Disallow: blp.i.php
-Disallow: upload/
 Disallow: test/
 Disallow: sqlscripts/
 Disallow: js/

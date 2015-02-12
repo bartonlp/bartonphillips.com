@@ -1,9 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp;
 $h->title = "RSS Generator Software";
 $h->banner = "<h1>RSS Generator</h1>";
@@ -111,4 +107,3 @@ file if you placed
 href="License/index.php">License</a></p>
 $footer
 EOF;
-?>

@@ -12,4 +12,3 @@ $GoogleAnalytics = <<<EOF
 
 </script>
 EOF;
-?>

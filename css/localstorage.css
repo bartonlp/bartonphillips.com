@@ -1,4 +1,3 @@
-<style type="text/css">
 body > pre {
         padding: 0.1em 0.5em 0.3em 0.7em;
         border-left: 11px solid #ccc;
@@ -6,13 +5,13 @@ body > pre {
         overflow: auto;
         width: 93%;
 }
-div.cnt {
-        text-align: center;
-}
-span.cnt {
+.cnt {
         text-align: center;
         border: 1px solid black;
         padding: 10px;
+}
+#image {
+        width: 95%;
 }
 #showsource {
         border: 1px solid black;
@@ -36,4 +35,3 @@ span.cnt {
         height: 100%;
         text-align: center;
 }
-</style>

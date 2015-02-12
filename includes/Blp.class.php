@@ -18,8 +18,8 @@ class Blp extends SiteClass {
   public function __construct($x=array()) {
     global $dbinfo, $siteinfo; // from .sitemap.php
 
-    //Error::setNoEmailErrs(true); // For debugging
-    //Error::setDevelopment(true); // during development
+    Error::setNoEmailErrs(true); // For debugging
+    Error::setDevelopment(true); // during development
     
     $s = $siteinfo; // from .sitemap.php
     $s['databaseClass'] = new Database($dbinfo);

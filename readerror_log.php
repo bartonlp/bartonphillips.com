@@ -20,5 +20,3 @@ Delete File Contents <input type="submit" name="submit" value="Submit"/>
 </p>
 </form>
 EOF;
-
-?>

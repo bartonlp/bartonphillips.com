@@ -54,4 +54,3 @@ imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $he
 
 // Output
 imagejpeg($thumb);
-?>

@@ -1,9 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // count page
 $h->title = "Using your &quot;/etc/hosts&quot; file";
 $h->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
@@ -30,6 +26,3 @@ $top
    your web server and not to your router's administration page.</p>
 $footer
 EOF;
-?>
-
-

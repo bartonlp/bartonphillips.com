@@ -3,11 +3,7 @@
 
 //ini_set("error_log", "/tmp/debugblp.txt");
 
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 Error::setNoEmailErrs(true); // For debugging
 Error::setDevelopment(true); // during development
 Error::setErrorType(E_ALL & ~(E_WARNING | E_NOTICE | E_STRICT));
@@ -64,4 +60,3 @@ echo <<<EOF
 </body>
 </html>
 EOF;
-?>

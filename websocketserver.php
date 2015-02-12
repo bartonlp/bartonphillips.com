@@ -504,4 +504,3 @@ function close($socket, $msg) {
   send($socket, $payload, 'close', false);
   disconnect($socket);
 }
-?>

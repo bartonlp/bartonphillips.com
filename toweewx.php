@@ -26,10 +26,7 @@ $config->api_key = '401590:vnW1fmKrgZ85sl7NBUMXth46HkTqabye';
 $client = new WurflCloud_Client_Client($config); 
 */
 
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
+require_once("/var/www/includes/siteautoload.class.php");
 
 class myDetect extends Mobile_Detect {
   protected $otherOss = array('Linux X11 64' => "Linux x86_64",
@@ -150,4 +147,3 @@ if($desktop) {
 } else {
   header("location: http://www.bartonphillips.com/weewx/smartphone/index.html?t=$d");
 }
-?>

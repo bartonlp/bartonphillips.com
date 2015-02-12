@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>  
 
 <head>
@@ -47,16 +47,6 @@
 	<img src="/images/powered.gif" width=90 height=53 border=0 alt="Powered By ...?"></a>
 	</p>
 </div>
-
-<a href="http://validator.w3.org/check?uri=referer">
-<img src="/images/valid-html401.png" border='0'
-alt="Valid HTML 4.01!"></a>
-
-<a href="http://jigsaw.w3.org/css-validator/">
-<img src="/images/vcss.png" border='0'
-alt="Valid CSS!">
-</a>
-
 </div>
 
 </div>

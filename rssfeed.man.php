@@ -1,9 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // count page
 $h->title = "rssfeed.pl - Generate RSS feed from web pages";
 $h->banner = "<h1>Man Page for rssfeed.pl</h1>";
@@ -202,4 +198,3 @@ is inside a comment the end comment can be on the same line as the ending &gt; o
 </ul>
 $footer
 EOF;
-?>

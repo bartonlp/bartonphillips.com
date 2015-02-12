@@ -1,10 +1,5 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
-
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp;
 $h->title = "Setup Canon MX330 Under Ubuntu Linux";
 $h->banner = "<h1>Setup Canon MX330 Under Ubuntu Linux</h1>";
@@ -104,4 +99,3 @@ stuff.</p>
 <hr/>
 $footer
 EOF;
-?>

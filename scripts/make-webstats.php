@@ -2,11 +2,8 @@
 <?php
 // This is CLI and run as a cron job to aggregate the web statistics for a day.
 // The results are used by the webstats.php program in our document root directory.
-
-define('TOPFILE', "/home/barton11/includes/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
+//$AutoLoadDEBUG = true;
+require_once("/var/www/includes/siteautoload.class.php");
 
 // Open the database
 
@@ -137,7 +134,7 @@ $tbl
 EOF;
 
 // Write the file out
-file_put_contents("/home/barton11/www/webstats.i.txt", $page);
+file_put_contents("/var/www/bartonphillipsdotcom/webstats.i.txt", $page);
 
 // Call back functions
 
@@ -169,5 +166,3 @@ function blpip(&$row, &$rowdesc) {
 
   return false;
 }
- 
-?>

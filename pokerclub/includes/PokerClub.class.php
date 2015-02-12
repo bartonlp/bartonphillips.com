@@ -11,11 +11,10 @@ class PokerClub extends SiteClass {
 
     Error::setNoEmailErrs(true); // For debugging
     Error::setDevelopment(true); // during development
-    Error::setErrorType(E_ALL & ~(E_WARNING | E_NOTICE | E_STRICT));
-    //Error::setNoOutput(true); // no output to user
 
-
-    $site = preg_replace("/www./", '', $_SERVER['SERVER_NAME']); // Because this could be .com or .org
+    // Because this could be .com or .org
+    
+    $site = preg_replace("/www./", '', $_SERVER['SERVER_NAME']); 
     $s = $siteinfo;
     $s['databaseClass'] = new Database($dbinfo);
 
@@ -62,4 +61,3 @@ if(!function_exists(ErrorGetId)) {
   }
 }
 
-?>

@@ -16,10 +16,12 @@ if(!localStorage.length) {
   $(image).load(function() {
     localStorage.orgsize = this.width * this.height;
 
-    var ratio = 500 / this.width;
-    this.width = this.width * ratio;
-    this.height = this.height * ratio;
-
+    console.log("W: %d", this.width);
+    var ratio = this.width / 320;
+    this.width = this.width / ratio;
+    this.height = this.height / ratio;
+    console.log("ratio: %d, w: %d, h: %d", ratio, this.width, this.height);
+    
     localStorage.imgsize = this.width * this.height;
 
         // Now use a canvas to get the URI image
@@ -34,14 +36,14 @@ if(!localStorage.length) {
     var ctx = canvas.getContext("2d");
     ctx.drawImage(this, 0, 0, this.width, this.height);
 
-        // Some ancient browsers (like IE) have a small limit to the URI size.
+    // Some ancient browsers (like IE) have a small limit to the URI size.
 
     try {
       var dataUri = canvas.toDataURL();
       localStorage.base64size = dataUri.length;
 
       var img = $('#image');
-      img.css({'width': this.width, 'height': this.height});
+      //img.css({'width': this.width, 'height': this.height});
       img.attr('src', dataUri);
     } catch(e) {
       localStorage.warnings += "dataUri problem:" + e + "<br>\n";
@@ -227,7 +229,7 @@ jQuery(document).ready(function($) {
       $("#warnings").html("<p id='warning'>WARNINGS<br>\n" + localStorage.warnings + "</p>");
     }
 
-    $("span.cnt").html(msg);
+    $(".cnt").html(msg);
   
     $("#showsource").hide();
     $("#showjs").hide();

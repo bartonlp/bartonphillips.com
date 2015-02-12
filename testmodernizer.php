@@ -1,6 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp();
 
 $h->extra = <<<EOF

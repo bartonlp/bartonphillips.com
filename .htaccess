@@ -1,4 +1,4 @@
-Options -Indexes +Includes +FollowSymLinks
+Options +Indexes +Includes +FollowSymLinks
 
 # BEGIN EXPIRES
 <IfModule mod_expires.c>

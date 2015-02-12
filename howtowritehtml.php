@@ -7,11 +7,7 @@
 
 if(!$S) {
   //No site class so use blp
-  define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-  if(file_exists(TOPFILE)) {
-    include(TOPFILE);
-  } else throw new Exception(TOPFILE . "not found");
-
+  require_once("/var/www/includes/siteautoload.class.php");
   $S = new Blp;
   $h->title = "How to write html";
   $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";

@@ -1,21 +1,12 @@
 <?php
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new PokerClub;
 $cache = time(); // force reload of index.php to NOT cache
-
-$footer = $S->getFooter("<hr>");
 
 $h->title = "Poker Login";
 
 $h->extra = <<<EOF
-  <script type="text/javascript">
-<!--
-jQuery.noConflict();
-
+  <script>
 jQuery(document).ready(function($) {
   $("#pokerflush").animate({ 
 opacity: 1.0,
@@ -23,12 +14,10 @@ left: 100
   }, {duration: 5000 });
   
 });
-//-->  
   </script>
 
-
   <!-- Inline CSS if any -->
-  <style type='text/css'>
+  <style>
 body {
         background-color: lightblue;
 }
@@ -69,7 +58,7 @@ body {
   </style>
 EOF;
             
-$top = $S->getPageTop($h);
+list($top, $footer) = $S->getPageTopBottom($h);
 
 // Get the POST variables 
 
@@ -102,6 +91,7 @@ EOF;
   $row = $S->fetchrow('assoc');
 
   $id = $row['id'];
+  
   $S->SetIdCookie($id); // SetIdCookie is subclassed in PokerClub.class.php to use PokerClub as cookie
 
   echo <<<EOF
@@ -127,7 +117,7 @@ $top
 <p>Please enter your <b>Email address</b>.</p>
 
 <form action='$S->self' method='post'>
-Enter Email Address: <input type='text' name='email' />
+Enter Email Address: <input type='text' name='email' autofocus />
 <input type='submit' name='submit'>
 </form>
 $footer
@@ -141,4 +131,4 @@ $footer
 EOF;
   }
 }
-?>
+

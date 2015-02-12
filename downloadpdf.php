@@ -5,4 +5,3 @@
 header("Content-type: application/pdf");
 $page = file_get_contents("/tmp/pdfpage.pdf");
 echo $page;
-?>

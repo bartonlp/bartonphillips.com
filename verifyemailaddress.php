@@ -1,11 +1,7 @@
 <?php
 // This is a more general version of the one I used for grandchorale
 
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp;
 
 $DEBUG=0; // set to 1 for debug info or zero for none
@@ -762,5 +758,3 @@ function smtp_close($handle) {
 
 */
   
-?>
-

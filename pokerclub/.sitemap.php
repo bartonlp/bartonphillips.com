@@ -20,14 +20,14 @@
    // and one for the site information ($siteinfo). These are used by the Database class and the
    // SiteClass.
    
-define('TOP', '/home/barton11'); 
+define('TOP', '/var/www'); 
 define('INCLUDES', TOP."/includes");
 define('DATABASE_ENGINES', INCLUDES."/database-engines");
 define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in siteautoload.php!
 
 // Email info and logfile location
 
-define('LOGFILE', "/home/barton11/database.log");
+define('LOGFILE', "/tmp/database.log");
 
 define('EMAILADDRESS', "bartonphillips@gmail.com");
 define('EMAILRETURN', "bartonphillips@gmail.com");
@@ -38,9 +38,9 @@ define('EMAILFROM', "webmaster@bartonphillips.com");
 // later
            
 $dbinfo = array('host' => 'localhost',
-                'user' => 'barton11_barton',
+                'user' => 'barton',
                 'password' => '7098653',
-                'database' => 'barton11_bartonphillipsdotorg',
+                'database' => 'bartonphillipsdotcom',
                 'engine' => 'mysqli'
                );
 
@@ -48,14 +48,13 @@ $dbinfo = array('host' => 'localhost',
 // This site has no members so no membertable.
 // See the SiteClass constructor for other possible values like 'count', 'emailDomain' etc.
 
-$siteinfo = array('siteDomain' => "bartonphillips.org",
-                  'subDomain' => "pokerclub", // For setcookie path
+$siteinfo = array('siteDomain' => "bartonphillips.com",
+                  //'subDomain' => "pokerclub", // For setcookie path
                   'memberTable' => "pokermembers",
-                  'headFile' => "poker.head.i.php",
-                  'bannerFile' => "poker.banner.i.php",
+                  'headFile' =>  SITE_INCLUDES . "/head.i.php",
+                  'bannerFile' => SITE_INCLUDES . "/banner.i.php",
                   //footerFile => SITE_INCLUDES."/footer.i.php"
                   'count' => true,
                   'countMe' => true, // Count BLP
                   'myUri' => "bartonphillips.dyndns.org" // If we are local (at home) then 'localhost'
                  );
-?>

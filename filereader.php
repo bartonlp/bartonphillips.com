@@ -1,10 +1,6 @@
 <?php
 // BLP 2014-05-12 -- FireReader example: http://www.html5rocks.com/en/tutorials/file/dndfiles/
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // takes an array if you want to change defaults
 
 $h->extra = <<<EOF
@@ -153,5 +149,3 @@ $top
 <hr>  
 $footer
 EOF;
-?>
-

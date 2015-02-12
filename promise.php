@@ -2,11 +2,7 @@
 // BLP 2014-05-12 -- http://www.html5rocks.com/en/tutorials/file/xhr2/
 // header("Access-Control-Allow-Origin: *");
 
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // takes an array if you want to change defaults
 
 if($_POST['page'] == 'form') {
@@ -148,4 +144,3 @@ $top
 <hr>
 $footer
 EOF;
-?>

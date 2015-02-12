@@ -2,14 +2,15 @@
 
 (function($) {
   var id;
-    
+  var ajaxfile = "tracker.php";
+  
   $(window).load(function(e) {
     // Track the ip/agent/page
     var self = window.location.pathname,
       referrer = document.referrer;
 
     $.ajax({
-      url: '/tracker.php',
+      url: ajaxfile,
       data: {page: 'load', self: self, referrer: referrer },
       type: 'post',
       success: function(data) {
@@ -24,7 +25,7 @@
 
   $(window).unload(function(e) {
     $.ajax({
-      url: '/tracker.php',
+      url: ajaxfile,
       data: {page: 'unload', id: id },
       type: 'post',
       async: false,

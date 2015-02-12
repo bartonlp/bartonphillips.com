@@ -1,7 +1,7 @@
 <?php
 // Look at the bartonphillips.com browserfeatures table and send me an email on the daily
 // activity.
-require_once($_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
+require_once("/var/www/includes/siteautoload.class.php");
 
 try {
   $S = new Blp();
@@ -66,6 +66,3 @@ The audio and video support are shown as <i>probably</i> or <i>maybe</i>.</p>
 $tblrows
 $footer
 EOF;
-?>
- 
-   

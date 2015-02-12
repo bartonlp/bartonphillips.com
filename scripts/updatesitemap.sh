@@ -1,6 +1,6 @@
 #!/bin/bash
 # backup the Sitemap.xml and then create a new one
-cd /home/barton11/www
+cd /var/www/bartonphillipsdotcom
 dir=other
 bkupdate=`date +%B-%d-%y`
 filename="Sitemap.$bkupdate.xml"

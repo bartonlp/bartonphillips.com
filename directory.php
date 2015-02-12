@@ -2,12 +2,7 @@
 // This file will not be in any links or in the robots.txt file so no one should
 // be able to find it.
 // Anyone that does open this file will be tracked.
-
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . "not found");
-
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp;
 
 $h->title = "Directory";
@@ -76,4 +71,3 @@ $top
 
 $footer
 EOF;
-?>

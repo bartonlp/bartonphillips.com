@@ -1,13 +1,9 @@
 <?php
 // Main page for bartonphillips.com
-// BLP 2015-01-10 -- reworked to use sections and put all style in css rather than
-// inline!
-
-define('TOPFILE', $_SERVER['DOCUMENT_ROOT'] . "/siteautoload.php");
-if(file_exists(TOPFILE)) {
-  include(TOPFILE);
-} else throw new Exception(TOPFILE . " not found");
-
+// BLP 2015-01-26 -- now served from digitalocean.com
+// BLP 2015-01-10 -- reworked to use sections and put all style
+// in css rather than inline!
+require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // takes an array if you want to change defaults
 
 // css/blp.css is included in head.i.php
@@ -39,8 +35,7 @@ $h->css = <<<EOF
   margin: auto;
 }
 ul {
-  line-height: 150%;
-  font-size: 1.5em;
+  line-height: 200%;
 }
 #blpimg {
   float: left;
@@ -62,9 +57,11 @@ EOF;
 
 $h->script = <<<EOF
   <!-- local script -->
-  <script src="/js/phpdate.js"></script>
+  <script src="js/phpdate.js"></script>
   <script>
 jQuery(document).ready(function($) {
+  var weewx = '';
+
   // Date Today
   setInterval(function() {
     var d = date("l F j, Y");
@@ -84,16 +81,46 @@ jQuery(document).ready(function($) {
     var d = date("U");
     $(this).attr("href", "webstats-new.php?t="+d);
   });
+
+  $("#weewx").click(function() {
+    var we = $(this).attr('href');
+    we = we.replace(/xx/, weewx);
+    we = we.replace(/\?.*/,'');
+    $(this).attr('href', we+"?"+Math.random());
+    return true;
+  });
+
+  function set_test(name,status){
+    weewx = status ? '192.168.0.6' : '192.168.0.4/html';
+    //console.log("weewx: ", weewx);
+    //var el=document.getElementById(name+'_test');
+    //el.innerHTML=status?'Yes, you are logged in':'No, you\'re not logged in';
+    //el.style.color=status?'#0a0':'#a00';
+    //el.style.fontWeight='bold';
+  }
+  (function(){
+    //var test_test=document.getElementById('test_test');
+    //test_test.innerHTML='Checking...';
+    var img =document.createElement('img');
+    img.src ='http://192.168.0.6/phpbuilder.gif?'+Math.random();
+    img.onload =function(){set_test('test',1)};
+    img.onerror =function(){set_test('test',0)};
+    img.style.display='none';
+    document.body.appendChild(img);
+  })();
 });
   </script>  
 EOF;
 
 $h->title = "Barton Phillips Home Page";
 $h->banner = <<<EOF
-<h1 class='center'>Barton Phillips Home Page</h1>
-<h2 class='center'>
+<div class='center'>
+<h1>The New Barton Phillips Home Page</h1>
+<h2>
 <a target='_blank' href='toweewx.php'>My Home Weather Station</a>
 </h2>
+<h3><a href="aboutweewx.php">About My Weather Station</a></h3>
+</div>
 EOF;
 
 $ref = $_SERVER['HTTP_REFERER'];
@@ -110,14 +137,15 @@ EOF;
 // If it's me add in the admin stuff
 
 if($S->isBlp() || ($_GET['blp'] == "7098")) {
-  // BLP 2014-12-02 -- as this is only for admin (me) I am using my local net address
-  // 192.168.0.3 for Dell-530
+  // BLP 2014-12-02 -- as this is only for admin (me) I am using
+  // my local net address 
+  
   $adminStuff = <<<EOF
 <h2>Administration Links</h2>
 <ul>
-<li><a target="_blank" href="http://webmail.bartonphillips.org">WEB Mail for bartonphillips.org</a></li>
-<li><a target="_blank" class="uptest" href="http://192.168.0.3/weewx/">WEEWX home</a></li>
-<li><a target="_blank" class="uptest" href="http://192.168.0.3/apc.php">APC Status home</a></li>
+<li><a target="_blank" href="http://webmail.bartonlp.com">WEB Mail for bartonlp.com</a></li>
+<li><a target="_blank" id="weewx" href="http://xx/weewx/">WEEWX home</a></li>
+<li><a target="_blank" class="uptest" href="http://192.168.0.4/apc.php">APC Status home</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
 </ul>
 EOF;
@@ -157,7 +185,7 @@ $top
    Today is: <span id="datetoday">$date</span></p>
    <hr>
    <p>This page is dynamically generated using PHP on our server at
-   <a target="_blank" href="http://www.inmotionhosting.com/">inmotionhosting.com</a>.
+   <a target="_blank" href="http://www.digitalocean.com/">DigitalOcean.com</a>.
    Almost no JavaScript is used in this page. We collect no COOKIES. We don't track you.
    We do collect anonymous information for page counting etc. However, some of the
    pages we link to do collect tracking information and COOKIES and make extensive use
@@ -195,7 +223,10 @@ Leave a comment or feedback about this site.
 $adminStuff
 <h2>Links to other sites</h2>
 <ul>
+<li><a target="_blank" href="spacestation.php">ISS Overhead Times</a></li>
 <li><a target="_blank" href="http://www.gcwg.org">Grand County Wilderness Group</a></li>
+<li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
+<li><a target="_blank" href="https://www.adafruit.com/">Adafruit</a></li>
 <li><a target="_blank" href="http://www.rotary.org">Rotary International</a></li>
 <li><a target="_blank" href="http://www.rotary5450.org">Rotary Distrct 5450</a></li>
 <li><a target="_blank" href="http://www.granbychamber.com">Granby Chamber of Commerce</a></li>
@@ -218,7 +249,7 @@ $adminStuff
 </ul>
 <h2>Helpful Programs and Tips</h2>
 <ul>
-<li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint 17 via ISO from Disk</a></li>
+<li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="featurescheck.php">Browser Features by Agents</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags using PHP or JavaScript</a></li>
@@ -270,7 +301,5 @@ src="http://isc.sans.edu/images/status.gif" />
 <li>Visitors are seperate accesses by different IP Addresses.</li>
 </ul>
 </section>
-
 $footer
 EOF;
-
