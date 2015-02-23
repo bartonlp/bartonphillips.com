@@ -47,7 +47,7 @@ different operationg systems etc.</p>
 
 <p>
 I bought a <a href="http://www.raspberrypi.org/">Raspberry PI</a>
-small low power fanless system. It sells for around $40 and uses very
+which is a small low power fanless system. It sells for around $40 and uses very
 little electricity. The PI has an ARM cpu but runs a version of
 Linux and is easy to setup. The PI makes a very nice low end server
 and because of the very low power consumption it is an excelent
@@ -55,7 +55,7 @@ choice for a 7/24/365 server.</p>
 
 <p>
 I set the PI OS up with weewx, postfix (email) and nginx (web server).
-I also added a one terabyte USB external hard drive and use the PI
+I also added a 500 Gigabyte USB external hard drive and use the PI
 as my backup server as well.</p>
 
 <p>Please visit my <a href="http://www.bartonphillips.com/weewx">

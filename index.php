@@ -90,6 +90,14 @@ jQuery(document).ready(function($) {
     return true;
   });
 
+  $("#apcups").click(function() {
+    var we = $(this).attr('href');
+    we = we.replace(/xx/, weewx);
+    we = we.replace(/\?.*/,'');
+    $(this).attr('href', we+"?"+Math.random());
+    return true;
+  });
+
   function set_test(name,status){
     weewx = status ? '192.168.0.6' : '192.168.0.4/html';
     //console.log("weewx: ", weewx);
@@ -101,12 +109,16 @@ jQuery(document).ready(function($) {
   (function(){
     //var test_test=document.getElementById('test_test');
     //test_test.innerHTML='Checking...';
-    var img =document.createElement('img');
+    var img = document.createElement('img');
     img.src ='http://192.168.0.6/phpbuilder.gif?'+Math.random();
-    img.onload =function(){set_test('test',1)};
-    img.onerror =function(){set_test('test',0)};
-    img.style.display='none';
-    document.body.appendChild(img);
+    img.onload = function() {
+      set_test('test',1);
+    };
+    img.onerror = function() {
+      set_test('test',0);
+    };
+    //img.style.display = 'none';
+    //document.body.appendChild(img);
   })();
 });
   </script>  
@@ -144,9 +156,10 @@ if($S->isBlp() || ($_GET['blp'] == "7098")) {
 <h2>Administration Links</h2>
 <ul>
 <li><a target="_blank" href="http://webmail.bartonlp.com">WEB Mail for bartonlp.com</a></li>
-<li><a target="_blank" id="weewx" href="http://xx/weewx/">WEEWX home</a></li>
-<li><a target="_blank" class="uptest" href="http://192.168.0.4/apc.php">APC Status home</a></li>
+<li><a target="_blank" id="weewx" href="http://xx/weewx">WEEWX home</a></li>
+<li><a target="_blank" id="apcups" href="http://xx/apc.php">APC Status home</a></li>
 <li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
+<li><a target="_blank" href="https://www.adafruit.com/">Adafruit</a></li>
 </ul>
 EOF;
 }
@@ -221,12 +234,11 @@ Leave a comment or feedback about this site.
 
 </ul>
 $adminStuff
-<h2>Links to other sites</h2>
+<h2>Links to Local Information Sites</h2>
 <ul>
 <li><a target="_blank" href="spacestation.php">ISS Overhead Times</a></li>
+<li><a target="_blank" href="http://www.fs.usda.gov/arp">USDA Forest Service ARP</a></li>
 <li><a target="_blank" href="http://www.gcwg.org">Grand County Wilderness Group</a></li>
-<li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="https://www.adafruit.com/">Adafruit</a></li>
 <li><a target="_blank" href="http://www.rotary.org">Rotary International</a></li>
 <li><a target="_blank" href="http://www.rotary5450.org">Rotary Distrct 5450</a></li>
 <li><a target="_blank" href="http://www.granbychamber.com">Granby Chamber of Commerce</a></li>
@@ -235,10 +247,13 @@ $adminStuff
 <li><a target="_blank" href="http://www.grandnordic.org">Grand Nordic</a> Cross Country Skiing</li>
 <li><a target="_blank" href="http://www.wunderground.com/cgi-bin/findweather/getForecast?query=80446">Weather Unerground
    Granby</a></li>
+</ul>
+<h2>Interesting High Tech Sites</h2>
+<ul>
 <li><a target="_blank" href="https://dashboard.opendns.com/">OpenDNS</a></li>
 <li><a target="_blank" href="http://www.html5rocks.com/en/">HTML5 Rocks</a></li>
 <li><a target="_blank" href="http://www.sitepoint.com">Site Point</a></li>
-
+<li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 </ul>
 <h2>About the Internet</h2>
 <ul>

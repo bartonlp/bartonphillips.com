@@ -369,7 +369,7 @@ function callback(&$row, &$desc) {
 
   $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
 
-  if($S->query("select ip from granbyrotarydotorg.bots where ip='$ip'")) {
+  if($S->query("select ip from barton.bots where ip='$ip'")) {
     $desc = preg_replace("~<tr>~", "<tr class='bot'>", $desc);
   }
   

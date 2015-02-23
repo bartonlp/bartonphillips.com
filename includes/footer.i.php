@@ -30,12 +30,11 @@ if(isset($arg['statcounter'])) {
 
 $pageFooterText = <<<EOF
 <footer>
-<h2><a target="_blank" href='aboutwebsite.php'>About This
-   Site</a></h2>
+<h2><a target="_blank" href='aboutwebsite.php'>About This Site</a></h2>
 
 <div id="address">
 <address>
-  Copyright &copy; 2015 Barton L. Phillips</address>
+  Copyright &copy; $this->copyright</address>
 <address>
 Barton Phillips, PO Box 4152, CO 80446-4152</address>
 <address>
@@ -44,11 +43,11 @@ Barton Phillips, PO Box 4152, CO 80446-4152</address>
 </a>
 </address>
 </div>
-
 </div>
-
-${arg['msg']}
+{$arg['msg']}
+{$arg['msg1']}
 $counterWigget
+{$arg['msg1']}
 </footer>
 $statcounter
 </body>

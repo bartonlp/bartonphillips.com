@@ -1,24 +1,21 @@
 <?php
-   // Site map
-   // This is included by the siteautoload.php which is called from each page file.
-   // This file should only be loaded via the siteautoload.php file.
-   // This file has the sitemap which defines the various location where things can be found.
-   // DOC_ROOT, SITE_ROOT and TARGET_ROOT are defined by the siteautoload.php
-
-   // TOP would be '/home/barton11' because we keep the include file that are
-   // common to all sites in the '/home/barton11/includes' directory which also has the
-   // 'database-engines' directory.
-   // SITE_INCLUDES is under the SITE_ROOT which is where we found the '.sitemap.php' file during
-   // our search in siteautoload.php.
-   // This would be something like
-   // '/home/barton11/www' and on our localhost it would be
-   // '/var/www/bartonphillips.com/' which we would enter into the browser as
-   // 'localhost/bartonphillips.com'
-   // After the four path defines we have defines for our LOGFILE and the email addresses used to
-   // send emails when errors occur.
-   // After the email defines we have two arrays, one for the database information ($dbinfo),
-   // and one for the site information ($siteinfo). These are used by the Database class and the
-   // SiteClass.
+// BLP 2015-02-20 -- added 'copywrite' to siteinfo.  
+// Site map
+// This is included by the /siteautoload.php which is called from each page file.
+// This file should only be loaded via the siteautoload.php file.
+// This file has the sitemap which defines the various location where things can be found.
+// DOC_ROOT and SITE_ROOT are defined by the siteautoload.class.php
+// TOP is the path to the very top of the website. For example on digitalocean.com that is
+// /var/www. All the sites are relative to TOP. The main include directory which has
+// SiteClass.class.php is at TOP . "/includes/".
+// SITE_INCLUDES is under the SITE_ROOT which is where we found the '.sitemap.php' file during
+// our search in siteautoload.class.php. On digitalocean.com this would be something like
+// '/var/www/bartonphillipsdotcom/'.
+// After the four path defines we have defines for our LOGFILE and the email addresses used to
+// send emails when errors occur.
+// After the email defines we have two arrays, one for the database information ($dbinfo),
+// and one for the site information ($siteinfo). These are used by the Database class and 
+// SiteClass.class.php.
    
 define('TOP', '/var/www'); 
 define('INCLUDES', TOP."/includes");
@@ -48,7 +45,10 @@ $dbinfo = array('host' => 'localhost',
 // This site has no members so no membertable.
 // See the SiteClass constructor for other possible values like 'count', 'emailDomain' etc.
 
-$siteinfo = array('siteDomain' => "bartonphillips.com",
+$siteinfo = array('siteDomain' => "www.bartonphillips.com",
+                  'siteName' => "The Monday Night Pocker Club",
+                  'copyright' => "2015 Barton L. Phillips",
+                  'className' => "PokerClub",
                   //'subDomain' => "pokerclub", // For setcookie path
                   'memberTable' => "pokermembers",
                   'headFile' =>  SITE_INCLUDES . "/head.i.php",

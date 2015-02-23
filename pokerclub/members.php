@@ -1,19 +1,50 @@
 <?php
+// BLP 2015-02-22 -- reworked to use http://bartonlp.com/email.php
 // BLP 2014-09-16 -- update for barton11 on inmotionhosting
 // Read in the config tile
 
 require_once("/var/www/includes/siteautoload.class.php");
 
-$S = new PokerClub;
+$S = new $siteinfo['className'];
 
-require_once("member.config");
+$h->title = "Granby Monday Night Poker Club";
+$h->banner = "<h1>Member's Page</h1>";
+$h->css =<<<EOF
+  <style>
+input[type='submit'] {
+  border-radius: 1em;
+  padding: .5em;
+  font-size: 1em;
+}
+  </style>
+EOF;
+
+list($top, $footer) = $S->getPageTopBottom($h);
+
+// Get all Active Members
+// Active members
+
+$sql = "select id, concat(FName, ' ', LName) from pokermembers ".
+       "where Email is not NULL order by LName";
+
+$cnt = $S->query($sql);
+
+$members = '';
+
+while(list($id, $name) = $S->fetchrow('num')) {
+  $checkbox = "<input type=checkbox name=id[] value='$id'>";
+
+   $members .=<<<EOF
+<input type=checkbox name="id[]" value='$id'>
+  <a href='email.php?id=$id&from=$S->id'>$name</a>
+<br>
+EOF;
+}
+
 
 echo <<<EOF
-$Header
-<body>
-
-$MainTitle
-
+$top
+<hr>
 <p style='border: 1px solid black; display: table-cell; padding: 15px'>
 <span style='color: red'>To send an email to the member click on his
    <b style='color: blue;'>Name</b></span>.
@@ -24,62 +55,17 @@ the button at the bottom to submit the list.<br/>
 Select: <span id='selectAll' class='select' style='color: blue; display: none'>All</span>,
 <span id='selectNone' class='select' style='color: blue; display: none'>None</span>
 </p>
-EOF;
-
-// Get all Active Members
-// Active members
-
-$y = MEMBER_QUERY;
-eval ("\$x=\"$y\";");
-
-$cnt = $S->query($x);
-
-echo <<<EOF
-<form action='multmail.php' method='post'>
+<form action='email.php' method='post'>
 <p>Members ($cnt):<br/>
 Name<br/>
 </p>
-
 <p>
-EOF;
-
-while($row = $S->fetchrow('assoc')) {
-  $checkbox = "<input type=checkbox name=Name[] value='$row[id]'>";
-
-  print("<input type=checkbox name=Name[] value='$row[id]'><a href='email.php?id=$row[id]'>$row[FName] $row[LName]</a><br/>\n");
-}
-
-echo <<<EOF
+$members
+<input type="hidden" name="from" value="$S->id">
 </p>
 <hr/>
 <br/><input type='submit' value='Compose Emails'>
 </form>
 </p>
+$footer
 EOF;
-
-?>
-
-<hr/>
-<div class='blkcenter'>
-<?php
-$wc3val = <<<EOF
-<!-- WC3 Validation for XHTML -->
-<p>
-   <a href="http://validator.w3.org/check?uri=referer"><img
-   src="/images/valid-xhtml10.png"
-   alt="Valid XHTML 1.0 Strict"
-   style='height: 31px; width: 88px; border: 0'/></a>
-
-   <a href="http://jigsaw.w3.org/css-validator/check/referer">
-      <img style="border:0;width:88px;height:31px"
-             src="http://jigsaw.w3.org/css-validator/images/vcss"
-             alt="Valid CSS!" />
-   </a>
-</p>
-$Footer
-EOF;
-?>
-</div>
-
-</body>
-</html>

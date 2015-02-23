@@ -1,4 +1,3 @@
-XBitHack on
 Options +Indexes +Includes
 
 Order Deny,Allow
@@ -6,7 +5,7 @@ Deny from All
 
 AuthName "Barton Phillips Admin"
 AuthType Basic
-AuthUserFile /home/bartonlp/bartonphillips.com/htdocs/admin/.htpasswd
+AuthUserFile /var/www/bartonphillipsdotcom/admin/.htpasswd
 require valid-user
 Satisfy Any
 

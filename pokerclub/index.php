@@ -1,7 +1,7 @@
 <?php
 require_once("/var/www/includes/siteautoload.class.php");
 
-$S = new PokerClub;
+$S = new $siteinfo['className'];
 
 $h->extra = <<<EOF
   <!-- This is an extended regexp library that handles things like /s options etc.
@@ -10,11 +10,6 @@ $h->extra = <<<EOF
 
   <script>
 jQuery(document).ready(function($) {
-  $("#pokerflush").animate({ 
-                             opacity: 1.0,
-                             left: 100
-                           }, {duration: 5000 });
-  
   $("#reset").click(function() {
     $.get("poker.ajax.php", { reset: 'reset' }, function() {
       location.href="";
@@ -56,12 +51,12 @@ jQuery(document).ready(function($) {
                            </tbody>\
                            </table>";
 
-    var \$div = $('#popup');
+    var div = $('#popup');
 
-    \$div.html(newdata);
+    div.html(newdata);
     var y = e.pageY;
-    \$div.css( {top: y+20, left: 0});
-    \$div.show();
+    div.css( {top: y+20, left: 0});
+    div.show();
   });
 
   $("#popup").click(function() {
@@ -69,52 +64,6 @@ jQuery(document).ready(function($) {
   });
 });
   </script>
-
-  <!-- Inline CSS if any -->
-  <style>
-body {
-        background-color: lightblue;
-}
-#header {
-        margin: 0 auto;
-        width: 20%;
-        height: 210px;
-}
-.extra {
-        color: white;
-        background-color: blue;
-}
-#memberstbl {
-        border: 1px solid black;
-        background-color: white;
-}
-#memberstbl th, #memberstbl td {
-        padding: 4px;
-        border: 1px solid black;
-}
-.map {
-        color: white;
-        background-color: blue;
-}
-#popup td, #popup th {
-        border: 1px solid black;
-}
-#todayGuests, #todayGuests * {
-        background-color: white;
-        border: 1px solid black;
-}
-#todayGuests * {
-        padding: 5px;
-}
-#wrapper {
-}
-#left {
-        float: left;        
-}
-#right {
-        float: right; margin-right: 50px;
-}
-  </style>
 EOF;
 
 $footer = $S->getFooter();
@@ -142,7 +91,7 @@ if($_POST['page'] == 'post') {
 
 if($_GET['page'] == 'whoishosting') {
   // Edit who is hosting
-  $h->title = "Poker Club";
+  $h->title = "Granby Monday Night Poker Club";
   $h->banner = "<h1>Who Is Hosting?</h1>";
   $h->extra = <<<EOF
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css"/>
@@ -220,7 +169,7 @@ EOF;
 
 //------------------------------------------
 
-$h->title = "Poker Club";
+$h->title = "Granby Monday Night Poker Club";
 $h->banner = "";
 
 $top = $S->getPageTop($h);
