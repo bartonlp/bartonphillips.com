@@ -12,7 +12,7 @@ This site can be accessed via:<br>
 http://www.bartonphillips.com<br>
 http://www.bartonphillips.net<br>
 http://www.bartonphillips.org<br>
-The site is hosted at inmotionhosting.com on a Virtual Private Server.<br>
+The site is hosted at DigitalOcean.com on a Virtual Private Server.<br>
 The domain bartonphillips.com is registered at lamphost.net (twocows).<br>
 The domain bartonphillips.net is registered at inmotionhosting.com.<br>
 The domain bartonphillips.org is registered at enom.com.<br>
