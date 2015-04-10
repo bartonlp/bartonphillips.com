@@ -3,8 +3,8 @@ require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // count page
 $h->title = "Using your &quot;/etc/hosts&quot; file";
 $h->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
-$top = $S->getPageTop($h);
-$footer = $S->getFooter("<hr/>");
+list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
+
 echo <<<EOF
 $top
 <hr/>

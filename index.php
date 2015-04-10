@@ -41,6 +41,10 @@ ul {
   float: left;
   padding: 5px 10px;
 }
+#octocat {
+  width: 80px;
+  vertical-align: bottom;
+}
 @media (max-width: 600px) {
   a {
     font-size: 1.375rem; /* rems so we don't get relitive em experience */
@@ -230,6 +234,7 @@ Leave a comment or feedback about this site.
 <li><a target="_blnak" href="http://www.puppiesnmore.com">PuppiesNmore</a></li>
 <li><a target="_blank" href="http://www.puppiesnmore.com/cms">PuppiesNmore CMS</a></li>
 <li><a target="_blank" href="http://www.bartonlp.com">bartonlp.com, Expermental Site</a></li>
+<li><a target="_blank" href="http://gitHub.bartonphillips.com">Barton Phillips GitHub site</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
 
 </ul>
@@ -282,6 +287,27 @@ For Linux. <b>Instead buy an HP</b>.</a></li>
 How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
 <hr/>
+
+<h2>PHP SiteClass Mini Framework</h2>
+<p>This is a mini framework I have been using for almost 10 years. It has a database wrapper
+and a number of methods that make my life a lot easier.</p>
+<p>For example every web page needs a
+&lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
+(navigation and banner).
+The framework makes these
+things easy to live with.</p>
+<p>The database wrapper lets you use several popular database engines
+like 'mysql', 'mysqli', 'sqlite' and 'pod'. It is easy to use my framework with templeting
+engines like Twig.</p>
+<p>This framework is not &quot;All Things to All People&quot; like a number
+of the well know frameworks try to be. This is a simple tool and therefore not nearly as
+complex as some of the popular frameworks out there.</p>
+<p>If you just have three or four virtual hosted sites and you need a quick way to get
+everything working this is pretty easy.</p>
+<p>The framework is hosted at <a href="https://github.com/bartonlp/SiteClass">GitHub
+<img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a>.
+Give it a try and let me know if you like it.</p>
+<hr>
 
 <h2>PHP Slide Show Class</h2>
 <p>You can find a <b>Slide Show Class</b> that I wrote on

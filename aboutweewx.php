@@ -1,15 +1,32 @@
 <?php
+// BLP 2015-03-31 -- About my weather station.
+
 require_once("/var/www/includes/siteautoload.class.php");
 
 $S = new Blp;
 
 $h->title = "About Weather Station";
 $h->banner = "<h1>About My Weather Station</h1>";
+$h->css =<<<EOF
+  <!-- local css -->
+  <style>
+.photo {
+  width: 650px;
+}
+@media (max-width: 700px) {
+  .photo {
+    width: 300px;
+  }
+}
+  </style>
+EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
+<img class='photo' src='weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>
+<img class='photo' src='weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
 <p>
 I have had a Weather Station for the past 20 years. First at our
 home in Canoga Park, CA and now at our home in Granby Ranch, CO.
@@ -30,6 +47,8 @@ written in Python and the website has very good documentation and
 support. As with most thing Linux the weather station software is
 free and open source.</p>
 
+<img class='photo' src="weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">
+
 <p>
 I installed the Davis equipment on my back patio. The system is very
 easy to setup and I had it up and running within a couple of hours.
@@ -37,15 +56,18 @@ The weewx software was very easy to install and configure and I had
 it all working the same day I received the Davis equipment.</p>
 
 <p>
-I originally had the software running on my home computer which was
-at the time a Dell 530, which I bought because at the time Dell was
-offering systems with Linux installed. After 10 years the Dell died
-and I wasn't able to fix it. I bought an HP Envy this year, which
-was a nice upgrade. I didn't want to use this new system as a server
+I originally had the software running on my home computer,
+at the time a Dell 530, which I bought because Dell was
+offering systems with Linux installed
+(unfortunatly Dell stopped offering Linux and I stopped buying Dell).
+After 10 years the Dell died and I wasn't able to fix it.
+I bought an HP Envy this year, which was a nice upgrade.
+I didn't want to use this new system as a server
 because I wanted to be able to turn it on and off and experment with
 different operationg systems etc.</p>
 
 <p>
+<img class='photo' src='weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
 I bought a <a href="http://www.raspberrypi.org/">Raspberry PI</a>
 which is a small low power fanless system. It sells for around $40 and uses very
 little electricity. The PI has an ARM cpu but runs a version of

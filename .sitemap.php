@@ -54,6 +54,6 @@ $siteinfo = array('siteDomain' => "bartonphillips.com",
                   'bannerFile' => SITE_INCLUDES."/banner.i.php",
                   'footerFile' => SITE_INCLUDES."/footer.i.php",
                   'count' => true,
-                  'countMe' => false, // Count BLP
+                  'countMe' => true, // Count BLP
                   'myUri' => "bartonphillips.dyndns.org"
                  );
