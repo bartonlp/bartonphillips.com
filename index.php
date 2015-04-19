@@ -15,7 +15,8 @@ $h->css = <<<EOF
   border-top: 1px solid gray;
 }
 #blog {
-  width: 50%;
+  width: 40%;
+  text-align: center;
   background-color: #FCF6CF;
   padding: 20px;
   margin: auto;
@@ -211,8 +212,7 @@ $top
 </section>
 
 <section id="blog">
-<a target="_blank" href="blp-blog.php">My BLOG with tips and tricks</a>.
-Leave a comment or feedback about this site.
+<a target="_blank" href="http://myblog.bartonphillips.com">My BLOG with tips and tricks</a>.
 </section>
 
 <section id="links">
@@ -226,7 +226,7 @@ Leave a comment or feedback about this site.
 <li><a target="_blank" href="http://www.grandchorale.org">The Grand Chorale</a></li>
 <li><a target="_blank" href="http://www.applitec.com">Applied Technology Resouces Inc.</a></li>
 <li><a target="_blank" href="http://www.swam.us">South West Aquatic Masters</a></li>
-<li><a target="_blank" href="http://www.tinapurwininsurance.com">Tina Purwin Insurance</a></li>
+<li><a target="_blank" href="http://www.purwinins.com">Tina Purwin Insurance</a></li>
 <li><a target="_blank" href="http://www.mountainmessiah.com">Mountain Messiah Sing Along</a><br>
 <li><a target="_blank" href="toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.myphotochannel.com">www.MyPhotoChannel.com</a><br>
@@ -304,19 +304,51 @@ of the well know frameworks try to be. This is a simple tool and therefore not n
 complex as some of the popular frameworks out there.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
-<p>The framework is hosted at <a href="https://github.com/bartonlp/SiteClass">GitHub
-<img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a>.
-Give it a try and let me know if you like it.</p>
+<p>The framework is hosted at<br><a target="_blank"
+href="https://github.com/bartonlp/SiteClass">GitHub
+<img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a>
+and also at
+<a target="_blank"
+href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
+<img src="images/phpclasses-logo.gif" width='180' height='59'></a>.
+<br>Give it a try and let me know if you like it.</p>
 <hr>
 
 <h2>PHP Slide Show Class</h2>
-<p>You can find a <b>Slide Show Class</b> that I wrote on
-<a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
+
+<p>This class can be used to present a slide show of images.
+It can extract lists of image files available on the local server or a remote Web server.</p>
+
+<p>The image list is served to the browser which retrieves it with Javascript code that
+performs AJAX requests to obtain the images to display.</p>
+
+<p>For local server images the class returns a list of image file names.
+For remote Web server, it retrieves a given remote page and parses it to return the
+list of GIF, JPEG and PNG images linked from that page.</p>
+
+<p>The Javascript libraries provided within this package control the
+slide show presentation.</p>
+  
+<p>You can find my <b>Slide Show Class</b> at<br>
+<a target="_blank"
+href="http://github.com/bartonlp/slideshow">GitHub
+<img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a> and also at
+<a target="_blank"
+href="http://www.phpclasses.org/browse/author/592640.html">
 <img src="images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr/>
 <h2>PHP MySql Slide Show Class</h2>
-<p>You can find a <b>MySql Slide Show Class</b> that I wrote on
+
+<p>This package can be used to present a slide show from images listed in a database.
+The main class can retrieve lists of images to be displayed from a MySQL database table.</p>
+
+<p>The class can also add or update the slideshow image lists in the database table,
+The actual images can be stored on the filesystem or in the MySql table as base64 data.</p>
+  
+<p>You can find my <b>MySql Slide Show Class</b> at<br>
+<a target="_blank" href="http://github.com/bartonlp/mysqlslideshow">GitHub
+<img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
 <img src="images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>

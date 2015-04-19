@@ -91,6 +91,7 @@ $top
 <p id="latlon"></p>
 <div id='map'></div>
 </div>
+<a href="http://www.isstracker.com/">Another ISS Tracker Map</a>
 <hr>
 $footer
 EOF;
