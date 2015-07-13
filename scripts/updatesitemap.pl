@@ -30,6 +30,8 @@ while(<>) {
 
   my $file = basename($_);
 
+  next if not -e $file;
+  
   print "\t<url>\n\t\t<loc>$_</loc>\n";
 
   my($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,

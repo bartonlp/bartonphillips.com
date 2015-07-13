@@ -58,7 +58,7 @@ jQuery(document).ready(function($) {
 
   moveISS();
 
-  $.getJSON('http://api.open-notify.org/iss-pass.json?lat=40.050859&lon=-105.908118&alt=2548.128&n=5&callback=?', 
+  $.getJSON('http://api.open-notify.org/iss-pass.json?lat=34.190962&lon=-118.956400&alt=219.151&n=5&callback=?', 
     function(data) {
       //console.log(data);
       data['response'].forEach(function (d) {
@@ -78,9 +78,9 @@ $top
 <p><a href="http://www.bartonphillips.com/weewx">My Home Weather Station</a></p>
 <div>
 <table>
-<tr><td>Latitude:</td><td>40&#xb0; 03.06' N</td></tr>
-<tr><td>Longitude:</td><td>105&#xb0; 54.48' W</td></tr>
-<tr><td>Altitude:</td><td>8360 ft (2548.128 m)</td></tr>
+<tr><td>Latitude:</td><td>34.190962</td></tr>
+<tr><td>Longitude:</td><td>-118.9564</td></tr>
+<tr><td>Altitude:</td><td>719 ft (219 m)</td></tr>
 </table>
 </p>
 <h3>Internatinal Space Station will be overhead at these times:</h3>

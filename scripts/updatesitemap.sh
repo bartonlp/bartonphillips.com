@@ -4,7 +4,7 @@ cd /var/www/bartonphillipsdotcom
 dir=other
 bkupdate=`date +%B-%d-%y`
 filename="Sitemap.$bkupdate.xml"
-scripts/updatemodtime.pl < Sitemap.xml > sitemap.$$
+scripts/updatesitemap.pl < sitemap.txt > sitemap.$$
 mv Sitemap.xml $dir/$filename
 mv sitemap.$$ Sitemap.xml
 gzip $dir/$filename

@@ -1,8 +1,5 @@
 <?php
 // Main page for bartonphillips.com
-// BLP 2015-01-26 -- now served from digitalocean.com
-// BLP 2015-01-10 -- reworked to use sections and put all style
-// in css rather than inline!
 require_once("/var/www/includes/siteautoload.class.php");
 $S = new Blp; // takes an array if you want to change defaults
 
@@ -102,29 +99,6 @@ jQuery(document).ready(function($) {
     $(this).attr('href', we+"?"+Math.random());
     return true;
   });
-
-  function set_test(name,status){
-    weewx = status ? '192.168.0.6' : '192.168.0.4/html';
-    //console.log("weewx: ", weewx);
-    //var el=document.getElementById(name+'_test');
-    //el.innerHTML=status?'Yes, you are logged in':'No, you\'re not logged in';
-    //el.style.color=status?'#0a0':'#a00';
-    //el.style.fontWeight='bold';
-  }
-  (function(){
-    //var test_test=document.getElementById('test_test');
-    //test_test.innerHTML='Checking...';
-    var img = document.createElement('img');
-    img.src ='http://192.168.0.6/phpbuilder.gif?'+Math.random();
-    img.onload = function() {
-      set_test('test',1);
-    };
-    img.onerror = function() {
-      set_test('test',0);
-    };
-    //img.style.display = 'none';
-    //document.body.appendChild(img);
-  })();
 });
   </script>  
 EOF;
@@ -132,11 +106,11 @@ EOF;
 $h->title = "Barton Phillips Home Page";
 $h->banner = <<<EOF
 <div class='center'>
-<h1>The New Barton Phillips Home Page</h1>
+<h1>Barton Phillips Home Page</h1>
 <h2>
 <a target='_blank' href='toweewx.php'>My Home Weather Station</a>
 </h2>
-<h3><a href="aboutweewx.php">About My Weather Station</a></h3>
+<h3><a target="_blank" href="aboutweewx.php">About My Weather Station</a></h3>
 </div>
 EOF;
 
@@ -146,26 +120,6 @@ if($ref) {
   if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
   $ref =<<<EOF
 You came to this site from <i>$ref</i>.<br>
-EOF;
-}
-
-// BLP 2014-10-24 -- changed blp flag to 7098
-// BLP 2014-08-18 -- add blp=8653 as flag
-// If it's me add in the admin stuff
-
-if($S->isBlp() || ($_GET['blp'] == "7098")) {
-  // BLP 2014-12-02 -- as this is only for admin (me) I am using
-  // my local net address 
-  
-  $adminStuff = <<<EOF
-<h2>Administration Links</h2>
-<ul>
-<li><a target="_blank" href="http://webmail.bartonlp.com">WEB Mail for bartonlp.com</a></li>
-<li><a target="_blank" id="weewx" href="http://xx/weewx">WEEWX home</a></li>
-<li><a target="_blank" id="apcups" href="http://xx/apc.php">APC Status home</a></li>
-<li><a target="_blnak" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
-<li><a target="_blank" href="https://www.adafruit.com/">Adafruit</a></li>
-</ul>
 EOF;
 }
 
@@ -220,46 +174,29 @@ $top
 <ul>
 <li><a target="_blank" href="http://www.granbyrotary.org">The Granby Rotary Club</a></li>
 <li><a target="_blank" href="http://www.endpolio.com">Rotary District 5450 End Polio Campaign</a></li>
-<li><a target="_blank" href="http://www.grandlakerotary.org">The Grand Lake Rotary Club</a></li>
-<li><a target="_blank" href="http://www.kremmlingrotary.org">The Kremmling Rotary Club</a></li>
-<li><a target="_blank" href="pokerclub/">The Granby Monday Night Poker Group</a></li>
-<li><a target="_blank" href="http://www.grandchorale.org">The Grand Chorale</a></li>
 <li><a target="_blank" href="http://www.applitec.com">Applied Technology Resouces Inc.</a></li>
 <li><a target="_blank" href="http://www.swam.us">South West Aquatic Masters</a></li>
 <li><a target="_blank" href="http://www.purwinins.com">Tina Purwin Insurance</a></li>
-<li><a target="_blank" href="http://www.mountainmessiah.com">Mountain Messiah Sing Along</a><br>
 <li><a target="_blank" href="toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.myphotochannel.com">www.MyPhotoChannel.com</a><br>
 <li><a target="_blank" href="http://go.myphotochannel.com/">MyPhotoChannel 1and1</a> only a super user</li>
-<li><a target="_blnak" href="http://www.puppiesnmore.com">PuppiesNmore</a></li>
-<li><a target="_blank" href="http://www.puppiesnmore.com/cms">PuppiesNmore CMS</a></li>
 <li><a target="_blank" href="http://www.bartonlp.com">bartonlp.com, Expermental Site</a></li>
 <li><a target="_blank" href="http://gitHub.bartonphillips.com">Barton Phillips GitHub site</a></li>
 <li><a target="_blank" href="webstats-new.php">Web Stats</a></li>
+<li><a target="_blank" href="http://192.168.0.6/apc.php">UPS</a></li>
+</ul>
 
-</ul>
-$adminStuff
-<h2>Links to Local Information Sites</h2>
+<h2>Interesting Sites</h2>
 <ul>
-<li><a target="_blank" href="spacestation.php">ISS Overhead Times</a></li>
-<li><a target="_blank" href="http://www.fs.usda.gov/arp">USDA Forest Service ARP</a></li>
-<li><a target="_blank" href="http://www.gcwg.org">Grand County Wilderness Group</a></li>
-<li><a target="_blank" href="http://www.rotary.org">Rotary International</a></li>
-<li><a target="_blank" href="http://www.rotary5450.org">Rotary Distrct 5450</a></li>
-<li><a target="_blank" href="http://www.granbychamber.com">Granby Chamber of Commerce</a></li>
-<li><a target="_blank" href="http://www.granbyranch.com">Granby Ranch</a></li>
-<li><a target="_blank" href="http://grand-countyconcertseries.org">Grand County Concert Series</a></li>
-<li><a target="_blank" href="http://www.grandnordic.org">Grand Nordic</a> Cross Country Skiing</li>
-<li><a target="_blank" href="http://www.wunderground.com/cgi-bin/findweather/getForecast?query=80446">Weather Unerground
-   Granby</a></li>
-</ul>
-<h2>Interesting High Tech Sites</h2>
-<ul>
+<li><a target="_blank" href="http://www.wunderground.com/personal-weather-station/dashboard?ID=KCATHOUS54#history">
+Weather Underground Near Me</a></li>
 <li><a target="_blank" href="https://dashboard.opendns.com/">OpenDNS</a></li>
 <li><a target="_blank" href="http://www.html5rocks.com/en/">HTML5 Rocks</a></li>
 <li><a target="_blank" href="http://www.sitepoint.com">Site Point</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
+<li><a target="_blank" href="spacestation.php">ISS Overhead</a></li>
 </ul>
+
 <h2>About the Internet</h2>
 <ul>
 <li><a target="_blank" href="historyofinternet.php">The History and Timeline of the Internet</a></li>
@@ -267,6 +204,7 @@ $adminStuff
 <li><a target="_blank" href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
 <li><a target="_blank" href="buildawebsite.php">So You Want to Build a Website</a></li>
 </ul>
+
 <h2>Helpful Programs and Tips</h2>
 <ul>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
@@ -310,7 +248,7 @@ href="https://github.com/bartonlp/SiteClass">GitHub
 and also at
 <a target="_blank"
 href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
-<img src="images/phpclasses-logo.gif" width='180' height='59'></a>.
+<img src="http://bartonlp.com/html/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
 <hr>
 
@@ -335,7 +273,7 @@ href="http://github.com/bartonlp/slideshow">GitHub
 <img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a> and also at
 <a target="_blank"
 href="http://www.phpclasses.org/browse/author/592640.html">
-<img src="images/phpclasses-logo.gif" width='180' height='59'
+<img src="http://bartonlp.com/html/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr/>
 <h2>PHP MySql Slide Show Class</h2>
@@ -350,7 +288,7 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 <a target="_blank" href="http://github.com/bartonlp/mysqlslideshow">GitHub
 <img id="octocat" src="http://bartonlp.com/html/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
-<img src="images/phpclasses-logo.gif" width='180' height='59'
+<img src="http://bartonlp.com/html/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
 

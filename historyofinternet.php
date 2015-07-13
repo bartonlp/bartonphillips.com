@@ -512,7 +512,8 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 <table id="tubecomputer">
 <tr><th>Tube Computer</th><tr>
 <tr><td>
-<a href="http://en.wikipedia.org/wiki/First_computer"><img src="/images/tubecpu.jpg"></a>
+<a href="http://en.wikipedia.org/wiki/First_computer">
+<img src="http://bartonlp.com/html/images/tubecpu.jpg"></a>
 </td></tr>
 </table>
 <hr>
@@ -521,13 +522,13 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 <tr><th>6502 CPU</th><th>KIM 1</th><th>Apple I</th></tr>
 <tr>
 <td>
-<img src="/images/6502cpu.jpg">
+<img src="http://bartonlp.com/html/images/6502cpu.jpg">
 </td>
 <td>
-<a href="http://en.wikipedia.org/wiki/KIM-1"><img src="/images/kim1.jpg"></a>
+<a href="http://en.wikipedia.org/wiki/KIM-1"><img src="http://bartonlp.com/html/images/kim1.jpg"></a>
 </td>
 <td>
-<a href="http://en.wikipedia.org/wiki/Apple_1"><img src="/images/Apple1.jpg"></a>
+<a href="http://en.wikipedia.org/wiki/Apple_1"><img src="http://bartonlp.com/html/images/Apple1.jpg"></a>
 </td>
 </tr>
 </table>
@@ -537,13 +538,14 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 <tr><th>8080 CPU</th><th>S100 Board</th><th>IMSAI 8080</th><tr>
 <tr>
 <td>
-<img src="/images/D8080A-1.jpg">
+<img src="http://bartonlp.com/html/images/D8080A-1.jpg">
 </td>
 <td>
-<img src="/images/8080cpu.jpg">
+<img src="http://bartonlp.com/html/images/8080cpu.jpg">
 </td>
 <td>
-<a href="http://en.wikipedia.org/wiki/IMSAI_8080"><img src="/images/imsai8800.jpg"></a>
+<a href="http://en.wikipedia.org/wiki/IMSAI_8080">
+<img src="http://bartonlp.com/html/images/imsai8800.jpg"></a>
 </td>
 </tr>
 </table>
@@ -600,7 +602,8 @@ echo <<<EOF
 $top
 $article
 <hr>
-<input type='image' id='printbtn' src='/images/print.gif' onclick="printit();"
+<input type='image' id='printbtn' src='http://bartonlp.com/html/images/print.gif'
+onclick="printit();"
   style='width: 100px'/><br>
 <!--<a href="download.pdf">Download PDF version</a> of article-->
 <hr>

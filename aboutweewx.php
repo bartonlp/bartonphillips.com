@@ -25,17 +25,17 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
-<img class='photo' src='weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>
-<img class='photo' src='weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
+<img class='photo' src='http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>
+<img class='photo' src='http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
 <p>
 I have had a Weather Station for the past 20 years. First at our
-home in Canoga Park, CA and now at our home in Granby Ranch, CO.
+home in Canoga Park, CA, then at our home in Granby Ranch, CO., and now at our home in Newbury Park, CA.
 My first weather station was an Origon Scientific which I puchased
 in the early 1990's. When we moved to Granby Ranch, in the high
 mountains, I bought a
 <a href="http://www.davis.com/Category/Davis_Instruments_Vantage_Vue_Wireless_Weather_Station/59174?referred_id=20948&gclid=Cj0KEQiA6JemBRC5tYLRwYGcwosBEiQANA3IB0U22-9m8dRlzQCt5kVJp-ORsTKknZfDdOK204-IBmoaAjNt8P8HAQ">
 Davis Instruments Vantage Vue Wireless Weather Station</a>. I changed
-my station from the Origon Scientific to Davis because we now live
+my station from the Origon Scientific to Davis because we lived
 at 8,400 feet above sea level and the Origon was not rated for such
 high altitude.</p>
 
@@ -47,7 +47,7 @@ written in Python and the website has very good documentation and
 support. As with most thing Linux the weather station software is
 free and open source.</p>
 
-<img class='photo' src="weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">
+<img class='photo' src="http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">
 
 <p>
 I installed the Davis equipment on my back patio. The system is very
@@ -67,7 +67,7 @@ because I wanted to be able to turn it on and off and experment with
 different operationg systems etc.</p>
 
 <p>
-<img class='photo' src='weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
+<img class='photo' src='http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
 I bought a <a href="http://www.raspberrypi.org/">Raspberry PI</a>
 which is a small low power fanless system. It sells for around $40 and uses very
 little electricity. The PI has an ARM cpu but runs a version of

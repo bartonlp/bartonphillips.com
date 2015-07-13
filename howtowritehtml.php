@@ -266,7 +266,7 @@ breaks that will be removed as well as these extra spaces   .</p>
    <pre>
 <code>&lt;img&gt; src=&quot;/images/msfree.png&quot; /&gt;</code></pre>
    <div class="example">
-      <img src="images/msfree.png" alt="MS Free image" >
+      <img src="http://bartonlp.com/html/images/msfree.png" alt="MS Free image" >
    </div>
    <p>There are several other attributes for the 'img' tag that are useful:</p>
       <ul>
@@ -282,7 +282,7 @@ breaks that will be removed as well as these extra spaces   .</p>
 <code>&lt;img&gt; src=&quot;/images/msfree.png&quot; width=&quot;200&quot; height=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
 
    <div class="example">
-      <img src="images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
+      <img src="http://bartonlp.com/html/images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
    </div>
    <p>As you can see the image is distorted. The actual image size is 100 by 31 pixles which is rectangular. By setting the width
       and height to 200 pixles each we have forced the image to be square. To keep the original ratios you can specify only the
@@ -290,7 +290,7 @@ breaks that will be removed as well as these extra spaces   .</p>
    <pre>
 <code>&lt;img&gt; src=&quot;/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
    <div class="example">
-      <img src="images/msfree.png" width="200" border="5" alt="MS Free" >
+      <img src="http://bartonlp.com/html/images/msfree.png" width="200" border="5" alt="MS Free" >
    </div>
    <p>You will notice that the image becomes 'pixalized' as the size is expanded beyond the original dimentions.</p>
    

@@ -30,13 +30,15 @@ while(<>) {
 
   $url =~ /\/([^\/]*)$/;
   my $base = $1;
+
+  next if not -e $base;
   
   my($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
    $atime,$mtime,$ctime,$blksize,$blocks)
       = stat("$base");
 
   my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime($mtime);
-  
+
   while(<>) {
     if(not /<lastmod>/) {
       print;

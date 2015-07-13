@@ -1,6 +1,5 @@
 http://www.bartonphillips.com/index.php
 http://www.bartonphillips.com/aboutwebsite.php
-http://www.bartonphillips.com/blp-blog.php
 http://www.bartonphillips.com/buildawebsite.php
 http://www.bartonphillips.com/dynamicscript.php
 http://www.bartonphillips.com/easter-example.php
