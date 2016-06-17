@@ -28,13 +28,13 @@ if(isset($arg['statcounter'])) {
   }
 }
 
-$pageFooterText = <<<EOF
+return <<<EOF
 <footer>
 <h2><a target="_blank" href='aboutwebsite.php'>About This Site</a></h2>
 <div id="address">
 <address>
   Copyright &copy; $this->copyright<br>
-Barton Phillips, PO Box 4152, CO 80446-4152<br>
+Barton Phillips, 828 Cayo Grande Ct. Newbury Park CA 91320<br>
 <a
  href='mailto:bartonphillips@gmail.com'>bartonphillips@gmail.com
 </a>

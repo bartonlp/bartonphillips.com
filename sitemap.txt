@@ -4,7 +4,6 @@ http://www.bartonphillips.com/buildawebsite.php
 http://www.bartonphillips.com/dynamicscript.php
 http://www.bartonphillips.com/easter-example.php
 http://www.bartonphillips.com/easterdatecalculator.php
-http://www.bartonphillips.com/featurescheck.php
 http://www.bartonphillips.com/filereader.php
 http://www.bartonphillips.com/historyofinternet.php
 http://www.bartonphillips.com/howtheinternetworks.php

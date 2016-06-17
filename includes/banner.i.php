@@ -1,15 +1,21 @@
 <?php
-$pageBannerText = <<<EOF
+return <<<EOF
 <header>
-<div>
-   <a href="http://www.bartonphillips.com">
-     <img id='blpimg' src="http://bartonlp.com/html/images/blp-image.png" width='90' height-'120'
-      alt="Barton's Picture"/></a>
-   <a href="http://linuxcounter.net/">
-   <img id='linuxcounter' src="http://bartonlp.com/html/images/146624.png" width='190' height='110'
-    alt="linux counter image."/>
-   </a>
-</div>
+  <a href="http://www.bartonphillips.com">
+    <img id='logo' width="90" height="120"
+      src="/blp/images/blp-image.png"></a>
+  <!-- the 'a' tag must be at the end of the image src otherwise we get an '-'-->
+  <a href="http://linuxcounter.net/">
+    <img id='linuxcounter' width="190" height="110"
+      src="/tracker.php?page=normal&id=$this->LAST_ID">
+  </a>
 $mainTitle
+<noscript>
+<p style='color: red; background-color: #FFE4E1; padding: 10px'>
+<img src="/tracker.php?page=noscript&id=$this->LAST_ID">
+Your browser either does not support <b>JavaScripts</b> or you have JavaScripts disabled, in either case your browsing
+experience will be significantly impaired. If your browser supports JavaScripts but you have it disabled consider enabaling
+JavaScripts conditionally if your browser supports that. Sorry for the inconvienence.</p>
+</noscript>
 </header>
 EOF;

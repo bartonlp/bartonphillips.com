@@ -1,8 +1,8 @@
 <?php
 // create a data-url for <script> tag.
 // dynamically create a <script> tag with a data url for the src= item
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp();
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site);
 
 $data =<<<EOF
 <!DOCTYPE HTML>
@@ -125,7 +125,7 @@ jQuery(document).ready(function($) {
     iframe.src = url;
     iframe.width = '50%';
     section.appendChild(iframe);
-    $('<p>Prtty COOL. To leave a comment go to my <a href="blp-blog.php">BLOG</a> Page.</p><p>Return to <a href="">My Home Page</a></p>').appendTo(section);
+    $('<p>Return to <a href="/">My Home Page</a></p>').appendTo(section);
   }
   $(".php").addClass("brush: js");
   $(".html").addClass("brush: xml");

@@ -1,6 +1,6 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp; // count page
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site); // count page
 $h->title = "rssfeed.pl - Generate RSS feed from web pages";
 $h->banner = "<h1>Man Page for rssfeed.pl</h1>";
 $top = $S->getPageTop($h);

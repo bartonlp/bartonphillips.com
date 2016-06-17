@@ -1,14 +1,20 @@
 User-agent: *
-Disallow: resizeimg.php
-Disallow: download.php
-Disallow: test/
-Disallow: sqlscripts/
-Disallow: js/
-Disallow: wildernessgroup/
-Disallow: tbs_class/
-Disallow: ckeditor/
-Disallow: admin/
-Disallow: css/
-Disallow: images/
-Disallow: other/
+Crawl-delay: 30
+Disallow: /MySitemap.php
+Disallow: /resizeimg.php
+Disallow: /download.php
+Disallow: /downloadpdf.php
+Disallow: /make-webstats.php
+Disallow: /test/
+Disallow: /other/
+Disallow: /script/
+Disallow: /fonts/
+Disallow: /geo/
+Disallow: /heidi/
+Disallow: /weewx-images/
+Disallow: /tbs_class/
+Disallow: /sqlscripts/
+
+User-agent: Baiduspider
+Disallow: /
 

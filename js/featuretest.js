@@ -3,20 +3,6 @@
 // as well as the audio and video feature items it does support (for example ogg, mp3 etc)
 // are written to a database table 'browserfeatures' at bartonphillips.com
 // The table looks like:
-/*
-CREATE TABLE browserfeatures (
-  ip varchar(20), # nnn.nnn.nnn.nnn plus a pad
-  agent text,     # agent string
-  features text,  # the no-features we found
-  audio text,     # if audio and video are not a no-
-  vidio text,     # then the types like ogg, mp3, avi etc.
-  lasttime timestamp,
-  primary key(ip, agent(100))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-*/
-// We will use Ajax to send the info to the server.
-// We are also using jQuery which should have been loaded by the main
-// page.
 
 // toType is an enhanced typeof
 
@@ -69,6 +55,7 @@ function doit() {
       audio.push("m4a="+x);
     }
   }
+
   if(Modernizr.video) {
     if((x=Modernizr.video.ogg)) {
       video.push("ogg="+x);
@@ -93,19 +80,6 @@ function doit() {
     }
   }
 
-  //console.log(notok);
-  // we need the full path here too as this is called from other sites
-  
-  $.ajax({
-    url: 'http://www.bartonphillips.com/postfeatures.php?callback=?',
-    data: { features: notok.join(','), audio: audio.join(','), video: video.join(',') },
-    success: function(data) {
-           if(/^Error:/.test(data.err)) console.log("Not Ok: :"+data.err);
-         },           
-         error: function(x, status, y) { console.log("Error:"+status);},
-         dataType: 'jsonp'
-  });
-
   ok.push("Audio: " +audio);
   ok.push("Video: " +video);
 }
@@ -114,10 +88,4 @@ function doit() {
 // jqXHR.complete(...). The 'testmodernizer.php' does just that to
 // render 'ok' and 'notok'.
 
-// This is used by my other sites so we need the full path!
-
-//var jqXHR =
-//jQuery.getScript("http://www.bartonphillips.com/js/modernizr.custom.20263.extras.js", function() {
-var jqXHR = jQuery.getScript("http://www.bartonphillips.com/js/modernizr.2.8.3.js", function() {
-  doit();
-});
+var jqXHR = jQuery.getScript("js/modernizr-custom.js", doit);

@@ -1,7 +1,7 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
 
-$S = new Blp;
+$S = new $_site['className']($_site);
 
 $h->title = "ISS Info";
 $h->banner = "<h1>International Space Station Information</h1>";

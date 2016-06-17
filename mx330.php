@@ -1,10 +1,9 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp;
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site);
 $h->title = "Setup Canon MX330 Under Ubuntu Linux";
 $h->banner = "<h1>Setup Canon MX330 Under Ubuntu Linux</h1>";
-$top = $S->getPageTop($h);
-$footer = $S->getFooter("<hr/>");
+list($top, $footer) = $S->getPageTopBottom($h, '<hr>');
 
 echo <<<EOF
 $top

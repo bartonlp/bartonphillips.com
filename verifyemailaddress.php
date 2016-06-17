@@ -1,20 +1,12 @@
 <?php
-// This is a more general version of the one I used for grandchorale
-
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp;
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site);
 
 $DEBUG=0; // set to 1 for debug info or zero for none
 
 $S->nl2br = 1;
 
-if($DEBUG) {
-  $echo_command = $echo_response = 1;
-} else {
-  $echo_command = $echo_response = 0;
-}
-
-if(!$S->isBlp()) {
+if(!$S->isMe()) {
   $errorhdr = <<<EOF
 <!DOCTYPE HTML>
 <html lang="en">
@@ -104,15 +96,19 @@ EOF;
 // Verify
 
 function verify($S, $DEBUG) {
-  //vardump($S, "S");
+  if($DEBUG) {
+    $echo_command = $echo_response = 1;
+  } else {
+    $echo_command = $echo_response = 0;
+  }
 
   $nl2br = $S->nb2br;
   
   $uploads_dir = "/tmp";
   $inx = 0;
   
-  foreach ($_FILES["tempfile"]["error"] as $key => $error) {
-    if ($error == UPLOAD_ERR_OK) {
+  foreach($_FILES["tempfile"]["error"] as $key => $error) {
+    if($error == UPLOAD_ERR_OK) {
       $tmp_name = $_FILES["tempfile"]["tmp_name"][$key];
       $filename = $_FILES["tempfile"]["name"][$key];
       move_uploaded_file($tmp_name, "$uploads_dir/$filename");
@@ -209,17 +205,16 @@ EOF;
 
     asort($mxs );
     reset($mxs);
-
     $to_mail = $contactEmail;
 
     $ok = 0;
-  
+
     while(list($mx_host, $mx_weight) = each($mxs) ) {
       if($DEBUG) echo "<br>Trying MX Server: $mx_host, Weight: $mx_weight<br><br>\n";
 
       $smtp_server = $mx_host; 
 
-      $handle = smtp_connect($smtp_server, 25, 30, $echo_command, $echo_response, $nl2br);
+      $handle = smtp_connect($smtp_server, 25, 1, $echo_command, $echo_response, $nl2br);
 
       if(!$handle) {
         echo "Can't connect to $smtp_server<br>\n";
@@ -231,7 +226,6 @@ EOF;
       } else {
         $d = $domain;
       }
-      //echo "$mx_host, $d<br>";
      
       $ret = smtp_command($handle, "EHLO $d\r\n", $echo_response, $nl2br);
 
@@ -330,6 +324,12 @@ EOF;
 // ---------------------------------------------------------------------------
 
 function verifyone($S, $DEBUG) {
+  if($DEBUG) {
+    $echo_command = $echo_response = 1;
+  } else {
+    $echo_command = $echo_response = 0;
+  }
+
   $contactEmail = $_POST['emailaddress'];
 
   $nl2br = $S->nl2br;
@@ -356,7 +356,7 @@ EOF;
     echo "Error: $contactEmail<br>\n$footer";
     exit();
   }
-  
+
   if(!getmxrr($host, $mx_records, $mx_weight)) {
     echo "getmxrr failed: $host<br>\n$footer";
     $mx_records = array($host);
@@ -365,7 +365,7 @@ EOF;
   }
 
   unset($mxs);
-  
+
   // Put the records together in a array we can sort
 
   for($i=0; $i<count($mx_records); $i++){
@@ -376,18 +376,20 @@ EOF;
   reset($mxs);
 
   //vardump($mxs, "mxs");
-  
+
   $to_mail = $contactEmail;
 
   $ok = 0;
-  
+
   while(list($mx_host, $mx_weight) = each($mxs) ) {
     if($DEBUG) echo "<br>Trying MX Server: $mx_host, Weight: $mx_weight<br><br>\n";
 
     $smtp_server = $mx_host; 
 
-    $handle = smtp_connect($smtp_server, 25, 30, $echo_command, $echo_response, $nl2br);
+    $handle = smtp_connect($smtp_server, 25, 1, $echo_command, $echo_response, $nl2br);
 
+    //echo "smtp_server: $smtp_server<br>handle: $handle<br>";
+    
     if(!$handle) {
       echo "Can't connect to $smtp_server<br>\n";
       continue;
@@ -435,13 +437,13 @@ EOF;
 
     // This looks like an OK but does the server just say OK to everything?
 
-    $ret = smtp_command($handle, "RCPT TO:<xyz$to_mail>\r\n", $echo_response, 1);
+    $ret = smtp_command($handle, "RCPT TO:<xyz123blp$to_mail>\r\n", $echo_response, 1);
     if($DEBUG) echo "REPT TO: $ret<br>\n";
     if(preg_match("/^550/sm", $ret)) {
       //echo "RCPT TO Error: $ret<br>\n";
       $ok = 1;
     } else {
-      //echo "This Surver says OK to anything<br>\n";
+      //echo "This Server says OK to anything<br>\n";
       $ok = 2;
     }
     smtp_command($handle, "QUIT\r\n");
@@ -462,7 +464,7 @@ EOF;
       break;
   }         
 
-  echo $footer;
+  echo "<hr>$footer";
 }
 
 // ********************************************************************************
@@ -471,9 +473,10 @@ EOF;
 // FUNCTIONS
 // do a smtp connect
 
-function smtp_connect($host, $port, $timeout=30, $echo_command=False, $echo_response=False, $nl2br=False) {
+function smtp_connect($host, $port, $timeout=10, $echo_command=false, $echo_response=false, $nl2br=false) {
   $errno = 0;
   $errstr = 0;
+
   if($echo_command) {
     if($nl2br) {
       echo nl2br("CONNECTING TO $host\r\n");
@@ -482,16 +485,14 @@ function smtp_connect($host, $port, $timeout=30, $echo_command=False, $echo_resp
     }
   }
 
-  $handle = @fsockopen($host, $port, $errno, $errstr, $timeout);
-
-//echo "handle=$handle, errno=$errno, errstr=$errstr<br><br>\n";
+  $handle = fsockopen($host, $port, $errno, $errstr, $timeout);
 
   if(!$handle || $handle === false || $errstr != '') {
     if($echo_command) {
       if($nl2br) {
-        echo nl2br("CONNECTION FAILED\r\n");
+        echo nl2br("CONNECTION FAILED\r\nerrstr: $errstr\r\n");
       } else {
-        echo "CONNECTION FAILED\r\n";
+        echo "CONNECTION FAILED\r\nerrstr: $errstr\r\n";
       }
     }
     return false;
@@ -523,7 +524,7 @@ function smtp_connect($host, $port, $timeout=30, $echo_command=False, $echo_resp
 
 // Send a command
 
-function smtp_command($handle, $command, $echo_command=False, $nl2br=False) {
+function smtp_command($handle, $command, $echo_command=false, $nl2br=false) {
   if($echo_command) {
     if($nl2br) {
       echo nl2br(escapeltgt($command));

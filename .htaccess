@@ -1,26 +1,27 @@
-Options +Indexes +Includes +FollowSymLinks
-
 # BEGIN EXPIRES
 <IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresDefault "access plus 10 days"
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType text/plain "access plus 1 month"
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType application/x-javascript "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType application/x-icon "access plus 1 year"
+<Files *.php>
+  ExpiresByType text/html A0
+</Files>
+  ExpiresActive On
+  ExpiresDefault "access plus 10 days"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType text/plain "access plus 1 month"
+  ExpiresByType image/gif "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType application/x-javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType application/x-icon "access plus 1 year"
 </IfModule>
 # END EXPIRES
 
 # BEGIN NO Cookies for static items
-# <FilesMatch "\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|ico|swf)$">
-# 	RequestHeader unset Cookie
-# 	Header unset Cookie
-#  	Header unset Set-Cookie
-# </FilesMatch>
+<FilesMatch "\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|ico|swf)$">
+	RequestHeader unset Cookie
+	Header unset Cookie
+ 	Header unset Set-Cookie
+</FilesMatch>
 # END NO Cookies
 
 AddType application/x-javascript .js
@@ -36,15 +37,18 @@ AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
 
 # 11/3/10 hack attempts
 RewriteEngine on
+# Don't allow these robots
+RewriteCond %{HTTP_USER_AGENT} "ahrefsbot|baiduspider|ezooms|yandex\.com" [NC]
+RewriteRule ^.*$ http://bartonlp.com/html/badbot.php [R,L]
+
+# direct robots.txt to robots.php
+RewriteRule ^robots\.txt$ robots.php [L,NC]
+RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 
 RewriteCond %{HTTP_USER_AGENT} ^libwww-perl
 RewriteRule .* - [F]
 
-RewriteCond %{REQUEST_URI} ^/webstats.php
-RewriteCond %{REQUEST_METHOD} POST
-RewriteRule .* - [F]
-
-RewriteRule ^download.pdf$ downloadpdf.php [L]
+RewriteRule ^download\.pdf$ downloadpdf.php [L]
 
 # get rid of semalt and buttons-for-website
 RewriteCond %{HTTP_REFERER} semalt\.com [NC] 

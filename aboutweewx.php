@@ -1,9 +1,9 @@
 <?php
 // BLP 2015-03-31 -- About my weather station.
 
-require_once("/var/www/includes/siteautoload.class.php");
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
 
-$S = new Blp;
+$S = new $_site['className']($_site);
 
 $h->title = "About Weather Station";
 $h->banner = "<h1>About My Weather Station</h1>";
@@ -25,8 +25,8 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
-<img class='photo' src='http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>
-<img class='photo' src='http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
+<img class='photo' src='/weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>
+<img class='photo' src='/weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
 <p>
 I have had a Weather Station for the past 20 years. First at our
 home in Canoga Park, CA, then at our home in Granby Ranch, CO., and now at our home in Newbury Park, CA.
@@ -47,7 +47,7 @@ written in Python and the website has very good documentation and
 support. As with most thing Linux the weather station software is
 free and open source.</p>
 
-<img class='photo' src="http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">
+<img class='photo' src="/weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">
 
 <p>
 I installed the Davis equipment on my back patio. The system is very
@@ -67,7 +67,7 @@ because I wanted to be able to turn it on and off and experment with
 different operationg systems etc.</p>
 
 <p>
-<img class='photo' src='http://bartonlp.com/bartonphillipsdotcom/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
+<img class='photo' src='/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
 I bought a <a href="http://www.raspberrypi.org/">Raspberry PI</a>
 which is a small low power fanless system. It sells for around $40 and uses very
 little electricity. The PI has an ARM cpu but runs a version of

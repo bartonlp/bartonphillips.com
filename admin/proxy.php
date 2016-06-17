@@ -27,4 +27,3 @@ curl_setopt($ch, CURLOPT_HEADER, false); // don't want header
 
 curl_exec($ch); // The body is output
 curl_close($ch);
-?>

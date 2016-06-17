@@ -1,7 +1,7 @@
 <?php
 // BLP 2014-05-12 -- FireReader example: http://www.html5rocks.com/en/tutorials/file/dndfiles/
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp; // takes an array if you want to change defaults
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site); // takes an array if you want to change defaults
 
 $h->extra = <<<EOF
 <script>

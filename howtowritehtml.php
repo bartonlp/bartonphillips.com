@@ -7,8 +7,8 @@
 
 if(!$S) {
   //No site class so use blp
-  require_once("/var/www/includes/siteautoload.class.php");
-  $S = new Blp;
+  $_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+  $S = new $_site['className']($_site);
   $h->title = "How to write html";
   $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
   $h->extra = <<<EOF
@@ -51,8 +51,8 @@ code {
   </style>
 EOF;
 }
-?>
 
+echo <<<EOF
 <a name="top-of-page"></a>
 <div id="main" style="background-color: white; padding: 5px;">
    <h2>Write simple HTML</h2>
@@ -438,9 +438,8 @@ jQuery(document).ready(function($) {
   });
 });
 </script>
+EOF;
 
-<?php
 if($dofooter) {
   echo $footer;
 }
-?>

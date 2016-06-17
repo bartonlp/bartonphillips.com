@@ -17,14 +17,14 @@
 // and one for the site information ($siteinfo). These are used by the Database class and 
 // SiteClass.class.php.
    
-define('TOP', '/var/www'); 
+define('TOP', '/var/www'); // on lamphost.net this would be '/home/bartonlp'
 define('INCLUDES', TOP."/includes");
 define('DATABASE_ENGINES', INCLUDES."/database-engines");
 define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in siteautoload.php!
 
 // Email info and logfile location
 
-define('LOGFILE', "/tmp/database.log");
+//define('LOGFILE', "/tmp/database.log");
 
 define('EMAILADDRESS', "bartonphillips@gmail.com");
 define('EMAILRETURN', "bartonphillips@gmail.com");
@@ -45,16 +45,25 @@ $dbinfo = array('host' => 'localhost',
 // This site has no members so no membertable.
 // See the SiteClass constructor for other possible values like 'count', 'emailDomain' etc.
 
-$siteinfo = array('siteDomain' => "www.bartonphillips.com",
-                  'siteName' => "The Monday Night Pocker Club",
-                  'copyright' => "2015 Barton L. Phillips",
-                  'className' => "PokerClub",
-                  //'subDomain' => "pokerclub", // For setcookie path
-                  'memberTable' => "pokermembers",
-                  'headFile' =>  SITE_INCLUDES . "/head.i.php",
-                  'bannerFile' => SITE_INCLUDES . "/banner.i.php",
-                  //footerFile => SITE_INCLUDES."/footer.i.php"
+$siteinfo = array('siteDomain' => "bartonphillips.com",
+                  'siteName' => "Bartonphillips",
+                  'mainTitle' => "Barton Phillips Home Page",
+                  // 'emailDomain' => null,
+                  'path' => '/var/www/bartonphillips',
+                  'className' => "SiteClass",
+                  'copyright' => "2016 Barton L. Phillips",
+                  'author' => "Barton L. Phillips, mailto:bartonphillips@gmail.com",
+                  //'memberTable' => "blpmembers",
+                  'masterdb' => 'barton', // where bots, tracker and analysis are
+                  'dbinfo' => $dbinfo,
+                  'headFile' => SITE_INCLUDES."/head.i.php",
+                  'bannerFile' => SITE_INCLUDES."/banner.i.php",
+                  'footerFile' => SITE_INCLUDES."/footer.i.php",
                   'count' => true,
                   'countMe' => true, // Count BLP
-                  'myUri' => "bartonphillips.dyndns.org" // If we are local (at home) then 'localhost'
+                  //'daycountwhat' => null,
+                  'analysis' => true,                  
+                  'trackerImg1' => "/images/blp-image.png", // script
+                  'trackerImg2' => "/images/146624.png", // normal
+                  'myUri' => "bartonphillips.dyndns.org"
                  );

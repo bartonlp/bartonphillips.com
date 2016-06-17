@@ -1,6 +1,6 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp;
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site);
 $h->title = "RSS Generator Software";
 $h->banner = "<h1>RSS Generator</h1>";
 $top = $S->getPageTop($h);

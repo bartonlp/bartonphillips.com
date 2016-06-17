@@ -1,6 +1,6 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp; // takes an array if you want to change defaults
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site); // takes an array if you want to change defaults
 
 $h->title = "So You Want to Build a Website";
 $h->banner = "<h1 class='center'>So You Want to Build a Website</h1><hr>";
@@ -125,10 +125,24 @@ echo $top;
   <li><a href="http://1and1.com">1and1.com</a>.
     I host <a href="http://www.myphotochannel.com">www.myphotochannel.com</a> with
     1and1 and have been quite satisfied with their service. Domains are via GoDaddy and 1and1 offers
-    a lot of first year deals, after the first year they are about the same as most other ISP's.</li>
+    a lot of first year deals, after the first year they are about the same as most other
+    ISP's.</li>
+  <li><a href="http://www.digitalocean.com">DigitalOcean.com</a>.
+    I currently host www.bartonphillips.com, www.bartonphillips.org, www.bartonphillips.net,
+    www.bartonlp.com, www.endpolio.com, www.applitec.com and www.granbyrotary.com at DigitalOcean. I
+    have a VPS where I have FULL adminstrator (root) access. The server is fast, economical and
+    secure. This server does require a good understanding of system administration however; there is
+    very little hand holding. The hosting costs $10/month. Most of the above domains are registered
+    with <a href="www.enom.com">Enom.com</a> for $15/year each.</li>
+  <li><a href="http://www.justhost.com">JustHost.com</a>.
+    I currently host www.conejoskiclub.org with JustHost. This is a 'shared' server which means one
+    does not have administrator (root) privileges. There are many other websites being served from
+    this server and as a result one does not get much to say about how the server is run, however,
+    as a result the monthly charges start at $3.95/month with a domain name and WordPress installed
+    and ready. I personally HATE WordPress but it does make it easy to get started.</li>
 </ul>
 
-<p>There are thousands of ISP's from very very big to small. Any of the three above should be pretty
+<p>There are thousands of ISP's from very very big to small. Any of those above should be pretty
   safe.</p>
 
 <p>Go to the website of any one of the above and you can look and see what domain names are
@@ -146,7 +160,7 @@ sharing the server with a number of other people. You will not be able to intera
 they will not be able to interact with you. What it means however is that the ISP will make sure
 that everything on the server is secure and that your data is always safe and backed up. It also
 possibly means that once in a while things may slow down if someone elses traffic goes way up. There
-are other types of dedicated server plans but they are much more expensive and beginners would not
+are other types of dedicated server plans but they are more expensive and beginners would not
 know how to use them anyhow.
 Almost all ISP's have both monthly plans and yearly plans. To start off I would suggest the monthly
 plan as the difference between the two is not much and with a monthly plan you are not tied down.

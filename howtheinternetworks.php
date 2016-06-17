@@ -1,6 +1,6 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp; // takes an array if you want to change defaults
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site); // takes an array if you want to change defaults
 
 $h->title = "How the Internet Works";
 $h->banner = "<h1 class='center'>How the Internet Works</h1><hr>";

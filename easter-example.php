@@ -1,5 +1,5 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
 
 if (empty($_POST['year'])) {
   $year = date("Y");
@@ -28,7 +28,7 @@ for($i=1944; $i < 2070; ++$i) {
   }
 }
 
-$S = new Blp;
+$S = new $_site['className']($_site);
 
 $h->title = "Easter Date Calculator";
 $h->script = <<<EOF

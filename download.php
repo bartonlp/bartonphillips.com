@@ -1,6 +1,6 @@
 <?php
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp; // count page
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site); // count page
 
 $file = $_GET['file'];
 

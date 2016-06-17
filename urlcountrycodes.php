@@ -1,7 +1,7 @@
 <?php
 // Show the ip and counter tables
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp();
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site);
 
 $self = $S->self;
 

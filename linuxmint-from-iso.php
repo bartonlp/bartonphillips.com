@@ -1,7 +1,7 @@
 <?php
 // How to load LinuxMint 17 from iso
-require_once("/var/www/includes/siteautoload.class.php");
-$S = new Blp; // takes an array if you want to change defaults
+$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$S = new $_site['className']($_site); // takes an array if you want to change defaults
 
 $h->title = "Load LinuxMint 17 from ISO";
 $h->banner = "<h1 class='center'>How to Load LinuxMint via ISO from Disk</h1>";

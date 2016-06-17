@@ -2,16 +2,16 @@
 // Start main jQuery logic after document ready
 
 if(!localStorage.length) {
-        // Load the big image. This is about 1.6 Meg. Even when this is cached it still is a big load!
-      // So this first time we load the full 1.6 Meg but on subsequent loads the base64 URI is much
-      // smaller. The product of the width and height is about 8 Meg.
+  // Load the big image. This is about 1.6 Meg. Even when this is cached it still is a big load!
+  // So this first time we load the full 1.6 Meg but on subsequent loads the base64 URI is much
+  // smaller. The product of the width and height is about 8 Meg.
 
   var image = new Image;
   var d = new Date(); 
   image.src = "images/CIMG0020.JPG?_="+d.getTime(); // do not cache
 
-      // Wait till the image is fully loaded which may be after READY
-      // above.
+  // Wait till the image is fully loaded which may be after READY
+  // above.
 
   $(image).load(function() {
     localStorage.orgsize = this.width * this.height;
