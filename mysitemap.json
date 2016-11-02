@@ -1,0 +1,28 @@
+{
+    "siteDomain": "bartonphillips.com",
+    "siteName": "Bartonphillips",
+    "mainTitle": "Barton Phillips Home Page",
+    "path": "/var/www/bartonphillips",
+    "className": "SiteClass",
+    "copyright": "2016 Barton L. Phillips",
+    "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com",
+    "masterdb": "barton",
+    "dbinfo": {
+        "host": "localhost",
+        "user": "barton",
+        "password": "7098653",
+        "database": "bartonphillipsdotcom",
+        "engine": "mysqli"
+    },
+    "headFile": "/var/www/bartonphillipsdotcom/includes/head.i.php",
+    "bannerFile": "/var/www/bartonphillipsdotcom/includes/banner.i.php",
+    "footerFile": "/var/www/bartonphillipsdotcom/includes/footer.i.php",
+    "count": true,
+    "countMe": true,
+    "trackerImg1": "/images/blp-image.png",
+    "trackerImg2": "/images/146624.png",
+    "myUri": "bartonphillips.dyndns.org",
+    "EMAILADDRESS": "bartonphillips@gmail.com",
+    "EMAILRETURN": "bartonphillips@gmail.com",
+    "EMAILFROM": "webmaster@bartonphillips.com"
+}

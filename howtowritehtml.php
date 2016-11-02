@@ -6,7 +6,7 @@
 // IF the site that is including this file has NOT included jQuery this will NOT WORK!
 
 if(!$S) {
-  //No site class so use blp
+  //No site class
   $_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
   $S = new $_site['className']($_site);
   $h->title = "How to write html";
@@ -26,9 +26,9 @@ code {
   </style>
 EOF;
 
-  $top = $S->getPageTop($h);
-  $footer = $S->getFooter("<hr>");
+  list($top, $footer) = $S->getPageTopBottom($h);
   $dofooter = true;
+
   echo <<<EOF
 $top
 EOF;
@@ -53,6 +53,7 @@ EOF;
 }
 
 echo <<<EOF
+<div id="top-of-page2">This is the top of Page</div>
 <a name="top-of-page"></a>
 <div id="main" style="background-color: white; padding: 5px;">
    <h2>Write simple HTML</h2>
@@ -266,7 +267,7 @@ breaks that will be removed as well as these extra spaces   .</p>
    <pre>
 <code>&lt;img&gt; src=&quot;/images/msfree.png&quot; /&gt;</code></pre>
    <div class="example">
-      <img src="http://bartonlp.com/html/images/msfree.png" alt="MS Free image" >
+      <img src="http://bartonphillips.net/images/msfree.png" alt="MS Free image" >
    </div>
    <p>There are several other attributes for the 'img' tag that are useful:</p>
       <ul>
@@ -282,7 +283,7 @@ breaks that will be removed as well as these extra spaces   .</p>
 <code>&lt;img&gt; src=&quot;/images/msfree.png&quot; width=&quot;200&quot; height=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
 
    <div class="example">
-      <img src="http://bartonlp.com/html/images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
+      <img src="http://bartonphillips.net/images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
    </div>
    <p>As you can see the image is distorted. The actual image size is 100 by 31 pixles which is rectangular. By setting the width
       and height to 200 pixles each we have forced the image to be square. To keep the original ratios you can specify only the
@@ -290,7 +291,7 @@ breaks that will be removed as well as these extra spaces   .</p>
    <pre>
 <code>&lt;img&gt; src=&quot;/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
    <div class="example">
-      <img src="http://bartonlp.com/html/images/msfree.png" width="200" border="5" alt="MS Free" >
+      <img src="http://bartonphillips.net/images/msfree.png" width="200" border="5" alt="MS Free" >
    </div>
    <p>You will notice that the image becomes 'pixalized' as the size is expanded beyond the original dimentions.</p>
    
@@ -331,17 +332,27 @@ breaks that will be removed as well as these extra spaces   .</p>
 
    <pre>
 <code>&lt;a name=&quot;top-of-page&gt;&lt;/a&gt;</code></pre>
+   <p>You can also use the 'id' attribute as the link address like this:</p>
+   <pre>
+<code>&lt;div id=&quot;top-of-page2&gt;This is the top of the page&lt;/div&gt;</code></pre>
 
    <p>I can put a link here to go to the top of the page like this:</p>
 
    <pre>
 <code>&lt;a href=&quot;#top-of-page&quot;&gt;Go To The Top Of This Page&lt;/a&gt;</code></pre>
 
+   <pre>
+<code>&lt;a href=&quot;#top-of-page2&quot;&gt;Go To The Top Of Page DIV&lt;/a&gt;</code></pre>
+
    <div class="example">
       <a href="#top-of-page">Go To The Top Of This Page</a>
    </div>
 
-   <p>If you click on the above example you will move to the top of the page.</p>
+   <div class="example">
+      <a href="#top-of-page2">Go To The Top Of Page DIV</a>
+   </div>
+
+   <p>If you click on the above examples you will move to the top of the page.</p>
    <p>For further information about HTML Anchors and Links go to <a href="http://www.w3schools.com/html/html_links.asp">w3school.com HTML</a>.</p>
    <hr>
 

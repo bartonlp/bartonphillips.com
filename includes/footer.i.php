@@ -28,6 +28,8 @@ if(isset($arg['statcounter'])) {
   }
 }
 
+$lastmod = date("M j, Y H:i", getlastmod());
+
 return <<<EOF
 <footer>
 <h2><a target="_blank" href='aboutwebsite.php'>About This Site</a></h2>
@@ -44,6 +46,7 @@ Barton Phillips, 828 Cayo Grande Ct. Newbury Park CA 91320<br>
 {$arg['msg1']}
 $counterWigget
 {$arg['msg2']}
+<p>Last Modified: $lastmod</p>
 </footer>
 $statcounter
 </body>

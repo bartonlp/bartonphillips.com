@@ -20,8 +20,8 @@
 define('TOP', '/var/www'); // on lamphost.net this would be '/home/bartonlp'
 define('INCLUDES', TOP."/includes");
 define('DATABASE_ENGINES', INCLUDES."/database-engines");
-define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in siteautoload.php!
-
+//define('SITE_INCLUDES', SITE_ROOT."/includes"); // SITE_ROOT is defined in siteautoload.php!
+define('SITE_INCLUDES', __DIR__ . "/includes");
 // Email info and logfile location
 
 //define('LOGFILE', "/tmp/database.log");
@@ -45,25 +45,29 @@ $dbinfo = array('host' => 'localhost',
 // This site has no members so no membertable.
 // See the SiteClass constructor for other possible values like 'count', 'emailDomain' etc.
 
+$__year = date('Y');
+
 $siteinfo = array('siteDomain' => "bartonphillips.com",
                   'siteName' => "Bartonphillips",
                   'mainTitle' => "Barton Phillips Home Page",
                   // 'emailDomain' => null,
                   'path' => '/var/www/bartonphillips',
                   'className' => "SiteClass",
-                  'copyright' => "2016 Barton L. Phillips",
+                  'copyright' => "$__year Barton L. Phillips",
                   'author' => "Barton L. Phillips, mailto:bartonphillips@gmail.com",
                   //'memberTable' => "blpmembers",
                   'masterdb' => 'barton', // where bots, tracker and analysis are
                   'dbinfo' => $dbinfo,
-                  'headFile' => SITE_INCLUDES."/head.i.php",
-                  'bannerFile' => SITE_INCLUDES."/banner.i.php",
-                  'footerFile' => SITE_INCLUDES."/footer.i.php",
+                  'headFile' => SITE_INCLUDES . "/head.i.php",
+                  'bannerFile' => SITE_INCLUDES . "/banner.i.php",
+                  'footerFile' => SITE_INCLUDES . "/footer.i.php",
                   'count' => true,
                   'countMe' => true, // Count BLP
                   //'daycountwhat' => null,
-                  'analysis' => true,                  
                   'trackerImg1' => "/images/blp-image.png", // script
                   'trackerImg2' => "/images/146624.png", // normal
-                  'myUri' => "bartonphillips.dyndns.org"
+                  'myUri' => "bartonphillips.dyndns.org",
+                  'EMAILADDRESS' => EMAILADDRESS,
+                  'EMAILRETURN' =>EMAILRETURN,
+                  'EMAILFROM' => EMAILFROM,
                  );

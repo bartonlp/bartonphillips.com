@@ -14,3 +14,4 @@ http://www.bartonphillips.com/mx330.php
 http://www.bartonphillips.com/urlcountrycodes.php
 http://www.bartonphillips.com/verifyemailaddress.php
 http://www.bartonphillips.com/webstats-new.php
+http://www.bartonphillips.com/javascript-only.php

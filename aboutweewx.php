@@ -82,6 +82,7 @@ as my backup server as well.</p>
 
 <p>Please visit my <a href="http://www.bartonphillips.com/weewx">
 Weather Station.</a></p>
+<p>New Battery: August 22, 2016.</p>
 <hr>
 $footer
 EOF;

@@ -1,5 +1,4 @@
 User-agent: *
-Crawl-delay: 30
 Disallow: /MySitemap.php
 Disallow: /resizeimg.php
 Disallow: /download.php
@@ -11,10 +10,7 @@ Disallow: /script/
 Disallow: /fonts/
 Disallow: /geo/
 Disallow: /heidi/
-Disallow: /weewx-images/
 Disallow: /tbs_class/
 Disallow: /sqlscripts/
 
-User-agent: Baiduspider
-Disallow: /
-
+Sitemap: http://www.bartonphillips.com/Sitemap.xml

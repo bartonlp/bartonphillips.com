@@ -1,11 +1,15 @@
 <?php
+// This is used by index.php instead of webstats-new.php. However, note that this file uses
+// webstats-new.js which uses webstats-new.php for its AJAX calls!  
+// BLP 2016-06-22 -- NOTE: this uses http://bartonphillips.net/js/webstats-new.js which in turn uses
+// webstats-new.php for ALL OF IT AJAX calls!!!
 // BLP 2016-06-13 -- This version of webstats let me select the site at the top and then does the
 // rest. It does not use the webstat.i.txt but rather get everything fresh. It still uses the
 // <site>-analysis.txt files however. The is only for bartonlp.com not conejoskiclub.org! so the
 // file is just a simple php not an eval. This file is only in the 'bartonphillips' directory and
 // only used in bartonphillips.com.
 // BLP 2016-05-06 -- add get site to analysis
-// BLP 2016-01-15 -- put this in http://bartonlp.com/html/ and put simlinks in the other
+// BLP 2016-01-15 -- put this in http://bartonphillips.net/ and put simlinks in the other
 // directories.  
 // BLP 2016-01-06 -- add 'Show showall' to tracker
 // BLP 2014-11-02 -- make tracker average stay reflect the current state of the table.
@@ -42,8 +46,8 @@ $h->link = <<<EOF
 <!--[if gt IE 8]><!-->
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 <!--<![endif]-->
-  <link rel="stylesheet" href="http://bartonlp.com/html/css/tablesorter.css">
-  <link rel="stylesheet" href="http://bartonlp.com/html/css/webstats-new.css">
+  <link rel="stylesheet" href="http://bartonphillips.net/css/tablesorter.css">
+  <link rel="stylesheet" href="http://bartonphillips.net/css/webstats-new.css">
 EOF;
 
 $h->css = <<<EOF
@@ -81,7 +85,7 @@ $context  = stream_context_create($options);
 
 // Now this is going to do a POST!
 
-$ipc = file_get_contents("http://bartonlp.com/html/webstats-new.php", false, $context);
+$ipc = file_get_contents("http://www.bartonlp.com/webstats-new.php", false, $context);
 
 foreach(json_decode($ipc) as $k=>$v) {
   $ipcountry[$k] = $v;
@@ -97,34 +101,13 @@ var ipcountry = JSON.stringify($jsonIpcountry);
 var thesite = "$S->siteName";
 var myIp = "$S->myIp";
   </script>
-  <script src="http://bartonlp.com/html/js/tablesorter/jquery.tablesorter.js"></script>
-  <script src="http://bartonlp.com/html/js/webstats-new.js"></script>
+  <script src="http://bartonphillips.net/js/tablesorter/jquery.tablesorter.js"></script>
+  <script src="http://bartonphillips.net/js/webstats-new.js"></script>
 EOF;
 
 $h->title = "Web Statistics";
 $sitename = strtolower($S->siteDomain);
 $h->banner = "<h1 id='maintitle'>Web Stats For <b>$sitename</b></h1>";
-
-if($S->siteName == "Endpolio") {
-    $h->css =<<<EOF
-  <style>
-html {
-  max-width: 95%;
-  font-size: 16px;
-}
-body {
-  background-image: none;
-}
-main {
-  margin-left: 5px;
-  margin-top:  0;
-}
-img {
-  width: inherit;
-}
-  </style>
-EOF;
-}
 
 list($S->top, $S->footer) = $S->getPageTopBottom($h);
 
@@ -390,8 +373,8 @@ function renderPage($S, $page) {
   // The analysis files are updated once a day by a cron job.
   $T = new dbTables($S);
 
-  $analysis = file_get_contents("http://bartonlp.com/html/analysis/$S->siteName-analysis.i.txt");
-  if(!$analysis) echo "NOT FOUND";
+  $analysis = file_get_contents("http://bartonphillips.net/analysis/$S->siteName-analysis.i.txt");
+  if(!$analysis) $errMsg = "http://bartonphillips.net/analysis/$S->siteName-analysis.i.txt: NOT FOUND";
 
   function trackerCallback(&$row, &$desc) {
     global $S, $ipcountry;
@@ -437,14 +420,15 @@ function renderPage($S, $page) {
 
  $ret = <<<EOF
 $S->top
+$errMsg
 <form action="webstats.php" method="post">
   Select Site:
   <select name='site'>
     <option>Applitec</option>
+    <option>Allnatural</option>
     <option>Bartonlp</option>
+    <option>BartonlpOrg</option>
     <option>Bartonphillips</option>
-    <option>Conejoskiclub</option>
-    <option>Endpolio</option>
     <option>GranbyRotary</option>
     <option>Messiah</option>
     <option>Puppiesnmore</option>

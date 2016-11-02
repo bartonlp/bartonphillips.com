@@ -42,7 +42,7 @@ $h->css = <<<EOF
   <style>
 #year {
   font-size: 1em;
-  width: 3em;
+  width: 4rem;
   padding: .5em;
 }
   </style>
