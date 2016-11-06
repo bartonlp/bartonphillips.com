@@ -7,8 +7,8 @@
 
 if(!$S) {
   //No site class
-  $_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-  $S = new $_site['className']($_site);
+  $_site = require_once(getenv("SITELOAD")."/siteload.php");
+  $S = new $_site->className($_site);
   $h->title = "How to write html";
   $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
   $h->extra = <<<EOF

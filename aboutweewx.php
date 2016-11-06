@@ -1,9 +1,9 @@
 <?php
 // BLP 2015-03-31 -- About my weather station.
 
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
 
-$S = new $_site['className']($_site);
+$S = new $_site->className($_site);
 
 $h->title = "About Weather Station";
 $h->banner = "<h1>About My Weather Station</h1>";

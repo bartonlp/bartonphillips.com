@@ -1,6 +1,6 @@
 <?php
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site); // count page
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 $h->title = "Using your &quot;/etc/hosts&quot; file";
 $h->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
 list($top, $footer) = $S->getPageTopBottom($h, "<hr>");

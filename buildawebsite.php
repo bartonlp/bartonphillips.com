@@ -1,6 +1,6 @@
 <?php
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site); // takes an array if you want to change defaults
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site); // takes an array if you want to change defaults
 
 $h->title = "So You Want to Build a Website";
 $h->banner = "<h1 class='center'>So You Want to Build a Website</h1><hr>";

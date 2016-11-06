@@ -19,12 +19,14 @@ filename="BLP_BACKUP.$bkupdate.sql"
 #shift
 #rm $dir/GR_BACKUP.$dayOfWeek.*.sql.gz
 #fi
-
+echo "Bartonphillips backup "$bkupdate
 mysqldump --user=barton --no-data --password=7098653 bartonphillipsdotcom > $dir/bartonphillips.schema
 mysqldump --user=barton --add-drop-table --password=7098653 bartonphillipsdotcom >$dir/$filename
 #the schema.pl program needs the keys and fourign keys to have a format
 #of xxxId and xxxId_fk. The granbyranch database does not have that yet!
 #schema.pl granbyrotary.schema > granbyrotary.ref
 
-gzip $dir/$filename
+gzip --quiet -c $dir/$filename > $dir/$filename.gz
+rm $dir/$filename
+
 

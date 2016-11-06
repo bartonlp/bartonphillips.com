@@ -2,8 +2,8 @@
 // This file will not be in any links or in the robots.txt file so no one should
 // be able to find it.
 // Anyone that does open this file will be tracked.
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site);
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 
 $h->title = "Directory";
 $h->banner = "<h1>Directory</h1>";

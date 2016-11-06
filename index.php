@@ -1,7 +1,5 @@
 <?php
 // Main page for bartonphillips.com
-//$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-//$S = new $_site['className']($_site); // takes an array if you want to change defaults
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
@@ -157,7 +155,7 @@ $h->script = <<<EOF
     "streetAddress": "828 Cayo Grande Ct."
   },
   "email": "mailto:bartonphillips@gmail.com",
-  "image": "http://www.bartonphillips.com/images/blp-image.png",
+  "image": "http://www.bartonphillips.net/images/blp-image.png",
   "jobTitle": "Retired",
   "telephone": "(805) 716-3614",
   "birthDate": "1944-04-11",
@@ -190,7 +188,7 @@ jQuery(document).ready(function($) {
 
   // BLP 2014-08-18 -- Kill caching on toweewx
 
-  $("a[href='/blp/toweewx.php']").click(function() {
+  $("a[href='http://bartonphillips.net/toweewx.php']").click(function() {
     $(this).attr("href", "http://www.bartonlp.com/toweewx.php");
   });
 
@@ -249,7 +247,7 @@ EOF;
 list($top, $footer) = $S->getPageTopBottom($h, array('msg1'=>"<hr>"));
 
 $ip = $S->ip;
-$blpIp = $S->blpIp;
+$blpIp = $S->myIp;
 
 // Get todays count and visitors from daycounts table
 
@@ -366,7 +364,7 @@ For Linux. <b>Instead buy an HP</b>.</a></li>
 <li><a target="_blank" href="urlcountrycodes.php">Find the country give a url country code</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>
-<li><a target="_blank" href="http://bartonphillips.com/getIP.php">Check Ip Address</a></li>
+<li><a target="_blank" href="http://www.bartonlp.com/getIP.php">Check Ip Address</a></li>
 <li><a target="_blank" href="https://wiki.amahi.org/index.php/Gmail_As_Relay_On_Ubuntu">
 How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
@@ -408,11 +406,11 @@ complex as some of the popular frameworks out there.</p>
 everything working this is pretty easy.</p>
 <p>The framework is hosted at<br><a target="_blank"
 href="https://github.com/bartonlp/SiteClass">GitHub
-<img id="octocat" src="/blp/images/Octocat.jpg"></a>
+<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
 <a target="_blank"
 href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
-<img src="/blp/images/phpclasses-logo.gif" width='180' height='59'></a>.
+<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
 <hr>
 
@@ -434,10 +432,10 @@ slide show presentation.</p>
 <p>You can find my <b>Slide Show Class</b> at<br>
 <a target="_blank"
 href="http://github.com/bartonlp/slideshow">GitHub
-<img id="octocat" src="/blp/images/Octocat.jpg"></a> and also at
+<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank"
 href="http://www.phpclasses.org/browse/author/592640.html">
-<img src="/blp/images/phpclasses-logo.gif" width='180' height='59'
+<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr/>
 <h2>PHP MySql Slide Show Class</h2>
@@ -450,9 +448,9 @@ The actual images can be stored on the filesystem or in the MySql table as base6
   
 <p>You can find my <b>MySql Slide Show Class</b> at<br>
 <a target="_blank" href="http://github.com/bartonlp/mysqlslideshow">GitHub
-<img id="octocat" src="/blp/images/Octocat.jpg"></a> and also at
+<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
-<img src="/blp/images/phpclasses-logo.gif" width='180' height='59'
+<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
 

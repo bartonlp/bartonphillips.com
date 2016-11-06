@@ -1,13 +1,12 @@
 <?php
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 /*
 // HTML to PDF
 // http://mpdf1.com/manual/ Documentation
 include("/home/barton11/includes/MPDF57/mpdf.php");
 $mpdf = new mPDF;
 */
-
-$S = new $_site['className']($_site); // takes an array if you want to change defaults
 
 // For the time being NO manifest
 //$h->htmlextra = "manifest='/historyofinternet.manifest'";

@@ -1,7 +1,7 @@
 <?php
 // Privacy Statement for bartonphillips.com
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site); // takes an array if you want to change defaults
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 $h->title = "Bartonphillips.com Privacy Statement";
 
 list($top, $footer) = $S->getPageTopBottom($h);

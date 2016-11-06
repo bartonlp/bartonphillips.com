@@ -15,9 +15,8 @@
 // BLP 2014-11-02 -- make tracker average stay reflect the current state of the table.
 // BLP 2014-08-30 -- change $av to only look at last day and to allow only times less the 2hr.
 
-//$AutoLoadDEBUG = true;
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site);
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 
 $visitors = [];
 $jsEnabled = [];

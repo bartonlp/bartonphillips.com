@@ -3,7 +3,7 @@ return <<<EOF
 <header>
   <a href="http://www.bartonphillips.com">
     <img id='logo' width="90" height="120"
-      src="/blp/images/blp-image.png"></a>
+      src="http://bartonphillips.net/images/blp-image.png"></a>
   <!-- the 'a' tag must be at the end of the image src otherwise we get an '-'-->
   <a href="http://linuxcounter.net/">
     <img id='linuxcounter' width="190" height="110"

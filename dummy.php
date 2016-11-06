@@ -1,8 +1,8 @@
 <?php
 // There is only one link to this file and it is in javascript.
 
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site); // takes an array if you want to change defaults
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 
 list($top, $footer) = $S->getPageTopBottom();
 echo <<<EOF

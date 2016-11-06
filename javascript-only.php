@@ -1,8 +1,8 @@
 <?php
 // This has almost no html tags, it is all javascript
 
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
-$S = new $_site['className']($_site);
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 // Get the original php file
 $file = file_get_contents("javascript-only.php");
 // Clean up left and right arrows, $ \n and quotes. Make them all displayable.

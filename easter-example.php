@@ -1,5 +1,6 @@
 <?php
-$_site = require_once(getenv("HOME")."/includes/siteautoload.class.php");
+$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$S = new $_site->className($_site);
 
 if (empty($_POST['year'])) {
   $year = date("Y");
@@ -7,6 +8,7 @@ if (empty($_POST['year'])) {
   $year = $_POST['year'];
 }
 
+require_once("easterdatecalculator.php");
 $day = new easterdatecalculator;
 
 // My birthday is April 11, 1944. this shows how many times Easter has and will fall on that date.
@@ -27,8 +29,6 @@ for($i=1944; $i < 2070; ++$i) {
     $mybday[] = "$i-$easter";
   }
 }
-
-$S = new $_site['className']($_site);
 
 $h->title = "Easter Date Calculator";
 $h->script = <<<EOF
