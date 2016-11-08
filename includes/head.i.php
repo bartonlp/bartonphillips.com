@@ -24,8 +24,6 @@ return <<<EOF
   <script>
 var lastId = "$this->LAST_ID";
   </script>
-  <script src="http://bartonphillips.net/js/fingerprint2.js"></script>
-  <script src="http://bartonphillips.net/js/fingerprint.js"></script>
   <script src="http://bartonphillips.net/js/tracker.js"></script>
 {$arg['extra']}
 {$arg['script']}
