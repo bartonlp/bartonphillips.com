@@ -5,10 +5,10 @@
 // insert it into the blpip table. If it already exists say No Change!
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
    
-$D = new Database($_site->dbinfo);
+$S = new Database($_site);
 $myip =  gethostbyname("bartonphillips.dyndns.org"); // get my home ip address
 
-if(!$D->query("select myip from barton.myip where myip='$myip'")) {
+if(!$S->query("select myip from barton.myip where myip='$myip'")) {
   echo "NEW 'blpip': $myip\n";
   echo "*************************************************************\n";
   echo "******* IP For bartonphillips.dyndns.org HAS CHANGED ********\n";
