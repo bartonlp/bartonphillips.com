@@ -126,7 +126,7 @@ function getwebstats($S) {
 
   $T = new dbTables($S);
 
-  $query = "select blpIp as 'BLP IP', createtime as Since from $S->masterdb.blpip order by createtime desc";
+  $query = "select myip as 'BLP IP', createtime as Since from $S->masterdb.myip order by createtime desc";
 
   list($tbl) = $T->maketable($query, array('callback'=>'blpipmake', 'attr'=>array('id'=>'blpid','border'=>"1")));
 

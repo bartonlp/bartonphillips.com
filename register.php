@@ -9,6 +9,18 @@ $site = $S->siteName;
 $h->title = "Register";
 $h->css = <<<EOF
   <style>
+.lynx {
+  display: none;
+}
+  </style>
+  <!--[if lynx]>
+  <style>
+.lynx {
+  display: block;
+}
+  </style>
+  <![endif]-->
+  <style>
 input {
   font-size: 1rem;
   padding-left: .5rem;
@@ -26,15 +38,30 @@ if($_POST) {
   $name = $S->escape($_POST['name']);
   $email = $S->escape($_POST['email']);
 
-  $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
-         "values('$name', '$email', '$ip', '$agent', now(), now()) ".
-         "on duplicate key update email='$email', ip='$ip', agent='$agent', lasttime=now()";
+  try {
+    $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
+           "values('$name', '$email', '$ip', '$agent', now(), now())";
 
-  if(!$S->query($sql)) {
-    echo "Error in Register POST<br>";
-    throw(new Exception("register.php", $this));
+    if(!$S->query($sql)) {
+      echo "Error in Register POST<br>";
+      throw(new Exception("register.php", $this));
+    }
+    $id = $S->getLastInsertId();
+  } catch(Exception $e) {
+    // If we failed to do an insert
+    // then try an update with name and email which are unique keys.
+    
+    $sql = "update members set ip='$ip', agent='$agent', lasttime=now() ".
+           "where name='$name' and email='$email'";
+    
+    $S->query($sql);
+
+    // Now we need to get the id from the update.
+    
+    $sql = "select id from members where name='$name'";
+    $S->query($sql);
+    list($id) = $S->fetchrow('num');
   }
-  $id = $S->getLastInsertId();
   
   if($S->setSiteCookie('SiteId', "$id", date('U') + 31536000, '/') === false) {
     echo "Can't set cookie in register.php<br>";
@@ -43,6 +70,7 @@ if($_POST) {
   echo <<<EOF
 $top
 <h1>Registeration Posted</h1>
+<a href="/">Return to Home Page</a>
 $footer
 EOF;
   exit();
@@ -70,10 +98,10 @@ We currently have several projects:</p>
 <table>
 <tbody>
 <tr>
-<td><input type="text" name="name" autofocus required placeholder="Enter Name"></td>
+<td><span class="lynx">Enter Name </span><input type="text" name="name" autofocus required placeholder="Enter Name"></td>
 </tr>
 <tr>
-<td><input type="text" name="email" autofocus required placeholder="Enter Email Address"></td>
+<td><span class="lynx">Enter Email Address </span><input type="text" name="email" autofocus required placeholder="Enter Email Address"></td>
 </tr>
 </tbody>
 </table>

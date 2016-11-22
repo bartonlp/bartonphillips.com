@@ -24,12 +24,32 @@ $top
 <h2>Description for Code '$code':<br/>
 $desc</h2>
 $other
-
 EOF;
+
+    // Use ipinfo.io to get the country for the ip
+    $cmd = "http://ipinfo.io/$code";
+    $ch = curl_init($cmd);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $loc = json_decode(curl_exec($ch));
+
+    $locstr = <<<EOF
+  <ul class="user-info">
+    <li>You got here via: <span class='green'><i>{$_SERVER['SERVER_NAME']}</i>.</span>$ref</li>
+
+    <li>User Agent String is:<br>
+    <i class='green'>$S->agent</i></li>
+    <li>IP Address: <i class='green'>$S->ip</i></li>
+    <li>Hostname: <i class='green'>$loc->hostname</i></li>
+    <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
+    <li>GPS Loc: <i class='green'>$loc->loc</i></li>
+    <li>ISP: <i class='green'>$loc->org</i></li>
+  </ul>
+  EOF;
+
+    echo $locstr;
   } else {
     echo <<<EOF
 <h2>Code '$code' not found</h2>
-
 EOF;
   }
 } else {

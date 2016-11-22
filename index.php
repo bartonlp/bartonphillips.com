@@ -8,12 +8,34 @@ $S = new $_site->className($_site);
 if($S->isBot) {
   $locstr = '';
 } else {
+  $ref = $_SERVER['HTTP_REFERER'];
+
+  if($ref) {
+    if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
+    $ref =<<<EOF
+<br>You came to this site from: <i class='green'>$ref</i>
+EOF;
+  }
+  
+  // Use ipinfo.io to get the country for the ip
   $cmd = "http://ipinfo.io/$S->ip";
   $ch = curl_init($cmd);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $loc = json_decode(curl_exec($ch));
-  $locstr = "Hostname: $loc->hostname<br>$loc->city, $loc->region $loc->postal<br>Location: $loc->loc<br>ISP: $loc->org<br>";
-  $ar = explode(",", $loc->loc);
+  
+  $locstr = <<<EOF
+<ul class="user-info">
+  <li>You got here via: <span class='green'><i>{$_SERVER['SERVER_NAME']}</i>.</span>$ref</li>
+
+  <li>User Agent String is:<br>
+  <i class='green'>$S->agent</i></li>
+  <li>IP Address: <i class='green'>$S->ip</i></li>
+  <li>Hostname: <i class='green'>$loc->hostname</i></li>
+  <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
+  <li>GPS Loc: <i class='green'>$loc->loc</i></li>
+  <li>ISP: <i class='green'>$loc->org</i></li>
+</ul>
+EOF;
 } // End of if(isBot..
 
 // css/blp.css is included in head.i.php
@@ -21,6 +43,13 @@ if($S->isBot) {
 $h->css = <<<EOF
   <!-- Local CSS -->
   <style>
+.locstr {
+  margin: 1rem 0;
+}
+.user-info {
+  line-height: 1rem;
+  margin: 0px;
+}
 .hereMsg {
   font-size: 1.2rem;
   font-weight: bold;
@@ -61,9 +90,6 @@ ul {
   width: 80px;
   vertical-align: bottom;
 }
-#useragent {
-  margin-left: 2rem;
-}
 .green {
   color: green;
 }
@@ -74,73 +100,6 @@ ul {
   img[src="http://isc.sans.edu/images/status.gif"] {
     width: 300px;
   }
-}
-
-/* google custom serch */
-
-#___gcse_0 form {
-  width: 50%;
-  margin: auto;
-}
-#___gcse_0 .gsc-input {
-  font-size: 1rem;
-}
-.gsc-input-box {
-  height: 1.4rem !important;
-}
-.gsc-search-box {
-  font-size: 1rem;
-}
-.gcsc-branding {
-  display: none;
-}
-.gs-bidi-start-align, .gs-visibleUrl, .gs-visibleUrl-long {
-  font-size: 1rem;
-}
-.gsc-result-info {
-    text-align: left;
-    color: #999;
-    font-size: 1rem;
-    padding-left: 8px;
-    margin: 10px 0 10px 0;
-}
-.gsc-control-cse .gs-result .gs-title,
-.gsc-control-cse .gs-result .gs-title * {
-  font-size: 1rem !important; 
-}
-.gs-result .gs-title, .gs-result .gs-title *{
-    color: #3083A3;
-    text-decoration: none;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-.gs-result a.gs-visibleUrl, .gs-result .gs-visibleUrl {
-    color: #0052FF;
-    text-decoration: none;
-}
-.gs-result .gs-snippet {
-    font: 1rem Tahoma, Geneva, sans-serif;
-}
-.gsc-results .gsc-cursor-box .gsc-cursor-page {
-    cursor: pointer;
-    color: #07AD00;
-    text-decoration: none;
-    margin-right: 5px;
-    display: inline;
-    border: 1px solid #DDD;
-    padding: 2px 5px 2px 5px;
-    font-size: 1rem;
-}
-#gsc-i-id1 {
-  background-size: 50% !important;
-}
-input.gsc-search-button-v2 {
-  width: initial !important;
-  height: initial !important;
-  padding: .4rem 1rem !important;
-  margin-top: 4px !important;
-}
-iframe {
-  display: none;
 }
   </style>
 EOF;
@@ -188,43 +147,9 @@ jQuery(document).ready(function($) {
   setInterval(function() {
     var d = date("l F j, Y");
     var t = date("H:i:s"); // from phpdate.js
-    $("#datetoday").html(d+"<br>The Time is: "+t);
+    $("#datetoday").html("<span class='green'>"+d+"</span><br>The Time is: <span class='green'>"+t+"</span>");
   }, 1000);
-
-  // BLP 2014-08-18 -- Kill caching on toweewx
-
-  $("a[href='http://bartonphillips.net/toweewx.php']").click(function() {
-    $(this).attr("href", "http://www.bartonlp.com/toweewx.php");
-  });
-
-  $("a[href='webstats-new.php']").click(function() {
-    $(this).attr("href", "webstats-new.php");
-  });
-
-  $("#weewx").click(function() {
-    var we = $(this).attr('href');
-    we = we.replace(/xx/, weewx);
-    we = we.replace(/\?.*/,'');
-    $(this).attr('href', we);
-    return true;
-  });
-
-  $("#apcups").click(function() {
-    var we = $(this).attr('href');
-    we = we.replace(/xx/, weewx);
-    we = we.replace(/\?.*/,'');
-    $(this).attr('href', we);
-    return true;
-  });
 });
-
-/*
-jQuery(window).load(function() {
-  var x = $("script[src='//cse.google.com/adsense/search/async-ads.js']").text();
-  console.log("x:", x);
-  $("script[src='//cse.google.com/adsense/search/async-ads.js']").remove();
-});
-*/
   </script>  
 EOF;
 
@@ -239,15 +164,6 @@ $h->banner = <<<EOF
 <h3><a target="_blank" href="aboutweewx.php">About My Weather Station</a></h3>
 </div>
 EOF;
-
-$ref = $_SERVER['HTTP_REFERER'];
-
-if($ref) {
-  if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
-  $ref =<<<EOF
-You came to this site from <i>$ref</i>.<br>
-EOF;
-}
 
 list($top, $footer) = $S->getPageTopBottom($h, array('msg1'=>"<hr>"));
 
@@ -303,14 +219,10 @@ echo <<<EOF
 $top
 <section id='browser-info'>
 $hereMsg
-<p>
+<div class="locstr">
    Our domains are <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
-   You got here via <span class='green'><i>{$_SERVER['SERVER_NAME']}</i>.</span><br/>$ref
-   Your browser's User Agent String is:<br>
-   <span id="useragent"><i class='green'>$S->agent</i></span><br/>
-   Your IP Address: <i class='green'>$S->ip</i><br/>
-   Today is: <span id="datetoday">$date</span>
-</p>
+   $locstr
+Today is: <span id="datetoday">$date</span></div>
 <hr>
 <p>
    This page is dynamically generated using PHP on our server at
@@ -323,20 +235,7 @@ $hereMsg
    <span class='red'>However</span>, some of the pages we link to do collect tracking information
    and COOKIES and make extensive use of JavaScript.
 </p>
-
 </section>
-<script>
-  (function() {
-    var cx = '007745904493400477369:y2fsvfwp8ww';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
-<gcse:search></gcse:search>
 
 <section id="blog">
 <a target="_blank" href="http://myblog.bartonphillips.com">My BLOG with tips and tricks</a>.
@@ -348,15 +247,16 @@ $hereMsg
 <li><a target="_blank" href="http://www.granbyrotary.org">The Granby Rotary Club</a></li>
 <li><a target="_blank" href="http://www.applitec.com">Applied Technology Resouces Inc.</a></li>
 <li><a target="_blank" href="http://www.allnaturalcleaningcompany.com">All Natural Cleaning</a></li>
+<li><a target="_blank" href="http://www.mountainmessiah.com">Mountain Messiah</a></li>
 <li><a target="_blank" href="http://www.bartonlp.com/toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com">bartonlp.com, Expermental Site 1</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org">bartonlp.org, Expermental Site 2</a></li>
 <li><a target="_blank" href="http://gitHub.bartonphillips.com">Barton Phillips GitHub site</a></li>
 <li><a target="_blank" href="http://bartonlp.github.io/site-class/">SiteClass on GitHub</a></li>
+<li><a target="_blank" href="http://bartonlp.github.io/updatesite/">UpdateSite Class on GitHub</a></li>
 <li><a target="_blank" href="webstats.php">Web Stats</a></li>
 <li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
-<li><a target="_blank" href="http://www.bartonlp.org:8080/">My node.js Page</a> 
-This is hosted at 'www.bartonlp.org' on port 8080. Usuall availble from about 10AM to 5PM.</li>
+<li><a target="_blank" href="http://www.bartonlp.org:8080/">My node.js Page</a></li>
 </ul>
 
 <h2>Interesting Sites</h2>
@@ -436,14 +336,27 @@ of the well know frameworks try to be. This is a simple tool and therefore not n
 complex as some of the popular frameworks out there.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
-<p>The framework is hosted at<br><a target="_blank"
-href="https://github.com/bartonlp/SiteClass">GitHub
+<p>The framework is hosted at<br>
+<a target="_blank" href="https://github.com/bartonlp/SiteClass">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
 <a target="_blank"
 href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
+<hr>
+
+<h2>UpdateSite Class</h2>
+<p>This class works with SiteClass. It lets you create sections or articles in a webpage that can be edited via the
+web browser. The sections are stored in a database (MySql is prefered).</p>
+<p>Check out the repository at<br>
+<a target="_blank" href="https://github.com/bartonlp/updatesite">GitHub
+<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
+and also at 
+<a target="_blank"
+href="http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-website-.html">
+<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>
+and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Documentation</a>.</p>
 <hr>
 
 <h2>PHP Slide Show Class</h2>

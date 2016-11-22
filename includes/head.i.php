@@ -16,7 +16,6 @@ return <<<EOF
   <!-- ICONS, RSS -->
   <link rel="shortcut icon" href="favicon.ico">
   <!-- Custom CSS -->
-  <!-- Use CSS from bartonlp.com -->
   <link rel="stylesheet" href="http://bartonphillips.net/css/blp.css" title="blp default">
 {$arg['link']}
   <!-- jQuery -->
@@ -24,7 +23,7 @@ return <<<EOF
   <script>
 var lastId = "$this->LAST_ID";
   </script>
-  <script src="http://bartonphillips.net/js/tracker.js"></script>
+  <!--<script src="http://bartonphillips.net/js/tracker.js"></script>-->
 {$arg['extra']}
 {$arg['script']}
 {$arg['css']}

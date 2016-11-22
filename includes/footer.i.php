@@ -27,6 +27,7 @@ if(isset($arg['statcounter'])) {
     $statcounter = '';
   }
 }
+$statcounter = '';
 
 $lastmod = date("M j, Y H:i", getlastmod());
 
