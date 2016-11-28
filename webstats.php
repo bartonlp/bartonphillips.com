@@ -18,6 +18,26 @@
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
+$found = false;
+
+if(is_array($S->myIp)) {
+  foreach($S->myIp as $v) {
+    if($v == $S->ip) {
+      $found = true;
+      break;
+    }
+  }
+  if($found === false) {
+    echo "Go Away";
+    exit();
+  }
+} else {
+  if($S->ip != $S->myIp) {
+    echo "Go Away";
+    exit();
+  }
+}
+
 $visitors = [];
 $jsEnabled = [];
 $ipcountry = '';
@@ -59,7 +79,8 @@ EOF;
 
 // Gather ipcountry information
 
-$sql = "select distinct ip from $S->masterdb.tracker where site='$S->siteName' and starttime >= current_date() - interval 24 hour";
+$sql = "select distinct ip from $S->masterdb.tracker where site='$S->siteName' ".
+       "and starttime >= current_date() - interval 24 hour";
 
 $S->query($sql);
 $tkipar = array(); // tracker ip array
@@ -94,11 +115,17 @@ foreach(json_decode($ipc) as $k=>$v) {
 
 $jsonIpcountry = json_encode($ipcountry);
 
+if(is_array($S->myIp)) {
+  $myIp = implode(",", $S->myIp);
+} else {
+  $myIp = $S->myIp;
+}
+
 $h->extra = <<<EOF
   <script>
 var ipcountry = JSON.stringify($jsonIpcountry);
 var thesite = "$S->siteName";
-var myIp = "$S->myIp";
+var myIp = "$myIp";
   </script>
   <script src="http://bartonphillips.net/js/tablesorter/jquery.tablesorter.js"></script>
   <script src="http://bartonphillips.net/js/webstats-new.js"></script>

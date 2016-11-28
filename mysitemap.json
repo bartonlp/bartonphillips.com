@@ -21,7 +21,11 @@
     "countMe": true,
     "trackerImg1": "/images/blp-image.png",
     "trackerImg2": "/images/146624.png",
-    "myUri": "bartonphillips.dyndns.org",
+    "myUri": [
+      "bartonphillips.dyndns.org",
+      "bartonlp.com",
+      "bartonlp.org"
+    ],
     "EMAILADDRESS": "bartonphillips@gmail.com",
     "EMAILRETURN": "bartonphillips@gmail.com",
     "EMAILFROM": "webmaster@bartonphillips.com"

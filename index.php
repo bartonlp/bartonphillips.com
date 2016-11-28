@@ -213,6 +213,18 @@ $visitors = number_format($n, 0, "", ",");
 $visitors .= ($visitors < 2) ? " visitor" : " visitors";
 $date = date("l F j, Y");
 
+if($S->isMe() || ($_GET['blp'] == "7098")) {
+  if($_GET['blp']) {
+    error_log("Bartonphillips index.php. Using blp: $S->ip, $S->agent");
+  }
+  $adminStuff = <<<EOF
+<h2>Administration Links</h2>
+<ul>
+<li><a target="_blank" href="webstats.php">Web Stats</a></li>
+</ul>
+EOF;
+}
+
 // Render the page
 
 echo <<<EOF
@@ -248,13 +260,13 @@ Today is: <span id="datetoday">$date</span></div>
 <li><a target="_blank" href="http://www.applitec.com">Applied Technology Resouces Inc.</a></li>
 <li><a target="_blank" href="http://www.allnaturalcleaningcompany.com">All Natural Cleaning</a></li>
 <li><a target="_blank" href="http://www.mountainmessiah.com">Mountain Messiah</a></li>
+<li><a target="_blank" href="http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a target="_blank" href="http://www.bartonlp.com/toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com">bartonlp.com, Expermental Site 1</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org">bartonlp.org, Expermental Site 2</a></li>
 <li><a target="_blank" href="http://gitHub.bartonphillips.com">Barton Phillips GitHub site</a></li>
 <li><a target="_blank" href="http://bartonlp.github.io/site-class/">SiteClass on GitHub</a></li>
 <li><a target="_blank" href="http://bartonlp.github.io/updatesite/">UpdateSite Class on GitHub</a></li>
-<li><a target="_blank" href="webstats.php">Web Stats</a></li>
 <li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org:8080/">My node.js Page</a></li>
 </ul>
@@ -270,7 +282,7 @@ Weather Underground Near Me</a></li>
 <li><a target="_blank" href="spacestation.php">ISS Overhead</a></li>
 <li><a target="_blank" href="javascript-only.php">Java Script Only</a></li>
 </ul>
-
+$adminStuff
 <h2>About the Internet</h2>
 <ul>
 <li><a target="_blank" href="historyofinternet.php">The History and Timeline of the Internet</a></li>
