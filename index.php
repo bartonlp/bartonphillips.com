@@ -194,7 +194,6 @@ EOF;
 }
 
 $ip = $S->ip;
-$blpIp = $S->myIp;
 
 // Get todays count and visitors from daycounts table
 
