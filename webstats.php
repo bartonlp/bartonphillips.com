@@ -19,22 +19,17 @@ $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
 if(is_array($S->myIp)) {
-  foreach($S->myIp as $v) {
-    if($v == $S->ip) {
-      echo "$S->ip<br>";
-      $found = true;
-      break 2;
-    }
+  if(!array_intersect([$S->ip], $S->myIp)) {
+    echo "Go Away";
+    exit();
   }
-  echo "Go Away";
-  exit();
 } else {
   if($S->ip != $S->myIp) {
     echo "Go Away";
     exit();
   }
 }
-echo "here<br>";
+
 $visitors = [];
 $jsEnabled = [];
 $ipcountry = '';

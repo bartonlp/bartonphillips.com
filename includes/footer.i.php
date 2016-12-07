@@ -38,16 +38,15 @@ return <<<EOF
 <address>
   Copyright &copy; $this->copyright<br>
 Barton Phillips, 828 Cayo Grande Ct. Newbury Park CA 91320<br>
-<a
- href='mailto:bartonphillips@gmail.com'>bartonphillips@gmail.com
-</a>
+<a href='mailto:bartonphillips@gmail.com'>bartonphillips@gmail.com</a>
 </address>
 </div>
 {$arg['msg']}
 {$arg['msg1']}
+<br>
 $counterWigget
+Last Modified: $lastmod
 {$arg['msg2']}
-<p>Last Modified: $lastmod</p>
 </footer>
 $statcounter
 </body>

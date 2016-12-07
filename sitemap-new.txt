@@ -12,10 +12,13 @@
   {"item": "http://www.bartonphillips.com/mx330.php", "frequency": "weekly", "priority": ".6"},
   {"item": "http://www.bartonphillips.com/urlcountrycodes.php", "frequency": "weekly", "priority": ".6"},
   {"item": "http://www.bartonphillips.com/verifyemailaddress.php", "frequency": "weekly", "priority": ".6"},
-  {"item": "http://www.bartonphillips.com/webstats-new.php", "frequency": "weekly", "priority": ".6"},
+  {"item": "http://www.bartonphillips.com/webstats.php", "frequency": "weekly", "priority": ".6"},
   {"item": "http://www.bartonphillips.com/aboutwebsite.php", "frequency": "weekly", "priority": ".5"},
   {"item": "http://www.bartonphillips.com/easter-example.php", "frequency": "monthly", "priority": ".3"},
   {"item": "http://www.bartonphillips.com/easterdatecalculator.php", "frequency": "monthly", "priority": ".3"},
+  {"item": "http://www.bartonphillips.com/usinghosts.php", "frequency": "monthly", "priority": ".3"},
+  {"item": "http://www.bartonphillips.com/spacestation.php", "frequency": "monthly", "priority": ".3"},
+  {"item": "http://www.bartonphillips.com/aboutweewx.php", "frequency": "monthly", "priority": ".3"},
   {"item": "http://myblog.bartonphillips.com", "frequency": "daily", "priority": "1", "lastmod": "no"}
 ]
 

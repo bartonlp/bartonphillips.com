@@ -26,9 +26,8 @@ EOF;
   $locstr = <<<EOF
 <ul class="user-info">
   <li>You got here via: <span class='green'><i>{$_SERVER['SERVER_NAME']}</i>.</span>$ref</li>
-
   <li>User Agent String is:<br>
-  <i class='green'>$S->agent</i></li>
+    <i class='green'>$S->agent</i></li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
   <li>Hostname: <i class='green'>$loc->hostname</i></li>
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
@@ -95,6 +94,9 @@ ul {
 }
 .red {
   color: red;
+}
+.sans {
+  vertical-align: 40px;
 }
 @media (max-width: 400px) {
   img[src="http://isc.sans.edu/images/status.gif"] {
@@ -165,7 +167,7 @@ $h->banner = <<<EOF
 </div>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h, array('msg1'=>"<hr>"));
+list($top, $footer) = $S->getPageTopBottom($h);
 
 // Do we have a cookie? If not offer to register
 
@@ -220,9 +222,19 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
 <h2>Administration Links</h2>
 <ul>
 <li><a target="_blank" href="webstats.php">Web Stats</a></li>
+<li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
 </ul>
 EOF;
 }
+
+// use the Dom class to get the diary h2 a text.
+// This class is great for scrubing sites.
+
+use PHPHtmlParser\Dom;
+
+$dom = new Dom;
+$dom->load('https://isc.sans.edu/');
+$sans = "<span class='sans'>". $dom->find(".diary h2 a")->text . "</span>";
 
 // Render the page
 
@@ -263,11 +275,15 @@ Today is: <span id="datetoday">$date</span></div>
 <li><a target="_blank" href="http://www.bartonlp.com/toweewx.php">My Home Weather Station</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com">bartonlp.com, Expermental Site 1</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org">bartonlp.org, Expermental Site 2</a></li>
+<li><a target="_blank" href="http://www.bartonlp.org:8080/">My node.js Page</a></li>
+</ul>
+
+<h2>GitHub Projects</h2>
+<ul>
 <li><a target="_blank" href="http://gitHub.bartonphillips.com">Barton Phillips GitHub site</a></li>
 <li><a target="_blank" href="http://bartonlp.github.io/site-class/">SiteClass on GitHub</a></li>
 <li><a target="_blank" href="http://bartonlp.github.io/updatesite/">UpdateSite Class on GitHub</a></li>
-<li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
-<li><a target="_blank" href="http://www.bartonlp.org:8080/">My node.js Page</a></li>
+<li><a target="_blank" href="http://bartonlp.github.io/rssfeed/">RssFeed Class on GitHub</a></li>
 </ul>
 
 <h2>Interesting Sites</h2>
@@ -313,7 +329,7 @@ How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
 
 <hr>
-<h1>Review of New Service</h1>
+<h2>Review of New Service</h2>
 <div itemscope itemtype="http://schema.org/Review">
 <h4>
 <a href="http://www.allnaturalcleaningcompany.com">
@@ -331,7 +347,9 @@ Over all a great company with which to do business.</p>
 </div>
 <hr/>
 
-<h2>PHP SiteClass Mini Framework</h2>
+<h2>GitHub and PHPClasses Projects</h2>
+ 
+<h3>PHP SiteClass Mini Framework</h3>
 <p>This is a mini framework I have been using for almost 10 years. It has a database wrapper
 and a number of methods that make my life a lot easier.</p>
 <p>For example every web page needs a
@@ -347,7 +365,7 @@ of the well know frameworks try to be. This is a simple tool and therefore not n
 complex as some of the popular frameworks out there.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
-<p>The framework is hosted at<br>
+<p>The <b>SiteClass</b> framework is hosted at<br>
 <a target="_blank" href="https://github.com/bartonlp/SiteClass">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
@@ -357,10 +375,10 @@ href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-site
 <br>Give it a try and let me know if you like it.</p>
 <hr>
 
-<h2>UpdateSite Class</h2>
+<h3>UpdateSite Class</h3>
 <p>This class works with SiteClass. It lets you create sections or articles in a webpage that can be edited via the
 web browser. The sections are stored in a database (MySql is prefered).</p>
-<p>Check out the repository at<br>
+<p>You can find my <b>UpdateSite Class</b> at<br>
 <a target="_blank" href="https://github.com/bartonlp/updatesite">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
 and also at 
@@ -370,7 +388,7 @@ href="http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-websit
 and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Documentation</a>.</p>
 <hr>
 
-<h2>PHP Slide Show Class</h2>
+<h3>PHP Slide Show Class</h3>
 
 <p>This class can be used to present a slide show of images.
 It can extract lists of image files available on the local server or a remote Web server.</p>
@@ -393,8 +411,9 @@ href="http://github.com/bartonlp/slideshow">GitHub
 href="http://www.phpclasses.org/browse/author/592640.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
-<hr/>
-<h2>PHP MySql Slide Show Class</h2>
+<hr>
+
+<h3>PHP MySql Slide Show Class</h3>
 
 <p>This package can be used to present a slide show from images listed in a database.
 The main class can retrieve lists of images to be displayed from a MySQL database table.</p>
@@ -410,16 +429,25 @@ The actual images can be stored on the filesystem or in the MySql table as base6
  alt="php classes logo" /></a></p>
 <hr>
 
+<h3>RssFeed Class</h3>
+
+<p>This package can read and get information from an RSS feed. It is simple to use.</p>
+<p>You can find my <b>RssFeed Class</b> at<br>
+<a target="_blank" href="http://github.com/bartonlp/rssfeed">GitHub
+<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
+<a target="_blank" href="https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
+<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
+ alt="php classes logo" /></a></p>
+<hr>
 <!-- # SANS Infocon Status -->
-<div>
-<p>
+<div class="center">
 <a target="_blank" href="https://isc.sans.org">
-<img width="354" height="92" alt="Internet Storm Center Infocon Status"
-src="http://bartonphillips.net/images/internetstorm-icon.gif" />
-</a>
-</p>
+<img alt="Internet Storm Center Infocon Status"
+src="http://bartonphillips.net/images/internetstorm-icon.gif">$sans</a>
+</div>
 </section>
 
+<!--
 <section id="daycount">
 <p>There have been $count hits and $visits visits by $visitors today $date</p>
 <ul>
@@ -429,5 +457,6 @@ src="http://bartonphillips.net/images/internetstorm-icon.gif" />
 <li>Visitors are seperate accesses by different IP Addresses.</li>
 </ul>
 </section>
+-->
 $footer
 EOF;
