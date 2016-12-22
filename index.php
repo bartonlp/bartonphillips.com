@@ -78,9 +78,32 @@ $h->css = <<<EOF
   text-align: left;
   margin: auto;
 }
-ul {
-  line-height: 200%;
+/* My Sites */
+.mysites {
+  border-spacing: .5rem;
 }
+.mysites th {
+  background-color: #FCF6CF;
+  padding: .2rem;
+  border-radius: .2rem;
+  border: 1px solid black;
+}
+.mysites button {
+  width: 100%;
+  font-weight: bold;
+  font-size: 1rem;
+  display: table-cell;
+  background-color: #FCF6CF;
+  border: none;
+  cursor: pointer;
+}
+.mysites button:hover {
+  color: green;
+}
+.mysites a {
+  text-decoration: none;
+}
+/* Images */
 #blpimg {
   float: left;
   padding: 5px 10px;
@@ -89,12 +112,14 @@ ul {
   width: 80px;
   vertical-align: bottom;
 }
+/* Colors */
 .green {
   color: green;
 }
 .red {
   color: red;
 }
+/* Sans */
 .sans {
   vertical-align: 40px;
 }
@@ -179,7 +204,7 @@ if(!($hereId = $_COOKIE['SiteId'])) {
   if($hereCount > 1) {
     $hereMsg =<<<EOF
 <div class="hereMsg">You have been to our site $hereCount since $created<br>
-Why not <a href="register.php">register</a>
+Why not <a target="_blank" href="register.php">register</a>
 </div>
 EOF;
   }
@@ -198,6 +223,7 @@ EOF;
 $ip = $S->ip;
 
 // Get todays count and visitors from daycounts table
+
 
 $S->query("select sum(`real`+bots) as count, sum(visits) as visits ".
           "from $S->masterdb.daycounts ".
@@ -253,7 +279,7 @@ Today is: <span id="datetoday">$date</span></div>
    Very little JavaScript is used in this page. We only collect &quot;Google Analitics&quot; COOKIES and
    a COOKIE called 'mytime' which is used to tell how long some anonymous someone has stayed on our site.
    We don't track you.
-   We do collect anonymous information for page counting and analysis only. <a href="privacy.php">Our privacy statement</a>.</p>
+   We do collect anonymous information for page counting and analysis only. <a target="_blank" href="privacy.php">Our privacy statement</a>.</p>
 <p>
    <span class='red'>However</span>, some of the pages we link to do collect tracking information
    and COOKIES and make extensive use of JavaScript.
@@ -261,29 +287,37 @@ Today is: <span id="datetoday">$date</span></div>
 </section>
 
 <section id="blog">
-<a target="_blank" href="http://myblog.bartonphillips.com">My BLOG with tips and tricks</a>.
+<a target="_blank" href="proxy.php?http://myblog.bartonphillips.com">My BLOG with tips and tricks</a>.
 </section>
 
 <section id="links">
 <h2>Visit one of the other web sites designed by Barton Phillips</h2>
-<ul>
-<li><a target="_blank" href="http://www.granbyrotary.org">The Granby Rotary Club</a></li>
-<li><a target="_blank" href="http://www.applitec.com">Applied Technology Resouces Inc.</a></li>
-<li><a target="_blank" href="http://www.allnaturalcleaningcompany.com">All Natural Cleaning</a></li>
-<li><a target="_blank" href="http://www.mountainmessiah.com">Mountain Messiah</a></li>
-<li><a target="_blank" href="http://www.swam.us">Southwest Aquatic Master</a></li>
-<li><a target="_blank" href="http://www.bartonlp.com/toweewx.php">My Home Weather Station</a><br>
-<li><a target="_blank" href="http://www.bartonlp.com">bartonlp.com, Expermental Site 1</a></li>
-<li><a target="_blank" href="http://www.bartonlp.org">bartonlp.org, Expermental Site 2</a></li>
-<li><a target="_blank" href="http://www.bartonlp.org:8080/">My node.js Page</a></li>
-</ul>
+<table class="mysites">
+<tbody>
+<tr>
+<th><a target="_blank" href="http://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
+<th><a target="_blank" href="http://www.applitec.com"><button>Applied Technology Resouces Inc.</button></a></th>
+<th><a target="_blank" href="http://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a></th>
+</tr>
+<tr>
+<th><a target="_blank" href="http://www.mountainmessiah.com"><button>Mountain Messiah</button></a></th>
+<th><a target="_blank" href="proxy.php?http://www.swam.us"><button>Southwest Aquatic Master</button></a></th>
+<th><a target="_blank" href="http://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a></th>
+</tr>
+<tr>
+<th><a target="_blank" href="http://www.bartonlp.com"><button>bartonlp.com</button></a></th>
+<th><a target="_blank" href="http://www.bartonlp.org"><button>bartonlp.org</button></a></th>
+<th><a target="_blank" href="http://www.bartonlp.org:8080/"><button>My node.js Page</button></a></th>
+</tr>
+</tbody>
+</table>
 
 <h2>GitHub Projects</h2>
 <ul>
-<li><a target="_blank" href="http://gitHub.bartonphillips.com">Barton Phillips GitHub site</a></li>
-<li><a target="_blank" href="http://bartonlp.github.io/site-class/">SiteClass on GitHub</a></li>
-<li><a target="_blank" href="http://bartonlp.github.io/updatesite/">UpdateSite Class on GitHub</a></li>
-<li><a target="_blank" href="http://bartonlp.github.io/rssfeed/">RssFeed Class on GitHub</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips">Barton Phillips GitHub site</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/site-class/">SiteClass on GitHub</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/updatesite/">UpdateSite Class on GitHub</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/rssfeed/">RssFeed Class on GitHub</a></li>
 </ul>
 
 <h2>Interesting Sites</h2>
@@ -295,7 +329,6 @@ Weather Underground Near Me</a></li>
 <li><a target="_blank" href="http://www.sitepoint.com">Site Point</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a target="_blank" href="spacestation.php">ISS Overhead</a></li>
-<li><a target="_blank" href="javascript-only.php">Java Script Only</a></li>
 </ul>
 $adminStuff
 <h2>About the Internet</h2>
@@ -305,48 +338,33 @@ $adminStuff
 <li><a target="_blank" href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
 <li><a target="_blank" href="buildawebsite.php">So You Want to Build a Website</a></li>
 </ul>
+</section>
 
+<section id="tips">
 <h2>Helpful Programs and Tips</h2>
 <ul>
 <li><a target="_blank" href="http://www.bartonlp.org/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
+<li><a target="_blank" href="javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags using PHP or JavaScript</a></li>
 <li><a target="_blank" href="localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
 <li><a target="_blank" href="filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
-<li><a target="_blank" href="mx330.php">How <b>NOT TO</b> Setup The Canon MX330 All-In-One Print/Scan/Copy/Fax
-For Linux. <b>Instead buy an HP</b>.</a></li>
 <li><a target="_blank" href="usinghosts.php">Why can't I access my home-hosted website from my own computer</a>? This is a common problem.</li>
 <li><a target="_blank" href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
 <li><a target="_blank" href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">Site with lots of Easter and Passover Information</a><br> 
-<li><a target="_blank" href="urlcountrycodes.php">Find the country give a url country code</a><br>
+<li><a target="_blank" href="urlcountrycodes.php">Find the country given a url country code</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>
 <li><a target="_blank" href="http://www.bartonlp.com/getIP.php">Check Ip Address</a></li>
 <li><a target="_blank" href="https://wiki.amahi.org/index.php/Gmail_As_Relay_On_Ubuntu">
 How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
-
-<hr>
-<h2>Review of New Service</h2>
-<div itemscope itemtype="http://schema.org/Review">
-<h4>
-<a href="http://www.allnaturalcleaningcompany.com">
-<span itemprop="itemReviewed">All Natural Cleaning Company</span></a>
-<meta itemprop="url" content="http://www.allnaturalcleaningcompany.com">
-</h4>
-<p itemprop="reviewBody">This company is new to Albuquerque, NM, but its ideas are old fashion.
-Clean with natural products. Don't poinsion oneself, ones family or ones employees.
-Over all a great company with which to do business.</p>
-<meta itemprop="author" content="Barton Phillips">
-<div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
-<meta itemprop="ratingValue" content="5">
-<meta itemprop="bestRating" content="5">
-</div>
-</div>
 <hr/>
+</section>
 
+<section id='projects'>
 <h2>GitHub and PHPClasses Projects</h2>
  
 <h3>PHP SiteClass Mini Framework</h3>
@@ -366,11 +384,11 @@ complex as some of the popular frameworks out there.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
 <p>The <b>SiteClass</b> framework is hosted at<br>
-<a target="_blank" href="https://github.com/bartonlp/SiteClass">GitHub
+<a target="_blank" href="proxy.php?https://github.com/bartonlp/SiteClass">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
 <a target="_blank"
-href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
+href="proxy.php?http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
 <hr>
@@ -379,11 +397,11 @@ href="http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-site
 <p>This class works with SiteClass. It lets you create sections or articles in a webpage that can be edited via the
 web browser. The sections are stored in a database (MySql is prefered).</p>
 <p>You can find my <b>UpdateSite Class</b> at<br>
-<a target="_blank" href="https://github.com/bartonlp/updatesite">GitHub
+<a target="_blank" href="proxy.php?https://github.com/bartonlp/updatesite">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
 and also at 
 <a target="_blank"
-href="http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-website-.html">
+href="proxy.php?http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-website-.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>
 and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Documentation</a>.</p>
 <hr>
@@ -405,10 +423,10 @@ slide show presentation.</p>
   
 <p>You can find my <b>Slide Show Class</b> at<br>
 <a target="_blank"
-href="http://github.com/bartonlp/slideshow">GitHub
+href="proxy.php?http://github.com/bartonlp/slideshow">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank"
-href="http://www.phpclasses.org/browse/author/592640.html">
+href="proxy.php?http://www.phpclasses.org/browse/author/592640.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr>
@@ -422,9 +440,9 @@ The main class can retrieve lists of images to be displayed from a MySQL databas
 The actual images can be stored on the filesystem or in the MySql table as base64 data.</p>
   
 <p>You can find my <b>MySql Slide Show Class</b> at<br>
-<a target="_blank" href="http://github.com/bartonlp/mysqlslideshow">GitHub
+<a target="_blank" href="proxy.php?http://github.com/bartonlp/mysqlslideshow">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
-<a target="_blank" href="http://www.phpclasses.org/browse/author/592640.html">
+<a target="_blank" href="proxy.php?http://www.phpclasses.org/browse/author/592640.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
@@ -433,15 +451,15 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 
 <p>This package can read and get information from an RSS feed. It is simple to use.</p>
 <p>You can find my <b>RssFeed Class</b> at<br>
-<a target="_blank" href="http://github.com/bartonlp/rssfeed">GitHub
+<a target="_blank" href="proxy.php?http://github.com/bartonlp/rssfeed">GitHub
 <img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
-<a target="_blank" href="https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
+<a target="_blank" href="proxy.php?https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
 <img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
 <!-- # SANS Infocon Status -->
 <div class="center">
-<a target="_blank" href="https://isc.sans.org">
+<a target="_blank" href="proxy.php?https://isc.sans.org">
 <img alt="Internet Storm Center Infocon Status"
 src="http://bartonphillips.net/images/internetstorm-icon.gif">$sans</a>
 </div>

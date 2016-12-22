@@ -20,10 +20,7 @@ $top
     collect tracking information but other pages you will link to, even on our domain, do collect
     and use JavaScript extensively.</p>
 
-  <p>We will never sell your information (as anonymous as it is) to any third party. Some information is available on our
-    website at <a href="http://www.bartonphillips.com/webstats.php">http://www.bartonphillips.com/webstats.php</a>.
-    It is freely available to anyone who is interested. It is pretty
-    esoteric, but it is pretty extensive.</p>
+  <p>We will never sell your information (as anonymous as it is) to any third party.</p>
 
   <p>Good luck and have fun.</p>
 $footer

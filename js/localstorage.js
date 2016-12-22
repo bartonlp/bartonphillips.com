@@ -1,68 +1,6 @@
 // JavaScript for localstorage.html
 // Start main jQuery logic after document ready
 
-if(!localStorage.length) {
-  // Load the big image. This is about 1.6 Meg. Even when this is cached it still is a big load!
-  // So this first time we load the full 1.6 Meg but on subsequent loads the base64 URI is much
-  // smaller. The product of the width and height is about 8 Meg.
-
-  var image = new Image;
-  var d = new Date(); 
-  image.src = "images/CIMG0020.JPG?_="+d.getTime(); // do not cache
-
-  // Wait till the image is fully loaded which may be after READY
-  // above.
-
-  $(image).load(function() {
-    localStorage.orgsize = this.width * this.height;
-
-    console.log("W: %d", this.width);
-    var ratio = this.width / 320;
-    this.width = this.width / ratio;
-    this.height = this.height / ratio;
-    console.log("ratio: %d, w: %d, h: %d", ratio, this.width, this.height);
-    
-    localStorage.imgsize = this.width * this.height;
-
-        // Now use a canvas to get the URI image
-
-    var canvas = document.createElement("canvas");
-
-        // make the canvas big enough for our image
-
-    canvas.width = this.width;
-    canvas.height = this.height;
-
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(this, 0, 0, this.width, this.height);
-
-    // Some ancient browsers (like IE) have a small limit to the URI size.
-
-    try {
-      var dataUri = canvas.toDataURL();
-      localStorage.base64size = dataUri.length;
-
-      var img = $('#image');
-      //img.css({'width': this.width, 'height': this.height});
-      img.attr('src', dataUri);
-    } catch(e) {
-      localStorage.warnings += "dataUri problem:" + e + "<br>\n";
-    }
-
-        // Local Storage is only 5 Meg so we could get an error if the resized image is too big.
-
-    try {
-      localStorage.setItem('img', dataUri);
-    } catch (e) {
-      localStorage.warnings += "localStorage Problem: " + e + "<br>\n";
-    }
-
-    img = localStorage.getItem('img');
-
-    $("#image").attr('src', img);
-  }); // End of onload image
-}
-
 jQuery(document).ready(function($) {
   var img, msg, xhr;
 
@@ -79,6 +17,8 @@ jQuery(document).ready(function($) {
   } else {
     // Have we already resized the image?
 
+    console.log("localStorage: ", localStorage);
+    
     if(localStorage.length) {
       // Yes the clickcount is set so we have the image already
       
@@ -116,30 +56,31 @@ jQuery(document).ready(function($) {
                       localStorage.imgsize +
                       "<br>base64 size: " +
                       localStorage.base64size);
-// ***************************************
     } else {
       // This is the first time we have been to this page so initialize the local storage with the
       // resized image.
 
       localStorage.clickcount = '1'; // init clickcount
-/*      
+
       // Load the big image. This is about 1.6 Meg. Even when this is cached it still is a big load!
       // So this first time we load the full 1.6 Meg but on subsequent loads the base64 URI is much
       // smaller. The product of the width and height is about 8 Meg.
 
       var image = new Image;
       var d = new Date(); 
-      image.src = "../images/CIMG0020.JPG?_="+d.getTime(); // do not cache
+      image.src = "images/CIMG0020.JPG?_="+d.getTime(); // do not cache
 
       // Wait till the image is fully loaded which may be after READY
       // above.
-      
+
       $(image).load(function() {
         localStorage.orgsize = this.width * this.height;
-
-        var ratio = 500 / this.width;
-        this.width = this.width * ratio;
-        this.height = this.height * ratio;
+        
+        console.log("Org Width: %d", this.width);
+        var ratio = this.width / 320;
+        this.width = this.width / ratio;
+        this.height = this.height / ratio;
+        console.log("New Valuses, ratio: %d, w: %d, h: %d", ratio, this.width, this.height);
 
         localStorage.imgsize = this.width * this.height;
 
@@ -160,10 +101,13 @@ jQuery(document).ready(function($) {
         try {
           var dataUri = canvas.toDataURL();
           localStorage.base64size = dataUri.length;
+          $("#size").html("This is the ORIGINAL BIG PICTURE<br>"+
+                          "Refresh the page to see the localstorage version.<br>"+
+                          "original image width*height size: " +
+                          localStorage.orgsize +
+                          "<br>filesize: " +
+                          localStorage.filesize);
 
-          var img = $('#image');
-          img.css({'width': this.width, 'height': this.height});
-          img.attr('src', dataUri);
         } catch(e) {
           localStorage.warnings += "dataUri problem:" + e + "<br>\n";
         }
@@ -176,13 +120,11 @@ jQuery(document).ready(function($) {
           localStorage.warnings += "localStorage Problem: " + e + "<br>\n";
         }
 
-        img = localStorage.getItem('img');
-
-        $("#image").attr('src', img);
+        $("#image").attr('src', image.src);
       }); // End of onload image
-*/
-// ********************************************
-// The rest of this is putting up messages etc.        
+      
+      // ********************************************
+      // The rest of this is putting up messages etc.        
 
       msg = "This is your first time at this site using this browser.";
 
@@ -264,7 +206,7 @@ jQuery(document).ready(function($) {
 
 // Display the size of the image at various stages
 // Everything needs to be loaded before we can display this.
-
+/*
 $(window).load(function() {
   $("#size").html("original image width*height size: " +
                   localStorage.orgsize +
@@ -275,4 +217,4 @@ $(window).load(function() {
                   "<br>base64 size: " +
                   localStorage.base64size);
 });
-
+*/

@@ -10,9 +10,9 @@ body > pre {
         border: 1px solid black;
         padding: 10px;
 }
-#image {
-        width: 95%;
-}
+/*#image {
+        width: 500px;
+}*/
 #showsource {
         border: 1px solid black;
         padding: 5px;

@@ -6,7 +6,7 @@
   <meta name=viewport content="width=device-width, initial-scale=1">
   <meta charset='utf-8'>
   <meta name="Author"
-     content="Barton L. Phillips, mailto:barton@bartonphillips.org">
+     content="Barton L. Phillips, mailto:bartonphillips@gmail.com">
   <meta name="description"
      content="LocalStorage Example. Resize a big image using JavaScript">
   <meta name="keywords"
@@ -19,7 +19,7 @@
   <meta http-equiv="Expires" content="0">
 
   <!-- jQuery from Google site -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 
   <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
   <script src="js/shCore.js"></script>
@@ -30,13 +30,13 @@
 
   <!-- Our stuff -->
   <script src="js/localstorage.js"></script>
-  <link rel="stylesheet" href="/blp/css/blp.css" title="blp default" >
+  <link rel="stylesheet" href="http://bartonphillips.net/css/blp.css" title="blp default" >
   <link rel="stylesheet" href="css/localstorage.css"/>
 </head>
 <body>
 <div>
-   <img id='blpimg' src="http://bartonlp.com/html/images/blp-image.png" alt="Barton's Picture">
-   <img id='linuxcounter' src="http://bartonlp.com/html/images/146624.png" alt="linux counter image.">
+   <img id='blpimg' src="http://bartonphillips.net/images/blp-image.png" alt="Barton's Picture">
+   <img id='linuxcounter' src="http://bartonphillips.net/images/146624.png" alt="linux counter image.">
 </div>
 
 <div id="warnings"></div>
@@ -48,7 +48,7 @@
 <div>
 <img id="image" src=""></div>
 <p>The first time this page is viewed the image is loaded from the web. The image is 1.6 Meg and takes
-   a while to load. We then resize the image via a &lt;canvas&gt; to a 500 pixel wide image. We get the
+   a while to load. We then resize the image via a &lt;canvas&gt; to a 320 pixel wide image. We get the
    image URI which is the image data encoded as a base64 string. The URI is saved in
    localStorage.</p>
 <p>The next time the page is accessed via the same browser the image is loaded from localStorage.
@@ -66,7 +66,7 @@ else { ... } // this is the very first time here
    load the image:</p>
 <pre>
 var image = new Image;
-image.src = "http://bartonlp.com/html/images/CIMG00020.JPG"; // 1.6 Meg file, width=3,264, height=2,448
+image.src = "images/CIMG00020.JPG"; // 1.6 Meg file, width=3,264, height=2,448
 </pre>
 <p>This is pretty standard stuff. You can access localStorage as an object
    <code>localStorage.clickcount</code>
@@ -78,30 +78,31 @@ image.src = "http://bartonlp.com/html/images/CIMG00020.JPG"; // 1.6 Meg file, wi
 The original image is 3,264 by 2,448 pixels and we want the resized image to be 500 pixels wide.</p>
 <pre>
 $(image).load(function() {
-  var ratio = 500 / this.width; // we are going to scale the image via the width to 500 pixels wide
-  this.width = 500;
-  this.height = this.height * ratio; // we keep the aspect ratio the same as in the original image
+  localStorage.orgsize = this.width * this.height;
+  var ratio = this.width / 320;
+  this.width = this.width / ratio;
+  this.height = this.height / ratio;
+  localStorage.imgsize = this.width * this.height;
   var canvas = document.createElement("canvas");
-  canvas.width = this.width; // make canvas big enough
+  canvas.width = this.width;
   canvas.height = this.height;
-
   var ctx = canvas.getContext("2d");
-  ctx.drawImage(this, 0, 0, this.width, this.height); // origine 0x0 with width and height as scaled
+  ctx.drawImage(this, 0, 0, this.width, this.height);
+  // Some ancient browsers (like IE) have a small limit to the URI size.
   try {
-    var dataUri = canvas.toDataURL(); // get the base64 URI
-    var img = $('#image');
-    img.css({'width': this.width, 'height': this.height});
-    img.attr('src', dataUri);
+    var dataUri = canvas.toDataURL();
+    localStorage.base64size = dataUri.length;
+    ... more stuff
   } catch(e) {
-    // if there is an error do something here. e has the reason for the error.
+    ... error message
   }
-
   // Local Storage is only 5 Meg so we could get an error if the resized image is too big.
   try {
     localStorage.setItem('img', dataUri);
-  } catch(e) {
-    // if there is an error do something here. e has the reason for the error.
+  } catch (e) {
+    ... error message
   }
+  ... possibly more stuff
 }
 </pre>
 <p>The actual source of this page has some additional logic for errors and fetching the size of the
@@ -129,15 +130,14 @@ if(localStorage.length) {
    would expect this to work OK on Apple Mac's running Safari but I don't have a Mac.</p>
 
 <p><button id="source">Show HTML Source</button></p>
-<p><button id="jssource">Show JS Source</button></p>
-
 <div id="showsource"></div>
+<p><button id="jssource">Show JS Source</button></p>
 <div id="showjs"></div>
 
 <hr>
 <div style="text-align: center;">
-<p id='lastmodified'>Last Modified&nbsp;Nov 10, 2012 15:55:37 MST</p>
-<p id='contactUs'><a href='mailto:webmaster@bartonphillips.com'>Contact Us</a></p>
+<p id='lastmodified'>Last Modified&nbsp;Dec 15, 2016 11:11:37 PST</p>
+<p id='contactUs'><a href='mailto:bartonphillips@gmail.com'>Contact Us</a></p>
 </div>
 <!-- Just won't work without JavaScript-->
 <noscript>

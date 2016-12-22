@@ -350,9 +350,11 @@ century and a half.</p>
     collected exabytes (1x10<sup>18</sup> or 100,000 terabyte disk drives) worth of US and
     fourign citizens data.</li>
   <li>2014 The W3C (World Wide Web Consortium) plans to finalize the HTML 5 standard by July.</li>
-  <li><span class="future">2016</span> It is
+  <li>2016 It is
     <a href="http://www.pcmag.com/article2/0,2817,2405038,00.asp">estimated</a>
     that Internet traffic will reach 1.3 zettabytes per year. About 3.4 billion Internet users.</li>
+  <li><span class="future">2017</span> <a href="http://www.cisco.com/c/en/us/solutions/collateral/service-provider/visual-networking-index-vni/vni-hyperconnectivity-wp.html">
+    Cisco Systems estimates</a> that by 2020 Internet traffic will reach 2.3 ZB per year.</li>
 </ul>
 </section>
 <section id="speed">
