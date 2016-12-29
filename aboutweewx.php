@@ -25,8 +25,8 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
-<!--<img class='photo' src='/weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>
-<img class='photo' src='/weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console"> -->
+<!--<img class='photo' src='/weewx-images/CIMG0076.JPG' alt="Davis Vantage Vue"><br>-->
+<img class='photo' src='http://bartonphillips.net/images/weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
 <p>
 I have had a Weather Station for the past 20 years. First at our
 home in Canoga Park, CA, then at our home in Granby Ranch, CO., and now at our home in Newbury Park, CA.
@@ -47,7 +47,7 @@ written in Python and the website has very good documentation and
 support. As with most thing Linux the weather station software is
 free and open source.</p>
 
-<!--<img class='photo' src="/weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue"> -->
+<!--<img class='photo' src="http://bartonphillips.net/images/weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">-->
 
 <p>
 I installed the Davis equipment on my back patio. The system is very
@@ -61,13 +61,13 @@ at the time a Dell 530, which I bought because Dell was
 offering systems with Linux installed
 (unfortunatly Dell stopped offering Linux and I stopped buying Dell).
 After 10 years the Dell died and I wasn't able to fix it.
-I bought an HP Envy this year, which was a nice upgrade.
+I bought an HP Envy, which was a nice upgrade.
 I didn't want to use this new system as a server
 because I wanted to be able to turn it on and off and experment with
 different operationg systems etc.</p>
 
 <p>
-<!--<img class='photo' src='/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br> -->
+<img class='photo' src='http://bartonphillips.net/images/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
 I bought a <a href="http://www.raspberrypi.org/">Raspberry PI</a>
 which is a small low power fanless system. It sells for around $40 and uses very
 little electricity. The PI has an ARM cpu but runs a version of
@@ -76,7 +76,7 @@ and because of the very low power consumption it is an excelent
 choice for a 7/24/365 server.</p>
 
 <p>
-I set the PI OS up with weewx, postfix (email) and nginx (web server).
+I set the PI OS up with weewx, postfix (email) and the apache (web server).
 I also added a 500 Gigabyte USB external hard drive and use the PI
 as my backup server as well.</p>
 

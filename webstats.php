@@ -409,7 +409,7 @@ function renderPage($S, $page) {
     $row['js'] = dechex($row['js']);
   }
 
-  $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js ".
+  $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js, refid ".
          "from $S->masterdb.tracker where site='$S->siteName' and starttime >= current_date() - interval 24 hour ". 
          "order by starttime desc";
 

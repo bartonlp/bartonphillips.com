@@ -54,6 +54,10 @@ $h->css = <<<EOF
   font-weight: bold;
   padding-top: 1rem;
 }
+.mylinks {
+  text-align: center;
+  margin: auto;
+}
 #browser-info {
   border-top: 1px solid gray;
 }
@@ -238,7 +242,7 @@ $n = $S->query("select distinct ip from $S->masterdb.tracker where lasttime>=cur
 $visitors = number_format($n, 0, "", ",");
 
 $visitors .= ($visitors < 2) ? " visitor" : " visitors";
-$date = date("l F j, Y");
+$date = date("l F j, Y H:i:s T");
 
 if($S->isMe() || ($_GET['blp'] == "7098")) {
   if($_GET['blp']) {
@@ -271,6 +275,7 @@ $hereMsg
 <div class="locstr">
    Our domains are <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
    $locstr
+Start: <span class='green'>$date</span><br>
 Today is: <span id="datetoday">$date</span></div>
 <hr>
 <p>
@@ -291,8 +296,8 @@ Today is: <span id="datetoday">$date</span></div>
 </section>
 
 <section id="links">
-<h2>Visit one of the other web sites designed by Barton Phillips</h2>
-<table class="mysites">
+<h2 class="center">Visit one of the other web sites designed by Barton Phillips</h2>
+<table class="mysites mylinks">
 <tbody>
 <tr>
 <th><a target="_blank" href="http://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
@@ -311,7 +316,7 @@ Today is: <span id="datetoday">$date</span></div>
 </tr>
 </tbody>
 </table>
-
+<hr>
 <h2>GitHub Projects</h2>
 <ul>
 <li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips">Barton Phillips GitHub site</a></li>
