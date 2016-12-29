@@ -253,6 +253,8 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
 <ul>
 <li><a target="_blank" href="webstats.php">Web Stats</a></li>
 <li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
+<li><a target="_blank" href="gitinfo.php">GitInfo</a></li>
+<li><a target="_blank" href="gitstatus.php">GitStatusAll</a></li>
 </ul>
 EOF;
 }
