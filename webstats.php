@@ -394,11 +394,15 @@ function renderPage($S, $page) {
   $analysis = file_get_contents("http://bartonphillips.net/analysis/$S->siteName-analysis.i.txt");
   if(!$analysis) $errMsg = "http://bartonphillips.net/analysis/$S->siteName-analysis.i.txt: NOT FOUND";
 
+  // Callback for tracker below
+  
   function trackerCallback(&$row, &$desc) {
     global $S, $ipcountry;
 
     $ip = $S->escape($row['ip']);
-
+    
+    $row['refid'] = preg_replace('/\?.*/', '', $row['refid']);
+                 
     $co = $ipcountry[$ip];
 
     $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
