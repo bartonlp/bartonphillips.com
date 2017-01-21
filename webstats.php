@@ -46,7 +46,7 @@ if(isset($_POST['submit'])) {
 
 // Main rendering
 
-$page =  getwebstats($S);
+$page = getwebstats($S);
 
 $h->link = <<<EOF
   <!-- local css links -->
