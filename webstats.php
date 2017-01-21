@@ -159,9 +159,6 @@ function getwebstats($S) {
 <hr/>
 </script>
 
-<p id="hourly" class="h-update">The first six tables are created within an hour of this access.<br>
- This was created $creationDate. Hourly update.</p>
-
 <h2>From table <i>blpip</i></h2>
 <p>These are the IP Addresses used by the Webmaster. When these addresses appear in the other tables they are in
 <span style="color: red">RED</span>.</p>
@@ -352,8 +349,7 @@ EOF;
   $page .= "<p class='h-update'>End Hourly update.</p>";
 
   // Write the file out
-
-  file_put_contents("webstats.i.txt", $page);
+  //file_put_contents("webstats.i.txt", $page);
 
   return $page;
 }
@@ -383,7 +379,7 @@ function blpip(&$row, &$rowdesc) {
   return false;
 }
 
-// Display the page with the $page. $page has the make-webstats.php stuff
+// Display the page with the $page.
 
 function renderPage($S, $page) {
   global $ipcountry;

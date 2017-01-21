@@ -335,7 +335,7 @@ Weather Underground Near Me</a></li>
 <li><a target="_blank" href="http://www.html5rocks.com/en/">HTML5 Rocks</a></li>
 <li><a target="_blank" href="http://www.sitepoint.com">Site Point</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="spacestation.php">ISS Overhead</a></li>
+<li><a target="_blank" href="spacestation.php">International Space Station (ISS) Location</a></li>
 </ul>
 $adminStuff
 <h2>About the Internet</h2>
