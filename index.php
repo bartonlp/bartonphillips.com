@@ -169,7 +169,7 @@ EOF;
 
 $h->script .= <<<EOF
   <!-- local script -->
-  <script src="js/phpdate.js"></script>
+  <script src="http://bartonphillips.net/js/phpdate.js"></script>
   <script>
 jQuery(document).ready(function($) {
   var weewx = '';

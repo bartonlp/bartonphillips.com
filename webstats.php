@@ -58,7 +58,7 @@ $h->link = <<<EOF
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 <!--<![endif]-->
   <link rel="stylesheet" href="http://bartonphillips.net/css/tablesorter.css">
-  <link rel="stylesheet" href="http://bartonphillips.net/css/webstats-new.css">
+  <link rel="stylesheet" href="http://bartonphillips.net/css/webstats.css">
 EOF;
 
 $h->css = <<<EOF
@@ -97,7 +97,7 @@ $context  = stream_context_create($options);
 
 // Now this is going to do a POST!
 
-$ipc = file_get_contents("http://www.bartonlp.com/webstats-new.php", false, $context);
+$ipc = file_get_contents("http://www.bartonphillips.com/webstats-ajax.php", false, $context);
 
 foreach(json_decode($ipc) as $k=>$v) {
   $ipcountry[$k] = $v;
@@ -120,7 +120,7 @@ var thesite = "$S->siteName";
 var myIp = "$myIp";
   </script>
   <script src="http://bartonphillips.net/js/tablesorter/jquery.tablesorter.js"></script>
-  <script src="http://bartonphillips.net/js/webstats-new.js"></script>
+  <script src="http://bartonphillips.net/js/webstats.js"></script>
 EOF;
 
 $h->title = "Web Statistics";
