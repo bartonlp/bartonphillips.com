@@ -259,7 +259,7 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
 EOF;
 }
 
-// use the Dom class to get the diary h2 a text.
+// use the Dom class to get the Sans '.diary h2' as text.
 // This class is great for scrubing sites.
 
 use PHPHtmlParser\Dom;
