@@ -18,15 +18,21 @@
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
-if(is_array($S->myIp)) {
-  if(!array_intersect([$S->ip], $S->myIp)) {
-    echo "Go Away";
-    exit();
-  }
-} else {
-  if($S->ip != $S->myIp) {
-    echo "Go Away";
-    exit();
+if($_GET['blp'] != '7098') {
+  if(is_array($S->myIp)) {
+    if(!array_intersect([$S->ip], $S->myIp)) {
+      echo "$S->ip<br>";
+      vardump($S->myIp);
+      echo "Go Away";
+      exit();
+    }
+  } else {
+    if($S->ip != $S->myIp) {
+      echo "$S->ip<br>";
+      vardump($S->myIp);  
+      echo "Go Away";
+      exit();
+    }
   }
 }
 

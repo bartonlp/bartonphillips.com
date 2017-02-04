@@ -58,30 +58,6 @@ $h->css = <<<EOF
   text-align: center;
   margin: auto;
 }
-#browser-info {
-  border-top: 1px solid gray;
-}
-#blog {
-  width: 40%;
-  text-align: center;
-  background-color: #FCF6CF;
-  padding: 20px;
-  margin: auto;
-  border: 1px solid #696969;
-}
-#daycount {
-  text-align: center;
-  width: 90%;
-  margin: auto;
-  border: 1px solid black;
-  background-color: #ECD087;
-  padding-bottom: 20px;
-}
-#daycount ul {
-  width: 80%;
-  text-align: left;
-  margin: auto;
-}
 /* My Sites */
 .mysites {
   border-spacing: .5rem;
@@ -108,11 +84,11 @@ $h->css = <<<EOF
   text-decoration: none;
 }
 /* Images */
-#blpimg {
+#blpimg { /* My Logo Image */
   float: left;
   padding: 5px 10px;
 }
-#octocat {
+#octocat { /* GitHub Image */
   width: 80px;
   vertical-align: bottom;
 }
@@ -126,6 +102,50 @@ $h->css = <<<EOF
 /* Sans */
 .sans {
   vertical-align: 40px;
+}
+/* Sections */
+#browser-info { /* section */
+  border-top: 1px solid gray;
+}
+#blog { /* section */
+  width: 40%;
+  text-align: center;
+  background-color: #FCF6CF;
+  padding: 20px;
+  margin: auto;
+  border: 1px solid #696969;
+}
+
+#mysites { /* section */
+}
+
+#flex-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 1px solid black;
+}
+
+#interesting, #adminstuff, #internet {
+  padding: .5rem;
+  border-left: 1px solid black;
+}
+#github { /* section */
+  padding: .5rem;
+}
+@media (max-width: 1000px) {
+  #flex-section {
+    display: block;
+    border: none;
+  }
+  #github, #interesting, #adminstuff, #internet {
+    border: none;
+  }
+}
+@media (max-width: 600px) {
+  table, tbody, tr, th, td {
+    display: block;
+  }
 }
 @media (max-width: 400px) {
   img[src="http://isc.sans.edu/images/status.gif"] {
@@ -244,18 +264,22 @@ $visitors = number_format($n, 0, "", ",");
 $visitors .= ($visitors < 2) ? " visitor" : " visitors";
 $date = date("l F j, Y H:i:s T");
 
+// Do Admin Stuff if it is me
+
 if($S->isMe() || ($_GET['blp'] == "7098")) {
   if($_GET['blp']) {
     error_log("Bartonphillips index.php. Using blp: $S->ip, $S->agent");
   }
   $adminStuff = <<<EOF
-<h2>Administration Links</h2>
+<section id='adminstuff'>
+<h2>Admin</h2>
 <ul>
 <li><a target="_blank" href="webstats.php">Web Stats</a></li>
 <li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
 <li><a target="_blank" href="gitinfo.php">GitInfo</a></li>
 <li><a target="_blank" href="gitstatus.php">GitStatusAll</a></li>
 </ul>
+</section>
 EOF;
 }
 
@@ -268,7 +292,9 @@ $dom = new Dom;
 $dom->load('https://isc.sans.edu/');
 $sans = "<span class='sans'>". $dom->find(".diary h2 a")->text . "</span>";
 
+// ***************
 // Render the page
+// ***************
 
 echo <<<EOF
 $top
@@ -297,7 +323,7 @@ Today is: <span id="datetoday">$date</span></div>
 <a target="_blank" href="proxy.php?http://myblog.bartonphillips.com">My BLOG with tips and tricks</a>.
 </section>
 
-<section id="links">
+<section id="mysites">
 <h2 class="center">Visit one of the other web sites designed by Barton Phillips</h2>
 <table class="mysites mylinks">
 <tbody>
@@ -318,31 +344,40 @@ Today is: <span id="datetoday">$date</span></div>
 </tr>
 </tbody>
 </table>
-<hr>
+</section>
+
+<div id="flex-section">
+
+<section id="github">
 <h2>GitHub Projects</h2>
 <ul>
-<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips">Barton Phillips GitHub site</a></li>
-<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/site-class/">SiteClass on GitHub</a></li>
-<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/updatesite/">UpdateSite Class on GitHub</a></li>
-<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/rssfeed/">RssFeed Class on GitHub</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips">My GitHub sites</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/site-class/">SiteClass</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
 </ul>
+</section>
 
+<section id="interesting">
 <h2>Interesting Sites</h2>
 <ul>
 <li><a target="_blank" href="http://www.wunderground.com/personal-weather-station/dashboard?ID=KCATHOUS54#history">
-Weather Underground Near Me</a></li>
+Weather Underground</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="spacestation.php">International Space Station (ISS) Location</a></li>
-</ul>
-$adminStuff
-<h2>About the Internet</h2>
-<ul>
-<li><a target="_blank" href="historyofinternet.php">The History and Timeline of the Internet</a></li>
-<li><a target="_blank" href="howtheinternetworks.php">How the Internet Works</a></li>
-<li><a target="_blank" href="howtowritehtml.php">Tutorial: How To Write HTML</a></li>
-<li><a target="_blank" href="buildawebsite.php">So You Want to Build a Website</a></li>
+<li><a target="_blank" href="spacestation.php">Space Station Location</a></li>
 </ul>
 </section>
+$adminStuff
+<section id="internet">
+<h2>About the Internet</h2>
+<ul>
+<li><a target="_blank" href="historyofinternet.php">History &amp; Timeline</a></li>
+<li><a target="_blank" href="howtheinternetworks.php">How It Works</a></li>
+<li><a target="_blank" href="howtowritehtml.php">How To Write HTML</a></li>
+<li><a target="_blank" href="buildawebsite.php">Build a Website</a></li>
+</ul>
+</section>
+</div>
 
 <section id="tips">
 <h2>Helpful Programs and Tips</h2>
@@ -365,7 +400,6 @@ $adminStuff
 <li><a target="_blank" href="https://wiki.amahi.org/index.php/Gmail_As_Relay_On_Ubuntu">
 How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
-<hr/>
 </section>
 
 <section id='projects'>
@@ -469,16 +503,5 @@ src="http://bartonphillips.net/images/internetstorm-icon.gif">$sans</a>
 </div>
 </section>
 
-<!--
-<section id="daycount">
-<p>There have been $count hits and $visits visits by $visitors today $date</p>
-<ul>
-<li>Hits are each time this page is accessed. If you do three refreshes in a row you have 3 hits.</li>
-<li>Visits are hits that happen 10 minutes appart. Three refresses in a row will not change the number of hits, but if you wait
-10 minutes between refresses (or other accesses) to our site that is a visit.</li>
-<li>Visitors are seperate accesses by different IP Addresses.</li>
-</ul>
-</section>
--->
 $footer
 EOF;
