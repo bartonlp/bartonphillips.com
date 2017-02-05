@@ -346,7 +346,7 @@ EOF;
     list($tbl) = $T->maketable($query, array('attr'=>array('border'=>"1", 'id'=>"memberpagecnt")));
 
     $page .= <<<EOF
-<h2 id="table7a">Table <i>memberpagecnt</i> for seven days</h2>
+<h2 id="table7a">From table <i>memberpagecnt</i> for seven days</h2>
 <a href="#table7">Next</a>
 $tbl
 EOF;
@@ -478,7 +478,7 @@ $errMsg
 $page
 </div>
 
-<h2 id="table7">Table Seven from table <i>tracker</i> (real time) for last 24 hours</h2>
+<h2 id="table7">From table <i>tracker</i> (real time) for last 24 hours</h2>
 <a href="#table8">Next</a>
 <p>'js' is hex. 1, 2, 32(x20), 64(x40), 128(x80, 256(x100), 512(x200) and 4096(x1000) are done via 'ajax'.<br>
 4, 8 and 16(x10) via an &lt;img&gt;<br>
@@ -489,7 +489,7 @@ $page
 8192(x2000)=SiteClass (PHP) determined this is a robot via analysis of user agent or scan of 'bots'.<br>
 The 'starttime' is done by SiteClass (PHP) when the file is loaded.</p>
 $tracker
-<h2 id="table8">Table Eight from table <i>bots</i> (real time) for Today</h2>
+<h2 id="table8">From table <i>bots</i> (real time) for Today</h2>
 <a href="#table9">Next</a>
 <p>The 'bots' field is hex.<br>
 The 'count' field is the total count since 'created'.<br>
@@ -499,7 +499,7 @@ From 'Sitemap.xml': Initial Insert=16(x10), Update= OR 32(x20).<br>
 From 'tracker' cron: Inital Insert=64(x40), Update= OR 128(x80).<br>
 So if you have a 1 you can't have a 4 and visa versa.</p>
 $bots
-<h2 id="table9">Table Nine from table <i>bots2</i> (real time) for Today</h2>
+<h2 id="table9">From table <i>bots2</i> (real time) for Today</h2>
 <a href="#analysis-info">Next</a>
 <p>'which' is 1 for 'robots.txt', 2 for the application, 4 for 'Sitemap.xml'.<br>
 The 'count' field is the number of hits today.</p>
