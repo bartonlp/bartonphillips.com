@@ -387,12 +387,11 @@ $adminStuff
 <li><a target="_blank" href="javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
-<li><a target="_blank" href="dynamicscript.php">Dynamically create script tags using PHP or JavaScript</a></li>
+<li><a target="_blank" href="dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
 <li><a target="_blank" href="localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
 <li><a target="_blank" href="filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a target="_blank" href="usinghosts.php">Why can't I access my home-hosted website from my own computer</a>? This is a common problem.</li>
 <li><a target="_blank" href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
-<li><a target="_blank" href="http://www.phys.uu.nl/~vgent/easter/eastercalculator.htm">Site with lots of Easter and Passover Information</a><br> 
 <li><a target="_blank" href="urlcountrycodes.php">Find the country given a url country code</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>

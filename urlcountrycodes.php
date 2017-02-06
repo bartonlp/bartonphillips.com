@@ -5,10 +5,50 @@ $S = new $_site->className($_site);
 
 $self = $S->self;
 
+$h->css = <<<EOF
+  <style>
+input {
+  font-size: 1rem;
+  border-radius: .5rem;
+  padding: .2rem;
+  width: 5rem;
+}
+  </style>
+EOF;
+
+$h->script = <<<EOF
+  <script>
+jQuery(document).ready(function($) {
+  $("input[type='submit']").click(function() {
+    var code = $("input[type='text']").val();
+    if(!code) {
+      $("#results").html("<h2>NO CODE SUPPLIED</h2>");
+      return false;
+    }
+
+    $("input[type='text']").val('');
+    $.ajax({
+      url: '/urlcountrycodes.php',
+      data: {code: code},
+      type: 'post',
+      success: function(data) {
+        console.log(data);
+        $("#results").html(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+    return false;
+  });
+});
+  </script>
+EOF;
+
 $h->banner = "<h1>Country from URL sufix</h1>";
 list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
 
-if($code = $_GET['code']) {
+if($code = $_POST['code']) {
   $n = $S->query("select description from urlcountrycodes where code='$code'");
   if($n) {
     $row = $S->fetchrow();
@@ -20,48 +60,26 @@ if($code = $_GET['code']) {
     }
       
     echo <<<EOF
-$top
 <h2>Description for Code '$code':<br/>
 $desc</h2>
 $other
 EOF;
-
-    // Use ipinfo.io to get the country for the ip
-    $cmd = "http://ipinfo.io/$code";
-    $ch = curl_init($cmd);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $loc = json_decode(curl_exec($ch));
-
-    $locstr = <<<EOF
-  <ul class="user-info">
-    <li>You got here via: <span class='green'><i>{$_SERVER['SERVER_NAME']}</i>.</span>$ref</li>
-
-    <li>User Agent String is:<br>
-    <i class='green'>$S->agent</i></li>
-    <li>IP Address: <i class='green'>$S->ip</i></li>
-    <li>Hostname: <i class='green'>$loc->hostname</i></li>
-    <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
-    <li>GPS Loc: <i class='green'>$loc->loc</i></li>
-    <li>ISP: <i class='green'>$loc->org</i></li>
-  </ul>
-  EOF;
-
-    echo $locstr;
   } else {
     echo <<<EOF
 <h2>Code '$code' not found</h2>
 EOF;
   }
-} else {
-  echo <<<EOF
+  exit();
+}
+
+// Render Page
+
+echo <<<EOF
 $top
-<form action="$self" method="get">
-Enter the Country Code: <input type="text" name="code" /><br/>
+<form action="$self" method="post">
+Enter the Country Code: <input type="text" name="code" autofocus><br/>
 <input type="submit" value="Submit"/>
 </form>
-
-EOF;
-}
-echo <<<EOF
+<div id='results'></div>
 $footer
 EOF;
