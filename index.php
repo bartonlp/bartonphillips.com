@@ -13,7 +13,7 @@ if($S->isBot) {
   if($ref) {
     if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
     $ref =<<<EOF
-<br>You came to this site from: <i class='green'>$ref</i>
+<li>You came to this site from: <i class='green'>$ref</i></li>
 EOF;
   }
   
@@ -25,7 +25,7 @@ EOF;
   
   $locstr = <<<EOF
 <ul class="user-info">
-  <li>You got here via: <span class='green'><i>{$_SERVER['SERVER_NAME']}</i>.</span>$ref</li>
+  $ref
   <li>User Agent String is:<br>
     <i class='green'>$S->agent</i></li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
@@ -124,6 +124,7 @@ $h->css = <<<EOF
   flex-wrap: wrap;
   justify-content: space-around;
   border: 1px solid black;
+  background-color: #FEFFF1;
 }
 
 #interesting, #adminstuff, #internet {
@@ -301,7 +302,7 @@ $top
 <section id='browser-info'>
 $hereMsg
 <div class="locstr">
-   Our domains are <i>bartonphillips.org</i> and <i>bartonphillips.com</i><br/>
+   Our domain is <i>bartonphillips.com</i><br/>
    $locstr
 Start: <span class='green'>$date</span><br>
 Today is: <span id="datetoday">$date</span></div>
@@ -334,7 +335,7 @@ Today is: <span id="datetoday">$date</span></div>
 </tr>
 <tr>
 <th><a target="_blank" href="http://www.mountainmessiah.com"><button>Mountain Messiah</button></a></th>
-<th><a target="_blank" href="proxy.php?http://www.swam.us"><button>Southwest Aquatic Master</button></a></th>
+<th><a target="_blank" href="http://www.bartonphillips.org"><button>bartonphillips.org</button></a></th>
 <th><a target="_blank" href="http://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a></th>
 </tr>
 <tr>
@@ -365,6 +366,7 @@ Today is: <span id="datetoday">$date</span></div>
 Weather Underground</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a target="_blank" href="spacestation.php">Space Station Location</a></li>
+<li><a target="_blank" href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
 </ul>
 </section>
 $adminStuff
@@ -382,7 +384,7 @@ $adminStuff
 <section id="tips">
 <h2>Helpful Programs and Tips</h2>
 <ul>
-<li><a target="_blank" href="http://www.bartonlp.org/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a target="_blank" href="http://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
 <li><a target="_blank" href="javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>

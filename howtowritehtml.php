@@ -12,7 +12,10 @@ if(!$S) {
   $h->title = "How to write html";
   $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
   $h->extra = <<<EOF
-  <style type="text/css">
+  <style>
+textarea, input {
+  font-size: 1rem;
+}
 .example {
   border: 1px solid red;
   padding: 5px;
@@ -20,8 +23,10 @@ if(!$S) {
   color: black;
 }
 code {
-  font-size: 12pt;
+  font-size: .8rem;
   color: gray;
+  background-color: hsla(360, 25%, 5%, 0.1);
+  padding: .1rem .3rem;
 }
   </style>
 EOF;
@@ -37,7 +42,10 @@ EOF;
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   echo <<<EOF
-  <style type="text/css">
+  <style>
+textarea, input {
+  font-size: 1rem;
+}
 .example {
   border: 1px solid red;
   padding: 5px;
@@ -45,12 +53,16 @@ EOF;
   color: black;
 }
 code {
-  font-size: 12pt;
+  font-size: .8rem;
   color: gray;
+  background-color: hsla(360, 25%, 5%, 0.1);
+  padding: .1rem .3rem;
 }
   </style>
 EOF;
 }
+
+// Render the rest of the page.
 
 echo <<<EOF
 <div id="top-of-page2">This is the top of Page</div>
@@ -289,7 +301,7 @@ breaks that will be removed as well as these extra spaces   .</p>
       and height to 200 pixles each we have forced the image to be square. To keep the original ratios you can specify only the
       width or the height then the unspecified attribute will be scaled to maintain the same ratio.</p>
    <pre>
-<code>&lt;img&gt; src=&quot;/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
+<code>&lt;img&gt; src=&quot;http://bartonphillips.net/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
    <div class="example">
       <img src="http://bartonphillips.net/images/msfree.png" width="200" border="5" alt="MS Free" >
    </div>
@@ -319,10 +331,10 @@ breaks that will be removed as well as these extra spaces   .</p>
    <p>Using a relative URL to an image looks like this:</p>
 
    <pre>
-<code>&lt;a href=&quot;/images/msfree.png&quot;&gt;View the MS Free Image&lt;/a&gt;</code></pre>
+<code>&lt;a href=&quot;http://bartonphillips.net/images/msfree.png&quot;&gt;View the MS Free Image&lt;/a&gt;</code></pre>
 
    <div class="example">
-      <a href="images/msfree.png">View the MS Free Image</a>
+      <a href="http://bartonphillips.net/images/msfree.png">View the MS Free Image</a>
    </div>
 
    <p>The absolute URL in the first example links to an external page on another server. The relative URL in the second example
@@ -356,8 +368,8 @@ breaks that will be removed as well as these extra spaces   .</p>
    <p>For further information about HTML Anchors and Links go to <a href="http://www.w3schools.com/html/html_links.asp">w3school.com HTML</a>.</p>
    <hr>
 
-   <p>You can view the source of this page <a target="_blank"
-   href="view-source:http://www.bartonphillips.com/howtowritehtml.php">Click Here</a>.</p>
+   <a id='showsource' href="howtowritehtml.php?page=showsource">Show source code of this file</a>
+   <div id='showresults'></div>
 
    <p>For further information about HTML go to <a href="http://www.w3schools.com/html/default.asp">w3school.com HTML Links</a>.</p>
 </div>
@@ -400,7 +412,6 @@ breaks that will be removed as well as these extra spaces   .</p>
   <ul>
     <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
     <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
-    <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
     <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
   </ul>
 </div>
@@ -447,10 +458,37 @@ jQuery(document).ready(function($) {
     text = text.replace(/<\/?script.*?>/ig, "&lt;script NOT ALLOWED&gt;");
     $("#preview").html(text);
   });
+
+  // Show Source Code
+  $("#showsource").click(function() {
+    if(this.flag) {
+      $(this).html("Show source code of this file");
+      $("#showresults").hide();
+    } else {
+      $(this).html("Hide source code");
+      if($("#showresults").html()) {
+         $("#showresults").show();
+      } else {
+        var html = $("html").html();
+        html = html.replace(/</g, '&lt;');
+        html = html.replace(/>/g, '&gt;');
+        html = html.replace(/\\n/g, '<br>');
+        html = "&lt;!DOCTYPE html&gt;<br>&lt;html&gt<br>" + html + "<br>&lt;/html&gt;<br>";
+        $("#showresults").html(html).css({border: '1px solid black',
+          padding: '.5rem',
+          overflow: 'auto',
+          height: '20rem',
+          backgroundColor: 'hsla(1, 65%, 85%, .5)'});
+      }
+    }
+    this.flag = !this.flag;
+    return false;
+  });
 });
 </script>
 EOF;
 
 if($dofooter) {
+  // This is for a standalone page not included in another page.
   echo $footer;
 }

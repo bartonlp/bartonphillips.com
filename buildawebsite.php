@@ -18,8 +18,10 @@ jQuery(document).ready(function($) {
     var blob = new Blob([txt], {type: "text/plain;charset=utf-8"});
     try {
       saveAs(blob, "download.html");
+      $("#submit-results").html("<h3 style='color: green'>Submit OK</h3>");
     } catch(err) {
       console.log(err);
+      $("#submit-results").html("<h3 style='color: red'>Submit Railed</h3>");
     }
     return false;
   });
@@ -28,9 +30,15 @@ jQuery(document).ready(function($) {
 </script>
 
 <style>
-#editarea {
-  width: 800px;
+#editarea { /* textarea */
+  width: 100%;
   height: 300px;
+  font-size: 1rem;
+  padding: .5rem;
+}
+#submit { /* Submit Button */
+  font-size: 1rem;
+  border-radius: .3rem;
 }
 .addstuff {
   color: red;
@@ -84,29 +92,32 @@ echo $top;
     </td></tr>
 </table>
 
-<p>Just take this simple boilerplate text and add the information in RED using your text editor.
-  Do NOT use a word processor use a text editor like Notepad. Or use
-  the box below and edit it. Then save the text below by clicking submit which will ask you for the
-  location you want the file to reside.</p>
+<p>Just copy this simple boilerplate text and add the information in RED using your text editor.
+  Do NOT use a word processor, use a text editor like 'Notepad' on Windows or 'nano' on Linux.</p>
+
+<p>Or use the 'textarea' in the form below; edit it and then save the text by clicking submit. You
+  can add all of your HTML with this form.
+  The submit dialog will ask you for the location where you want the file (download.html) to reside.</p>
 
 <form>
 <textarea id="editarea">
 &lt;!DOCTYPE html&gt;
 &lt;head&gt;
-  &lt;title&gt;<span class="addstuff">Add Your Page Title Here</span>&lt;/title&gt;
-  &lt;meta charset='utf-8'/&gt;
+  &lt;title&gt;Add Your Page Title Here&lt;/title&gt;
+  &lt;meta charset='utf-8'&gt;
   &lt;meta name=&quot;Author&quot;
-     content=&quot;<span class="addstuff">Add Your Name Here</span>&quot;/&gt;
+     content=&quot;Add Your Name Here&quot;&gt;
   &lt;meta name=&quot;description&quot;
-     content=&quot;<span class="addstuff">Add a Description of Your Page Here</span>&quot;/&gt;
+     content=&quot;Add a Description of Your Page Here&quot;&gt;
 &lt;/head&gt;
 &lt;body&gt;
-<span class="addstuff">PUT YOUR HTML FOR THE PAGE HERE</span>
+PUT YOUR HTML FOR THE PAGE HERE
 &lt;/body&gt;
 &lt;/html&gt;
 </textarea>
 <br>
 <button id="submit">Submit</button>
+<div id="submit-results"></div>
 </form>
 
 <h2>Step Two</h2>
@@ -117,32 +128,25 @@ echo $top;
 <ul>
   <li><a href="http://lamphost.net">Lamphost.net</a> (in San Diego CA).
     They are very easy to work with and provide excellent support and service.
-    They register via TwoCows. Domain registration is $15/year and web hosting is $10/month.</li>
-  <li><a href="http://inmotionhosting.com">Inmotionhosting.com</a>.
-    I have a VPS (Virtual Private Server) with them and one of my domains (bartonphillips.net).
-    Good pricing and OK support. Domains are $15 and hosting starts at
-    $6.</li>
+    They register via Tucows. Domain registration is $15/year and web hosting is $10/month.</li>
   <li><a href="http://1and1.com">1and1.com</a>.
     I host <a href="http://www.myphotochannel.com">www.myphotochannel.com</a> with
     1and1 and have been quite satisfied with their service. Domains are via GoDaddy and 1and1 offers
     a lot of first year deals, after the first year they are about the same as most other
     ISP's.</li>
   <li><a href="http://www.digitalocean.com">DigitalOcean.com</a>.
-    I currently host www.bartonphillips.com, www.bartonphillips.org, www.bartonphillips.net,
-    www.bartonlp.com, www.endpolio.com, www.applitec.com and www.granbyrotary.com at DigitalOcean. I
-    have a VPS where I have FULL adminstrator (root) access. The server is fast, economical and
-    secure. This server does require a good understanding of system administration however; there is
-    very little hand holding. The hosting costs $10/month. Most of the above domains are registered
-    with <a href="www.enom.com">Enom.com</a> for $15/year each.</li>
-  <li><a href="http://www.justhost.com">JustHost.com</a>.
-    I currently host www.conejoskiclub.org with JustHost. This is a 'shared' server which means one
-    does not have administrator (root) privileges. There are many other websites being served from
-    this server and as a result one does not get much to say about how the server is run, however,
-    as a result the monthly charges start at $3.95/month with a domain name and WordPress installed
-    and ready. I personally HATE WordPress but it does make it easy to get started.</li>
+    This ISP is my current favorite.
+    I host www.bartonphillips.com, www.bartonphillips.org, www.bartonphillips.net,
+    www.bartonlp.com, www.bartonlp.org, www.applitec.com, www.mountainmessiah.com,
+    www.allnaturalcleaningcompany.com and www.granbyrotary.com at DigitalOcean. I
+    have two 'Virtual Private Servers' where I have FULL adminstrator (root) access. The servers are fast, economical and
+    secure. These servers do require a good understanding of system administration however; there is
+    very little hand holding. The hosting costs between $5 and $10/month.<br>
+    The above domains are registered with <a href="www.enom.com">Enom.com</a>,
+    GoDaddy, Tucows and InMotionHosting for about $15/year each.</li>
 </ul>
 
-<p>There are thousands of ISP's from very very big to small. Any of those above should be pretty
+<p>There are thousands of ISP's from very very big to very small. Any of those above should be pretty
   safe.</p>
 
 <p>Go to the website of any one of the above and you can look and see what domain names are
@@ -189,8 +193,9 @@ Don't hesitate to CALL if you get stuck or just don't understand what they are t
 </ul>
 
 <p>If you didn't register your domain name with the same ISP that is doing your Shared Hosting then
-  you may have some more work to do before anything will work. You will need the DNS addresses your
-  ISP sent you. There are usaually two domain names that look something like
+  you may have some more work to do before anything will work.</p>
+<p>You will need the DNS addresses your ISP sent you.
+  There are usaually two domain names that look something like
   <b>ns1.something.com</b> and <b>ns2.something.com</b>. You will need to go to the website of the
   &quot;Registrar&quot; for your domain name. They will also have a way for you to login (usually at
   the top of the screen somewhere) and should have sent you a welcoming E-mail with your account
@@ -198,7 +203,7 @@ Don't hesitate to CALL if you get stuck or just don't understand what they are t
   addresses your ISP sent you. This may require some reading and if all else fails call their
   customer support line. The two addresses your ISP sent you are used to connect your domain name to
   your ISP's DNS server. Hopefully you registered your domain name at the same ISP that is providing
-  your web hosting and that they have done all this for your.</p>
+  your web hosting and that they have done all this for you.</p>
 
 <p>Once you have your Username and Password you can access your ISP's <i>Control Panel</i> where you
   can (if you know what you are doing) set up your site. At this point be prepared to do some
@@ -254,7 +259,7 @@ It really make working on a remote system fun and easy. You will never want to u
 <p>In reality there is actually a fifth step. That step never ends, it is maintenance and
 enhancement. At some point you may want to move from the <b>static</b> website you built to a more
 <b>dynamic</b> exciting page. This will require some client programming with
-<a href="http://en.wikipedia.org/wiki/JavaScript">Javascript</a> and probably so server back end
+<a href="http://en.wikipedia.org/wiki/JavaScript">Javascript</a> and probably some server back end
 programming with <a href="http://www.php.net">PHP</a>.  This is when all of this really
 becomes fun and better than any video game. You can make you website as interesting and exciting as
 you want -- the sky is the limit. Good luck and have fun.</p>
@@ -267,7 +272,6 @@ you want -- the sky is the limit. Good luck and have fun.</p>
     <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
     <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
     <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
-    <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
   </ul>
 </div>
 <hr>

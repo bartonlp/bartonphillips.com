@@ -205,8 +205,8 @@ EOF;
   $page .= <<<EOF
 <h2 id="table4">From table <i>counter</i> for today</h2>
 <a href="#table5">Next</a>
-<p>Shows the total number of hits for a page.<br>
-'count' is the total number of hits including real and bots. 'real' is the number of non-bots.</p>
+<p>Shows the total number of hits for a page since last reset.<br>
+'real' is the number of non-bots and 'bots' is the number of robots.</p>
 $tbl
 EOF;
 
@@ -351,12 +351,6 @@ EOF;
 $tbl
 EOF;
   }
-
-  $page .= "<p class='h-update'>End Hourly update.</p>";
-
-  // Write the file out
-  //file_put_contents("webstats.i.txt", $page);
-
   return $page;
 }
 
@@ -453,6 +447,7 @@ $errMsg
     <option>Bartonlp</option>
     <option>BartonlpOrg</option>
     <option>Bartonphillips</option>
+    <option>BartonphillipsOrg</option>
     <option>GranbyRotary</option>
     <option>Messiah</option>
     <option>Puppiesnmore</option>

@@ -233,7 +233,6 @@ browser and sends the <b>Response</b> data to the browser.</p>
   <p>Other articles in this series:</p>
   <ul>
     <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
-    <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
     <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
     <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
   </ul>
