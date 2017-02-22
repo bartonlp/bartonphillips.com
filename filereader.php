@@ -30,7 +30,10 @@ jQuery(document).ready(function($) {
 </script>
 EOF;
 
+$h->title = "Filereader Interface";
+
 list($top, $footer) = $S->getPageTopBottom($h);
+
 echo <<<EOF
 $top
 <p>Find the full document at <a href="http://www.html5rocks.com/en/tutorials/file/dndfiles/">

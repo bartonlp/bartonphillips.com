@@ -279,6 +279,9 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
 <li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
 <li><a target="_blank" href="gitinfo.php">GitInfo</a></li>
 <li><a target="_blank" href="gitstatus.php">GitStatusAll</a></li>
+<li><a target="_blank" href="http://www.bartonphillips.dyndns.org">Rpi</a></li>
+<li><a target="_blank" href="http://www.bartonphillips.dyndns.org:5080">Rpi2</a></li>
+<li><a target="_blank" href="http://www.bartonphillips.dyndns.org:4080">Hp-envy</a></li>
 </ul>
 </section>
 EOF;
@@ -392,7 +395,6 @@ $adminStuff
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
 <li><a target="_blank" href="localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
 <li><a target="_blank" href="filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
-<li><a target="_blank" href="usinghosts.php">Why can't I access my home-hosted website from my own computer</a>? This is a common problem.</li>
 <li><a target="_blank" href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
 <li><a target="_blank" href="urlcountrycodes.php">Find the country given a url country code</a><br>
 <li><a target="_blank" href="http://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>

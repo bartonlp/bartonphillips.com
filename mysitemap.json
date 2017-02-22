@@ -14,9 +14,9 @@
         "database": "bartonphillipsdotcom",
         "engine": "mysqli"
     },
-    "headFile": "/var/www/bartonphillipsdotcom/includes/head.i.php",
-    "bannerFile": "/var/www/bartonphillipsdotcom/includes/banner.i.php",
-    "footerFile": "/var/www/bartonphillipsdotcom/includes/footer.i.php",
+    "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
+    "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
+    "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
     "count": true,
     "countMe": true,
     "ctrmsg": "Counter Reset: Feb. 4, 2017",

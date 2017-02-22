@@ -150,8 +150,8 @@ body > pre {
   </style>
 EOF;
 
-$h->title = "Dynamically Load Scripts";
-$h->banner = "<h1 class='center'>Dynamic Load &lt;script&gt; tags via PHP and JavaScript</h1>";
+$h->title = "Dynamically Load Scripts and Iframs";
+$h->banner = "<h1 class='center'>Dynamic Load &lt;script&gt; and &lt;iframe&gt; via PHP and JavaScript</h1>";
 
 list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
 

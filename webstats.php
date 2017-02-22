@@ -452,6 +452,8 @@ $errMsg
     <option>Messiah</option>
     <option>Puppiesnmore</option>
     <option>Weewx</option>
+    <option>Rpi</option>
+    <option>Rpi2</option>
   </select>
 
   <button type="submit" name='submit'>Submit</button>
