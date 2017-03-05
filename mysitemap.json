@@ -11,7 +11,7 @@
         "host": "localhost",
         "user": "barton",
         "password": "7098653",
-        "database": "bartonphillipsdotcom",
+        "database": "bartonphillips",
         "engine": "mysqli"
     },
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",

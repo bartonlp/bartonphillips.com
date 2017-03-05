@@ -1,7 +1,7 @@
 #!/bin/bash
 # Backup the database before starting.
 # I create a file CE_BACKUP.sql which can be used to create a new database
-cd /var/www/bartonphillipsdotcom
+cd /var/www/bartonphillips.com
 dir=other
 # Day of week Mon-Sun
 #dayOfWeek=`date | cut -d " " -f 1`
@@ -20,8 +20,8 @@ filename="BLP_BACKUP.$bkupdate.sql"
 #rm $dir/GR_BACKUP.$dayOfWeek.*.sql.gz
 #fi
 echo "Bartonphillips backup "$bkupdate
-mysqldump --user=barton --no-data --password=7098653 bartonphillipsdotcom > $dir/bartonphillips.schema
-mysqldump --user=barton --add-drop-table --password=7098653 bartonphillipsdotcom >$dir/$filename
+mysqldump --user=barton --no-data --password=7098653 bartonphillips > $dir/bartonphillips.schema
+mysqldump --user=barton --add-drop-table --password=7098653 bartonphillips >$dir/$filename
 #the schema.pl program needs the keys and fourign keys to have a format
 #of xxxId and xxxId_fk. The granbyranch database does not have that yet!
 #schema.pl granbyrotary.schema > granbyrotary.ref

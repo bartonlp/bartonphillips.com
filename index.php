@@ -282,6 +282,7 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
 <li><a target="_blank" href="http://www.bartonphillips.dyndns.org">Rpi</a></li>
 <li><a target="_blank" href="http://www.bartonphillips.dyndns.org:5080">Rpi2</a></li>
 <li><a target="_blank" href="http://www.bartonphillips.dyndns.org:4080">Hp-envy</a></li>
+<li><a target="_blank" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
 </ul>
 </section>
 EOF;
