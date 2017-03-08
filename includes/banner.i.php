@@ -5,7 +5,7 @@ return <<<EOF
     <img id='logo' src="http://bartonphillips.net/images/blp-image.png"></a>
   <!-- the 'a' tag must be at the end of the image src otherwise we get an '-'-->
   <a href="http://linuxcounter.net/">
-    <img id='linuxcounter' src="/tracker.php?page=normal&id=$this->LAST_ID">
+    <img id='linuxcounter' src="tracker.php?page=normal&id=$this->LAST_ID">
   </a>
 $mainTitle
 <noscript>
