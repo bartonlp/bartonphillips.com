@@ -271,23 +271,7 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
   if($_GET['blp']) {
     error_log("Bartonphillips index.php. Using blp: $S->ip, $S->agent");
   }
-  $adminStuff = <<<EOF
-<section id='adminstuff'>
-<h2>Admin</h2>
-<ul>
-<li><a target="_blank" href="webstats.php">Web Stats</a></li>
-<li><a target="_blank" href="http://bartonphillips.dyndns.org/apc.php">UPS</a></li>
-<li><a target="_blank" href="gitinfo.php">GitInfo</a></li>
-<li><a target="_blank" href="gitstatus.php">GitStatusAll</a></li>
-<li><a target="_blank" href="http://www.bartonphillips.dyndns.org">Rpi</a></li>
-<li><a target="_blank" href="http://www.bartonphillips.dyndns.org:5080">Rpi2</a></li>
-<li><a target="_blank" href="http://www.bartonphillips.dyndns.org:4080">Hp-envy</a></li>
-<li><a target="_blank" href="http://www.applitec.com/glencabin">Glen's Cabin</a></li>
-<li><a target="_blank" href="http://www.bartonlp.com/heidi">Heidi's Page</a></li>
-<li><a target="_blank" href="http://www.bartonlp.com/heather">Heather's Page</a></li>
-</ul>
-</section>
-EOF;
+  $adminStuff = file_get_contents("/var/www/bartonlp/adminsites.txt");
 }
 
 // use the Dom class to get the Sans '.diary h2' as text.
