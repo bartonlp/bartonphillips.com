@@ -9,3 +9,4 @@ mv Sitemap.xml $dir/$filename
 mv sitemap.$$ Sitemap.xml
 gzip $dir/$filename
 
+echo "updatesitemap.sh for bartonphillips.com Done"
