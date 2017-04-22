@@ -37,7 +37,7 @@ return <<<EOF
 <div id="address">
 <address>
   Copyright &copy; $this->copyright<br>
-Barton Phillips, 828 Cayo Grande Ct. Newbury Park CA 91320<br>
+$this->address<br>
 <a href='mailto:bartonphillips@gmail.com'>bartonphillips@gmail.com</a>
 </address>
 </div>
@@ -48,7 +48,6 @@ $counterWigget
 Last Modified: $lastmod
 {$arg['msg2']}
 </footer>
-$statcounter
 </body>
 </html>
 EOF;

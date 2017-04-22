@@ -16,14 +16,14 @@ return <<<EOF
   <!-- ICONS, RSS -->
   <link rel="shortcut icon" href="favicon.ico">
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="http://bartonphillips.net/css/blp.css" title="blp default">
+  <link rel="stylesheet" href="https://bartonphillips.net/css/blp.css" title="blp default">
 {$arg['link']}
   <!-- jQuery -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
   <script>
 var lastId = "$this->LAST_ID";
   </script>
-  <script src="http://bartonphillips.net/js/tracker.js"></script>
+  <script src="https://bartonphillips.net/js/tracker.js"></script>
 {$arg['extra']}
 {$arg['script']}
 {$arg['css']}

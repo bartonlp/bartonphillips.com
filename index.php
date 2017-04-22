@@ -1,5 +1,7 @@
 <?php
 // Main page for bartonphillips.com
+// BLP 2017-03-23 -- set up to work with https
+
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
@@ -149,7 +151,7 @@ $h->css = <<<EOF
   }
 }
 @media (max-width: 400px) {
-  img[src="http://isc.sans.edu/images/status.gif"] {
+  img[src="https://isc.sans.edu/images/status.gif"] {
     width: 300px;
   }
 }
@@ -190,7 +192,7 @@ EOF;
 
 $h->script .= <<<EOF
   <!-- local script -->
-  <script src="http://bartonphillips.net/js/phpdate.js"></script>
+  <script src="https://bartonphillips.net/js/phpdate.js"></script>
   <script>
 jQuery(document).ready(function($) {
   var weewx = '';
@@ -352,11 +354,12 @@ Today is: <span id="datetoday">$date</span></div>
 <section id="interesting">
 <h2>Interesting Sites</h2>
 <ul>
-<li><a target="_blank" href="http://www.wunderground.com/personal-weather-station/dashboard?ID=KCATHOUS54#history">
+<li><a target="_blank" href="https://www.wunderground.com/us/nc/new-bern/zmw:28560.1.99999">
 Weather Underground</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a target="_blank" href="spacestation.php">Space Station Location</a></li>
 <li><a target="_blank" href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
+<li><a target="_blank" href="http://www.computerscienceonline.org">Computer Science Online</a></li>
 </ul>
 </section>
 $adminStuff
@@ -413,11 +416,11 @@ complex as some of the popular frameworks out there.</p>
 everything working this is pretty easy.</p>
 <p>The <b>SiteClass</b> framework is hosted at<br>
 <a target="_blank" href="proxy.php?https://github.com/bartonlp/SiteClass">GitHub
-<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
+<img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
 <a target="_blank"
-href="proxy.php?http://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
-<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
+href="proxy.php?https://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
+<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
 <hr>
 
@@ -426,11 +429,11 @@ href="proxy.php?http://www.phpclasses.org/package/9105-PHP-Create-database-drive
 web browser. The sections are stored in a database (MySql is prefered).</p>
 <p>You can find my <b>UpdateSite Class</b> at<br>
 <a target="_blank" href="proxy.php?https://github.com/bartonlp/updatesite">GitHub
-<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a>
+<img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
 and also at 
 <a target="_blank"
 href="proxy.php?http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-website-.html">
-<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>
+<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>
 and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Documentation</a>.</p>
 <hr>
 
@@ -451,11 +454,11 @@ slide show presentation.</p>
   
 <p>You can find my <b>Slide Show Class</b> at<br>
 <a target="_blank"
-href="proxy.php?http://github.com/bartonlp/slideshow">GitHub
-<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
+href="proxy.php?https://github.com/bartonlp/slideshow">GitHub
+<img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank"
 href="proxy.php?http://www.phpclasses.org/browse/author/592640.html">
-<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
+<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr>
 
@@ -464,14 +467,14 @@ alt="php classes logo" /></a></p>
 <p>This package can be used to present a slide show from images listed in a database.
 The main class can retrieve lists of images to be displayed from a MySQL database table.</p>
 
-<p>The class can also add or update the slideshow image lists in the database table,
+<p>The class can also add or update the slideshow image lists in the database table.
 The actual images can be stored on the filesystem or in the MySql table as base64 data.</p>
   
 <p>You can find my <b>MySql Slide Show Class</b> at<br>
 <a target="_blank" href="proxy.php?http://github.com/bartonlp/mysqlslideshow">GitHub
-<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
+<img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="proxy.php?http://www.phpclasses.org/browse/author/592640.html">
-<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
+<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
 
@@ -480,16 +483,16 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 <p>This package can read and get information from an RSS feed. It is simple to use.</p>
 <p>You can find my <b>RssFeed Class</b> at<br>
 <a target="_blank" href="proxy.php?http://github.com/bartonlp/rssfeed">GitHub
-<img id="octocat" src="http://bartonphillips.net/images/Octocat.jpg"></a> and also at
+<img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="proxy.php?https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
-<img src="http://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
+<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
 <!-- # SANS Infocon Status -->
 <div class="center">
 <a target="_blank" href="proxy.php?https://isc.sans.org">
 <img alt="Internet Storm Center Infocon Status"
-src="http://bartonphillips.net/images/internetstorm-icon.gif">$sans</a>
+src="https://bartonphillips.net/images/internetstorm-icon.gif">$sans</a>
 </div>
 </section>
 

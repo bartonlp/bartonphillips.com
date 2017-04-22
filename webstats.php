@@ -1,4 +1,5 @@
 <?php
+// BLP 2017-03-23 -- set up to work with https  
 // This is used by index.php instead of webstats-new.php. However, note that this file uses
 // webstats-new.js which uses webstats-new.php for its AJAX calls!  
 // BLP 2016-06-22 -- NOTE: this uses http://bartonphillips.net/js/webstats-new.js which in turn uses
@@ -56,15 +57,15 @@ $page = getwebstats($S);
 
 $h->link = <<<EOF
   <!-- local css links -->
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://bartonphillips.net/css/pure-min.css">
 <!--[if lte IE 8]>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <link rel="stylesheet" href="https://bartonphillips.net/css/grids-responsive-old-ie-min.css">
 <![endif]-->
 <!--[if gt IE 8]><!-->
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <link rel="stylesheet" href="https://bartonphillips.net/css/grids-responsive-min.css">
 <!--<![endif]-->
-  <link rel="stylesheet" href="http://bartonphillips.net/css/tablesorter.css">
-  <link rel="stylesheet" href="http://bartonphillips.net/css/webstats.css">
+  <link rel="stylesheet" href="https://bartonphillips.net/css/tablesorter.css">
+  <link rel="stylesheet" href="https://bartonphillips.net/css/webstats.css">
 EOF;
 
 $h->css = <<<EOF
@@ -103,7 +104,7 @@ $context  = stream_context_create($options);
 
 // Now this is going to do a POST!
 
-$ipc = file_get_contents("http://www.bartonphillips.com/webstats-ajax.php", false, $context);
+$ipc = file_get_contents("https://www.bartonphillips.com/webstats-ajax.php", false, $context);
 
 foreach(json_decode($ipc) as $k=>$v) {
   $ipcountry[$k] = $v;
@@ -125,8 +126,8 @@ var ipcountry = JSON.stringify($jsonIpcountry);
 var thesite = "$S->siteName";
 var myIp = "$myIp";
   </script>
-  <script src="http://bartonphillips.net/js/tablesorter/jquery.tablesorter.js"></script>
-  <script src="http://bartonphillips.net/js/webstats.js"></script>
+  <script src="https://bartonphillips.net/js/tablesorter/jquery.tablesorter.js"></script>
+  <script src="https://bartonphillips.net/js/webstats.js"></script>
 EOF;
 
 $h->title = "Web Statistics";
@@ -387,8 +388,8 @@ function renderPage($S, $page) {
   // The analysis files are updated once a day by a cron job.
   $T = new dbTables($S);
 
-  $analysis = file_get_contents("http://bartonphillips.net/analysis/$S->siteName-analysis.i.txt");
-  if(!$analysis) $errMsg = "http://bartonphillips.net/analysis/$S->siteName-analysis.i.txt: NOT FOUND";
+  $analysis = file_get_contents("https://bartonphillips.net/analysis/$S->siteName-analysis.i.txt");
+  if(!$analysis) $errMsg = "https://bartonphillips.net/analysis/$S->siteName-analysis.i.txt: NOT FOUND";
 
   // Callback for tracker below
   

@@ -2,6 +2,11 @@
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
+if($_SERVER['HTTPS'] == 'on') {
+  header("Location: http://www.bartonphillips.com/spacestation.php");
+  exit();
+}
+
 $h->title = "ISS Info";
 $h->banner = "<h1>International Space Station Information</h1>";
 $h->extra =<<<EOF

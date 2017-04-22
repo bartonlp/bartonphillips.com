@@ -8,6 +8,18 @@ if (empty($_POST['year'])) {
   $year = $_POST['year'];
 }
 
+$easterExample = escapeltgt(file_get_contents("easter-example.php"));
+
+$easterExample = <<<EOF
+<p>Here is this file (easter-example.php). It uses 'SiteClass' (the require_once at the top)
+which you can get at <a href="https://github.com/bartonlp/site-class">here.</a></p>
+<div id='easterExample'>
+<pre class='brush: php'>
+$easterExample
+</pre>
+</div>
+EOF;
+
 require_once("easterdatecalculator.php");
 $day = new easterdatecalculator;
 
@@ -31,15 +43,33 @@ for($i=1944; $i < 2070; ++$i) {
 }
 
 $h->title = "Easter Date Calculator";
+$h->extra = '<script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>';
+
 $h->script = <<<EOF
   <script>
 function re_calc() {
   document.forms['thisform'].submit();
 }
+jQuery(document).ready(function($) {
+});
   </script>
 EOF;
+
+$h->link = '<link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">';
+
 $h->css = <<<EOF
   <style>
+.syntaxhighlighter {
+  height: 10rem;
+  font-size: .8rem !important;
+}
+code {
+  background-color: lightgray;
+  padding: .1rem .5rem;
+}
+#easterExample {
+  width: 100%;
+}
 #year {
   font-size: 1em;
   width: 4rem;
@@ -63,7 +93,9 @@ Easter can also be calculated:</p>
 <li>Pentecost     +49 days from Easter
 </ul>
 
-<p>This is done by a PHP Class. You can download the class <a href="download.php?file=easterdatecalculator.php">here</a>.</p>
+<p>This is done by a PHP Class. You can download the class
+<a href="download.php?file=easterdatecalculator.php">here</a>.</p>
+$easterExample
 <form id='thisform' name='thisform' method='post'>
 Enter The Year You Are Interested In:
 <input type='text' id='year' name='year' value="$year"

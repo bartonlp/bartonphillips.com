@@ -68,7 +68,7 @@ different operationg systems etc.</p>
 
 <p>
 In May of 2015 we moved back to Souther California and in June we rented a house in Newbury Park near Thousand Oaks.
-I put the Vantage Vue on a 15 foot pole in the pack yard. </p>
+I put the Vantage Vue on a 15 foot pole in the back yard. </p>
 
 <p>
 <img class='photo' src='http://bartonphillips.net/images/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
