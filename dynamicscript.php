@@ -55,11 +55,9 @@ EOF;
 
 $h->extra = <<<EOF
   <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
-  <script type="text/javascript" src="js/shCore.js"></script>
-  <script type="text/javascript" src="js/shBrushJScript.js"></script>
-  <script type="text/javascript" src="js/shBrushXml.js"></script>
-  <script type="text/javascript">SyntaxHighlighter.all();</script>
-  <link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+  <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
+  <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
+
   <!-- dynamic script -->
 $script
   <!-- regualar script -->
@@ -182,7 +180,7 @@ JavaScript is pretty obfuscated as it appears as a base64 string not easily read
 <p>First with PHP. There are a lot of ways to do it with PHP but I am going to show you how to create
 a script tag via a base64 'data-uri'.</p>
 
-<pre class='php'>
+<pre class='brush: php'>
 &lt;?php
 // This uses jQuery but could all be done with straight JavaScript.
 // Put some JavaScript code into the \$thescript variable.
@@ -214,7 +212,7 @@ EOF&#59;
 </pre>
 <p>Now \$script has an anonymous JavaScript function. When we output the page we just need to include
 this variable like so:</p>
-<pre class='html'>
+<pre class='brush: html'>
 echo &lt;&lt;&lt;EOF
 &lt;!DOCTYPE HTML&gt;
 &lt;html&gt;
@@ -281,7 +279,7 @@ the source for the iframe either with PHP on the server or via JavaScript on the
 <p>With PHP on the server all you have to do is convert the HTML you want to have in the iframe
 to base64 and then add 'data:application/x-javascript;base64,' to the start.</p>
 
-<pre class='php'>
+<pre class='brush: php'>
 // Create the text
 \$data =&lt;&lt;&lt;EOF
 &lt;!DOCTYPE HTML&gt;
