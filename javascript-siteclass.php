@@ -4,8 +4,11 @@ $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 // Get the original php file
 $file = file_get_contents("javascript-siteclass.php");
-// Clean up left and right arrows, $ \n and quotes. Make them all displayable.
-$file = preg_replace(array("/</", "/>/", "/\\$/", "/\n/", '/"/'), array("&lt;","&gt;", "\$", "<br>", "'"), $file);
+// Clean up left and right arrows, $, \\n and quotes. Note the forth argument to the first array
+// is \\n which you can't see.
+// Make them all displayable.
+$file = preg_replace(array("/</", "/>/", "/\\$/", "/\n/", '/"/'),
+                     array("&lt;","&gt;", "\$", "<br>", "'"), $file);
 
 $h->title = "JavaScriptOnly";
 $h->css =<<<EOF
