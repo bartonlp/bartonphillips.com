@@ -1,4 +1,6 @@
 <?php
+// Verify email address
+
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
@@ -162,7 +164,7 @@ EOF;
   $dontknow = array();
 
   $domain = "bartonphillips.com";
-  $from_mail = "barton@grandchorale.org";
+  $from_mail = "barton@granbyrotary.org";
 
   $n = $S->query("select listId, contactName, contactEmail from verifyemail where teststatus='nottested'");
 
@@ -231,6 +233,7 @@ EOF;
 
       $ar = explode("\n", $ret);
       if($DEBUG) echo "EHLO: $ret<br>\n";
+
       foreach($ar as $line) {
         if(!$line) continue;
         if(!preg_match("/^250/", $line)) {
@@ -322,6 +325,7 @@ EOF;
 }
 
 // ---------------------------------------------------------------------------
+// Verfily One address
 
 function verifyone($S, $DEBUG) {
   if($DEBUG) {
@@ -345,8 +349,8 @@ EOF;
   echo $top;
 
   $domain = "bartonphillips.com";
-  $from_mail = "barton@grandchorale.org";
-
+  $from_mail = "barton@granbyrotary.com";
+  
   // From the email get the mx
   // Extract the host from the email
 
@@ -357,6 +361,8 @@ EOF;
     exit();
   }
 
+  if($DEBUG) echo "host: $host<br>";
+  
   if(!getmxrr($host, $mx_records, $mx_weight)) {
     echo "getmxrr failed: $host<br>\n$footer";
     $mx_records = array($host);
@@ -364,8 +370,11 @@ EOF;
     exit();
   }
 
-  unset($mxs);
-
+  if($DEBUG) vardump("mx_records", $mx_records);
+  
+  //unset($mxs);
+  $mxs = '';
+  
   // Put the records together in a array we can sort
 
   for($i=0; $i<count($mx_records); $i++){
@@ -375,10 +384,11 @@ EOF;
   asort($mxs );
   reset($mxs);
 
-  //vardump($mxs, "mxs");
+  if($DEBUG) vardump("mxs", $mxs);
 
   $to_mail = $contactEmail;
-
+  if($DEBUG) echo "contactEmail: $contactEmail<br>";
+  
   $ok = 0;
 
   while(list($mx_host, $mx_weight) = each($mxs) ) {
@@ -388,8 +398,6 @@ EOF;
 
     $handle = smtp_connect($smtp_server, 25, 1, $echo_command, $echo_response, $nl2br);
 
-    //echo "smtp_server: $smtp_server<br>handle: $handle<br>";
-    
     if(!$handle) {
       echo "Can't connect to $smtp_server<br>\n";
       continue;
@@ -401,8 +409,6 @@ EOF;
       $d = $domain;
     }
 
-    //echo "mx_hostd=$mx_host, d=$d<br>";
-     
     $ret = smtp_command($handle, "EHLO $d\r\n", $echo_response, $nl2br);
 
     $ar = explode("\n", $ret);
@@ -477,6 +483,11 @@ function smtp_connect($host, $port, $timeout=10, $echo_command=false, $echo_resp
   $errno = 0;
   $errstr = 0;
 
+  if(strpos($host, "google.com")) {
+    $host = "smtp.gmail.com";
+    $port = 465;
+  }
+  
   if($echo_command) {
     if($nl2br) {
       echo nl2br("CONNECTING TO $host\r\n");
@@ -484,7 +495,8 @@ function smtp_connect($host, $port, $timeout=10, $echo_command=false, $echo_resp
       echo "CONNECTING TO $host\r\n";
     }
   }
-
+  echo "port: $port<br>";
+  
   $handle = fsockopen($host, $port, $errno, $errstr, $timeout);
 
   if(!$handle || $handle === false || $errstr != '') {
@@ -758,4 +770,3 @@ function smtp_close($handle) {
           response, "No SMTP service here")
 
 */
-  
