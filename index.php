@@ -200,8 +200,8 @@ jQuery(document).ready(function($) {
   // Date Today
   setInterval(function() {
     var d = date("l F j, Y");
-    var t = date("H:i:s"); // from phpdate.js
-    $("#datetoday").html("<span class='green'>"+d+"</span><br>The Time is: <span class='green'>"+t+"</span>");
+    var t = date("H:i:s T"); // from phpdate.js
+    $("#datetoday").html("<span class='green'>"+d+"</span><br>Your Time is: <span class='green'>"+t+"</span>");
   }, 1000);
 });
   </script>  
@@ -265,15 +265,20 @@ $n = $S->query("select distinct ip from $S->masterdb.tracker where lasttime>=cur
 $visitors = number_format($n, 0, "", ",");
 
 $visitors .= ($visitors < 2) ? " visitor" : " visitors";
+
+date_default_timezone_set("America/New_York");
+
 $date = date("l F j, Y H:i:s T");
 
 // Do Admin Stuff if it is me
 
 if($S->isMe() || ($_GET['blp'] == "7098")) {
   if($_GET['blp']) {
+    //echo $_GET['blp'] . "<br>";
+    $blplogin = $_GET['blp'];
     error_log("Bartonphillips index.php. Using blp: $S->ip, $S->agent");
   }
-  $adminStuff = file_get_contents("/var/www/bartonlp/adminsites.txt");
+  $adminStuff = require("/var/www/bartonlp/adminsites.php");
 }
 
 // use the Dom class to get the Sans '.diary h2' as text.
@@ -296,7 +301,7 @@ $hereMsg
 <div class="locstr">
    Our domain is <i>bartonphillips.com</i><br/>
    $locstr
-Start: <span class='green'>$date</span><br>
+Start: <span class='green'>$date in New Bern, NC</span><br>
 Today is: <span id="datetoday">$date</span></div>
 <hr>
 <p>

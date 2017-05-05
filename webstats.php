@@ -21,7 +21,7 @@ $S = new $_site->className($_site);
 
 if($_GET['blp'] != '7098') {
   if(is_array($S->myIp)) {
-    if(!array_intersect([$S->ip], $S->myIp)) {
+    if($S->ip != '174.194.17.80' && !array_intersect([$S->ip], $S->myIp)) {
       echo "$S->ip<br>";
       vardump($S->myIp);
       echo "Go Away";
