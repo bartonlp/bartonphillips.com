@@ -145,11 +145,6 @@ $h->css = <<<EOF
     border: none;
   }
 }
-@media (max-width: 600px) {
-  table, tbody, tr, th, td {
-    display: block;
-  }
-}
 @media (max-width: 400px) {
   img[src="https://isc.sans.edu/images/status.gif"] {
     width: 300px;
@@ -290,12 +285,35 @@ $dom = new Dom;
 $dom->load('https://isc.sans.edu/');
 $sans = "<span class='sans'>". $dom->find(".diary h2 a")->text . "</span>";
 
+// Check on the infocon status
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "https://isc.sans.edu/api/infocon?json");
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$color = curl_exec($ch);
+curl_close($ch);
+$color = json_decode($color)->status;
+
+if($color != 'green') {
+  switch($color) {
+    case 'yellow':
+      $style = 'style="color: yellow; background-color: black; padding: 0 .5rem;"';
+      break;
+    case 'red':
+      $style = 'style="color: red; background-color: black; padding: 0 .5rem;"';
+      break;
+  }
+  $status = "<h2>The Internet is under attack. <a href='https://isc.sans.edu'>isc.sans.edu</a> status is <span $style>$color</span></h2>";
+}
+
 // ***************
 // Render the page
 // ***************
 
 echo <<<EOF
 $top
+$status
 <section id='browser-info'>
 $hereMsg
 <div class="locstr">
@@ -359,7 +377,7 @@ Today is: <span id="datetoday">$date</span></div>
 <section id="interesting">
 <h2>Interesting Sites</h2>
 <ul>
-<li><a target="_blank" href="https://www.wunderground.com/us/nc/new-bern/zmw:28560.1.99999">
+<li><a target="_blank" href="https://www.wunderground.com/personal-weather-station/dashboard?ID=KNCNEWBE48#history">
 Weather Underground</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a target="_blank" href="spacestation.php">Space Station Location</a></li>
@@ -493,11 +511,10 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
-<!-- # SANS Infocon Status -->
+<!-- # SANS Infocon Status https://isc.sans.edu/api/infocon -->
 <div class="center">
-<a target="_blank" href="proxy.php?https://isc.sans.org">
-<img alt="Internet Storm Center Infocon Status"
-src="https://bartonphillips.net/images/internetstorm-icon.gif">$sans</a>
+<a target="_blank" href="https://isc.sans.edu"><img alt="Internet Storm Center Infocon Status"
+src="https://isc.sans.edu/images/status_$color.gif">$sans</a>
 </div>
 </section>
 

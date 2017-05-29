@@ -278,7 +278,8 @@ EOF;
 
   $sql = "select count(*), date(starttime) from $S->masterdb.tracker ".
          "where date(starttime)>=current_date() - interval 6 day and site='$S->siteName' and ".
-         "isJavaScript & ~(0x201c) and not (isJavaScript & 0x2000) group by date(starttime)  order by date(starttime)";
+         "isJavaScript & ~(0x201c) and not (isJavaScript & 0x2000) group by date(starttime) " .
+         "order by date(starttime)";
   
   $S->query($sql);
 
@@ -408,6 +409,14 @@ function renderPage($S, $page) {
       $desc = preg_replace("~<tr>~", "<tr class='bots'>", $desc);
     }
     $row['js'] = dechex($row['js']);
+    $t = $row['difftime'];
+    if(empty($t)) return;
+    
+    $hr = floor($t/3600);
+    $min = floor(($t%3600)/60);
+    $sec = ($t%3600)%60;
+      //echo "$ip, t=$t, hr: $hr, min: $min, sec: $sec<br>";
+    $row['difftime'] = sprintf("%u:%02u:%02u", $hr, $min, $sec);
   }
 
   $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js, refid ".

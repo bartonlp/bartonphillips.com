@@ -62,13 +62,14 @@ jQuery(document).ready(function($) {
 
   moveISS();
 
-  $.getJSON('http://api.open-notify.org/iss-pass.json?lat=34.190962&lon=-118.956400&alt=219.151&n=5&callback=?', 
+  $.getJSON('http://api.open-notify.org/iss-pass.json?lat=35.1&lon=-77.1&alt=6&n=5&callback=?', 
     function(data) {
       //console.log(data);
       data['response'].forEach(function (d) {
-        var date = new Date(d['risetime']*1000);
+        console.log('time: ', d['risetime']);
+        var date = new Date(d['risetime']*1000); // unix-epoch in milliseconds
         $('#isspass').append('<li>' + date.toDateString() + ' ' +
-          date.toLocaleTimeString('en-US', { hour12: true }) + '</li>');
+          date.toLocaleTimeString('en-US', { hour12: false }) + '</li>');
       });
   });
 });
@@ -82,9 +83,9 @@ $top
 <p><a href="http://www.bartonphillips.com/weewx">My Home Weather Station</a></p>
 <div>
 <table>
-<tr><td>Latitude:</td><td>34.190962</td></tr>
-<tr><td>Longitude:</td><td>-118.9564</td></tr>
-<tr><td>Altitude:</td><td>719 ft (219 m)</td></tr>
+<tr><td>Latitude:</td><td>35.1</td></tr>
+<tr><td>Longitude:</td><td>-77.1</td></tr>
+<tr><td>Altitude:</td><td>26 ft</td></tr>
 </table>
 </p>
 <h3>Internatinal Space Station will be overhead at these times:</h3>

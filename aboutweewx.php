@@ -29,7 +29,8 @@ $top
 <img class='photo' src='http://bartonphillips.net/images/weewx-images/CIMG0002.JPG' alt="Davis Vantage Vue Console">
 <p>
 I have had a Weather Station for the past 20 years. First at our
-home in Canoga Park, CA, then at our home in Granby Ranch, CO., and now at our home in Newbury Park, CA.
+home in Canoga Park, CA, then at our home in Granby Ranch, CO., then in Newbury Park, CA. and now
+in New Bern, NC.
 My first weather station was an Origon Scientific which I puchased
 in the early 1990's. When we moved to Granby Ranch, in the high
 mountains, I bought a
@@ -50,10 +51,11 @@ free and open source.</p>
 <!--<img class='photo' src="http://bartonphillips.net/images/weewx-images/CIMG0077.JPG" alt="Davis Vantage Vue">-->
 
 <p>
-I installed the Davis equipment on my back patio Colorado. The system is very
+I installed the Davis equipment on my back patio in Colorado. The system is very
 easy to setup and I had it up and running within a couple of hours.
 The weewx software was very easy to install and configure and I had
-it all working the same day I received the Davis equipment.</p>
+it all working the same day I received the Davis equipment. Since then I have had it in Newbury Park, CA
+and now on my patio in New Bern, NC.</p>
 
 <p>
 I originally had the software running on my home computer,
@@ -65,10 +67,6 @@ I bought an HP Envy, which was a nice upgrade.
 I didn't want to use this new system as a server
 because I wanted to be able to turn it on and off and experment with
 different operationg systems etc.</p>
-
-<p>
-In May of 2015 we moved back to Souther California and in June we rented a house in Newbury Park near Thousand Oaks.
-I put the Vantage Vue on a 15 foot pole in the back yard. </p>
 
 <p>
 <img class='photo' src='http://bartonphillips.net/images/weewx-images/CIMG0003.JPG' alt="Raspberry PI"><br>
@@ -86,7 +84,7 @@ as my backup server as well.</p>
 
 <p>Please visit my <a href="http://www.bartonphillips.com/weewx">
 Weather Station.</a></p>
-<p>New Battery: January 15, 2017, Last: August 22, 2016.</p>
+<p>New Battery: May 2017, Last: August 22, 2016.</p>
 <hr>
 $footer
 EOF;

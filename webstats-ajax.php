@@ -136,6 +136,14 @@ if($_POST['page'] == 'gettracker') {
       $desc = preg_replace("~<tr>~", "<tr class='bots'>", $desc);
     }
     $row['js'] = dechex($row['js']);
+    $t = $row['difftime'];
+    if(empty($t)) return;
+    
+    $hr = floor($t/3600);
+    $min = floor(($t%3600)/60);
+    $sec = ($t%3600)%60;
+      //echo "$ip, t=$t, hr: $hr, min: $min, sec: $sec<br>";
+    $row['difftime'] = sprintf("%u:%02u:%02u", $hr, $min, $sec);
   } // End callback
 
   $site = $_POST['site'];
@@ -144,7 +152,7 @@ if($_POST['page'] == 'gettracker') {
 
   $T = new dbTables($S);
 
-  $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js ".
+  $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js, refid ".
          "from $S->masterdb.tracker " .
          "where site='$site' and starttime >= current_date() - interval 24 hour ". 
          "order by starttime desc";

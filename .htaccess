@@ -9,10 +9,10 @@ FileETag None
 Header unset ETag
 # BEGIN EXPIRES
 <IfModule mod_expires.c>
+  ExpiresActive On
 <Files *.php>
   ExpiresByType text/html A0
 </Files>
-  ExpiresActive On
   ExpiresDefault "access plus 10 days"
   ExpiresByType text/css "access plus 1 week"
   ExpiresByType text/plain "access plus 1 month"
