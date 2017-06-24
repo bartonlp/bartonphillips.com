@@ -240,7 +240,7 @@ century and a half.</p>
   <li>1990
     <ul>
       <li>HTTP (Hyper Text Transport Protical),</li>
-      <li>HTML (Huper Text Markup Protical), first server (CERN httpd) and the first browser 
+      <li>HTML (Hyper Text Markup Protical), first server (CERN httpd) and the first browser 
         all created by Tim Berners-Lee and Robert Cailliau all running on a
         <a href="http://en.wikipedia.org/wiki/NeXT">NeXT</a> computer.</li>
       <li>Nicola Pellow created a browser that could run on almost all computers called
