@@ -74,7 +74,7 @@ I bought a <a href="http://www.raspberrypi.org/">Raspberry PI</a>
 which is a small low power fanless system. It sells for around $40 and uses very
 little electricity. The PI has an ARM cpu but runs a version of
 Linux and is easy to setup. The PI makes a very nice low end server
-and because of the very low power consumption it is an excelent
+and because of the very low power consumption it is an excellent
 choice for a 7/24/365 server.</p>
 
 <p>

@@ -1,5 +1,10 @@
 <?php
 // How to write HTML
+// This can be used in two ways:
+// First as a standalone page. If $S is null then get $_site and create the page.
+// Second in a page that already has a $S. This is the case in www.granbyrotary.org/
+// where the file hoowtowritehtml.php instantiates $S and then loads this file via
+// file_get_contents().
 // ***************** READ THIS ****************************************
 // Include this in a page that has the siteclass already instantiated.
 // Also NOTE!!! WE NEED jQuery!
@@ -7,7 +12,7 @@
 
 if(!$S) {
   //No site class
-  $_site = require_once(getenv("SITELOAD")."/siteload.php");
+  $_site = require_once(getenv("SITELOADNAME"));
   $S = new $_site->className($_site);
   $h->title = "How to write html";
   $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
