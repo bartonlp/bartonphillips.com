@@ -16,7 +16,7 @@
 // BLP 2014-11-02 -- make tracker average stay reflect the current state of the table.
 // BLP 2014-08-30 -- change $av to only look at last day and to allow only times less the 2hr.
 
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 if($_GET['blp'] != '7098') {
@@ -87,8 +87,6 @@ $tkipar = array(); // tracker ip array
 while(list($tkip) = $S->fetchrow('num')) {
   $tkipar[] = $tkip;
 }
-$tkipar = array_keys(array_flip($tkipar));
-
 $list = json_encode($tkipar);
 
 // Now we want to do a POST so set up the context first.

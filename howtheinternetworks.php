@@ -25,7 +25,7 @@ echo $top;
   and receive mail is a good analog to the way the Internet works.</p>
 
 <p>When we want to send a leter to someone we write the letter and place it in an envelope. The
-  envelope has the recipient's address and our return address. It the correspondence is conducted over
+  envelope has the recipient's address and our return address. If the correspondence is conducted over
   a period of time, that is we send several pieces of mail, then we place some form of sequencing
   information inside the envelope, like a date or a chapter number etc.</p>
 
@@ -129,7 +129,7 @@ signals back into electrical signals.</p>
 <p>Ports on a computer are usually represented by a number from 0 to 65 K. The port concept is used
 to connect specific protocals to specific software that listens on the port. For example, HTTP
 usually used port 80 for inbound connections to the HTTP server like Apache on Unix like computers.
-When an HTTP connections is made by a client browser the Apache software will communicate with he
+When an HTTP connections is made by a client browser the Apache software will communicate with the
 client using the outbound port specified by the client (port above 1,023).  <a
 href="http://en.wikipedia.org/wiki/Well_known_ports#Well-known_ports">Well known ports</a> reside
 between 0 and 1,023. The inbound port is well know to clients and is specified via <a
@@ -182,14 +182,14 @@ bytes. These two headers are followed by the <b>Request</b> information (above).
 
 <p>The first line tells the host that this is a GET request and that the file to server is
 '/howtheinternetwork.php'. The second line identifes the host. The server uses the the 'Host:'
-information to determin the virtual host that is being requested. The URI bartonphillips.com
+information to determin the virtual host that is being requested. The URI bartonphillips.org
 resolves via DNS (Domain Name Service) to an IPv4 address, in this case 192.249.115.106. However,
-192.249.115.106 also is the home of bartonphillips.org, bartonphillips.net, granbyrotary.org and
+192.249.115.106 also is the home of bartonphillips.com, bartonphillips.net, granbyrotary.org and
 several other websites. The rest of the lines tells the Apache server how to return the data.</p>
 
 <p>The Apache web server listening on the well known port 80 at IP address 192.249.115.106 looks at
 the 'Host:' line (line two) and uses that URI to access the virtual host information for
-bartonphillips.com. The web server looks in the document root for that virtual host for the file
+bartonphillips.org. The web server looks in the document root for that virtual host for the file
 mentioned, 'howtheinternetworks.php'. Once the server finds the file it processes the information in
 the file and creates a <b>Response</b> header and attaches the processed information in HTML format
 to that header. An IP and TCP header are prepended to the <b>Response</b> and returned to the

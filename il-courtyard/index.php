@@ -8,8 +8,8 @@ $S = new $_site->className($_site);
 // Save the suggestion
 
 if($_POST['page'] == 'save') {
-  //vardump("save", $_POST);
-  $date = $_POST['date'];
+  $date = $_POST['date']; // Y-m-d
+  $date2 = $_POST['date2']; // full date
   $name = $_POST['name'];
   $apt = $_POST['apt'];
   $sug = $_POST['sug'];
@@ -17,8 +17,22 @@ if($_POST['page'] == 'save') {
   
   $msg = "$date\n$name -- $apt\n$sug";
 
-  file_put_contents("/var/www/bartonphillips.com/il-courtyard/suggest.txt",
-                    "*******\n$date\n$name -- $apt\n$sug\n$email\n", FILE_APPEND);
+  //file_put_contents("/var/www/bartonphillips.com/il-courtyard/suggest.txt",
+  //                  "*******\n$date\n$name -- $apt\n$sug\n$email\n", FILE_APPEND);
+
+  $sql = "insert into courtyard (date, date2, name, apt, comment, email) ".
+         "values('$date', '$date2', '$name', '$apt', '$sug', '$email')";
+
+  try {
+    $S->query($sql);
+  } catch(Exception $e) {
+    if($e->getCode() == 1146) {
+      //error_log("Create it");
+      $S->query("create table courtyard (date date, date2 varchar(50), name varchar(100), ".
+                "apt varchar(50), comment text, email varchar(255)) engine=MyISAM");
+    }
+    $S->query($sql);
+  }
   
 /*  mail("2526706424@vtext.com", "SUGGESTION", $msg,
        "From: <$email>\r\n",
@@ -68,6 +82,9 @@ table textarea {
   border-radius: .5rem;
   color: white;
   margin-top: 1rem;
+}
+.hide { /* hide the date */
+  display: none; 
 }
 @media (max-width: 500px) {
   #courtyard {
@@ -148,7 +165,8 @@ $h->script =<<<EOF
   <script>
 jQuery(document).ready(function($) {
   $("#submit").click(function(e) {
-    var date = $("table tr:first-child td:nth-child(2)").text();
+    var date2 = $("table tr:first-child td:nth-child(2) span:first-child").text(); // full date
+    var date = $("table tr:first-child td:nth-child(2) .hide").text(); // Y-m-d
     var name = $("#name").val();
     var apt = $("#apt").val();
     var sug = $("form textarea").val();
@@ -161,7 +179,7 @@ jQuery(document).ready(function($) {
 
     $.ajax({
       url: "index.php",
-      data: {page: 'save', date: date, name: name, apt: apt, sug: sug, email: email},
+      data: {page: 'save', date: date, date2: date2, name: name, apt: apt, sug: sug, email: email},
       type: 'post',
       success: function(data) {
         console.log(data);
@@ -188,7 +206,8 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 list($fname, $lname, $apt, $email) = explode(',', $_COOKIE['login']);
 $name = "$fname $lname";
-$date = date("l, F j, Y");
+$date2 = date("l, F j, Y"); // the show date.
+$date = date("Y-m-d"); // the hidden date and the date in the span.
 
 echo <<<EOF
 $top
@@ -196,12 +215,13 @@ $top
 <p>You live in apartment $apt.</p>
 <div id='after'>
 <p>This is the website for the <b>Independendent Living</b> group at Courtyards.
-You can leave suggestions here.</p>
+You can leave suggestions here. If this is about the dinning hall please indicate the meal.
+For example: Dinner: your comment.</p>
 </div>
 <form>
 <table>
 <tr>
-<td>Date:</td><td>$date</td>
+<td>Date:</td><td><span>$date2</span><span class="hide">$date</span></td>
 </tr>
 <tr>
 <td>Suggestion:</td><td><textarea autofocus required></textarea></td>
@@ -210,6 +230,8 @@ You can leave suggestions here.</p>
 <td colspan="2"><input type='submit' value='Submit' id='submit'></td>
 </tr>
 </table>
+<input type='hidden' id='date2' value='$date2'> <!--Show Date-->
+<input type='hidden' id='date' value='$date'> <!--Y-m-d-->
 <input type='hidden' id='name' value='$name'>
 <input type='hidden' id='apt' value='$apt'>
 <input type='hidden' id='email' value='$email'>

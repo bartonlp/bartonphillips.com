@@ -4,11 +4,31 @@ $_site = require_once(getenv("SITELOAD")."/siteload.php");
 // Turn an ip address into a long. This is for the country lookup
 
 function Dot2LongIP($IPaddr) {
-  if($IPaddr == "") {
-    return 0;
+  if(strpos($IPaddr, ":") === false) {
+    if($IPaddr == "") {
+      return 0;
+    } else {
+      $ips = explode(".", "$IPaddr");
+      return ($ips[3] + $ips[2] * 256 + $ips[1] * 256 * 256 + $ips[0] * 256 * 256 * 256);
+    }
   } else {
-    $ips = explode(".", "$IPaddr");
-    return ($ips[3] + $ips[2] * 256 + $ips[1] * 256 * 256 + $ips[0] * 256 * 256 * 256);
+    //error_log("IPaddr: $IPaddr");
+    $int = inet_pton($IPaddr);
+    $bits = 15;
+    $ipv6long = 0;
+
+    while($bits >= 0) {
+      $bin = sprintf("%08b", (ord($int[$bits])));
+      if($ipv6long){
+        $ipv6long = $bin . $ipv6long;
+      } else {
+        $ipv6long = $bin;
+      }
+      $bits--;
+    }
+    $ipv6long = gmp_strval(gmp_init($ipv6long, 2), 10);
+    //error_log("ipv6long: $ipv6long");
+    return $ipv6long;
   }
 }
 
@@ -17,14 +37,18 @@ function Dot2LongIP($IPaddr) {
 
 if($list = $_POST['list']) {
   $S = new Database($_site);
-
   $list = json_decode($list);
+    
   $ar = array();
 
   foreach($list as $ip) {
     $iplong = Dot2LongIP($ip);
-
-    $sql = "select countryLONG from $S->masterdb.ipcountry ".
+    if(strpos($ip, ":") === false) {
+      $table = "ipcountry";
+    } else {
+      $table = "ipcountry6";
+    }
+    $sql = "select countryLONG from $S->masterdb.$table ".
             "where '$iplong' between ipFROM and ipTO";
 
     $S->query($sql);
