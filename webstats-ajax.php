@@ -1,5 +1,5 @@
 <?php
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 
 // Turn an ip address into a long. This is for the country lookup
 
@@ -153,9 +153,8 @@ if($_POST['page'] == 'gettracker') {
     $co = $ipcountry[$ip];
 
     $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
+    $row['refid'] = preg_replace('/\?.*/', '', $row['refid']);
 
-    console.log("js: " + $row['js']);
-    
     if(($row['js'] & 0x2000) === 0x2000) {
       $desc = preg_replace("~<tr>~", "<tr class='bots'>", $desc);
     }

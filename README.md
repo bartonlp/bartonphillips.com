@@ -15,7 +15,7 @@ Other sites and servers. The first four are hosted at digitalocean.com and the
 last one is hosted at 1and1.com.
 
 * http://www.bartonphillips.org
-* bartonphillips.net is a COOKIELESS domain for serving static pages without cookies.
+* https://bartonphillips.net is a COOKIELESS domain for serving static pages without cookies.
 * http://www.bartonlp.com
 * http://www.bartonlp.org
 * http://go.myphotochannel.com

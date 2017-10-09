@@ -150,9 +150,9 @@ function getwebstats($S) {
 
   $T = new dbTables($S);
 
-  $query = "select myip as 'BLP IP', createtime as Since from $S->masterdb.myip order by createtime desc";
+  $sql = "select myip as 'BLP IP', createtime as Since from $S->masterdb.myip order by createtime desc";
 
-  list($tbl) = $T->maketable($query, array('callback'=>'blpipmake', 'attr'=>array('id'=>'blpid','border'=>"1")));
+  list($tbl) = $T->maketable($sql, array('callback'=>'blpipmake', 'attr'=>array('id'=>'blpid','border'=>"1")));
 
   if(!$tbl) {
     $tbl = "<h3 class='noNewData'>No New Data Today</h2>";
@@ -174,10 +174,10 @@ EOF;
 
   $idfield = $n ? ", id as ID" : '';
   
-  $query = "select ip as IP, agent as Agent$idfield, count as Count, lasttime as LastTime " .
+  $sql = "select ip as IP, agent as Agent$idfield, count as Count, lasttime as LastTime " .
   "from $S->masterdb.logagent where site='$S->siteName' and lasttime >= current_date() order by lasttime desc";
 
-  list($tbl) = $T->maketable($query,
+  list($tbl) = $T->maketable($sql,
                              array('callback'=>'blpip',
                                    'attr'=>array('id'=>"logagent", 'border'=>"1")));
   if(!$tbl) {
@@ -192,10 +192,10 @@ EOF;
 
   // Here 'count' is total number of hits so count-realcnt is the number of Bots.
   
-  $query = "select filename as Page, realcnt as 'Real', (count-realcnt) as 'Bots', lasttime as LastTime from $S->masterdb.counter ".
+  $sql = "select filename as Page, realcnt as 'Real', (count-realcnt) as 'Bots', lasttime as LastTime from $S->masterdb.counter ".
   "where site='$S->siteName' and lasttime >= current_date() order by lasttime desc";
 
-  list($tbl) = $T->maketable($query, array('attr'=>array('border'=>'1', 'id'=>'counter')));
+  list($tbl) = $T->maketable($sql, array('attr'=>array('border'=>'1', 'id'=>'counter')));
 
   if(!$tbl) {
     $tbl = "<h3 class='noNewData'>No New Data Today</h2>";
@@ -213,16 +213,16 @@ EOF;
 
   // are there any members during this day
   
-  $query = "select members from $S->masterdb.counter2 where site='$S->siteName' and members!=0 and lasttime >= current_date() limit 1";
-  $memberquery = $S->query($query) ? "members as Members," : '';
+  $sql = "select members from $S->masterdb.counter2 where site='$S->siteName' and members!=0 and lasttime >= current_date() limit 1";
+  $memberquery = $S->query($sql) ? "members as Members," : '';
 
   // 'count' is actually the number of 'Real' vs 'Bots'. A true 'count' would be Real + Bots.
   
-  $query = "select filename as Page, count as 'Real',$memberquery bots as Bots, lasttime as LastTime ".
+  $sql = "select filename as Page, count as 'Real',$memberquery bots as Bots, lasttime as LastTime ".
            "from $S->masterdb.counter2 ".
            "where site='$S->siteName' and lasttime >= current_date() order by lasttime desc";
   
-  list($tbl) = $T->maketable($query, array('attr'=>array('border'=>'1', 'id'=>'counter2')));
+  list($tbl) = $T->maketable($sql, array('attr'=>array('border'=>'1', 'id'=>'counter2')));
 
   if(!$tbl) {
     $tbl = "<h3 class='noNewData'>No New Data Today</h2>";
@@ -237,19 +237,19 @@ EOF;
 
   // Get the footer line
   
-  $query = "select sum(`real`+bots) as Count, sum(`real`) as 'Real', sum(bots) as 'Bots', ".
+  $sql = "select sum(`real`+bots) as Count, sum(`real`) as 'Real', sum(bots) as 'Bots', ".
            "sum(members) as 'Members', sum(visits) as Visits " .
            "from $S->masterdb.daycounts ".
            "where site='$S->siteName' and lasttime >= current_date() - interval 6 day";
 
-  $S->query($query);
+  $S->query($sql);
   list($Count, $Real, $Bots, $Members, $Visits) = $S->fetchrow('num');
 
   // Use 'tracker' to get the number of Visitors ie unique ip accesses.
   
   $S->query("select ip, date(lasttime) ".
-            "from $S->masterdb.tracker where lasttime>=current_date() - interval 6 day and site='$S->siteName' ".
-            "order by date(lasttime)");
+            "from $S->masterdb.tracker where lasttime>=current_date() - interval 6 day ".
+            "and site='$S->siteName' order by date(lasttime)");
 
   $Visitors = 0;
 
@@ -274,17 +274,25 @@ EOF;
     $memberquery = '';
   }
 
+  // Only show items that are not me.
+  
+  foreach($S->myUri as $v) {
+    $me .= "'" . gethostbyname($v) . "',";
+  }
+  $me = rtrim($me, ",");
+
+  // This screens me out.
+  
   $sql = "select count(*), date(starttime) from $S->masterdb.tracker ".
          "where date(starttime)>=current_date() - interval 6 day and site='$S->siteName' and ".
-         "isJavaScript & ~(0x201c) and not (isJavaScript & 0x2000) group by date(starttime) " .
-         "order by date(starttime)";
+         "isJavaScript & ~(0x201c) and not (isJavaScript & 0x2000) and ip not in($me) ".
+         "group by date(starttime) order by date(starttime)";
   
   $S->query($sql);
 
   $jsenabled = 0;
-  
+
   while(list($cnt, $date) = $S->fetchrow('num')) {
-    //echo "$cnt, $date<br>";
     $jsEnabled[$date] += $cnt;
     $jsenabled += $cnt;
   }
@@ -294,7 +302,7 @@ EOF;
 
   // Get the table lines
   
-  $query = "select date as Date, 'visitors' as Visitors, `real`+bots as Count, `real` as 'Real', 'AJAX', ".
+  $sql = "select date as Date, 'visitors' as Visitors, `real`+bots as Count, `real` as 'Real', 'AJAX', ".
            "bots as 'Bots'$memberquery, visits as Visits ".
            "from $S->masterdb.daycounts where site='$S->siteName' and ".
            "lasttime >= current_date() - interval 6 day order by date desc";
@@ -307,7 +315,8 @@ EOF;
     return false;
   }
   
-  list($tbl) = $T->maketable($query, array('callback'=>'visit', 'footer'=>$ftr, 'attr'=>array('border'=>"1", 'id'=>"daycount")));
+  list($tbl) = $T->maketable($sql, array('callback'=>'visit', 'footer'=>$ftr,
+                                         'attr'=>array('border'=>"1", 'id'=>"daycount")));
 
   if(!$tbl) {
     $tbl = "<h3 class='noNewData'>No New Data Today</h2>";
@@ -329,7 +338,7 @@ EOF;
 <p>'Visitors' is the number of distinct IP addresses (via 'tracker' table).<br>
 'Count' is the sum of 'Real' and 'Bots', the total number of HITS.<br>
 'Real' is the number of non-robots.<br>
-'AJAX' is the number of non-robots with AJAX functioning (via 'tracker' table).<br>
+'AJAX' is the number of non-robots with AJAX functioning (via 'tracker' table) that are NOT Webmaster.<br>
 'Bots' is the number of robots.<br>
 'Visits' are hits outside of a 10 minutes interval.<br>
 So if you come to the site from two different IP addresses you would be two 'Visitors'.<br>
@@ -342,8 +351,8 @@ $tbl
 EOF;
 
   if($S->memberTable) {
-    $query = "select * from memberpagecnt where lasttime >= current_date() - interval 7 day";
-    list($tbl) = $T->maketable($query, array('attr'=>array('border'=>"1", 'id'=>"memberpagecnt")));
+    $sql = "select * from memberpagecnt where lasttime >= current_date() - interval 7 day";
+    list($tbl) = $T->maketable($sql, array('attr'=>array('border'=>"1", 'id'=>"memberpagecnt")));
 
     $page .= <<<EOF
 <h2 id="table7a">From table <i>memberpagecnt</i> for seven days</h2>
@@ -408,12 +417,15 @@ function renderPage($S, $page) {
     }
     $row['js'] = dechex($row['js']);
     $t = $row['difftime'];
-    if(empty($t)) return;
+    if(is_null($t)) {
+      //echo "$ip, t=$t<br>";
+      return;
+    }
     
     $hr = floor($t/3600);
     $min = floor(($t%3600)/60);
     $sec = ($t%3600)%60;
-      //echo "$ip, t=$t, hr: $hr, min: $min, sec: $sec<br>";
+
     $row['difftime'] = sprintf("%u:%02u:%02u", $hr, $min, $sec);
   }
 
