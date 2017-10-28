@@ -1,10 +1,10 @@
 <?php
 // Verify email address
 
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$DEBUG=0; // set to 1 for debug info or zero for none
+//$DEBUG=1; // set to 1 for debug info or zero for none
 
 $S->nl2br = 1;
 
@@ -164,7 +164,7 @@ EOF;
   $dontknow = array();
 
   $domain = "bartonphillips.com";
-  $from_mail = "barton@granbyrotary.org";
+  $from_mail = "barton@applitec.com"; //"barton@granbyrotary.org";
 
   $n = $S->query("select listId, contactName, contactEmail from verifyemail where teststatus='nottested'");
 
@@ -349,7 +349,7 @@ EOF;
   echo $top;
 
   $domain = "bartonphillips.com";
-  $from_mail = "barton@granbyrotary.com";
+  $from_mail = "barton@applitec.com"; //"barton@granbyrotary.com";
   
   // From the email get the mx
   // Extract the host from the email
@@ -381,7 +381,7 @@ EOF;
     $mxs[$mx_records[$i]] = $mx_weight[$i];
   }
 
-  asort($mxs );
+  asort($mxs);
   reset($mxs);
 
   if($DEBUG) vardump("mxs", $mxs);
@@ -438,7 +438,7 @@ EOF;
     if(!preg_match("/^250/sm", $ret)) {
       echo "RCPT TO Error: $ret<br>\n";
       if($ret)
-        continue;
+        break;
     }
 
     // This looks like an OK but does the server just say OK to everything?
@@ -446,8 +446,10 @@ EOF;
     $ret = smtp_command($handle, "RCPT TO:<xyz123blp$to_mail>\r\n", $echo_response, 1);
     if($DEBUG) echo "REPT TO: $ret<br>\n";
     if(preg_match("/^550/sm", $ret)) {
-      //echo "RCPT TO Error: $ret<br>\n";
+      // If this failed then the 'to_mail' was good
       $ok = 1;
+    } elseif(!preg_match("/^250/sm", $ret)) {
+      $ok = 3;
     } else {
       //echo "This Server says OK to anything<br>\n";
       $ok = 2;
@@ -468,6 +470,9 @@ EOF;
     case 2:
       echo "Server Says Ok to Anything: $contactEmail<br>\n";
       break;
+    case 3:
+      echo "$ret<br>";
+      break;
   }         
 
   echo "<hr>$footer";
@@ -483,10 +488,7 @@ function smtp_connect($host, $port, $timeout=10, $echo_command=false, $echo_resp
   $errno = 0;
   $errstr = 0;
 
-  if(strpos($host, "google.com")) {
-    $host = "smtp.gmail.com";
-    $port = 465;
-  }
+  $host = gethostbyname($host); // Turn it into an IP Address
   
   if($echo_command) {
     if($nl2br) {
@@ -495,8 +497,7 @@ function smtp_connect($host, $port, $timeout=10, $echo_command=false, $echo_resp
       echo "CONNECTING TO $host\r\n";
     }
   }
-  echo "port: $port<br>";
-  
+
   $handle = fsockopen($host, $port, $errno, $errstr, $timeout);
 
   if(!$handle || $handle === false || $errstr != '') {
