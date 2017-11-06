@@ -7,7 +7,7 @@ $h->banner = "<h1 class='center'>So You Want to Build a Website</h1><hr>";
 $h->extra = <<<EOF
 <!-- From: http://updates.html5rocks.com/2011/08/Saving-generated-files-on-the-client-side
 https://github.com/eligrey/FileSaver.js -->
-<script src="/js/FileSaver.js"></script>
+<script src="https://bartonphillips.net/js/FileSaver.js"></script>
 <script>
 jQuery(document).ready(function($) {
   // Submit button clicked.
