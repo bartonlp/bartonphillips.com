@@ -136,9 +136,10 @@ EOF;
   exit();
 }
 
-// AJAX from webstats-new.js
+// AJAX from webstats.js
 // Get the info form the tracker table again.
-// NOTE this is called from js/webstats-new.js which always uses this file for its AJAX calls!!
+// NOTE this is called from /var/www/bartonphillipsnet/js/webstats.js which always uses this file
+// for its AJAX calls!! 
 
 if($_POST['page'] == 'gettracker') {
   $S = new Database($_site);

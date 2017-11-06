@@ -62,9 +62,9 @@ jQuery(document).ready(function($) {
 
   moveISS();
 
-  $.getJSON('http://api.open-notify.org/iss-pass.json?lat=35.1&lon=-77.1&alt=6&n=5&callback=?', 
+  $.getJSON('http://api.open-notify.org/iss-pass.json?lat=35.110966&lon=-77.092889&alt=26&n=5&callback=?', 
     function(data) {
-      //console.log(data);
+      console.log(data);
       data['response'].forEach(function (d) {
         console.log('time: ', d['risetime']);
         var date = new Date(d['risetime']*1000); // unix-epoch in milliseconds
@@ -83,8 +83,8 @@ $top
 <p><a href="http://www.bartonphillips.com/weewx">My Home Weather Station</a></p>
 <div>
 <table>
-<tr><td>Latitude:</td><td>35.1</td></tr>
-<tr><td>Longitude:</td><td>-77.1</td></tr>
+<tr><td>Latitude:</td><td>35.110966 (35&deg; 6' 39.4776" N)</td></tr>
+<tr><td>Longitude:</td><td>-77.092889 (77&deg; 5' 34.4004" W)</td></tr>
 <tr><td>Altitude:</td><td>26 ft</td></tr>
 </table>
 </p>

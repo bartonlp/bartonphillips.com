@@ -1,7 +1,7 @@
 <?php
 // create a data-url for <script> tag.
 // dynamically create a <script> tag with a data url for the src= item
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 $data =<<<EOF

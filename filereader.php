@@ -1,6 +1,6 @@
 <?php
 // BLP 2014-05-12 -- FireReader example: http://www.html5rocks.com/en/tutorials/file/dndfiles/
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 $h->extra = <<<EOF

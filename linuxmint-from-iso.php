@@ -1,6 +1,6 @@
 <?php
 // How to load LinuxMint 17 from iso
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 $h->title = "Load LinuxMint 17 from ISO";
