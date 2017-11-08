@@ -369,7 +369,7 @@ Today is: <span id="datetoday">$date</span></div>
 <section id="github">
 <h2>GitHub Projects</h2>
 <ul>
-<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips">My GitHub sites</a></li>
+<li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
 <li><a target="_blank" href="proxy.php?https://bartonlp.github.io/site-class/">SiteClass</a></li>
 <li><a target="_blank" href="proxy.php?https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
 <li><a target="_blank" href="proxy.php?https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
