@@ -11,6 +11,8 @@ if($_POST) {
       echo "<h1>Stock Symbol '$remove' Not Found in Database</h1>";
       exit();
     }
+    // Now remove all of the items in 'pricedata'
+    $S->query("delete from stocks.pricedata where stock='$remove'");
   } else {
     $stock = strtoupper($_POST['stock']);
     $qty = $_POST['qty'];
@@ -20,13 +22,43 @@ if($_POST) {
     // $bought is a 'date' field with a default of NULL. To not have a date you have to add NULL
     // without the quotes or a real date with quotes.
     $bought = empty($_POST['bought']) ? 'NULL' : "'{$_POST['bought']}'";
-    echo "bought: $bought<br>";
 
-    // $bought is either NULL or 'yyyy-mm-dd' with single quotes around.
-    $S->query("insert into stocks.stocks (stock, qty, price, name, bought, status) ".
-              "value ('$stock', '$qty', '$price', '$name', $bought, '$status') ".
-              "on duplicate key update stock='$stock', qty='$qty', ".
-              "price='$price', name='$name', bought=$bought, status='$status'");
+    try {
+      $S->query("insert into stocks.stocks (stock, qty, price, name, bought, status) ".
+                "value ('$stock', '$qty', '$price', '$name', $bought, '$status')");
+
+      // If this is an insert we should update the pricedata table with 100 items.
+
+      $alphakey = "FLT73FUPI9QZ512V";
+      $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
+
+      $h = curl_init();
+      curl_setopt($h, CURLOPT_URL, $str);
+      curl_setopt($h, CURLOPT_HEADER, 0);
+      curl_setopt($h, CURLOPT_RETURNTRANSFER, true);
+
+      $alpha = curl_exec($h);
+      $alpha = json_decode($alpha, true); // decode as an array
+
+      $ar = $alpha["Time Series (Daily)"];
+
+      foreach($ar as $k=>$v) {
+        $date = $k;
+        $price = $v["4. close"];
+        //echo "$stock: $date: $price<br>";
+        $sql = "insert into stocks.pricedata (stock, date, price) values('$stock', '$date', '$price') ".
+               "on duplicate key update date='$date', price='$price'";
+        $S->query($sql);
+      }
+    } catch(Exception $e) {
+      if($e->getCode() == 1062) { // duplicate key
+        // This is an edit so we don't add to the pricedata table.
+        $S->query("update stocks.stocks set stock='$stock', qty='$qty', ".
+                  "price='$price', name='$name', bought=$bought, status='$status'");
+      } else {
+        throw($e);
+      }
+    }
   }
   
   header("location: stockaddedit.php");
