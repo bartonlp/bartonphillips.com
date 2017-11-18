@@ -1,0 +1,129 @@
+<?php
+$_site = require_once(getenv("SITELOADNAME"));
+ErrorClass::setDevelopment(true);
+
+if($_POST) {
+  $S = new Database($_site);
+  vardump($_POST);
+  if($_POST['remove']) {
+    $remove = strtoupper($_POST['remove']);
+    if(!$S->query("delete from stocks.stocks where stock='$remove'")) {
+      echo "<h1>Stock Symbol '$remove' Not Found in Database</h1>";
+      exit();
+    }
+  } else {
+    $stock = strtoupper($_POST['stock']);
+    $qty = $_POST['qty'];
+    $price = $_POST['price'];
+    $name = ucwords($_POST['name']);
+    $status = $_POST['status'];
+    // $bought is a 'date' field with a default of NULL. To not have a date you have to add NULL
+    // without the quotes or a real date with quotes.
+    $bought = empty($_POST['bought']) ? 'NULL' : "'{$_POST['bought']}'";
+    echo "bought: $bought<br>";
+
+    // $bought is either NULL or 'yyyy-mm-dd' with single quotes around.
+    $S->query("insert into stocks.stocks (stock, qty, price, name, bought, status) ".
+              "value ('$stock', '$qty', '$price', '$name', $bought, '$status') ".
+              "on duplicate key update stock='$stock', qty='$qty', ".
+              "price='$price', name='$name', bought=$bought, status='$status'");
+  }
+  
+  header("location: stockaddedit.php");
+  exit();
+}
+
+$S = new $_site->className($_site);
+$T = new dbTables($S);
+
+if($_GET['stock']) {
+  $stock = $_GET['stock'];
+  $S->query("select * from stocks.stocks where stock='$stock'");
+  $editrow = $S->fetchrow('assoc');
+  $readonly = "style='background-color: gray; color: white' readonly";
+}
+
+$h->title = "Stock Register";
+$h->banner = "<h1>Stock Register</h1>";
+
+$h->css =<<<EOF
+  <style>
+input[name='stock'] {
+  text-transform: uppercase;
+}
+input[name='name'] {
+  text-transform: capitalize;
+}
+input[name='remove'] {
+  text-transform: uppercase;
+}
+#stocks td {
+  padding: .2rem;
+}
+  </style>
+EOF;
+
+list($top, $footer) = $S->getPageTopBottom($h);
+
+date_default_timezone_set("America/New_York");
+
+function callback(&$row, &$desc) {
+  $row['stock'] = "<a href='stockaddedit.php?stock={$row['stock']}'>{$row['stock']}</a>";
+
+  // The $desc value has the row html with the row keys. For example:
+  // "<tr><td>stock</td><td>price</td>...</tr>"
+  // The tags can be modified as below. The keys should (must) not be changed because the keys are
+  // latter replaced with the $row values for that key.
+  
+  switch($row['status']) {
+    case 'active':
+      break;
+    case 'watch':
+      $desc = preg_replace("/<tr>/", "<tr style='color: red'>", $desc);
+      break;
+    case 'sold':
+      $desc = preg_replace("/<tr>/", "<tr style='background-color: pink'>", $desc);
+      break;
+  }
+}
+
+$sql = "select * from stocks.stocks";
+list($tbl) = $T->maketable($sql, ['callback'=>'callback', 'attr'=>['border'=>1, 'id'=>'stocks']]);
+
+echo <<<EOF
+$top
+$tbl
+<h3>Enter New Stock or Edit Stock</h3>
+<form method='post'>
+<table id='newedit' border='1'>
+<tbody>
+<tr><th>Stock Symbol</th><td>
+  <input type='text' name='stock' value='{$editrow['stock']}' autofocus required $readonly></td></tr>
+<tr><th>Buy Price</th><td>
+  <input type='number' step='.01' name='price' value='{$editrow['price']}' required></td></tr>
+<tr><th>Quantity</th><td>
+  <input type='number' step='.01' name='qty' value='{$editrow['qty']}' required></td></tr>
+<tr><th>Stock Name</th><td>
+  <input type='text' name='name' value='{$editrow['name']}' required></td></tr>
+<tr><th>Bought</th><td>
+  <input type='date' name='bought' value='{$editrow['bought']}'</td></tr>
+<tr><th>Status</th><td>
+  <select name='status' value='{$editrow['status']}' required>
+  <option>active</option>
+  <option>watch</option>
+  <option>sold</option>
+  </select>
+  </td></tr>
+</tbody>
+</table>
+<input type='submit'>
+</form>
+
+<h3>Delete Symbol</h3>
+<form method='post'>
+Enter symbol to delete: <input type='text' name='remove'><br>
+<input type='submit'>
+</form>
+
+$footer
+EOF;
