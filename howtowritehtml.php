@@ -158,7 +158,7 @@ element.&lt;/p&gt;</code></pre>
 <code>&lt;h1&gt;This Is A Page Title&lt;/h1&gt;
 &lt;p&gt;This is a paragraph on our page. This can have long lines that can break
 any where but will be rendered to fit the
-width of the page. Extra spaces like this       will be removed as will line breaks.</code></pre>
+width of the page. Extra spaces like this       will be removed as will line breaks.&lt;/p&gt;</code></pre>
 
    <p>This HTML will render like this:</p>
 
@@ -282,7 +282,7 @@ breaks that will be removed as well as these extra spaces   .</p>
    <p>We showed you the 'img' tag above but here are some examples. The 'img' tag needs some attributes to be useful. The 'src'
       attribute lets you give the address of the image file you want to display.</p>
    <pre>
-<code>&lt;img&gt; src=&quot;/images/msfree.png&quot; /&gt;</code></pre>
+<code>&lt;img src=&quot;/images/msfree.png&quot; /&gt;</code></pre>
    <div class="example">
       <img src="http://bartonphillips.net/images/msfree.png" alt="MS Free image" >
    </div>
@@ -297,7 +297,7 @@ breaks that will be removed as well as these extra spaces   .</p>
       which is useful when a site is accessed by a brower that does not render images, for example a braill reader used by a blind
       visitor. The 'border' attribute is used the same way as with the 'table' tag.</p>
    <pre>
-<code>&lt;img&gt; src=&quot;/images/msfree.png&quot; width=&quot;200&quot; height=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
+<code>&lt;img src=&quot;/images/msfree.png&quot; width=&quot;200&quot; height=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
 
    <div class="example">
       <img src="http://bartonphillips.net/images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
@@ -306,7 +306,7 @@ breaks that will be removed as well as these extra spaces   .</p>
       and height to 200 pixles each we have forced the image to be square. To keep the original ratios you can specify only the
       width or the height then the unspecified attribute will be scaled to maintain the same ratio.</p>
    <pre>
-<code>&lt;img&gt; src=&quot;http://bartonphillips.net/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
+<code>&lt;img src=&quot;http://bartonphillips.net/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
    <div class="example">
       <img src="http://bartonphillips.net/images/msfree.png" width="200" border="5" alt="MS Free" >
    </div>
