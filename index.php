@@ -2,7 +2,7 @@
 // Main page for bartonphillips.com
 // BLP 2017-03-23 -- set up to work with https
 
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 // if this is a bot don't bother with getting a location.
@@ -283,30 +283,53 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
 
 use PHPHtmlParser\Dom;
 
-$dom = new Dom;
-$dom->load('https://isc.sans.edu/');
-$sans = "<span class='sans'>". $dom->find(".diary h2 a")->text . "</span>";
+try {
+  $dom = new Dom;
+  $dom->load('https://isc.sans.edu/');
+  $text = $dom->find(".diary h2 a")->text;
+  //echo "text: $text<br>";
+  $sans = "<span class='sans'>$text</span>";
 
-// Check on the infocon status
+  // Check on the infocon status
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://isc.sans.edu/api/infocon?json");
-curl_setopt($ch, CURLOPT_HEADER, 0);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$color = curl_exec($ch);
-curl_close($ch);
-$color = json_decode($color)->status;
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, "https://isc.sans.edu/api/infocon?json");
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  $color = curl_exec($ch);
+  curl_close($ch);
+  //vardump("color", $color);
+  $color = json_decode($color)->status;
+  //echo "color: $color<br>";
 
-if($color != 'green') {
-  switch($color) {
-    case 'yellow':
-      $style = 'style="color: yellow; background-color: black; padding: 0 .5rem;"';
-      break;
-    case 'red':
-      $style = 'style="color: red; background-color: black; padding: 0 .5rem;"';
-      break;
+  if(!empty($color) && $color != 'green') {
+    switch($color) {
+      case 'yellow':
+        $style = 'style="color: yellow; background-color: black; padding: 0 .5rem;"';
+        break;
+      case 'red':
+        $style = 'style="color: red; background-color: black; padding: 0 .5rem;"';
+        break;
+    }
+    $status = "<h2>The Internet is under attack. <a href='https://isc.sans.edu'>isc.sans.edu</a> status is <span $style>$color</span></h2>";
   }
-  $status = "<h2>The Internet is under attack. <a href='https://isc.sans.edu'>isc.sans.edu</a> status is <span $style>$color</span></h2>";
+
+  $stormwatchpage =<<<EOF
+  <section id='stormwatch'>
+<hr>
+<!-- # SANS Infocon Status https://isc.sans.edu/api/infocon -->
+<div class="center">
+<a target="_blank" href="https://isc.sans.edu"><img alt="Internet Storm Center Infocon Status"
+src="https://isc.sans.edu/images/status_$color.gif">$sans</a>
+</div>
+</section>
+EOF;
+
+} catch(Exception $e) {
+  $stormwatchpage =<<<EOF
+<hr>
+<center><h2>Error Contacting <i>https://isc.sans.edu</i></h2></center>
+EOF;
 }
 
 // ***************
@@ -422,13 +445,7 @@ How to setup Linux Mint email via Gmail.com</a></li>
 <section id='projects'>
 <a href='projects.php'>GitHub and PHPClasses projects</a>
 </section>
-<section id='stormwatch'>
+$stormwatchpage
 <hr>
-<!-- # SANS Infocon Status https://isc.sans.edu/api/infocon -->
-<div class="center">
-<a target="_blank" href="https://isc.sans.edu"><img alt="Internet Storm Center Infocon Status"
-src="https://isc.sans.edu/images/status_$color.gif">$sans</a>
-</div>
-</section>
 $footer
 EOF;
