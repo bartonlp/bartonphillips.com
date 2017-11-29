@@ -7,13 +7,17 @@ $S = new $_site->className($_site);
 
 $move = 100;
 
+if($_POST) {
+  $move = $_POST['avmove'];
+}
+
 if($_GET['move']) {
   $move = $_GET['move'];
 }
 
 // Get all of the stocks in my portfolio
 
-$sql = "select stock, status from stocks.stocks";
+$sql = "select stock, status, price from stocks.stocks";
 $S->query($sql);
 $r = $S->getResult(); // Save result
 
@@ -21,7 +25,7 @@ $an = [];
 
 // Loop through each stock
 
-while(list($stock, $status) = $S->fetchrow($r, 'num')) {
+while(list($stock, $status, $buyprice) = $S->fetchrow($r, 'num')) {
   if($stock == "RDS.A") $stock = "RDS-A";
   
   $sql = "select stock, date, price, price from stocks.pricedata where stock='$stock' ".
@@ -34,7 +38,8 @@ while(list($stock, $status) = $S->fetchrow($r, 'num')) {
   while(list($stock, $date, $price) = $S->fetchrow('num')) {
     if($stock == "DJI") $stock = "DJI-AVG";
 
-    $an[$stock][] = (object)array('price'=>"$price", 'date'=>"$date", 'status'=>$status);
+    $an[$stock][] = (object)array('price'=>"$price", 'date'=>"$date",
+                                  'status'=>$status, 'buyprice'=>$buyprice);
   }
 }
 
@@ -52,12 +57,18 @@ foreach($an as $k=>$v) {
     if($kk) {
       // watch the order of formating. Must do $price after $av
       $av = $price / $c;
-      $percent = ($lastprice - $av) / $av; //$lastprice;
-
+      $percent = ($lastprice - $av) / $av; 
+      $buypercent = ($lastprice - $buyprice) / $buyprice; 
       $percent = $percent < 0
                  ? "<span class='negchange'>" .number_format($percent * 100, 2)."</span>"
                  : number_format($percent * 100, 2);
-      
+      if($status == 'watch') {
+        $buypercent = "";
+      } else {                     
+        $buypercent = $buypercent < 0
+                      ? "<span class='negchange'>" .number_format($buypercent * 100, 2)."</span>"
+                      : number_format($buypercent * 100, 2);
+      }
       $av = number_format($av, 2);
       $lastprice = number_format($lastprice, 2);
       $price = number_format($price, 2);
@@ -68,7 +79,8 @@ foreach($an as $k=>$v) {
         $tr = "<tr class='watch'>";
       }
       $moving .= "$tr<td>".($kk ?: $k)."</td><td>$c</td><td>$av</td>".
-                 "<td>$lastprice</td><td>$percent</td><td>$status</td></tr>";
+                 "<td>$lastprice</td><td>$percent</td><td>$buyprice</td>".
+                 "<td>$buypercent</td><td>$status</td></tr>";
     }
     // $k != $kk so new stock
     $kk = $k;
@@ -83,6 +95,7 @@ foreach($an as $k=>$v) {
       $lastprice = $vv->price;
     }
     $status = $vv->status;
+    $buyprice = $vv->buyprice;
     $c++;
   }
 }
@@ -115,9 +128,27 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
+<form method="POST">
+Select the Average Period
+<select name='avmove'>
+<option>10</option>
+<option>20</option>
+<option>30</option>
+<option>40</option>
+<option>50</option>
+<option>75</option>
+<option>100</option>
+</select>
+<br>
+<input type='submit'>
+</form>
+<br>
+<h4>Moving Average Period: $move</h4>
+<p>Check <b>Count</b> for the actual number of averaged days.</p>
 <table id='moving' border="1">
 <thead>
-<tr><th>Stock</th><th>Count</th><th>Moving</th><th>Last Price</th><th>Change %</th><th>Status</th></tr>
+<tr><th>Stock</th><th>Count</th><th>Moving</th><th>Last Price</th><th>Change %</th>
+<th>Buy Price</th><th>Buy Percent</th><th>Status</th></tr>
 </thead>
 <tbody>
 $moving

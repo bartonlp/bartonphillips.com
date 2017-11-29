@@ -120,20 +120,35 @@ foreach($ar as $k=>$v) {
   $changePercent += $qt->changePercent;
   
   if($qt->change < 0) {
-    $qt->change = "<span class='negchange'>$qt->change</span>";
+    $change = "<span class='negchange'>". number_format($qt->change, 2). "</span>";
+  } else {
+    $change = number_format($qt->change, 2);
   }
   
-  $close = $qt->previousClose ."<br>" . $qt->change .
-           ", " . $qt->changePercent * 100 ."%";
-  $price = $qt->latestPrice; // raw price
+  $close = number_format($qt->previousClose, 2) ."<br>" . $change .
+           ", " . number_format($qt->changePercent * 100) ."%";
+
+  $price = round($qt->latestPrice, 2); // raw price
   $pricex = number_format($price, 2); // format to 2 deciaml places.
   $company = $qt->companyName;
   $sector = $qt->sector;
 
   $stock = $stocks[$k];
+  if($k == 'BP') echo "price: $price, $stock[1]<br>";
+
   $value = number_format($stock[1] * $price, 2)."<br>".number_format($stock[1]);
+
+  $orgprice = $stock[0];
+  $percent = ($price - $orgprice) / $orgprice;
+  if($percent < 0) {
+    $percent = "<span class='negchange'>". number_format($percent * 100, 2)."</span>";
+  } else {
+    $percent = number_format($percent * 100, 2);
+  }
+  $orgprice = number_format($orgprice, 2);
+  
   $quotes .= "<tr><td>$st<div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
-             "<td>$pricex</td><td>$value</td><td>$close</td></tr>";
+             "<td>$pricex</td><td>$value</td><td>$orgprice<br>$percent</td><td>$close</td></tr>";
 }
 
 $tmp = $changeTotal;
@@ -175,22 +190,23 @@ foreach($ar as $k=>$v) {
 
   $watchTotal += $qt->change;
   $watchPercent += $qt->changePercent;
-  
+
   if($qt->change < 0) {
     $qt->change = "<span class='negchange'>$qt->change</span>";
   }
   
   $close = $qt->previousClose ."<br>" . $qt->change .
            ", " . $qt->changePercent * 100 ."%";
+  
   $price = $qt->latestPrice; // raw price
   $pricex = number_format($price, 2); // format to 2 deciaml places.
   $company = $qt->companyName;
   $sector = $qt->sector;
 
-  $stock = $stocks[$k];
-  $value = number_format($stock[1] * $price, 2)."<br>".number_format($stock[1]);
-  $watchquote .= "<tr><td>$st<div id='stockname'>$company<br>$sector<br>TARGET: {$stock[0]}</div></td><td>$date</td>".
-                  "<td>$pricex</td><td>$value</td><td>$close</td></tr>";
+//  $stock = $stocks[$k];
+//  $value = number_format($stock[1] * $price, 2)."<br>".number_format($stock[1]);
+  $watchquote .= "<tr><td>$st<div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
+                  "<td>$pricex</td><td>$close</td></tr>";
 }
 
 echo <<<EOF
@@ -198,7 +214,8 @@ $top
 <p>$name for $djidate: $djiclose, Change: $djichange</p>
 <table id="stocktable" border="1">
 <thead>
-<tr><th>Sybmol<br>Info</th><th>Last Trade</th><th>Price</th><th>Value<br>Qty</td><th>Close<br>Change</th></tr>
+<tr><th>Sybmol<br>Info</th><th>Last Trade</th><th>Price</th><th>Value<br>Qty</td>
+  <th>OrgPrice<br>Change %</th><th>Close<br>Change</th></tr>
 </thead>
 <tbody>
 $quotes
@@ -209,7 +226,8 @@ $quotes
 <h3>Watch Stocks</h3>
 <table id="watchtable" border="1">
 <thead>
-<tr><th>Sybmol<br>Info</th><th>Last Trade</th><th>Price</th><th>Value<br>Qty</td><th>Close<br>Change</th></tr>
+<tr><th>Sybmol<br>Info</th><th>Last Trade</th><th>Price</th>
+  <th>Close<br>Change</th></tr>
 </thead>
 <tbody>
 $watchquote

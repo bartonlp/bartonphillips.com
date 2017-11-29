@@ -4,7 +4,7 @@ ErrorClass::setDevelopment(true);
 
 if($_POST) {
   $S = new Database($_site);
-  //vardump($_POST);
+  vardump($_POST);
   if($_POST['remove']) {
     $remove = strtoupper($_POST['remove']);
     if(!$S->query("delete from stocks.stocks where stock='$remove'")) {
@@ -22,11 +22,9 @@ if($_POST) {
     // $bought is a 'date' field with a default of NULL. To not have a date you have to add NULL
     // without the quotes or a real date with quotes.
     $bought = empty($_POST['bought']) ? 'NULL' : "'{$_POST['bought']}'";
-    $qty = $qty == "" ? 0 : $qty;
-    $price = $price == "" ? 0 : $price;
-    
+
     try {
-      @$S->query("insert into stocks.stocks (stock, qty, price, name, bought, status) ".
+      $S->query("insert into stocks.stocks (stock, qty, price, name, bought, status) ".
                 "value ('$stock', '$qty', '$price', '$name', $bought, '$status')");
 
       // If this is an insert we should update the pricedata table with 100 items.
@@ -53,11 +51,14 @@ if($_POST) {
         $S->query($sql);
       }
     } catch(Exception $e) {
+      error_log("ERRORCODE: " . $e->getCode());
+      error_log($e->getMessage());
+      
       if($e->getCode() == 1062) { // duplicate key
         // This is an edit so we don't add to the pricedata table.
         $S->query("update stocks.stocks set qty='$qty', ".
                   "price='$price', name='$name', bought=$bought, status='$status' ".
-                  "where stock='$stock'");  
+                  "where stock=$stock");  
       } else {
         throw($e);
       }
@@ -75,9 +76,6 @@ if($_GET['stock']) {
   $stock = $_GET['stock'];
   $S->query("select * from stocks.stocks where stock='$stock'");
   $editrow = $S->fetchrow('assoc');
-  if($editrow['qty'] == 0) $editrow['qty'] = '';
-  if($editrow['price'] == 0) $editrow['price'] = '';
-  
   $readonly = "style='background-color: gray; color: white' readonly";
 }
 
@@ -107,9 +105,7 @@ date_default_timezone_set("America/New_York");
 
 function callback(&$row, &$desc) {
   $row['stock'] = "<a href='stockaddedit.php?stock={$row['stock']}'>{$row['stock']}</a>";
-  if($row['qty'] == 0) $row['qty'] = '';
-  if($row['price'] == 0) $row['price'] = '';
-  
+
   // The $desc value has the row html with the row keys. For example:
   // "<tr><td>stock</td><td>price</td>...</tr>"
   // The tags can be modified as below. The keys should (must) not be changed because the keys are
@@ -127,9 +123,18 @@ function callback(&$row, &$desc) {
   }
 }
 
-$sql = "select * from stocks.stocks";
-list($tbl) = $T->maketable($sql, ['callback'=>'callback', 'attr'=>['border'=>1, 'id'=>'stocks']]);
+//$sql = "select * from stocks.stocks";
+//list($tbl) = $T->maketable($sql, ['callback'=>'callback', 'attr'=>['border'=>1, 'id'=>'stocks']]);
 
+$sql = "select stock from stocks.pricedata where date='2017-11-21'";
+$S->query($sql);
+$r = $S->getResult();
+
+while(list($stock) = $S->fetchrow($r, 'num')) {
+  echo "$stock<br>";
+  $S->query("insert into stocks.stocks (stock) value('$stock')");
+}
+exit();
 echo <<<EOF
 $top
 $tbl
@@ -140,11 +145,11 @@ $tbl
 <tr><th>Stock Symbol</th><td>
   <input type='text' name='stock' value='{$editrow['stock']}' autofocus required $readonly></td></tr>
 <tr><th>Buy Price</th><td>
-  <input type='number' step='.01' name='price' value='{$editrow['price']}'></td></tr>
+  <input type='number' step='.01' name='price' value='{$editrow['price']}' required></td></tr>
 <tr><th>Quantity</th><td>
-  <input type='number' step='.01' name='qty' value='{$editrow['qty']}'></td></tr>
+  <input type='number' step='.01' name='qty' value='{$editrow['qty']}' required></td></tr>
 <tr><th>Stock Name</th><td>
-  <input type='text' name='name' value='{$editrow['name']}'></td></tr>
+  <input type='text' name='name' value='{$editrow['name']}' required></td></tr>
 <tr><th>Bought</th><td>
   <input type='date' name='bought' value='{$editrow['bought']}'</td></tr>
 <tr><th>Status</th><td>

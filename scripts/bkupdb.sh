@@ -15,6 +15,7 @@ filename="BLP_BACKUP.$bkupdate.sql"
 echo "Bartonphillips backup "$bkupdate
 mysqldump --user=barton --no-data --password=7098653 bartonphillips 2>/dev/null > $dir/bartonphillips.schema
 mysqldump --user=barton --add-drop-table --password=7098653 bartonphillips 2>/dev/null >$dir/$filename
+mysqldump --user=barton --add-drop-table --password=7098653 stocks 2>/dev/null >>$dir/$filename
 
 gzip --quiet -c $dir/$filename > $dir/$filename.gz
 rm $dir/$filename

@@ -24,14 +24,16 @@ EOF;
   $ch = curl_init($cmd);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $loc = json_decode(curl_exec($ch));
-  
+
+  $clientname = gethostbyaddr($S->ip);
   $locstr = <<<EOF
 <ul class="user-info">
   $ref
   <li>User Agent String is:<br>
     <i class='green'>$S->agent</i></li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
-  <li>Hostname: <i class='green'>$loc->hostname</i></li>
+  <li>Clientname: <i class='green'>$clientname</i></li>
+<!--  <li>Hostname: <i class='green'>$loc->hostname</i></li> -->
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
   <li>GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
