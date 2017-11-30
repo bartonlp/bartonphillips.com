@@ -134,7 +134,6 @@ foreach($ar as $k=>$v) {
   $sector = $qt->sector;
 
   $stock = $stocks[$k];
-  if($k == 'BP') echo "price: $price, $stock[1]<br>";
 
   $value = number_format($stock[1] * $price, 2)."<br>".number_format($stock[1]);
 

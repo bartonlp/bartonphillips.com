@@ -51,7 +51,7 @@ async function sql(sql) {
 
 // Everything is displayed via console.log so there is NO browser output.
 
-var test = sql("select id, site, page, agent from barton.tracker where lasttime>current_date() limit 3");
+var test = sql("select * from stocks.stocks");
 
 var ret = '';
 
