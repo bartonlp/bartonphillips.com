@@ -40,6 +40,9 @@ $h->css =<<<EOF
 #stocktable td:nth-child(5), #watchtable td:nth-child(5) {
   text-align: right;
 }
+#stocktable td:nth-child(6) {
+  text-align: right;
+}
 #stockname {
   font-size: 10px;
 }
@@ -104,7 +107,7 @@ if($djichange < 0) {
 }
 
 $djiclose = round($djiclose, 2);
-$djiclose = number_format($djiclose, 3);
+$djiclose = number_format($djiclose, 2);
 
 $quotes = '';
 
@@ -120,13 +123,13 @@ foreach($ar as $k=>$v) {
   $changePercent += $qt->changePercent;
   
   if($qt->change < 0) {
-    $change = "<span class='negchange'>". number_format($qt->change, 2). "</span>";
+    $change = "<span class='negchange'>". number_format($qt->change, 2). ", ".
+              number_format($qt->changePercent * 100, 2)."%</span>";
   } else {
-    $change = number_format($qt->change, 2);
+    $change = number_format($qt->change, 2) . ", " . number_format($qt->changePercent * 100, 2) . "%";
   }
   
-  $close = number_format($qt->previousClose, 2) ."<br>" . $change .
-           ", " . number_format($qt->changePercent * 100) ."%";
+  $close = number_format($qt->previousClose, 2) ."<br>" . $change;
 
   $price = round($qt->latestPrice, 2); // raw price
   $pricex = number_format($price, 2); // format to 2 deciaml places.
@@ -140,9 +143,9 @@ foreach($ar as $k=>$v) {
   $orgprice = $stock[0];
   $percent = ($price - $orgprice) / $orgprice;
   if($percent < 0) {
-    $percent = "<span class='negchange'>". number_format($percent * 100, 2)."</span>";
+    $percent = "<span class='negchange'>". number_format($percent * 100, 2)."%</span>";
   } else {
-    $percent = number_format($percent * 100, 2);
+    $percent = number_format($percent * 100, 2) . "%";
   }
   $orgprice = number_format($orgprice, 2);
   
@@ -191,11 +194,13 @@ foreach($ar as $k=>$v) {
   $watchPercent += $qt->changePercent;
 
   if($qt->change < 0) {
-    $qt->change = "<span class='negchange'>$qt->change</span>";
+    $qt->change = "<span class='negchange'>".number_format($qt->change, 2). ", ".
+                  number_format($qt->changePercent * 100, 2)."%</span>";
+  } else {
+    $qt->change = number_format($qt->change, 2).", ". number_format($qt->changePercent * 100, 2). "%";
   }
   
-  $close = $qt->previousClose ."<br>" . $qt->change .
-           ", " . $qt->changePercent * 100 ."%";
+  $close = $qt->previousClose ."<br>" . $qt->change;
   
   $price = $qt->latestPrice; // raw price
   $pricex = number_format($price, 2); // format to 2 deciaml places.

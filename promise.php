@@ -1,8 +1,11 @@
 <?php
+// Test various Promise calls. This uses www.bartonphillips.dyndns.org:8080/uptime.php and
+// www.bartonphillips.com/query.ajax.php for Ajax calls.
+
 // BLP 2014-05-12 -- http://www.html5rocks.com/en/tutorials/file/xhr2/
 // header("Access-Control-Allow-Origin: *");
 
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 if($_POST['page'] == 'form') {
@@ -46,8 +49,8 @@ function get(url, type, data) {
 
     // Make the request
     var d = $.param(data);
+    //console.log("data: ", d);
     req.send(d);
-    return false;
   });
 }
 
@@ -55,36 +58,44 @@ jQuery(document).ready(function($) {
   get('promise.php', 'post', {page: 'ajax', data: 'this is a test'}).then(function(response) {
     console.log("Success!", response);
     $("#response").html(response);
+    return false;
   }, function(error) {
     console.log("Failed!", error);
+    return false;
   });
 
   $("button").click(function() {
-    sendText('test string');
+    sendText('select curtime() as data');
     return false;
   });
 
   $.ajax({
-    url: 'http://bartonphillips.dyndns.org/uptest.php',
+    url: 'http://bartonphillips.dyndns.org:8080/uptest.php',
     data: { test: 'yes' },
     dataType: 'json'
   }).done(function(d) {
     console.log("DATA", d);
+    return false;
+  }).error(function() {
+    console.log("ERROR");
+    return false;
   });
 });
 
 function sendText(txt) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'test.php', true);
+  xhr.open('POST', 'query.ajax.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function(e) {
     if (this.status == 200) {
-      console.log(this.responseText);
-      $("#response").html(this.responseText);
+      var newtxt = JSON.parse(this.responseText);
+      console.log("newtxt", newtxt);
+      var date = newtxt[0].data;
+      $("#response").html(date);
     }
   };
 
-  xhr.send("input="+txt);
+  xhr.send("sql="+txt);
 }
 
 function sendForm(form) {
@@ -94,7 +105,6 @@ function sendForm(form) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', form.action, true);
   xhr.onload = function(e) {
-    console.log("Response", e);
     $("#response").html(e.currentTarget.response);
   };
 
@@ -120,7 +130,7 @@ function createCORSRequest(method, url) {
   return xhr;
 }
 
-var xhr = createCORSRequest('GET', 'http://www.bartonphillips.dyndns.org/uptest.php');
+var xhr = createCORSRequest('GET', 'http://www.bartonphillips.dyndns.org:8080/uptest.php');
 if(!xhr) {
   throw new Error('CORS not supported');
 } else {

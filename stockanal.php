@@ -37,7 +37,7 @@ while(list($stock, $status, $buyprice) = $S->fetchrow($r, 'num')) {
   
   while(list($stock, $date, $price) = $S->fetchrow('num')) {
     if($stock == "DJI") $stock = "DJI-AVG";
-
+    
     $an[$stock][] = (object)array('price'=>"$price", 'date'=>"$date",
                                   'status'=>$status, 'buyprice'=>$buyprice);
   }
@@ -60,24 +60,26 @@ foreach($an as $k=>$v) {
       $percent = ($lastprice - $av) / $av; 
       $buypercent = ($lastprice - $buyprice) / $buyprice; 
       $percent = $percent < 0
-                 ? "<span class='negchange'>" .number_format($percent * 100, 2)."</span>"
-                 : number_format($percent * 100, 2);
-      if($status == 'watch') {
-        $buypercent = "";
-      } else {                     
-        $buypercent = $buypercent < 0
-                      ? "<span class='negchange'>" .number_format($buypercent * 100, 2)."</span>"
-                      : number_format($buypercent * 100, 2);
-      }
+                 ? "<span class='negchange'>" .number_format($percent * 100, 2)."%</span>"
+                 : number_format($percent * 100, 2) . "%";
+
+      $buypercent = $buypercent < 0
+                    ? "<span class='negchange'>" .number_format($buypercent * 100, 2)."%</span>"
+                    : number_format($buypercent * 100, 2) . "%";
+
       $av = number_format($av, 2);
       $lastprice = number_format($lastprice, 2);
       $price = number_format($price, 2);
 
       // make the table rows
-      $tr = "<tr>";
+
       if($status == 'watch') {
         $tr = "<tr class='watch'>";
+        $buyprice = $buypercent = '';
+      } else {
+        $tr = "<tr>";
       }
+
       $moving .= "$tr<td>".($kk ?: $k)."</td><td>$c</td><td>$av</td>".
                  "<td>$lastprice</td><td>$percent</td><td>$buyprice</td>".
                  "<td>$buypercent</td><td>$status</td></tr>";
