@@ -430,6 +430,8 @@ $adminStuff
 <li><a target="_blank" href="http://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a target="_blank" href="http://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
 <li><a target="_blank" href="javascript-siteclass.php">Create a JavaScript Only Site</a></li>
+<li><a target="_blank" href="promise.php">Use AJAX and Promise</a></li>
+<li><a target="_blank" href="http://www.bartonlp.com/examples/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>

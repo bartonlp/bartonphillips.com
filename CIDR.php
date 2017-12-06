@@ -254,4 +254,3 @@ class CIDR{
 		return strtolower(implode('/',$bits));
 	}
 }
-?>

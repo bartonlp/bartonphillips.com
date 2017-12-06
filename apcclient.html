@@ -16,19 +16,19 @@ var socket, line;
 function init() {
   if(!WebSocket in window) alert("no sockets");
   else {
-    var host = "ws://127.0.0.1:12345";
+    var host = "ws://bartonlp.com:8080?BLP=8653";
 //    var host = "ws://69.43.195.42:12345";
 
     try{
-      socket = new WebSocket(host, "tail");
-
+      socket = new WebSocket(host, "slideshow");
+      console.log("socket", socket);
       msgout('WebSocket - status '+socket.readyState);
 
       socket.onerror = function(msg) {
-        console.log(msg);
+        console.log("ERRPR", msg);
       }
       
-      socket.onopen    = function(msg) {
+      socket.onopen = function(msg) {
         msgout("Welcome - status "+this.readyState);
       };
       socket.onmessage = function(msg) {
@@ -119,7 +119,6 @@ function onkey(event) {
   }
 }
 </script>
-
 </head>
 <body onload="init()">
  <h3>WebSocket v2.00</h3>
