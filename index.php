@@ -212,7 +212,7 @@ $h->banner = <<<EOF
 <div class='center'>
 <h1>$S->mainTitle</h1>
 <h2>
-<a target='_blank' href='http://www.bartonlp.com/toweewx.php'>My Home Weather Station</a>
+<a target='_blank' href='https://www.bartonlp.com/toweewx.php'>My Home Weather Station</a>
 </h2>
 <h3><a target="_blank" href="aboutweewx.php">About My Weather Station</a></h3>
 </div>
@@ -351,7 +351,7 @@ Today is: <span id="datetoday">$date</span></div>
 <hr>
 <p>
    This page is dynamically generated using PHP on our server at
-   <a target="_blank" href="http://www.digitalocean.com/">DigitalOcean.com</a>.
+   <a target="_blank" href="https://www.digitalocean.com/">DigitalOcean.com</a>.
    Very little JavaScript is used in this page. We only collect &quot;Google Analitics&quot; COOKIES and
    a COOKIE called 'mytime' which is used to tell how long some anonymous someone has stayed on our site.
    We don't track you.
@@ -371,17 +371,17 @@ Today is: <span id="datetoday">$date</span></div>
 <table class="mysites mylinks">
 <tbody>
 <tr>
-<th><a target="_blank" href="http://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
-<th><a target="_blank" href="http://www.applitec.com"><button>Applied Technology Resouces Inc.</button></a></th>
-<th><a target="_blank" href="http://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a></th>
+<th><a target="_blank" href="https://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
+<th><a target="_blank" href="https://www.applitec.com"><button>Applied Technology Resouces Inc.</button></a></th>
+<th><a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a></th>
 </tr>
 <tr>
-<th><a target="_blank" href="http://www.mountainmessiah.com"><button>Mountain Messiah</button></a></th>
-<th><a target="_blank" href="http://www.bartonphillips.org"><button>bartonphillips.org</button></a></th>
-<th><a target="_blank" href="http://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a></th>
+<th><a target="_blank" href="https://www.mountainmessiah.com"><button>Mountain Messiah</button></a></th>
+<th><a target="_blank" href="https://www.bartonphillips.org"><button>bartonphillips.org</button></a></th>
+<th><a target="_blank" href="https://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a></th>
 </tr>
 <tr>
-<th><a target="_blank" href="http://www.bartonlp.com"><button>bartonlp.com</button></a></th>
+<th><a target="_blank" href="https://www.bartonlp.com"><button>bartonlp.com</button></a></th>
 <th><a target="_blank" href="http://www.bartonlp.org"><button>bartonlp.org</button></a></th>
 <th><a target="_blank" href="http://www.bartonlp.org:7000/"><button>My node.js Page</button></a></th>
 </tr>
@@ -407,7 +407,7 @@ Today is: <span id="datetoday">$date</span></div>
 <li><a target="_blank" href="https://www.wunderground.com/personal-weather-station/dashboard?ID=KNCNEWBE48#history">
 Weather Underground</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="spacestation.php">Space Station Location</a></li>
+<li><a target="_blank" href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
 <li><a target="_blank" href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a target="_blank" href="http://www.computerscienceonline.org">Computer Science Online</a></li>
 </ul>
@@ -427,11 +427,11 @@ $adminStuff
 <section id="tips">
 <h2>Helpful Programs and Tips</h2>
 <ul>
-<li><a target="_blank" href="http://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
-<li><a target="_blank" href="http://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
+<li><a target="_blank" href="https://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a target="_blank" href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
 <li><a target="_blank" href="javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="promise.php">Use AJAX and Promise</a></li>
-<li><a target="_blank" href="http://www.bartonlp.com/examples/user-test/worker.main.php">Demo using a Worker</a></li>
+<li><a target="_blank" href="https://www.bartonlp.com/examples/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
@@ -439,9 +439,9 @@ $adminStuff
 <li><a target="_blank" href="filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a target="_blank" href="easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
 <li><a target="_blank" href="urlcountrycodes.php">Find the country given a url country code</a><br>
-<li><a target="_blank" href="http://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>
+<li><a target="_blank" href="https://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a target="_blank" href="verifyemailaddress.php">Verify Email Address</a></li>
-<li><a target="_blank" href="http://www.bartonlp.com/getIP.php">Check Ip Address</a></li>
+<li><a target="_blank" href="https://www.bartonlp.com/getIP.php">Check Ip Address</a></li>
 <li><a target="_blank" href="https://wiki.amahi.org/index.php/Gmail_As_Relay_On_Ubuntu">
 How to setup Linux Mint email via Gmail.com</a></li>
 </ul>

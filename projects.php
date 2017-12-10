@@ -76,7 +76,7 @@ slide show presentation.</p>
 href="proxy.php?https://github.com/bartonlp/slideshow">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank"
-href="proxy.php?http://www.phpclasses.org/browse/author/592640.html">
+href="proxy.php?https://www.phpclasses.org/browse/author/592640.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr>
@@ -92,7 +92,7 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 <p>You can find my <b>MySql Slide Show Class</b> at<br>
 <a target="_blank" href="proxy.php?http://github.com/bartonlp/mysqlslideshow">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
-<a target="_blank" href="proxy.php?http://www.phpclasses.org/browse/author/592640.html">
+<a target="_blank" href="proxy.php?https://www.phpclasses.org/browse/author/592640.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
@@ -101,7 +101,7 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 
 <p>This package can read and get information from an RSS feed. It is simple to use.</p>
 <p>You can find my <b>RssFeed Class</b> at<br>
-<a target="_blank" href="proxy.php?http://github.com/bartonlp/rssfeed">GitHub
+<a target="_blank" href="proxy.php?https://github.com/bartonlp/rssfeed">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="proxy.php?https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'

@@ -2,8 +2,21 @@
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
+if($_POST['page'] == "post") {
+  $features = $_POST['features'];
+  $audio = $_POST['audio'];
+  $video = $_POST['video'];
+  
+  $S->query("insert into browserfeatures (ip, agent, features, audio, video) ".
+            "values('$S->ip', '$S->agent', '$features', '$audio', '$video') ".
+            "on duplicate key update features='$features', audio='$audio', video='$video'");
+
+  echo "OK";
+  exit();
+}
+
 $h->extra = <<<EOF
-  <script src="js/featuretest.js"></script>
+  <script src="https://bartonphillips.net/js/featuretest.js"></script>
 
   <script>
 jqXHR.complete(function() {

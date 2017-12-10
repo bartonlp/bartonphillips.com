@@ -2,11 +2,6 @@
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 
-if($_SERVER['HTTPS'] == 'on') {
-  header("Location: http://www.bartonphillips.com/spacestation.php");
-  exit();
-}
-
 $h->title = "ISS Info";
 $h->banner = "<h1>International Space Station Information</h1>";
 $h->extra =<<<EOF
@@ -80,7 +75,7 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
-<p><a href="http://www.bartonphillips.com/weewx">My Home Weather Station</a></p>
+<p><a href="https://www.bartonphillips.com/weewx">My Home Weather Station</a></p>
 <div>
 <table>
 <tr><td>Latitude:</td><td>35.110966 (35&deg; 6' 39.4776" N)</td></tr>

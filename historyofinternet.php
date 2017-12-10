@@ -515,7 +515,7 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 <tr><th>Tube Computer</th><tr>
 <tr><td>
 <a href="http://en.wikipedia.org/wiki/First_computer">
-<img src="http://bartonphillips.net/images/tubecpu.jpg"></a>
+<img src="https://bartonphillips.net/images/tubecpu.jpg"></a>
 </td></tr>
 </table>
 <hr>
@@ -524,13 +524,13 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 <tr><th>6502 CPU</th><th>KIM 1</th><th>Apple I</th></tr>
 <tr>
 <td>
-<img src="http://bartonphillips.net/images/6502cpu.jpg">
+<img src="https://bartonphillips.net/images/6502cpu.jpg">
 </td>
 <td>
-<a href="http://en.wikipedia.org/wiki/KIM-1"><img src="http://bartonphillips.net/images/kim1.jpg"></a>
+<a href="http://en.wikipedia.org/wiki/KIM-1"><img src="https://bartonphillips.net/images/kim1.jpg"></a>
 </td>
 <td>
-<a href="http://en.wikipedia.org/wiki/Apple_1"><img src="http://bartonphillips.net/images/Apple1.jpg"></a>
+<a href="http://en.wikipedia.org/wiki/Apple_1"><img src="https://bartonphillips.net/images/Apple1.jpg"></a>
 </td>
 </tr>
 </table>
@@ -540,14 +540,14 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 <tr><th>8080 CPU</th><th>S100 Board</th><th>IMSAI 8080</th><tr>
 <tr>
 <td>
-<img src="http://bartonphillips.net/images/D8080A-1.jpg">
+<img src="https://bartonphillips.net/images/D8080A-1.jpg">
 </td>
 <td>
-<img src="http://bartonphillips.net/images/8080cpu.jpg">
+<img src="https://bartonphillips.net/images/8080cpu.jpg">
 </td>
 <td>
 <a href="http://en.wikipedia.org/wiki/IMSAI_8080">
-<img src="http://bartonphillips.net/images/imsai8800.jpg"></a>
+<img src="https://bartonphillips.net/images/imsai8800.jpg"></a>
 </td>
 </tr>
 </table>
@@ -604,7 +604,7 @@ echo <<<EOF
 $top
 $article
 <hr>
-<input type='image' id='printbtn' src='http://bartonphillips.net/images/print.gif'
+<input type='image' id='printbtn' src='https://bartonphillips.net/images/print.gif'
 onclick="printit();"
   style='width: 100px'/><br>
 <!--<a href="download.pdf">Download PDF version</a> of article-->
@@ -618,9 +618,9 @@ function printit() {
 <div id="otherarticles">
   <p>Other articles in this series:</p>
   <ul>
-    <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
-    <li><a href="http://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
-    <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
+    <li><a href="https://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
+    <li><a href="https://www.bartonphillips.com/howtowritehtml.php">How to Write HTML</a></li>
+    <li><a href="https://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
   </ul>
 </div>
 

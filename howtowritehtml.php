@@ -284,7 +284,7 @@ breaks that will be removed as well as these extra spaces   .</p>
    <pre>
 <code>&lt;img src=&quot;/images/msfree.png&quot; /&gt;</code></pre>
    <div class="example">
-      <img src="http://bartonphillips.net/images/msfree.png" alt="MS Free image" >
+      <img src="https://bartonphillips.net/images/msfree.png" alt="MS Free image" >
    </div>
    <p>There are several other attributes for the 'img' tag that are useful:</p>
       <ul>
@@ -300,15 +300,15 @@ breaks that will be removed as well as these extra spaces   .</p>
 <code>&lt;img src=&quot;/images/msfree.png&quot; width=&quot;200&quot; height=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
 
    <div class="example">
-      <img src="http://bartonphillips.net/images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
+      <img src="https://bartonphillips.net/images/msfree.png" width="200" height="200" border="5" alt="MS Free" >
    </div>
    <p>As you can see the image is distorted. The actual image size is 100 by 31 pixles which is rectangular. By setting the width
       and height to 200 pixles each we have forced the image to be square. To keep the original ratios you can specify only the
       width or the height then the unspecified attribute will be scaled to maintain the same ratio.</p>
    <pre>
-<code>&lt;img src=&quot;http://bartonphillips.net/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
+<code>&lt;img src=&quot;https://bartonphillips.net/images/msfree.png&quot; width=&quot;200&quot; border=&quot;5&quot; alt=&quot;MS Free&quot; /&gt;</code></pre>
    <div class="example">
-      <img src="http://bartonphillips.net/images/msfree.png" width="200" border="5" alt="MS Free" >
+      <img src="https://bartonphillips.net/images/msfree.png" width="200" border="5" alt="MS Free" >
    </div>
    <p>You will notice that the image becomes 'pixalized' as the size is expanded beyond the original dimentions.</p>
    
@@ -336,10 +336,10 @@ breaks that will be removed as well as these extra spaces   .</p>
    <p>Using a relative URL to an image looks like this:</p>
 
    <pre>
-<code>&lt;a href=&quot;http://bartonphillips.net/images/msfree.png&quot;&gt;View the MS Free Image&lt;/a&gt;</code></pre>
+<code>&lt;a href=&quot;https://bartonphillips.net/images/msfree.png&quot;&gt;View the MS Free Image&lt;/a&gt;</code></pre>
 
    <div class="example">
-      <a href="http://bartonphillips.net/images/msfree.png">View the MS Free Image</a>
+      <a href="https://bartonphillips.net/images/msfree.png">View the MS Free Image</a>
    </div>
 
    <p>The absolute URL in the first example links to an external page on another server. The relative URL in the second example
@@ -415,9 +415,9 @@ breaks that will be removed as well as these extra spaces   .</p>
 <div id="otherarticles">
   <p>Other articles in this series:</p>
   <ul>
-    <li><a href="http://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
-    <li><a href="http://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
-    <li><a href="http://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
+    <li><a href="https://www.bartonphillips.com/historyofinternet.php">The History of the Internet</a></li>
+    <li><a href="https://www.bartonphillips.com/howtheinternetworks.php">How the Internet Works</a></li>
+    <li><a href="https://www.bartonphillips.com/buildawebsite.php">So You Want to Build a Website</a></li>
   </ul>
 </div>
 <hr>

@@ -4,7 +4,7 @@ ErrorClass::setDevelopment(true);
 
 if($_POST) {
   $S = new Database($_site);
-  //vardump($_POST);
+
   if($_POST['remove']) {
     $remove = strtoupper($_POST['remove']);
     if(!$S->query("delete from stocks.stocks where stock='$remove'")) {
@@ -43,6 +43,7 @@ if($_POST) {
       $alpha = json_decode($alpha, true); // decode as an array
 
       $ar = $alpha["Time Series (Daily)"];
+error_log("ar: ". print_r($ar, true));
 
       foreach($ar as $k=>$v) {
         $date = $k;
