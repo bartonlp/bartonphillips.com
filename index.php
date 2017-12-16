@@ -410,6 +410,7 @@ Weather Underground</a></li>
 <li><a target="_blank" href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
 <li><a target="_blank" href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a target="_blank" href="http://www.computerscienceonline.org">Computer Science Online</a></li>
+<li><a target="_blank" href="https://developers.google.com/web/">Google/Web</a></li>
 </ul>
 </section>
 $adminStuff
