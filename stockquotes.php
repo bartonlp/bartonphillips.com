@@ -16,6 +16,19 @@ $S = new $_site->className($_site);
 $h->title = "Stock Quotes";
 $h->banner = "<h1>Stock Quotes</h1>";
 
+$h->script =<<<EOF
+  <script>
+jQuery(document).ready(function($) {
+  $(".stock").click(function(e) {
+    var stk = $(this).text();
+    var url = "https://www.marketwatch.com/investing/stock/"+stk; //"https://finance.yahoo.com/quote/"+stk+"/";
+    var w1 = window.open(url, '_blank');
+    return false;
+  });
+});
+  </script>
+EOF;
+
 $h->css =<<<EOF
   <style>
 #stocktable, #watchtable {
@@ -46,6 +59,10 @@ $h->css =<<<EOF
 #stockname {
   font-size: 10px;
 }
+.stock {
+  cursor: pointer;
+  background-color: lightblue;
+}
 .negchange {
   color: red;
 }
@@ -70,6 +87,8 @@ $sql = "select stock, price, qty from stocks.stocks where status not in('watch',
 $S->query($sql);
 
 while(list($stock, $price, $qty) = $S->fetchrow('num')) {
+  if($stock == "RDS-A") $stock = "RDS.A";
+
   $stocks[$stock] = [$price, $qty];
 }
 
@@ -82,6 +101,7 @@ curl_setopt($h, CURLOPT_RETURNTRANSFER, true);
 
 // We get the stocks from the array above  
 $ret = curl_exec($h);
+
 $ar = json_decode($ret);
 
 // Now we get the DJI for the day.
@@ -115,6 +135,10 @@ foreach($ar as $k=>$v) {
   //vardump($qt);
   $qt = $v->quote;
   $st = $qt->symbol;
+  // Depending on who we use for detailed report this may be needed.
+  // For example for yahoo we need it as RDS-A.
+  //if($st == 'RDS.A') $st = "RDS-A";
+
   $date = date("Y-m-d H:i:s", $qt->latestUpdate / 1000);
   // The close and previousClose can be different after the close of market on the current date but
   // will be the same once the market opens the next day.
@@ -149,7 +173,7 @@ foreach($ar as $k=>$v) {
   }
   $orgprice = number_format($orgprice, 2);
   
-  $quotes .= "<tr><td>$st<div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
+  $quotes .= "<tr><td><span class='stock'>$st</span><div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
              "<td>$pricex</td><td>$value</td><td>$orgprice<br>$percent</td><td>$close</td></tr>";
 }
 
@@ -209,7 +233,7 @@ foreach($ar as $k=>$v) {
 
 //  $stock = $stocks[$k];
 //  $value = number_format($stock[1] * $price, 2)."<br>".number_format($stock[1]);
-  $watchquote .= "<tr><td>$st<div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
+  $watchquote .= "<tr><td><span class='stock'>$st</span><div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
                   "<td>$pricex</td><td>$close</td></tr>";
 }
 
