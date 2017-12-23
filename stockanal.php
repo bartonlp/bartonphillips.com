@@ -2,7 +2,9 @@
 // analyze the stocks in the 'pricedata' table
 
 $_site = require_once(getenv("SITELOADNAME"));
+//ErrorClass::setNoEmailErrs(true);
 ErrorClass::setDevelopment(true);
+
 $S = new $_site->className($_site);
 
 $move = 100;
@@ -28,7 +30,7 @@ $an = [];
 while(list($stock, $status, $buyprice) = $S->fetchrow($r, 'num')) {
   if($stock == "RDS.A") $stock = "RDS-A";
   
-  $sql = "select stock, date, price, price from stocks.pricedata where stock='$stock' ".
+  $sql = "select stock, date, price from stocks.pricedata where stock='$stock' ".
          "order by date desc limit $move";
   
   $S->query($sql);
@@ -37,11 +39,14 @@ while(list($stock, $status, $buyprice) = $S->fetchrow($r, 'num')) {
   
   while(list($stock, $date, $price) = $S->fetchrow('num')) {
     if($stock == "DJI") $stock = "DJI-AVG";
-    
+
     $an[$stock][] = (object)array('price'=>"$price", 'date'=>"$date",
                                   'status'=>$status, 'buyprice'=>$buyprice);
   }
 }
+
+// Add END so we print the last stock
+$an['END'][] = (object)array();
 
 // Now loop through all of the $an stocks
 
@@ -50,7 +55,7 @@ $moving = '';
 
 foreach($an as $k=>$v) {
   // If $k != $kk then this is a new stock
-  
+
   if($k != $kk) {
     // But if $kk is null this is the first time through so don't show the info until next time.
     
@@ -92,6 +97,10 @@ foreach($an as $k=>$v) {
   // $k == $kk so just accumulate price info
   
   foreach($v as $vv) {
+    if(!count((array)$vv)) {
+      break;
+    }
+    
     $price += $vv->price;
     if($c == 0) {
       $lastprice = $vv->price;
@@ -115,11 +124,16 @@ $h->css =<<<EOF
 #moving td:nth-child(1) {
   text-align: left;
 }
+#moving td:nth-child(6), #moving td:nth-child(7) {
+  background-color: lightgreen;
+  opacity: .7;
+}
 .negchange {
   color: red;
 }
 .watch {
   background-color: #FFEFD5;
+  opacity: .7;
 }
   </style>
 EOF;

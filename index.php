@@ -5,6 +5,25 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
+// Check if any of my sites have items that need to be added
+
+function dogit() {
+    $ret = '';
+
+  $any = false;
+  
+  foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
+           '/bartonphillipsnet', '/bartonphillips.org', '/granbyrotary.org', '/messiah'] as $site) {
+    chdir("/var/www/$site");
+    exec("git status", $out);
+    $out = implode("\n", $out);
+    if(!preg_match('/working directory clean/s', $out)) {
+      $any = true;
+    }
+  }
+  return $any;
+}
+
 // if this is a bot don't bother with getting a location.
 
 if($S->isBot) {
@@ -40,6 +59,36 @@ EOF;
 </ul>
 EOF;
 } // End of if(isBot..
+
+// Do we have a cookie? If not offer to register
+
+if(!($hereId = $_COOKIE['SiteId'])) {
+  $S->query("select count, date(created) from $S->masterdb.logagent ".
+            "where ip='$S->ip' and agent='$S->agent' and site='$S->siteName'");
+
+  list($hereCount, $created) = $S->fetchrow('num');
+  if($hereCount > 1) {
+    $hereMsg =<<<EOF
+<div class="hereMsg">You have been to our site $hereCount since $created<br>
+Why not <a target="_blank" href="register.php">register</a>
+</div>
+EOF;
+  }
+} else {
+  $sql = "select name from members where id=$hereId";
+  
+  if($n = $S->query($sql)) {
+    list($memberName) = $S->fetchrow('num');
+    if($memberName == "Barton Phillips") {
+      $GIT = dogit();
+    }
+    $hereMsg =<<<EOF
+<div class="hereMsg">Welcome $memberName</div>
+EOF;
+  } else {
+    error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
+  }
+}
 
 // css/blp.css is included in head.i.php
 
@@ -202,6 +251,45 @@ jQuery(document).ready(function($) {
     var t = date("H:i:s T"); // from phpdate.js
     $("#datetoday").html("<span class='green'>"+d+"</span><br>Your Time is: <span class='green'>"+t+"</span>");
   }, 1000);
+
+  // We set this in PHP above and now if it is true we will notify me.
+
+  if($GIT == true) {
+    function notifyMe(msg) {
+      // Let's check if the browser supports notifications
+      if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+      } else if(Notification.permission === "granted") {
+        //console.log("hi 0");
+
+        var notification = new Notification("Hi there!", {
+              body: msg,
+              icon: "https://bartonphillips.net/images/favicon.ico"
+        });
+      } else if(Notification.permission !== "denied") {
+        //console.log("hi ask permision 2");
+
+        Notification.requestPermission(function (permission) {
+          // If the user accepts, let's create a notification
+          //console.log("hi 3");
+          if(permission === "granted") {
+            var notification = new Notification("First Time!", {
+              body: msg,
+              icon: "https://bartonphillips.net/images/favicon.ico"
+            });
+          }
+        });
+      }
+
+      notification.onclick = function(event) {
+        event.preventDefault(); // prevent the browser from focusing the Notification's tab
+        window.open('https://www.bartonphillips.com/gitstatus.php', '_blank');
+        notification.close();
+      }
+    }
+
+    notifyMe("Your files are not up to date");
+  }
 });
   </script>  
 EOF;
@@ -219,32 +307,6 @@ $h->banner = <<<EOF
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
-
-// Do we have a cookie? If not offer to register
-
-if(!($hereId = $_COOKIE['SiteId'])) {
-  $S->query("select count, date(created) from $S->masterdb.logagent ".
-            "where ip='$S->ip' and agent='$S->agent' and site='$S->siteName'");
-
-  list($hereCount, $created) = $S->fetchrow('num');
-  if($hereCount > 1) {
-    $hereMsg =<<<EOF
-<div class="hereMsg">You have been to our site $hereCount since $created<br>
-Why not <a target="_blank" href="register.php">register</a>
-</div>
-EOF;
-  }
-} else {
-  $sql = "select name from members where id=$hereId";
-  if($n = $S->query($sql)) {
-    list($memberName) = $S->fetchrow('num');
-    $hereMsg =<<<EOF
-<div class="hereMsg">Welcome $memberName</div>
-EOF;
-  } else {
-    error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
-  }
-}
 
 $ip = $S->ip;
 
@@ -448,7 +510,7 @@ How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
 </section>
 <section id='projects'>
-<a href='projects.php'>GitHub and PHPClasses projects</a>
+<a target="_blank" href='projects.php'>GitHub and PHPClasses projects</a>
 </section>
 $stormwatchpage
 <hr>
