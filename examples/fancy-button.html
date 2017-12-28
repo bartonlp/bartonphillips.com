@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+  <script>
+const supportsCustomElementsV1 = 'customElements' in window;
+if(!supportsCustomElementsV1) {
+  console.log("Custom NOT OK");
+}
+
+let tmpl = document.createElement('template');
+
+// Notice the 'grave acent' they allow one to do a 'heredoc' like in PHP
+// You can also include ${expresion} like ${2+4}
+
+tmpl.innerHTML = `
+  <style>
+:host span {
+  color: red;
+}
+:host {
+  background: #3498db; 
+  background-image: linear-gradient(to bottom, #3498db, black); /*#2980b9);*/
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+:host(:hover) {
+  background: #3cb0fd;
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  color: black;
+  text-decoration: none;
+}
+  </style>
+
+  <slot></slot>
+`;
+
+customElements.define('fancy-button', class extends HTMLElement {
+  constructor() {
+    super(); // always call super() first in the ctor.
+
+    // Attach a shadow root to the element.
+    let shadowRoot = this.attachShadow({mode: 'open'});
+    shadowRoot.appendChild(tmpl.content.cloneNode(true));
+    this.addEventListener('click', function(e) {
+      console.log('e:', e);
+    });
+  }
+});
+  </script>
+</head>
+<body>
+<h1>Fancy Button</h1>
+<fancy-button>This is a test</fancy-button>
+</body>
+</html>

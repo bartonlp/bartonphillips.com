@@ -34,11 +34,10 @@ function Dot2LongIP($IPaddr) {
 
 // via file_get_contents('webstats.php?list=<iplist>
 // Given a list of ip addresses get a list of countries as $ar[$ip] = $name of country.
-
 if($list = $_POST['list']) {
   $S = new Database($_site);
   $list = json_decode($list);
-    
+
   $ar = array();
 
   foreach($list as $ip) {
@@ -57,6 +56,7 @@ if($list = $_POST['list']) {
 
     $ar[$ip] = $name;
   }
+
   echo json_encode($ar);
   exit();
 }
@@ -147,13 +147,11 @@ if($_POST['page'] == 'gettracker') {
   // Callback function for maketable()
 
   function callback1(&$row, &$desc) {
-    global $S, $ipcountry;
+    global $S;
 
     $ip = $S->escape($row['ip']);
 
-    $co = $ipcountry[$ip];
-
-    $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
+    $row['ip'] = "<span class='co-ip'>$ip</span><br>";
     $row['refid'] = preg_replace('/\?.*/', '', $row['refid']);
 
     if(($row['js'] & 0x2000) === 0x2000) {
@@ -172,7 +170,7 @@ if($_POST['page'] == 'gettracker') {
 
   $site = $_POST['site'];
   
-  $ipcountry = json_decode($_POST['ipcountry'], true);
+  //$ipcountry = json_decode($_POST['ipcountry'], true);
 
   $T = new dbTables($S);
 

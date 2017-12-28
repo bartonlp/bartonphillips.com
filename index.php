@@ -491,6 +491,7 @@ $adminStuff
 <h2>Helpful Programs and Tips</h2>
 <ul>
 <li><a target="_blank" href="https://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a target="_blank" href="https://www.bartonlp.com/base64.php">Decode Base 64</a></li>
 <li><a target="_blank" href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
 <li><a target="_blank" href="javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="promise.php">Use AJAX and Promise</a></li>

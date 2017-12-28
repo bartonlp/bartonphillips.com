@@ -20,17 +20,18 @@ $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 if($_GET['blp'] != '7098') {
+  // myIp can be an array made from the myUri from mysitemap.json
   if(is_array($S->myIp)) {
-    if($S->ip != '174.194.17.80' && !array_intersect([$S->ip], $S->myIp)) {
+    if(!array_intersect([$S->ip], $S->myIp)) {
       echo "$S->ip<br>";
-      vardump($S->myIp);
+      //vardump($S->myIp);
       echo "Go Away";
       exit();
     }
   } else {
     if($S->ip != $S->myIp) {
       echo "$S->ip<br>";
-      vardump($S->myIp);  
+      //vardump($S->myIp);  
       echo "Go Away";
       exit();
     }
@@ -39,7 +40,6 @@ if($_GET['blp'] != '7098') {
 
 $visitors = [];
 $jsEnabled = [];
-$ipcountry = '';
 
 $S->siteDomain = $S->siteName;
 
@@ -76,42 +76,6 @@ $h->css = <<<EOF
   </style>
 EOF;
 
-// Gather ipcountry information
-
-$sql = "select distinct ip from $S->masterdb.tracker where site='$S->siteName' ".
-       "and starttime >= current_date() - interval 24 hour";
-
-$S->query($sql);
-$tkipar = array(); // tracker ip array
-
-while(list($tkip) = $S->fetchrow('num')) {
-  $tkipar[] = $tkip;
-}
-$list = json_encode($tkipar);
-
-// Now we want to do a POST so set up the context first.
-
-$options = array('http' => array(
-                                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                                 'method'  => 'POST',
-                                 'content' => http_build_query(array('list'=>$list))
-                                )
-                );
-
-$context  = stream_context_create($options);
-
-// Now this is going to do a POST!
-
-$ipc = file_get_contents("https://www.bartonphillips.com/webstats-ajax.php", false, $context);
-
-foreach(json_decode($ipc) as $k=>$v) {
-  $ipcountry[$k] = $v;
-}
-
-// BLP 2016-05-06 -- $jsonIpcountry etc. must happen after $ipcountry is filled!
-
-$jsonIpcountry = json_encode($ipcountry);
-
 if(is_array($S->myIp)) {
   $myIp = implode(",", $S->myIp);
 } else {
@@ -120,7 +84,6 @@ if(is_array($S->myIp)) {
 
 $h->extra = <<<EOF
   <script>
-var ipcountry = JSON.stringify($jsonIpcountry);
 var thesite = "$S->siteName";
 var myIp = "$myIp";
   </script>
@@ -391,8 +354,6 @@ function blpip(&$row, &$rowdesc) {
 // Display the page with the $page.
 
 function renderPage($S, $page) {
-  global $ipcountry;
-  
   // The analysis files are updated once a day by a cron job.
   $T = new dbTables($S);
 
@@ -402,15 +363,12 @@ function renderPage($S, $page) {
   // Callback for tracker below
   
   function trackerCallback(&$row, &$desc) {
-    global $S, $ipcountry;
+    global $S;
 
     $ip = $S->escape($row['ip']);
-    
-    $row['refid'] = preg_replace('/\?.*/', '', $row['refid']);
-                 
-    $co = $ipcountry[$ip];
 
-    $row['ip'] = "<span class='co-ip'>$ip</span><br><div class='country'>$co</div>";
+    $row['ip'] = "<span class='co-ip'>$ip</span><br>";
+    $row['refid'] = preg_replace('/\?.*/', '', $row['refid']);
 
     if(($row['js'] & 0x2000) === 0x2000) {
       $desc = preg_replace("~<tr>~", "<tr class='bots'>", $desc);
