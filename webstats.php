@@ -361,7 +361,8 @@ function renderPage($S, $page) {
   if(!$analysis) $errMsg = "https://bartonphillips.net/analysis/$S->siteName-analysis.i.txt: NOT FOUND";
 
   // Callback for tracker below
-  
+
+
   function trackerCallback(&$row, &$desc) {
     global $S;
 
@@ -380,15 +381,16 @@ function renderPage($S, $page) {
       return;
     }
     
-    $hr = floor($t/3600);
-    $min = floor(($t%3600)/60);
+    $hr = $t/3600;
+    $min = ($t%3600)/60;
     $sec = ($t%3600)%60;
 
     $row['difftime'] = sprintf("%u:%02u:%02u", $hr, $min, $sec);
   }
 
   $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js, refid ".
-         "from $S->masterdb.tracker where site='$S->siteName' and starttime >= current_date() - interval 24 hour ". 
+         "from $S->masterdb.tracker ".
+         "where site='$S->siteName' and starttime >= current_date() - interval 24 hour ". 
          "order by starttime desc";
 
   list($tracker) = $T->maketable($sql, array('callback'=>'trackerCallback',
@@ -411,8 +413,6 @@ function renderPage($S, $page) {
   // Get the first letter of the time zone, like M for MST etc.
 
   $date = date("Y-m-d H:i:s T");
-
-
 
  $ret = <<<EOF
 $S->top
@@ -462,21 +462,25 @@ $page
 256(x100)=tracker/beforeunload, 512(x200)=tracker/unload, 1024(x400)=tracker/pagehide,<br>
 4096(x1000)=tracker/timer: hits once every 5 seconds via ajax.</br>
 8192(x2000)=SiteClass (PHP) determined this is a robot via analysis of user agent or scan of 'bots'.<br>
-The 'starttime' is done by SiteClass (PHP) when the file is loaded.</p>
+16384(x4000)=tracker/csstest<br>
+The 'starttime' is done by SiteClass (PHP) when the file is loaded.<br>
+Rows with 'js' zero (0) are <b>curl</b> or something like <b>curl</b> and are really <b>ROBOTS</b>.</p>
+
 $tracker
 <h2 id="table8">From table <i>bots</i> (real time) for Today</h2>
 <a href="#table9">Next</a>
 <p>The 'bots' field is hex.<br>
 The 'count' field is the total count since 'created'.<br>
 From 'rotots.txt': Initial Insert=1, Update= OR 2.<br>
-From app scan: Initial Insert=4, Update= OR 8.<br>
+From 'SiteClass' scan: Initial Insert=4, Update= OR 8.<br>
 From 'Sitemap.xml': Initial Insert=16(x10), Update= OR 32(x20).<br>
 From 'tracker' cron: Inital Insert=64(x40), Update= OR 128(x80).<br>
-So if you have a 1 you can't have a 4 and visa versa.</p>
+From CRON indicates a Zero in the 'tracker' table: 258(x100).<br>
+So if you have a 1 you can't have a 2 and visa versa.</p>
 $bots
 <h2 id="table9">From table <i>bots2</i> (real time) for Today</h2>
 <a href="#analysis-info">Next</a>
-<p>'which' is 1 for 'robots.txt', 2 for the application, 4 for 'Sitemap.xml'.<br>
+<p>'which' is 1 for 'robots.txt', 2 for 'SiteClass', 4 for 'Sitemap.xml', 8 for Zero in 'tracker'.<br>
 The 'count' field is the number of hits today.</p>
 $bots2
 <div id="analysis">

@@ -2,10 +2,10 @@
 // input.ajax.php used with fancy-tab.html
 require_once(getenv("SITELOADNAME"));
 $php = file_get_contents("PHP://input");
-vardumpNoEscape("php", $php);
+vardump("php", $php);
 
-vardumpNoEscape("start", $_POST);
+vardump("start", $_POST);
 if($_POST) {
-  vardumpNoEscape($_POST);
+  vardump($_POST);
 }
 echo "DONE";
