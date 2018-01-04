@@ -136,9 +136,10 @@ EOF;
   $n = $S->query("select id from $S->masterdb.logagent where site='$S->siteName' and id!=0 and lasttime >= current_date() limit 1");
 
   $idfield = $n ? ", id as ID" : '';
-  
+
   $sql = "select ip as IP, agent as Agent$idfield, count as Count, lasttime as LastTime " .
-  "from $S->masterdb.logagent where site='$S->siteName' and lasttime >= current_date() order by lasttime desc";
+  "from $S->masterdb.logagent ".
+         "where site='$S->siteName' and lasttime >= current_date() order by lasttime desc";
 
   list($tbl) = $T->maketable($sql,
                              array('callback'=>'blpip',
@@ -150,12 +151,14 @@ EOF;
   $page .= <<<EOF
 <h2 id="table3">From table <i>logagent</i> for today</h2>
 <a href="#table4">Next</a>
+<h4>Showing $S->siteName for today</h4>
 $tbl
 EOF;
 
   // Here 'count' is total number of hits so count-realcnt is the number of Bots.
   
-  $sql = "select filename as Page, realcnt as 'Real', (count-realcnt) as 'Bots', lasttime as LastTime from $S->masterdb.counter ".
+  $sql = "select filename as Page, realcnt as 'Real', (count-realcnt) as 'Bots', lasttime as LastTime ".
+  "from $S->masterdb.counter ".
   "where site='$S->siteName' and lasttime >= current_date() order by lasttime desc";
 
   list($tbl) = $T->maketable($sql, array('attr'=>array('border'=>'1', 'id'=>'counter')));
@@ -167,6 +170,7 @@ EOF;
   $page .= <<<EOF
 <h2 id="table4">From table <i>counter</i> for today</h2>
 <a href="#table5">Next</a>
+<h4>Showing $S->siteName for today</h4>
 <p>Shows the total number of hits for a page since last reset.<br>
 'real' is the number of non-bots and 'bots' is the number of robots.</p>
 $tbl
@@ -176,7 +180,9 @@ EOF;
 
   // are there any members during this day
   
-  $sql = "select members from $S->masterdb.counter2 where site='$S->siteName' and members!=0 and lasttime >= current_date() limit 1";
+  $sql = "select members from $S->masterdb.counter2 ".
+         "where site='$S->siteName' and members!=0 and lasttime >= current_date() limit 1";
+
   $memberquery = $S->query($sql) ? "members as Members," : '';
 
   // 'count' is actually the number of 'Real' vs 'Bots'. A true 'count' would be Real + Bots.
@@ -194,6 +200,7 @@ EOF;
   $page .= <<<EOF
 <h2 id="table5">From table <i>counter2</i> for today</h2>
 <a href="#table6">Next</a>
+<h4>Showing $S->siteName for today</h4>
 <p>Shows the number of hits today for each page.<br>
 $tbl
 EOF;
@@ -298,6 +305,7 @@ EOF;
     
   $page .= <<<EOF
 <h2 id="table6">From table <i>daycount</i> for seven days</h2>
+<h4>Showing $S->siteName for seven days</h4>
 <p>'Visitors' is the number of distinct IP addresses (via 'tracker' table).<br>
 'Count' is the sum of 'Real' and 'Bots', the total number of HITS.<br>
 'Real' is the number of non-robots.<br>
@@ -343,9 +351,10 @@ function blpip(&$row, &$rowdesc) {
   $blpips = $GLOBALS['blpips'];
   
   if($blpips[$row['IP']]) {
-    $row['IP'] = "<span class='blp-row'>{$row['IP']}</span>";
+    $row['IP'] = "<span class='blp-row logagent-ip'>{$row['IP']}</span>";
+  } else {
+    $row['IP'] = "<span class='logagent-ip'>{$row['IP']}</span>";
   }
-
   $row['Agent'] = escapeltgt($row['Agent']);
 
   return false;
@@ -394,19 +403,36 @@ function renderPage($S, $page) {
          "order by starttime desc";
 
   list($tracker) = $T->maketable($sql, array('callback'=>'trackerCallback',
-                                              'attr'=>array('id'=>'tracker',
-                                              'border'=>'1')));
+                                              'attr'=>array('id'=>'tracker', 'border'=>'1')));
 
+  function botsCallback(&$row, &$desc) {
+    global $S;
+
+    $ip = $S->escape($row['ip']);
+
+    $row['ip'] = "<span class='bots-ip'>$ip</span><br>";
+  }
+  
   $sql = "select ip, agent, count, hex(robots) as bots, who, creation_time as 'created', lasttime ".
          "from $S->masterdb.bots ".
          "where lasttime >= current_date() and count !=0 order by lasttime desc";
 
-  list($bots) = $T->maketable($sql, array('attr'=>array('id'=>'robots', 'border'=>'1')));
+  list($bots) = $T->maketable($sql, array('callback'=>'botsCallback',
+                                          'attr'=>array('id'=>'robots', 'border'=>'1')));
 
+  function bots2Callback(&$row, &$desc) {
+    global $S;
+
+    $ip = $S->escape($row['ip']);
+
+    $row['ip'] = "<span class='bots2-ip'>$ip</span><br>";
+  }
+  
   $sql = "select ip, agent, site, which, count from $S->masterdb.bots2 ".
          "where date >= current_date() order by lasttime desc";
 
-  list($bots2) = $T->maketable($sql, array('attr'=>array('id'=>'robots2', 'border'=>'1')));
+  list($bots2) = $T->maketable($sql, array('callback'=>'bots2Callback',
+                                           'attr'=>array('id'=>'robots2', 'border'=>'1')));
 
   // figure out the timezone of the server by doing 'date' which returns
   // something like: Sun Dec 28 12:14:44 MST 2014
@@ -455,13 +481,15 @@ $page
 
 <h2 id="table7">From table <i>tracker</i> (real time) for last 24 hours</h2>
 <a href="#table8">Next</a>
-<p>'js' is hex. 1, 2, 32(x20), 64(x40), 128(x80, 256(x100), 512(x200) and 4096(x1000) are done via 'ajax'.<br>
-4, 8 and 16(x10) via an &lt;img&gt;<br>
+<h4>Only Showing $S->siteName</h4>
+<p>'js' is hex. 1, 2, 32(x20), 64(x40), 128(x80, 256(x100), 512(x200) and 4096(x1000) are done by 'webstats.js'.<br>
+4, 8 and 16(x10) via an &lt;img&gt; tag in the header<br>
+16384 (x4000) var an attempt to read 'csstest.css' from the 'head.i.php' file.<br>
 1=start, 2=load, 4=script, 8=normal, 16(x10)=noscript,<br>
 32(x20)=beacon/pagehide, 64(x40)=beacon/unload, 128(x80)=beacon/beforeunload,<br>
 256(x100)=tracker/beforeunload, 512(x200)=tracker/unload, 1024(x400)=tracker/pagehide,<br>
 4096(x1000)=tracker/timer: hits once every 5 seconds via ajax.</br>
-8192(x2000)=SiteClass (PHP) determined this is a robot via analysis of user agent or scan of 'bots'.<br>
+8192(x2000)=SiteClass (PHP) determined this is a robot via analysis of the 'user agent' or scan of 'bots'.<br>
 16384(x4000)=tracker/csstest<br>
 The 'starttime' is done by SiteClass (PHP) when the file is loaded.<br>
 Rows with 'js' zero (0) are <b>curl</b> or something like <b>curl</b> and are really <b>ROBOTS</b>.</p>
@@ -469,6 +497,7 @@ Rows with 'js' zero (0) are <b>curl</b> or something like <b>curl</b> and are re
 $tracker
 <h2 id="table8">From table <i>bots</i> (real time) for Today</h2>
 <a href="#table9">Next</a>
+<h4>Showing ALL <i>bots</i> for today</h4>
 <p>The 'bots' field is hex.<br>
 The 'count' field is the total count since 'created'.<br>
 From 'rotots.txt': Initial Insert=1, Update= OR 2.<br>
@@ -480,7 +509,8 @@ So if you have a 1 you can't have a 2 and visa versa.</p>
 $bots
 <h2 id="table9">From table <i>bots2</i> (real time) for Today</h2>
 <a href="#analysis-info">Next</a>
-<p>'which' is 1 for 'robots.txt', 2 for 'SiteClass', 4 for 'Sitemap.xml', 8 for Zero in 'tracker'.<br>
+<h4>Showing ALL <i>bots2</i> for today</h4>
+<p>'which' is 0 for zero in tracker, 1 for 'robots.txt', 2 for 'SiteClass', 4 for 'Sitemap.xml'.<br>
 The 'count' field is the number of hits today.</p>
 $bots2
 <div id="analysis">

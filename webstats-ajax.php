@@ -1,4 +1,7 @@
 <?php
+// Does all of the AJAX for webstats.js
+// The main program is webstats.php
+
 $_site = require_once(getenv("SITELOADNAME"));
 
 // Turn an ip address into a long. This is for the country lookup
@@ -83,13 +86,13 @@ if($_POST['page'] == 'findbot') {
   
   $ip = $_POST['ip'];
 
-  $human = [3=>"Robots", 0xc=>"SiteClass", 0x30=>"Sitemap", 0xc0=>"cron"];
+  $human = [3=>"Robots", 0xc=>"SiteClass", 0x30=>"Sitemap", 0xc0=>"cron", 0x100=>"zero"];
   
-  $S->query("select agent, who, robots from barton.bots where ip='$ip'");
+  $S->query("select agent, who, robots, creation_time from barton.bots where ip='$ip'");
 
   $ret = '';
 
-  while(list($agent, $who, $robots) = $S->fetchrow('num')) {
+  while(list($agent, $who, $robots, $created) = $S->fetchrow('num')) {
     $h = '';
     
     foreach($human as $k=>$v) {
@@ -97,7 +100,7 @@ if($_POST['page'] == 'findbot') {
     }
 
     $bot = sprintf("%X", $robots);
-    $ret .= "<tr><td>$who</td><td>$agent</td><td>$bot</td><td>$h</td></tr>";
+    $ret .= "<tr><td>$who</td><td>$agent</td><td>$h</td><td>$created</td></tr>";
   }
 
   if(empty($ret)) {
@@ -113,18 +116,21 @@ if($_POST['page'] == 'findbot') {
 }
 #FindBot table td:nth-child(2) {
   word-break: break-all;
-  width: 70%;
+  width: 60%;
 }
 #FindBot table td:nth-child(3) {
-  width: 10%;
+  width: 5rem;
 }
+/*#FindBot table td:nth-child(4) {
+  width: 7rem;
+}*/
 #FindBot table * {
   border: 1px solid black;
 }
 </style>
 <table>
 <thead>
-  <tr><th>$ip</th><th>Agent</th><th>Bots</th><th>Human</th></tr>
+  <tr><th>$ip</th><th>Agent</th><th>Human</th><th>Created</th></tr>
 </thead>
 <tbody>
 $ret

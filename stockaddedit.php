@@ -7,7 +7,8 @@ if($_POST) {
 
   if($_POST['remove']) {
     $remove = strtoupper($_POST['remove']);
-    if(!$S->query("delete from stocks.stocks where stock='$remove'")) {
+
+    if(!$S->query("delete from stocks.stocks where stock='$remove' and status='$status'")) {
       echo "<h1>Stock Symbol '$remove' Not Found in Database</h1>";
       exit();
     }
@@ -31,6 +32,8 @@ if($_POST) {
 
       // If this is an insert we should update the pricedata table with 100 items.
 
+      $stock = preg_replace(["/-IRA/", "/-BLP/"], '', $stock);
+
       $alphakey = "FLT73FUPI9QZ512V";
       $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
 
@@ -43,7 +46,8 @@ if($_POST) {
       $alpha = json_decode($alpha, true); // decode as an array
 
       $ar = $alpha["Time Series (Daily)"];
-error_log("ar: ". print_r($ar, true));
+
+      //error_log("ar: ". print_r($ar, true));
 
       foreach($ar as $k=>$v) {
         $date = $k;
@@ -98,6 +102,9 @@ input[name='remove'] {
 }
 #stocks td {
   padding: .2rem;
+}
+#stocks td:nth-child(5) {
+  width: 6rem;
 }
   </style>
 EOF;

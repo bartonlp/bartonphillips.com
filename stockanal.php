@@ -28,19 +28,22 @@ $an = [];
 // Loop through each stock
 
 while(list($stock, $status, $buyprice) = $S->fetchrow($r, 'num')) {
-  if($stock == "RDS.A") $stock = "RDS-A";
-  
-  $sql = "select stock, date, price from stocks.pricedata where stock='$stock' ".
+  $stock = $stock == "RDS.A" ? $stock = "RDS-A" : $stock;
+  $st = preg_replace("/-BLP/", "", $stock);
+
+  $sql = "select stock, date, price from stocks.pricedata where stock='$st' ".
          "order by date desc limit $move";
   
   $S->query($sql);
 
   // Loop through this stock and save info in $an
-  
-  while(list($stock, $date, $price) = $S->fetchrow('num')) {
-    if($stock == "DJI") $stock = "DJI-AVG";
 
-    $an[$stock][] = (object)array('price'=>"$price", 'date'=>"$date",
+  $st = $stock;
+
+  while(list($stock, $date, $price) = $S->fetchrow('num')) {
+    $stock = $stock == "DJI" ? "DJI-AVG" : $stock;
+
+    $an[$st][] = (object)array('price'=>"$price", 'date'=>"$date",
                                   'status'=>$status, 'buyprice'=>$buyprice);
   }
 }

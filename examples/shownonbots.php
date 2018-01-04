@@ -130,13 +130,58 @@ jQuery(document).ready(function($) {
   ipspan.each(function(i) {
     var ip = $(this).text();
     var that = this;
-    $.ajax("shownonbots.php", { data: {ip: ip},
-                                type: 'post',
-                                success: function(co) {
-                                  $(that).next().text(co).show();
-                                  return false;
-                              }
+    $.ajax("shownonbots.php", {
+      data: {ip: ip},
+      type: 'post',
+      success: function(co) {
+        $(that).next().text(co).show();
+        return false;
+      }
     });
+  });
+
+  var mouseflag = true;
+
+  $("body").on("click", function(e) {
+    if(mouseflag === false) {
+      $("#Messages").remove();
+      mouseflag = !mouseflag;
+    }
+  });
+
+  $("body").on("click","table td:nth-child(3)", function(e) {
+    if(mouseflag) {
+      var js = parseInt($(this).text(), 16),
+      human, h = '', ypos, xpos;
+
+      // The td is in a tr which in in a tbody, so table is three
+      // prents up.
+      
+      human = {
+        1: "Start", 2: "Load", 4: "Script", 8: "Normal",
+        0x10: "NoScript", 0x20: "B-PageHide", 0x40: "B-Unload", 0x80: "B-BeforeUnload",
+        0x100: "T-BeforeUnload", 0x200: "T-Unload", 0x400: "T-PageHide",
+        0x1000: "Timer", 0x2000: "Bot", 0x4000: "Csstest"
+      };
+      xpos = e.pageX - 200;
+
+      ypos = e.pageY;
+
+      if(js == 0) {
+        h = 'curl';
+      } else {
+        for(var [k, v] of Object.entries(human)) {
+          h += (js & k) ? v + "<br>" : '';
+        }
+      }
+
+      $("#Messages").remove();
+      $("body").append("<div id='Messages' style='position: absolute; top: "+ypos+"px; left: "+xpos+"px; "+
+                       "background-color: white; border: 5px solid black; "+
+                       "padding: 10px;'>"+h+"</div>");
+    }
+    e.stopPropagation();
+    mouseflag = !mouseflag;
   });
 });
   </script>

@@ -21,6 +21,8 @@ $h->script =<<<EOF
 jQuery(document).ready(function($) {
   $(".stock").click(function(e) {
     var stk = $(this).text();
+    stk = stk.replace(/-BLP/, '');
+
     var url = "https://www.marketwatch.com/investing/stock/"+stk; //"https://finance.yahoo.com/quote/"+stk+"/";
     var w1 = window.open(url, '_blank');
     return false;
@@ -88,10 +90,11 @@ $S->query($sql);
 
 while(list($stock, $price, $qty) = $S->fetchrow('num')) {
   if($stock == "RDS-A") $stock = "RDS.A";
-
   $stocks[$stock] = [$price, $qty];
 }
 
+$arkeys = array_keys($stocks);
+$arkeys = preg_replace("/-BLP/g, "", $arkeys);
 $str = "$prefix/stock/market/batch?symbols=" . implode(',', array_keys($stocks)) . "&types=quote";
 
 $h = curl_init();
@@ -131,10 +134,12 @@ $djiclose = number_format($djiclose, 2);
 
 $quotes = '';
 
-foreach($ar as $k=>$v) {
-  //vardump($qt);
+foreach($stocks as $sym=>$stock) {
+  $key = preg_replace("/-BLP/", "", $sym);
+  $v = $ar->$key;
+  
   $qt = $v->quote;
-  $st = $qt->symbol;
+  $st = $sym; //qt->symbol;
   // Depending on who we use for detailed report this may be needed.
   // For example for yahoo we need it as RDS-A.
   //if($st == 'RDS.A') $st = "RDS-A";
@@ -159,8 +164,6 @@ foreach($ar as $k=>$v) {
   $pricex = number_format($price, 2); // format to 2 deciaml places.
   $company = $qt->companyName;
   $sector = $qt->sector;
-
-  $stock = $stocks[$k];
 
   $value = number_format($stock[1] * $price, 2)."<br>".number_format($stock[1]);
 
