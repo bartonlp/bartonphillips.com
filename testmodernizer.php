@@ -19,7 +19,7 @@ $h->extra = <<<EOF
   <script src="https://bartonphillips.net/js/featuretest.js"></script>
 
   <script>
-jqXHR.complete(function() {
+jqXHR.always(function() {
   $('#supported').html(ok.join('<br>'));
   $('#notsupported').html(notok.join('<br>'));
 });

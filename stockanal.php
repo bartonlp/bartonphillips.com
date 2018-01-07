@@ -138,7 +138,53 @@ $h->css =<<<EOF
   background-color: #FFEFD5;
   opacity: .7;
 }
+select {
+  font-size: .8rem;
+  padding: 2px 5px;
+}
+input[type='submit'] {
+  font-size: .8rem;
+  padding: 5px;
+  border-radius: .2rem;
+}
   </style>
+EOF;
+
+$h->script =<<<EOF
+  <script>
+jQuery(document).ready(function($) {
+  let msg = `
+<p>You can select which status to show:
+<select>
+  <option>ALL</option>
+  <option>active</option>
+  <option>watch</option>
+  <option>mutual</option>
+</select>
+</p>
+`;
+
+  $("#selectstatus").html(msg);
+
+  $("#selectstatus select").change(function(e) {
+    let sel = $(this).val();
+    console.log("sel:", sel);
+    let tr = $("#moving tbody tr");
+    if(sel == 'ALL') {
+      tr.show();
+    } else {
+      tr.hide();
+      let status = $("#moving tbody tr td:nth-child(8)");
+
+      status.each(function() {
+        if(sel == $(this).text()) {
+          $(this).closest('tr').show();
+        }
+      });
+    }
+  });
+});
+  </script>
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
@@ -155,14 +201,18 @@ Select the Average Period
 <option>30</option>
 <option>40</option>
 <option>50</option>
+<option>60</option>
 <option>75</option>
 <option>100</option>
+<option>150</option>
+<option>200</option>
 </select>
 <br>
 <input type='submit'>
 </form>
 <br>
 <h4>Moving Average Period: $move</h4>
+<div id="selectstatus"></div>
 <p>Check <b>Count</b> for the actual number of averaged days.</p>
 <table id='moving' border="1">
 <thead>

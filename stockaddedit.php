@@ -159,6 +159,7 @@ $tbl
   <select name='status' value='{$editrow['status']}' required>
   <option>active</option>
   <option>watch</option>
+  <option>mutual</option>
   <option>sold</option>
   </select>
   </td></tr>

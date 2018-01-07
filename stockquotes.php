@@ -85,7 +85,7 @@ MSFT PFE PG T TRV UTX VZ WMT XOM
 Divisor: 0.132129493
 */
 
-$sql = "select stock, price, qty from stocks.stocks where status not in('watch','sold')";
+$sql = "select stock, price, qty from stocks.stocks where status not in('mutual','watch','sold')";
 $S->query($sql);
 
 while(list($stock, $price, $qty) = $S->fetchrow('num')) {
@@ -94,8 +94,9 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 }
 
 $arkeys = array_keys($stocks);
-$arkeys = preg_replace("/-BLP/g, "", $arkeys);
-$str = "$prefix/stock/market/batch?symbols=" . implode(',', array_keys($stocks)) . "&types=quote";
+$arkeys = preg_replace("/-BLP/", "", $arkeys);
+
+$str = "$prefix/stock/market/batch?symbols=" . implode(',', array_values($arkeys)) . "&types=quote";
 
 $h = curl_init();
 curl_setopt($h, CURLOPT_URL, $str);
@@ -190,7 +191,7 @@ if($tmp < 0) {
   $changeTotal = "<span class='negchange'>$changeTotal</span>";
 }
 
-$sql = "select stock, price, qty from stocks.stocks where status not in('active','sold')";
+$sql = "select stock, price, qty from stocks.stocks where status not in('active','mutual','sold')";
 $S->query($sql);
 
 $stocks = [];

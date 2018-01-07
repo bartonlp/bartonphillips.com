@@ -88,11 +88,11 @@ if($_POST['page'] == 'findbot') {
 
   $human = [3=>"Robots", 0xc=>"SiteClass", 0x30=>"Sitemap", 0xc0=>"cron", 0x100=>"zero"];
   
-  $S->query("select agent, who, robots, creation_time from barton.bots where ip='$ip'");
+  $S->query("select agent, who, robots, count, creation_time from barton.bots where ip='$ip'");
 
   $ret = '';
 
-  while(list($agent, $who, $robots, $created) = $S->fetchrow('num')) {
+  while(list($agent, $who, $robots, $count, $created) = $S->fetchrow('num')) {
     $h = '';
     
     foreach($human as $k=>$v) {
@@ -100,7 +100,7 @@ if($_POST['page'] == 'findbot') {
     }
 
     $bot = sprintf("%X", $robots);
-    $ret .= "<tr><td>$who</td><td>$agent</td><td>$h</td><td>$created</td></tr>";
+    $ret .= "<tr><td>$who</td><td>$agent</td><td>$h</td><td>$created</td><td>$count</td></tr>";
   }
 
   if(empty($ret)) {
@@ -112,25 +112,24 @@ if($_POST['page'] == 'findbot') {
   width: 100%;
 }
 #FindBot table td:first-child {
-  width: 20%;
+  width: 10rem;
 }
 #FindBot table td:nth-child(2) {
   word-break: break-all;
-  width: 60%;
 }
 #FindBot table td:nth-child(3) {
   width: 5rem;
 }
-/*#FindBot table td:nth-child(4) {
+#FindBot table td:nth-child(4) {
   width: 7rem;
-}*/
+}
 #FindBot table * {
   border: 1px solid black;
 }
 </style>
 <table>
 <thead>
-  <tr><th>$ip</th><th>Agent</th><th>Human</th><th>Created</th></tr>
+  <tr><th>$ip</th><th>Agent</th><th>Human</th><th>Created</th><th>Count</th></tr>
 </thead>
 <tbody>
 $ret

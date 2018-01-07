@@ -1,20 +1,6 @@
 <?php
+// BLP 2018-01-07 -- changed tracker order by starttime to lasttime
 // BLP 2017-03-23 -- set up to work with https  
-// This is used by index.php instead of webstats-new.php. However, note that this file uses
-// webstats-new.js which uses webstats-new.php for its AJAX calls!  
-// BLP 2016-06-22 -- NOTE: this uses http://bartonphillips.net/js/webstats-new.js which in turn uses
-// webstats-new.php for ALL OF IT AJAX calls!!!
-// BLP 2016-06-13 -- This version of webstats let me select the site at the top and then does the
-// rest. It does not use the webstat.i.txt but rather get everything fresh. It still uses the
-// <site>-analysis.txt files however. The is only for bartonlp.com not conejoskiclub.org! so the
-// file is just a simple php not an eval. This file is only in the 'bartonphillips' directory and
-// only used in bartonphillips.com.
-// BLP 2016-05-06 -- add get site to analysis
-// BLP 2016-01-15 -- put this in http://bartonphillips.net/ and put simlinks in the other
-// directories.  
-// BLP 2016-01-06 -- add 'Show showall' to tracker
-// BLP 2014-11-02 -- make tracker average stay reflect the current state of the table.
-// BLP 2014-08-30 -- change $av to only look at last day and to allow only times less the 2hr.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
@@ -216,6 +202,7 @@ EOF;
   list($Count, $Real, $Bots, $Members, $Visits) = $S->fetchrow('num');
 
   // Use 'tracker' to get the number of Visitors ie unique ip accesses.
+  // BLP 2018-01-07 -- changed order by from starttime to lasttime.
   
   $S->query("select ip, date(lasttime) ".
             "from $S->masterdb.tracker where lasttime>=current_date() - interval 6 day ".
@@ -275,7 +262,7 @@ EOF;
   $sql = "select date as Date, 'visitors' as Visitors, `real`+bots as Count, `real` as 'Real', 'AJAX', ".
            "bots as 'Bots'$memberquery, visits as Visits ".
            "from $S->masterdb.daycounts where site='$S->siteName' and ".
-           "lasttime >= current_date() - interval 6 day order by date desc";
+           "lasttime >= current_date() - interval 6 day order by lasttime desc";
 
   function visit(&$row, &$rowdesc) {
     global $visitors, $jsEnabled;
@@ -397,10 +384,12 @@ function renderPage($S, $page) {
     $row['difftime'] = sprintf("%u:%02u:%02u", $hr, $min, $sec);
   }
 
+  // BLP 2018-01-07 -- changed from order by starttime to lasttime
+  
   $sql = "select ip, page, agent, starttime, endtime, difftime, isJavaScript as js, refid ".
          "from $S->masterdb.tracker ".
          "where site='$S->siteName' and starttime >= current_date() - interval 24 hour ". 
-         "order by starttime desc";
+         "order by lasttime desc";
 
   list($tracker) = $T->maketable($sql, array('callback'=>'trackerCallback',
                                               'attr'=>array('id'=>'tracker', 'border'=>'1')));

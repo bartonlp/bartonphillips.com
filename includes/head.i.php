@@ -21,8 +21,16 @@ return <<<EOF
   <link rel="stylesheet" href="/csstest.css?id=$this->LAST_ID" title="blp test">
 {$arg['link']}
   <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-migrate-3.0.1.js"
+  integrity="sha256-VvnF+Zgpd00LL73P2XULYXEn6ROvoFaa/vbfoiFlZZ4="
+  crossorigin="anonymous"></script>
   <script>
+jQuery.migrateMute = false;
+jQuery.migrateTrace = false;
 var lastId = "$this->LAST_ID";
   </script>
   <script src="https://bartonphillips.net/js/tracker.js"></script>

@@ -32,6 +32,13 @@ if($stock = $_POST['stock']) {
   $ar = json_decode($ret);
   $iex = print_r($ar, true);
 
+  $str = "$prefix/stock/$stock/stats";
+
+  curl_setopt($ch, CURLOPT_URL, $str);
+  $ret = curl_exec($ch);
+  $ar = json_decode($ret);
+  vardump($ar);
+  
   $h->title = "Raw Data";
   $h->banner = "<h1>Raw Results From alpha and iex</h1>";
   $h->css =<<<EOF
