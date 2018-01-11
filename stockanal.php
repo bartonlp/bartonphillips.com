@@ -19,7 +19,7 @@ if($_GET['move']) {
 
 // Get all of the stocks in my portfolio
 
-$sql = "select stock, status, price from stocks.stocks";
+$sql = "select stock, status, price, name from stocks.stocks";
 $S->query($sql);
 $r = $S->getResult(); // Save result
 
@@ -27,10 +27,13 @@ $an = [];
 
 // Loop through each stock
 
-while(list($stock, $status, $buyprice) = $S->fetchrow($r, 'num')) {
+$company;
+
+while(list($stock, $status, $buyprice, $coname) = $S->fetchrow($r, 'num')) {
   $stock = $stock == "RDS.A" ? $stock = "RDS-A" : $stock;
   $st = preg_replace("/-BLP/", "", $stock);
-
+  $company[$stock] = $coname;
+  
   $sql = "select stock, date, price from stocks.pricedata where stock='$st' ".
          "order by date desc limit $move";
   
@@ -126,6 +129,8 @@ $h->css =<<<EOF
 }
 #moving td:nth-child(1) {
   text-align: left;
+  cursor: pointer;
+  background-color: lightblue;
 }
 #moving td:nth-child(6), #moving td:nth-child(7) {
   background-color: lightgreen;
@@ -150,9 +155,13 @@ input[type='submit'] {
   </style>
 EOF;
 
+$jsoncompany = json_encode($company);
+
 $h->script =<<<EOF
   <script>
 jQuery(document).ready(function($) {
+  let companyName = JSON.parse('$jsoncompany');
+
   let msg = `
 <p>You can select which status to show:
 <select>
@@ -166,7 +175,7 @@ jQuery(document).ready(function($) {
 
   $("#selectstatus").html(msg);
 
-  $("#selectstatus select").change(function(e) {
+  $("#selectstatus select").on('change', function(e) {
     let sel = $(this).val();
     console.log("sel:", sel);
     let tr = $("#moving tbody tr");
@@ -182,6 +191,39 @@ jQuery(document).ready(function($) {
         }
       });
     }
+  });
+
+  $("body").on('click', function(e) {
+    $("#message").remove();
+  });
+
+  // Clicked on the first column 'Symbol'
+
+  $("#moving td:first-child").on('contextmenu', function(e) {
+    let stk = $(this).text();
+
+    let pos = $(this).position(),
+        width = $(this).innerWidth(),
+        xpos = pos.left+width,
+        ypos = pos.top,
+        company = companyName[stk];
+
+    $("#message").remove();
+    $("<div id='message' style='position: absolute; "+
+      "left: "+xpos+"px; top: "+ypos+"px; "+
+      "background-color: white; border: 5px solid black;padding: 10px'>"+
+      company+"</div>").appendTo($(this));
+
+    e.stopPropagation();
+    return false;
+  });
+
+  $("#moving td:first-child").on('click', function(e) {
+    let stk = $(this).text();
+    stk = stk.replace(/-BLP/, '');
+    var url = "https://www.marketwatch.com/investing/stock/"+stk; 
+    var w1 = window.open(url, '_blank');
+    return false;
   });
 });
   </script>
@@ -213,7 +255,9 @@ Select the Average Period
 <br>
 <h4>Moving Average Period: $move</h4>
 <div id="selectstatus"></div>
-<p>Check <b>Count</b> for the actual number of averaged days.</p>
+<p>Check <b>Count</b> for the actual number of averaged days.<br>
+<b>Left Click</b> on the <i>Stock</i> to goto <i>MarketWatch</i>.<br>
+<b>Right Click</b> on <i>Stock</i> symbol to show the company name.</p>
 <table id='moving' border="1">
 <thead>
 <tr><th>Stock</th><th>Count</th><th>Moving</th><th>Last Price</th><th>Change %</th>
