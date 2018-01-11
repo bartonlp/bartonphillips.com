@@ -89,7 +89,7 @@ EOF;
     error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
   }
 }
-echo "$GIT<br>";
+$GIT = $GIT ? 1 : 0;
 // css/blp.css is included in head.i.php
 
 $h->css = <<<EOF
