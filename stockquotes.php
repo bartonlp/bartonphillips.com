@@ -88,13 +88,17 @@ Divisor: 0.132129493
 $sql = "select stock, price, qty from stocks.stocks where status not in('mutual','watch','sold')";
 $S->query($sql);
 
+$stocks = [];
+
 while(list($stock, $price, $qty) = $S->fetchrow('num')) {
-  if($stock == "RDS-A") $stock = "RDS.A";
+  // NOTE Alpha needs RDS-A while iex wants RDS.A
+
+  $stock = ($stock == "RDS-A") ? "RDS.A" : $stock;
   $stocks[$stock] = [$price, $qty];
 }
 
 $arkeys = array_keys($stocks);
-$arkeys = preg_replace("/-BLP/", "", $arkeys);
+//$arkeys = preg_replace("/-BLP/", "", $arkeys);
 
 $str = "$prefix/stock/market/batch?symbols=" . implode(',', array_values($arkeys)) . "&types=quote";
 
@@ -136,16 +140,17 @@ $djiclose = number_format($djiclose, 2);
 $quotes = '';
 
 foreach($stocks as $sym=>$stock) {
+  // 1) remove -BLP from the key to $ar which is from iex
   $key = preg_replace("/-BLP/", "", $sym);
   $v = $ar->$key;
   
   $qt = $v->quote;
-  $st = $sym; //qt->symbol;
-  // Depending on who we use for detailed report this may be needed.
-  // For example for yahoo we need it as RDS-A.
-  //if($st == 'RDS.A') $st = "RDS-A";
-
+  
+  // 2) here we use the symbol with -BLP for the display
+  $st = $sym;
+  
   $date = date("Y-m-d H:i:s", $qt->latestUpdate / 1000);
+
   // The close and previousClose can be different after the close of market on the current date but
   // will be the same once the market opens the next day.
 
@@ -176,7 +181,11 @@ foreach($stocks as $sym=>$stock) {
     $percent = number_format($percent * 100, 2) . "%";
   }
   $orgprice = number_format($orgprice, 2);
-  
+
+  // Depending on who we use for detailed report this may be needed.
+  // MarketWatch uses RDS.A but yahoo need it as RDS-A.
+  // $st = ($st == 'RDS.A') ? "RDS-A" : $st;
+
   $quotes .= "<tr><td><span class='stock'>$st</span><div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
              "<td>$pricex</td><td>$value</td><td>$orgprice<br>$percent</td><td>$close</td></tr>";
 }

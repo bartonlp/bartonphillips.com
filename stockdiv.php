@@ -19,9 +19,10 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-while(list($stock, $price, $qty) = $S->fetchrow('num')) {
-  $stock = $stock == "RDS-A" ? "RDS.A" : $stock;
-  $stock = preg_replace("/-BLP/", "", $stock);
+$r = $S->getResult();
+
+while(list($stock, $price, $qty) = $S->fetchrow($r, 'num')) {
+  $stock = preg_replace(["/-BLP/", "/RDS-A/"], ["", "RDS.A"] , $stock);
   
   $str = "$prefix/stock/$stock/stats";
 
@@ -29,9 +30,7 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
   $ret = curl_exec($ch);
   $ret = json_decode($ret);
 
-  $key = preg_replace("/-BLP/", "", $stock);
-
-  $company[$key] = $ret->companyName;
+  $company[$stock] = $ret->companyName;
   
   $div = number_format($ret->dividendRate, 2);
   $divyield = number_format($ret->dividendYield,2) . "%";
@@ -42,15 +41,22 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 
   $orgyield = number_format($orgyield, 2). "%";
   
-  // Depending on who we use for detailed report this may be needed.
-  // For example for yahoo we need it as RDS-A.
-  //if($st == 'RDS.A') $st = "RDS-A";
-
   $total += $ern = $div * $qty;
   $ern = number_format($ern, 2);
+
+  $sql = "select price from stocks.pricedata ".
+         "where lasttime > current_date() - interval 1 day and stock='$stock'";
   
-  $quotes .= "<tr><td class='stock'><span>$key</span></td><td>$price</td><td>$qty</td>".
-             "<td>$div</td><td>$orgyield</td><td>$divyield</td><td>$divxdiv</td><td>$ern</tr>";
+  $S->query($sql);
+  list($close) = $S->fetchrow('num');
+  $close = number_format($close, 2);
+  
+  // Depending on who we use for detailed report this may be needed.
+  // For example for yahoo we need it as RDS-A.
+
+  $quotes .= "<tr><td class='stock'><span>$stock</span></td><td>$price</td><td>$qty</td>".
+             "<td>$div</td><td>$orgyield</td><td>$close</td>".
+             "<td>$divyield</td><td>$divxdiv</td><td>$ern</tr>";
 }
 
 $h->title = "Stock Dividends";
@@ -63,7 +69,9 @@ $h->css =<<<EOF
 }
 #stocktable td:nth-child(1) {
 }
-#stocktable th, #stocktable td {
+#stocktable th {
+}
+#stocktable td {
   padding: .2rem .5rem;
 }
 #stocktable td:nth-child(2) {
@@ -80,11 +88,16 @@ $h->css =<<<EOF
 }
 #stocktable td:nth-child(6) {
   text-align: right;
+  background-color: lightgreen;
 }
 #stocktable td:nth-child(7) {
   text-align: right;
+  background-color: lightgreen;
 }
 #stocktable td:nth-child(8) {
+  text-align: right;
+}
+#stocktable td:nth-child(9) {
   text-align: right;
 }
 .stock {
@@ -153,7 +166,7 @@ Right <b>click</b> on the symbol name to see the stock <i>Name</i></p>
 <table id="stocktable" border="1">
 <thead>
 <tr><th>Sybmol</th><th>Buy Price</th><th>Qty</th><th>Dividend</th><th>Buy Yield</th>
-<th>Curr Yield</th><th>X Div Date</th><th>Ernings</th></tr>
+<th>Yest. Close</th><th>Curr Yield</th><th>X Div Date</th><th>Ernings</th></tr>
 </thead>
 <tbody>
 $quotes
