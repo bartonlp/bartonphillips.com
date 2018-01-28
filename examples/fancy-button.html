@@ -1,5 +1,18 @@
 <!DOCTYPE html>
+<!--
+Fancy button. fancy-button.html
+This demo uses a 'customElements' to define a fancy button.
+This demo also uses a 'shadow' element (attachShadow()).
+-->
+<html>
 <head>
+  <style>
+    div {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+    }
+  </style>
+  
   <script>
 const supportsCustomElementsV1 = 'customElements' in window;
 if(!supportsCustomElementsV1) {
@@ -53,6 +66,16 @@ customElements.define('fancy-button', class extends HTMLElement {
 </head>
 <body>
 <h1>Fancy Button</h1>
-<fancy-button>This is a test</fancy-button>
+<p>This demo show how we can create a custom element. &lt;fancy-button&gt; is a custom element.</p>
+<fancy-button>This is a &lt;fancy-button&gt;</fancy-button>
+<div></div>
+<script>
+let fancy = document.querySelector("fancy-button");
+fancy.addEventListener('click', function(e) {
+  let div = document.querySelector("div");
+  div.appendChild(document.createTextNode("Clicked"));
+  div.appendChild(document.createElement('br'));
+});
+</script>
 </body>
 </html>

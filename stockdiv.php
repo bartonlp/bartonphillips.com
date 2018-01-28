@@ -22,6 +22,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $r = $S->getResult();
 
 while(list($stock, $price, $qty) = $S->fetchrow($r, 'num')) {
+  $st = $stock;
   $stock = preg_replace(["/-BLP/", "/RDS-A/"], ["", "RDS.A"] , $stock);
   
   $str = "$prefix/stock/$stock/stats";
@@ -54,7 +55,7 @@ while(list($stock, $price, $qty) = $S->fetchrow($r, 'num')) {
   // Depending on who we use for detailed report this may be needed.
   // For example for yahoo we need it as RDS-A.
 
-  $quotes .= "<tr><td class='stock'><span>$stock</span></td><td>$price</td><td>$qty</td>".
+  $quotes .= "<tr><td class='stock'><span>$st</span></td><td>$price</td><td>$qty</td>".
              "<td>$div</td><td>$orgyield</td><td>$close</td>".
              "<td>$divyield</td><td>$divxdiv</td><td>$ern</tr>";
 }

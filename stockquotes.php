@@ -98,7 +98,7 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 }
 
 $arkeys = array_keys($stocks);
-//$arkeys = preg_replace("/-BLP/", "", $arkeys);
+$arkeys = preg_replace("/-BLP/", "", $arkeys);
 
 $str = "$prefix/stock/market/batch?symbols=" . implode(',', array_values($arkeys)) . "&types=quote";
 

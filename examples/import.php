@@ -1,5 +1,7 @@
 <?php
 // Example of 'import' in JavaScript
+// import.php 'import's import-file2.html
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
@@ -38,10 +40,13 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
+<p>This program demonstrates the use of an 'import' module with a 'template' that creates a
+'shadow' element. The little square with the red numbers is the &lt;my-timer&gt;
+element.</p>
+
 <h1>Stuff</h1>
   <div id="container"></div>
   <my-timer></my-timer>
+
 $footer
 EOF;
-
-            

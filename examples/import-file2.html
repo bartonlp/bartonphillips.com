@@ -1,4 +1,7 @@
-// Example of an import file. This is a document-fragment
+<!--
+import-file2.html is 'import'ed by 'import.php'
+Example of an import file. This is a document-fragment
+-->
 
 <template id="time">
   <style>
@@ -18,6 +21,7 @@
 
     // Define and register <shadow-element>
     // that uses Shadow DOM and a template.
+
     var proto = Object.create(HTMLElement.prototype);
 
     /*
@@ -29,12 +33,13 @@
      */
     
     proto.createdCallback = function() {
-      // get template in import
+      // get template in this doc. This is importDoc.
       var template = importDoc.querySelector('#time');
 
       // import template into
       var clone = document.importNode(template.content, true);
 
+      // create the shadow root element
       var root = this.createShadowRoot();
       root.appendChild(clone);
     };
@@ -42,6 +47,7 @@
     document.registerElement('my-timer', {prototype: proto});
 
     var tick = 0;
+    
     function dotimer() {
       setTimeout(function() {
         var t = document.querySelector("my-timer");
@@ -53,4 +59,7 @@
     dotimer();
   })();
 </script>
-  
+
+<body>
+This is a code fragment and not runable. Run 'import.php' instead.
+</body>

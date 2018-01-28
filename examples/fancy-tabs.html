@@ -1,19 +1,17 @@
 <!--
 // Fancy-tabs from github.com 'https://gist.github.com/ebidel/2d2bb0cdec3f2a16cf519dbaa791ce1b'
--->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+You CAN NOT run this html by itself!
+fancy-tab.html is used by fancy.php which is the main program.
 
-<!--
 This gets added to the main program and is presented here just as an example.
 You can add things like more tabs or the <form> like in the first section.
--->
-<!--
+
 <fancy-tabs background>
   <button slot="title">Tab 1</button>
   <button slot="title" selected>Tab 2</button>
   <button slot="title">Tab 3</button>
   <section>content panel 1<br>
-    <form method='post' action="input.ajax.php">
+    <form method='post' action="fancy-tab.ajax.php">
       <div id='panel-1' contenteditable>Test it out</div>
       <input type='submit' value="Submit">
     </form>
@@ -23,6 +21,8 @@ You can add things like more tabs or the <form> like in the first section.
 </fancy-tabs>
 -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
 <script>
 // This is the function that does all the work
 
@@ -31,7 +31,8 @@ You can add things like more tabs or the <form> like in the first section.
 
   // Feature detect
   if (!(window.customElements && document.body.attachShadow)) {
-    document.querySelector('fancy-tabs').innerHTML = "<b>Your browser doesn't support Shadow DOM and Custom Elements v1.</b>";
+    document.querySelector('fancy-tabs').innerHTML =
+      "<b>Your browser doesn't support Shadow DOM and Custom Elements v1.</b>";
     return;
   }
 
@@ -42,7 +43,6 @@ You can add things like more tabs or the <form> like in the first section.
   customElements.define('fancy-tabs', class extends HTMLElement {
     constructor() {
       super(); // always call super() first in the ctor.
-
       // Create shadow DOM for the component.
       let shadowRoot = this.attachShadow({mode: 'open'});
       shadowRoot.innerHTML = `
@@ -53,6 +53,11 @@ You can add things like more tabs or the <form> like in the first section.
   font-family: 'Roboto Slab';
   contain: content;
 }
+/*
+ * in :host and :host #panels we use var(--background-color, #9E9E9E); and
+ * var(--height, 450px); in the first example background-color was not set so we use #9E9E9E.
+ * In the second height was set to 350px for we use --height and not 450px.
+ */
 :host([background]) {
   background: var(--background-color, #9E9E9E);
   border-radius: 10px;
@@ -146,7 +151,7 @@ overflow: auto;
       });
 
       // Add aria role="tabpanel" to each content panel.
-      for (let [i, panel] of this.panels.entries()) {
+      for(let [i, panel] of this.panels.entries()) {
         panel.setAttribute('role', 'tabpanel');
         panel.setAttribute('tabindex', 0);
       }
@@ -168,14 +173,14 @@ overflow: auto;
     }
 
     _onTitleClick(e) { 
-      if (e.target.slot === 'title') {
+      if(e.target.slot === 'title') {
         this.selected = this.tabs.indexOf(e.target);
         e.target.focus();
       }
     }
 
     _onKeyDown(e) {
-      switch (e.code) {
+      switch(e.code) {
         case 'ArrowUp':
         case 'ArrowLeft':
           e.preventDefault();
@@ -196,12 +201,12 @@ overflow: auto;
 
     _findFirstSelectedTab() {
       let selectedIdx;
-      for (let [i, tab] of this.tabs.entries()) {
+      for(let [i, tab] of this.tabs.entries()) {
         tab.setAttribute('role', 'tab');
 
         // Allow users to declaratively select a tab
         // Highlight last tab which has the selected attribute.
-        if (tab.hasAttribute('selected')) {
+        if(tab.hasAttribute('selected')) {
           selectedIdx = i;
         }
       }
@@ -209,7 +214,7 @@ overflow: auto;
     }
 
     _selectTab(idx = null) {
-      for (let i = 0, tab; tab = this.tabs[i]; ++i) {
+      for(let i = 0, tab; tab = this.tabs[i]; ++i) {
         let select = i === idx;
         tab.setAttribute('tabindex', select ? 0 : -1);
         tab.setAttribute('aria-selected', select);
@@ -219,3 +224,5 @@ overflow: auto;
   });
 })();
 </script>
+
+This is a code fragment and not a program to be run.

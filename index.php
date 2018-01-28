@@ -80,7 +80,8 @@ EOF;
   if($n = $S->query($sql)) {
     list($memberName) = $S->fetchrow('num');
     if($memberName == "Barton Phillips") {
-      $GIT = dogit();
+      // don't do this for a while
+      //$GIT = dogit();
     }
     $hereMsg =<<<EOF
 <div class="hereMsg">Welcome $memberName</div>

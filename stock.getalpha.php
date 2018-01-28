@@ -36,8 +36,8 @@ if($stock = $_POST['stock']) {
 
   curl_setopt($ch, CURLOPT_URL, $str);
   $ret = curl_exec($ch);
-  $ar = json_decode($ret);
-  vardump($ar);
+  $ar = json_decode($ret, true);
+  $alphadiv = print_r($ar, true);
   
   $h->title = "Raw Data";
   $h->banner = "<h1>Raw Results From alpha and iex</h1>";
@@ -47,7 +47,7 @@ if($stock = $_POST['stock']) {
   font-size: .7rem;
   border: 1px solid black;
   width: 100%;
-  height: 300px;
+  height: 400px;
   padding: .5rem;
   overflow: auto;
 }
@@ -55,7 +55,7 @@ if($stock = $_POST['stock']) {
   font-size: .7rem;
   border: 1px solid black;
   width: 100%;
-  height: 300px;
+  height: 400px;
   padding: .5rem;
   overflow: auto;
 }
@@ -70,6 +70,10 @@ $top
 <h3>Alpha</h3>
 <div id="alpha">
 $alpha
+</div>
+<h3>Alpha Div</h3>
+<div id="alpha">
+$alphadiv
 </div>
 <h3>Iex</h3>
 <div id="iex">

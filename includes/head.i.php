@@ -14,11 +14,11 @@ return <<<EOF
     content="Barton Phillips, Granby, Applitec Inc., Rotary, Programming, Tips and tricks, blog">
   <link rel="canonical" href="https://www.bartonphillips.com">
   <!-- ICONS, RSS -->
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="shortcut icon" href="https://bartonphillips.net/images/favicon.ico">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="https://bartonphillips.net/css/blp.css" title="blp default">
   <!-- css is not css but a link to tracker via .htaccess RewriteRule. -->
-  <link rel="stylesheet" href="/csstest.css?id=$this->LAST_ID" title="blp test">
+  <link rel="stylesheet" type="text/css" href="/csstest-{$this->LAST_ID}.css" title="blp test">
 {$arg['link']}
   <!-- jQuery -->
   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>-->
