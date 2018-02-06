@@ -445,8 +445,8 @@ Today is: <span id="datetoday">$date</span></div>
 </tr>
 <tr>
 <th><a target="_blank" href="https://www.bartonlp.com"><button>bartonlp.com</button></a></th>
-<th><a target="_blank" href="http://www.bartonlp.org"><button>bartonlp.org</button></a></th>
-<th><a target="_blank" href="http://www.bartonlp.org:7000/"><button>My node.js Page</button></a></th>
+<th><a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a></th>
+<th><a target="_blank" href="https://www.bartonlp.org:7000/"><button>My node.js Page</button></a></th>
 </tr>
 </tbody>
 </table>
