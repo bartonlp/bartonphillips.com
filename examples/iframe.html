@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    var timer;
+    
+    function timerStart() {
+      timer = setInterval(function() {
+        console.log("TEST");
+      }, 3000);
+    };
+
+    window.stopTimer = function() {
+      clearInterval(timer);
+    };
+    window.startTimer = timerStart;
+
+    //timerStart();
+  </script>
+  
+</head>
+<body>
+<h1>Test of Iframe</h1>
+</body>
+</html>
