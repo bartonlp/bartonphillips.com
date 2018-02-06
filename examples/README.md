@@ -23,11 +23,11 @@ of what is in the mysitemap.json file.
 
    The css is set to:
 
-    ```
+    <pre>
 body, html {width: 100%; height: 100%; margin: 0; padding: 0}
-/* NOTE and iframe is default 'inline' */
+/\* NOTE and iframe is default 'inline' \*/
 iframe {display: block; width: 100%; height: 100%; border: none;}
-```
+</pre>
 
    This makes the *iframe* fill the whole viewport without a border. The *block* display is instead of the
 normal *inline* for an *iframe*.
@@ -35,13 +35,13 @@ normal *inline* for an *iframe*.
    We use a javascript function in the *iframe* (stopLoad()) to stop the normal reloading of the file
 **index.php** in the *weewx* directory.
 
-    ```js
+   <pre>
 $('iframe').attr("src", "https://www.bartonphillips.com/weewx/");
 $('iframe').on('load', function() {
    const frame = document.querySelector('iframe');
    frame.contentWindow.stopLoad();
 });
-```
+</pre>
 
    To use the *contentWindow* the *frame* must be native javascript not jQuery (no idea why). Anyway,
 the `frame.contentWindow.stopLoad();` is actually in the **index.php** file in the *weewx*
