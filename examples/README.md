@@ -23,7 +23,7 @@ of what is in the mysitemap.json file.
 
    The css is set to:
 
-   ```css
+   ```
 body, html {width: 100%; height: 100%; margin: 0; padding: 0}
 /* NOTE and iframe is default 'inline' */
 iframe {display: block; width: 100%; height: 100%; border: none;}
