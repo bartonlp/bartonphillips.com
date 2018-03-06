@@ -1,33 +1,6 @@
 <?php
-   // Footer file
-$statcounter = <<<EOF
-<!-- Start of StatCounter Code for Default Guide -->
-<script type="text/javascript">
-var sc_project=10131375; 
-var sc_invisible=1; 
-var sc_security="5d14a98f"; 
-var scJsHost = (("https:" == document.location.protocol) ?
-"https://secure." : "http://www.");
-document.write("<sc"+"ript type='text/javascript' src='" +
-scJsHost+
-"statcounter.com/counter/counter.js'></"+"script>");
-</script>
-<noscript><div class="statcounter"><a title="free hit
-counters" href="http://statcounter.com/free-hit-counter/"
-target="_blank"><img class="statcounter"
-src="http://c.statcounter.com/10131375/0/5d14a98f/1/"
-alt="free hit counters"></a></div></noscript>
-<!-- End of StatCounter Code for Default Guide -->
-EOF;
-
-if(isset($arg['statcounter'])) {
-  if(is_string($arg['statcounter'])) {
-    $statcounter = $arg['statcounter'];
-  } elseif($arg['statcounter'] === false) {
-    $statcounter = '';
-  }
-}
-$statcounter = '';
+// Footer file
+// BLP 2018-02-24 -- added 'script' just before </body>
 
 $lastmod = date("M j, Y H:i", getlastmod());
 
@@ -48,6 +21,7 @@ $counterWigget
 Last Modified: $lastmod
 {$arg['msg2']}
 </footer>
+{$arg['script']}
 </body>
 </html>
 EOF;

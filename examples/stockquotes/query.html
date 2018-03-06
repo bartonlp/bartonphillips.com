@@ -1,0 +1,19 @@
+<script>
+// Do a query using 'fetch' instead a AJAX.
+
+query("select 45")
+.then(data =>
+            console.log('data:', data));
+
+function query(sql) {
+  return fetch("./stock-price-3.php", {
+    body: "page=web&sql=" +sql,
+    method: 'POST',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  }).then(data => data.json());
+};
+</script>
+    
+   

@@ -1,12 +1,15 @@
+Header set Access-Control-Allow-Origin "*"
 order allow,deny
 allow from all
 
 SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
 SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
 
-Header unset Pragma
-FileETag None
-Header unset ETag
+#Header unset Pragma
+#FileETag None
+#Header unset ETag
+FileETag All
+
 # BEGIN EXPIRES
 <IfModule mod_expires.c>
   ExpiresActive On
