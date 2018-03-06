@@ -1,0 +1,232 @@
+/* header.css. This is the css for includes/banner.i.php */
+
+html {
+  max-width: 1600px;
+  font-size: 16px;
+  margin: auto;
+}
+body {
+  background-color: #FFEFD5; 
+  margin: 0 10px;
+  padding: 0 0.625rem;
+  font-family: Garamond, Georgia, Times, "Times New Roman", serif;
+  font-size: 1.5rem;
+  background-clip:content-box;
+  background-origin:content-box;
+}
+#rotarylogo {
+  grid-column: 1/2;
+  width: 200px;
+}
+#header-image-div {
+  grid-column: 2/-1;
+}
+header {
+  display: grid;
+  grid-template-columns: 200px repeat(4, auto);
+  grid-template-rows: auto;
+  grid-gap: 2rem;
+}
+img, form *, pre, div, table {
+  max-width: 100%;
+}
+/* Nav Bar at top */
+#pagetitle {
+  grid-column: 3/5;
+}
+/* big nav bar */
+#home {
+  grid-column: 1/2;
+}
+#members {
+  grid-column: 2/3;
+}
+#about {
+  grid-column: 3/4;
+}
+#news {
+  grid-column: 4/5;
+}
+#calendar {
+  grid-column: 5/6;
+}
+#meetings {
+  grid-column: 6/7;
+}
+#profile {
+  grid-column: 7/8;
+}
+#navMap {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  grid-template-rows: auto;
+  justify-content: center;
+  grid-gap: .3rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.25rem;
+  padding: .2rem 0;
+  width: 100%;
+}
+#navMap a:link, #navMap a:visited {
+  color: white;
+  background-color: #003984;
+  text-decoration: none;
+}
+#navMap a:hover {
+  color: #FFFF00;
+}
+#navMap a {
+  width: 23%;
+  padding: 0 .5rem 0 .5rem;
+  border: 0.0625rem solid white;
+}
+#header-image-div {
+  border: 0.6rem solid #3739b0; /* dark blue */
+  border-bottom-left-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+  background-color: #7AC5CD; /* light blue */
+}
+/* header-image has wheel and granbyrotarytext within it. So position relative */
+#header-image {
+  position: relative;
+  width: 100%;
+  height: 15.8rem;
+  border-bottom: 0.5rem solid #3739b0;
+}
+/* the images in header-image are
+   1) photo of granby,
+   2) wheel and
+   3) rotary club text
+*/
+
+#header-image img:first-of-type { /* this is the photo of granby */
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+/* wheel and granbyrotarytext are both inside header-image which is relative */
+#wheel {
+  position: absolute;
+  top: 4.0625rem;
+  left: 5.3125rem;
+  z-index: 300;
+  width: 10.3125rem;
+  height: 10.3125rem;
+}
+#granbyrotarytext {
+  position: absolute;
+  top: 7.5rem;
+  left: 14.3125rem;
+  width: 67%;
+  z-index: 300;
+}
+
+#smallnavbar {
+  display: none;
+  margin-left: 20px;
+  padding: 0.1rem .5rem;
+  color: white;
+  background-color: blue;
+  border: 1px solid white;
+}
+#smenu {
+  display: none;
+  text-decoration: none;
+  font-size: 1rem;
+  color: white;
+  background-color: gray;
+  list-style: none;
+  padding: 0.625rem;
+  margin-top: 0.5rem;
+  line-height: 2.5rem;
+}
+#smenu a, #smenu:visited {
+  color: white;
+}
+.icon-menu {
+  cursor: pointer;
+}
+/* Hide checkbox. Used to toggle the smenu */
+#smallnavbar input[type=checkbox] {
+  display: none;
+  background-color: gray;
+}
+/*Show smenu when invisible checkbox is checked*/
+#smallnavbar input[type=checkbox]:checked ~ #smenu {
+  display: block;
+}
+
+/* media queries */
+@media (max-width: 700px) {
+  body {
+    font-size: 1rem;
+  }
+  header {
+    grid-template-columns: repeat(5, auto);
+    grid-template-rows: auto;
+    grid-column: 1/-1;
+    grid-gap: 0;
+  }
+  #navMap {
+    justify-content: left;
+  }
+  #rotarylogo {
+    display: none;
+  }
+  #smallnavbar {
+    display: table-cell;
+  }
+  #home, #members, #about, #news, #calendar, #meetings, #profile {
+    display: none;
+  }
+  #header-image {
+    height: 8rem;
+  }
+  #granbyrotarytext {
+    top: 2.5rem;
+    left: 6.7rem;
+    width: 20rem;
+  }
+  #wheel {
+    top: 2rem;
+    left: 2.5rem;
+    width: 4rem;
+    height: 4rem;
+  } 
+}
+@media (max-width: 500px) {
+  #header-image {
+    height: 5rem;
+  }
+  #granbyrotarytext {
+    top: 1.5rem;
+    left: 6rem;
+    width: 12rem;
+  }
+  #wheel {
+    top: 1rem;
+    left: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+}
+@media (max-width: 400px) {
+  #granbyrotarytext {
+    top: 1.5rem;
+    left: 2.7rem;
+    width: 11rem;
+  }
+  #wheel {
+    top: .7rem;
+    left: .5rem;
+    width: 2rem;
+    height: 2rem;
+  }
+  #header-image {
+    height: 3rem;
+  }
+  #smallnavbar {
+    font-size: 1rem;
+  }
+}

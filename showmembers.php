@@ -1,6 +1,7 @@
 <?php
-// Main page for bartonphillips.com
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+// Reads the bartonphillips 'members' table
+
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 $S->query("select * from members");

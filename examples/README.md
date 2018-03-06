@@ -15,8 +15,8 @@ rows that are not robots or zeros for the given site name.
 1. **serialize-unserialize.php** This is a PHP program that does some 'serialize', 'unserialize'
 stuff with different object/classes.
 
-1. **weewx-test2.php** displays my weather station. The reload every 5 minutes is done via a websocket
-server at **../node-watch/weewx.watch2.js** (see the README.md in that directory). 
+1. **weewx-test.php** displays my weather station. The reload every 5 minutes is done via a websocket
+server at **./weewx-watch/weewx.watch.js** (see the README.md in that directory). 
 
    We set `$_site->headFile = 'head.php'` and the other two '...File' to *null* instead
 of what is in the mysitemap.json file.
@@ -47,6 +47,6 @@ normal *inline* for an *iframe*.
 the `frame.contentWindow.stopLoad();` is actually in the **index.php** file in the *weewx*
 directory.
 
-   That is about it for **weewx-test2.php**. See the README.md in the *../node-watch* directory.
+   That is about it for **weewx-test.php**. See the README.md in the *./weewx-watch* directory.
 
 # Contact me at [bartonphillips@gmail.com](mailto:bartonphillips@gmail.com)

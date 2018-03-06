@@ -21,7 +21,6 @@ return <<<EOF
   <link rel="stylesheet" type="text/css" href="/csstest-{$this->LAST_ID}.css" title="blp test">
 {$arg['link']}
   <!-- jQuery -->
-  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>

@@ -1,0 +1,143 @@
+/* css for index.php */
+/* The blp.css in in the includes/head.i.php */
+
+/* :root local to index.css */
+:root {
+  --indexBkColor: #FCF6CF;
+}
+.locstr {
+  margin: 1rem 0;
+}
+.user-info {
+  line-height: 1rem;
+  margin: 0px;
+}
+.hereMsg {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-top: 1rem;
+}
+.mylinks {
+  text-align: center;
+  margin: auto;
+}
+/* My Sites */
+.mysites {
+  border-spacing: .5rem;
+}
+.mysites th {
+  background-color: var(--indexBkColor);
+  padding: .2rem;
+  border-radius: .2rem;
+  border: 1px solid black;
+}
+.mysites button {
+  width: 100%;
+  font-weight: bold;
+  font-size: 1rem;
+  display: table-cell;
+  background-color: var(--indexBkColor); /*#FCF6CF;*/
+  border: none;
+  cursor: pointer;
+}
+.mysites button:hover {
+  color: green;
+}
+.mysites a {
+  text-decoration: none;
+}
+.subtitles { /* the h3's */
+  line-height: 0;
+}
+/* Images */
+#blpimg { /* My Logo Image */
+  float: left;
+  padding: 5px 10px;
+}
+#octocat { /* GitHub Image */
+  width: 80px;
+  vertical-align: bottom;
+}
+/* Colors */
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+/* Main Title div in $h->banner */
+#mainTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+#mainTitle > span {
+  font-size: 1.5rem;
+}
+#mainTitle span:last-child {
+  font-size: 1.2rem;
+}
+/* Sections */
+#browser-info { /* section */
+  border-top: 1px solid gray;
+}
+
+#blog { /* section */
+  width: 15rem;
+  text-align: center;
+  background-color: var(--indexBkColor); /*#FCF6CF;*/
+  padding: 20px;
+  margin: auto;
+  border: 1px solid #696969;
+  border-radius: .5rem;
+}
+#blog button {
+  width: 100%;
+  background-color: var(--indexBkColor); /*#FCF6CF;*/
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+}
+#blog button a {
+  text-decoration: none;
+  color: black;
+}
+#blog button a:hover {
+  color: green;
+}
+#mysites { /* section */
+}
+#projects {
+  font-size: 1.5rem;
+}
+#flex-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 1px solid black;
+  background-color: #FEFFF1;
+}
+
+#interesting, #adminstuff, #internet {
+  padding: .5rem;
+  border-left: 1px solid black;
+}
+#github { /* section */
+  padding: .5rem;
+}
+@media (max-width: 1000px) {
+  #flex-section {
+    display: block;
+    border: none;
+  }
+  #github, #interesting, #adminstuff, #internet {
+    border: none;
+  }
+}
+@media (max-width: 400px) {
+  img[src="https://isc.sans.edu/images/status.gif"] {
+    width: 300px;
+  }
+}

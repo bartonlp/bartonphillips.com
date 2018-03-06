@@ -1,5 +1,7 @@
 <?php
 // Project info
+// Links to my GitHub and PHPClasses Projects
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 $h->css =<<<EOF
