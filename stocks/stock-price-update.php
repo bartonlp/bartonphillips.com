@@ -3,6 +3,7 @@
 // uses stock-price-3.js which
 // uses stock-price-3-worker.js
 // The worker does most of the real background work.
+// BLP 2018-03-07 -- Uses Roboto from /var/www/bartonphillips.com/fonts
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
@@ -79,13 +80,10 @@ $S = new $_site->className($_site);
 checkUser($S);
 
 $h->title = "Updating Stock Quotes";
+
 $h->css =<<<EOF
 <style>
-/*@font-face {
-  font-family: "San Fransisco";
-  src: url("/fonts/SanFranciscoFont/SanFranciscoText-Regular.otf") format("opentype");
-}
-*/
+/* Use Roboto font from DocRoot/fonts */
 @font-face {
   font-family: "Roboto";
   src: url("/fonts/Roboto/Roboto-Regular.ttf");
@@ -102,18 +100,12 @@ $h->css =<<<EOF
   font-family: "Roboto bold";
   src: url("/fonts/Roboto/Roboto-Bold.ttf");
 }
-/*
-       url("/fonts/Roboto/Roboto-BoldItalic.ttf"),
-       url("/fonts/Roboto/Roboto-Italic.ttf"),
-       url("/fonts/Roboto/Roboto-LightItalic.ttf"),
-       url("/fonts/Roboto/Roboto-Medium.ttf"),
-       url("/fonts/Roboto/Roboto-MediumItalic.ttf"),
-       url("/fonts/Roboto/Roboto-Thin.ttf"),
-       url("/fonts/Roboto/Roboto-ThinItalic.ttf");
-*/
-
+/* use Roboto Regular in body */
 body {
   font-family: "Roboto";
+}
+#stocks th {
+  padding: .3rem;
 }
 #stocks td {
   padding: .3rem;
@@ -126,10 +118,8 @@ body {
 #stocks td:first-child {
   cursor: pointer;
 }
-#stocks th {
-  padding: .3rem;
-}
 /* The first td has stock and company each in a span. This is the second span which is company */
+/* Use Roboto Bold for the company spans. */
 #stocks td:first-child span:last-child {
   font-family: "Roboto bold";
   font-size: .5rem;
@@ -139,14 +129,17 @@ body {
 select {
   font-size: 1rem;
 }
+/* Use Roboto Bold for stocks */
 #stocks td:first-child {
   font-family: "Roboto bold";
   text-align: left;
   line-height: 60%;
 }
+/* Use Roboto Bold for 'Buy Price/% Diff' */
 #stocks td:nth-child(4) {
   font-family: "Roboto bold";
 }
+/* Use Roboto Bold for the 'totals' table right below 'stocks' table */
 #totals th {
   font-family: "Roboto bold";
   text-align: left;
@@ -155,22 +148,26 @@ select {
 #totals th:last-child {
   text-align: right;
 }
+/* A span to make negative values red */
 .neg {
   color: red;
 }
+/* A span for the Dow Jones "As of" date */
 .small {
   font-size: .8rem;
 }
+/* A span to show volumes that are current rather than closing */
 .current {
   color: green;
 }
+/* I use a '%' in a span to pad the right side of price/% fields. Make it invisible */
 .noper {
   visibility: hidden;
 }
 </style>
 EOF;
 
-$h->banner = "<h1>Stock Prices</h1>";
+$h->banner = "<h1>Stock Quotes</h1>";
 
 // Put the js at the end just befor the closing </body>
 

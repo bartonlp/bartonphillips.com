@@ -70,7 +70,21 @@ My BLOG with tips and tricks
 
 <section id="mysites">
 <h2 class="center">Visit one of the other web sites designed by Barton Phillips</h2>
-<table class="mysites mylinks">
+
+<!-- Small Screens -->
+<div id="smallScreen">
+<a target="_blank" href="https://www.granbyrotary.org"><button>The Granby Rotary Club</button></a>
+<a target="_blank" href="https://www.applitec.com"><button>Applied Technology Resouces Inc.</button></a>
+<a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
+<a target="_blank" href="https://www.mountainmessiah.com"><button>Mountain Messiah</button></a>
+<a target="_blank" href="https://www.bartonphillips.org"><button>bartonphillips.org</button></a>
+<a target="_blank" href="https://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a>
+<a target="_blank" href="https://www.bartonlp.com"><button>bartonlp.com</button></a>
+<a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
+<a target="_blank" href="https://mynode.bartonlp.org"><button>My node.js Page</button></a>
+</div>
+
+<table id="bigScreen" class="mysites mylinks">
 <tbody>
 <tr>
 <th><a target="_blank" href="https://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
@@ -91,7 +105,7 @@ My BLOG with tips and tricks
 </table>
 </section>
 
-<div id="flex-section">
+<div id="grid-section">
 
 <section id="github">
 <h2>GitHub Projects</h2>
@@ -128,7 +142,7 @@ $adminStuff
 </div>
 
 <section id="tips">
-<h2>Helpful Programs, Tips and Tutorials</h2>
+<h2>Useful Programs and Tutorials</h2>
 <h3 class='subtitles'>Tutorials</h3>
 <p class='subtitles'>Demo plus Source.</p>
 <ul>
@@ -141,17 +155,15 @@ $adminStuff
 <li><a target="_blank" href="articles/async-await-2.php">Use 'async/await'</a></li>
 <li><a target="_blank" href="https://www.bartonlp.com/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="articles/linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
-<li><a target="_blank" href="https://www.bartonlp.com/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="articles/dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
 <li><a target="_blank" href="articles/localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
 <li><a target="_blank" href="articles/easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
 </ul>
 
-<h3 class='subtitles'>Tips and Programs</h3>
+<h3 class='subtitles'>Useful Programs</h3>
 <ul>
 <li><a target="_blank" href="https://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a target="_blank" href="https://www.bartonlp.com/base64.php">Decode Base 64</a></li>
-<li><a target="_blank" href="articles/linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a target="_blank" href="articles/urlcountrycodes.php">Find the country given a url country code</a><br>
@@ -163,7 +175,7 @@ How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
 </section>
 <section id='projects'>
-<a target="_blank" href='projects.php'>GitHub and PHPClasses projects</a>
+<a target="_blank" href='projects.php'>My GitHub and PHPClasses projects</a>
 </section>
 $stormwatchpage
 <hr>

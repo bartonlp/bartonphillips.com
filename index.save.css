@@ -112,14 +112,6 @@
 #projects {
   font-size: 1.5rem;
 }
-#grid-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  border: 1px solid black;
-  background-color: #FEFFF1;
-}
-/*
 #flex-section {
   display: flex;
   flex-wrap: wrap;
@@ -127,7 +119,7 @@
   border: 1px solid black;
   background-color: #FEFFF1;
 }
-*/
+
 #interesting, #adminstuff, #internet {
   padding: .5rem;
   border-left: 1px solid black;
@@ -135,35 +127,16 @@
 #github { /* section */
   padding: .5rem;
 }
-#smallScreen {
-  display: none;
-  text-align: center;
-}
-#smallScreen button {
-  background-color: var(--indexBkColor);
-}
-@media (max-width: 650px) {
-  #grid-section {
-    display: block;
-  }
-/*
+@media (max-width: 1000px) {
   #flex-section {
-    display: block; 
+    display: block;
     border: none;
   }
-*/
   #github, #interesting, #adminstuff, #internet {
     border: none;
   }
-}  
-/* For small screens make thing inline */
-@media (max-width: 560px) {
-  #bigScreen {
-    display: none;
-  }
-  #smallScreen {
-    display: block;
-  }
+}
+@media (max-width: 400px) {
   img[src="https://isc.sans.edu/images/status.gif"] {
     width: 300px;
   }

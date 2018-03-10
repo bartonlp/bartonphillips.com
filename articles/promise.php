@@ -1,7 +1,7 @@
 <?php
 // Test various AJAX and Promise calls.
-// This uses www.bartonphillips.dyndns.org:8080/uptime.php and
-// www.bartonphillips.com/query.ajax.php for Ajax calls.
+// This uses ../examples/uptime.php and
+// ..examples/query.ajax.php for Ajax calls.
 
 // Load info from mysitemap.json for use by my framework SiteClass.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
@@ -29,7 +29,7 @@ if($_POST['page'] == 'ajax') {
 // Get this file for display below.
 
 $promiseText = escapeltgt(file_get_contents("promise.php"));
-$uptest = escapeltgt(file_get_contents("https://www.bartonphillips.com/examples/uptest.php"));
+$uptest = escapeltgt(file_get_contents("../examples/uptest.php"));
 $query = escapeltgt(file_get_contents("../examples/query.ajax.php"));
 
 // Set up the scripts for my framework
@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
   // Make an ajax call to another file. Returns 'This is from RPI' which is my RPI server at home.
   if(CORSflag) {
     $.ajax({
-      url: 'http://bartonphillips.dyndns.org:8080/uptest.php',
+      url: '../examples/uptest.php',
       data: { test: 'yes' },
       dataType: 'json'
     }).done(function(d) {
@@ -164,7 +164,7 @@ function sendForm(form) {
 // Another RAW Javascript function.
 
 var req = new XMLHttpRequest();
-req.open("GET", "http://www.bartonphillips.dyndns.org:8080/uptest.php" , true);
+req.open("GET", "../examples/uptest.php" , true);
 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
 req.onload = function() {

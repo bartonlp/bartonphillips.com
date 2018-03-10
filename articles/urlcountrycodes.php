@@ -9,7 +9,6 @@ $h->css = <<<EOF
   <style>
 input {
   font-size: 1rem;
-  border-radius: .5rem;
   padding: .2rem;
   width: 5rem;
 }

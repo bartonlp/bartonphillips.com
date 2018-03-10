@@ -25,8 +25,8 @@ return <<<EOF
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-migrate-3.0.1.js"
-  integrity="sha256-VvnF+Zgpd00LL73P2XULYXEn6ROvoFaa/vbfoiFlZZ4="
-  crossorigin="anonymous"></script>
+    integrity="sha256-VvnF+Zgpd00LL73P2XULYXEn6ROvoFaa/vbfoiFlZZ4="
+    crossorigin="anonymous"></script>
   <script>
 jQuery.migrateMute = false;
 jQuery.migrateTrace = false;
