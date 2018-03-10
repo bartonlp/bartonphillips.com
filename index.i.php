@@ -111,7 +111,6 @@ if($S->isMe() || ($_GET['blp'] == "7098")) {
     $adminStuff = require("/var/www/bartonlp/adminsites.php");
   }
 }
-  
 
 $ip = $S->ip;
 
