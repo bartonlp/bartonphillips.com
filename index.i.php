@@ -98,7 +98,7 @@ $GIT = $GIT ? 1 : 0;
 // BLP 2018-02-10 -- The above should have found $adminStuff if we have a cookie
 // Do Admin Stuff if it is me
 
-if($S->isMe() || ($_GET['blp'] == "7098")) {
+if($_GET['blp'] == "7098") {
   if(!$adminStuff) {
     $blp = $_GET['blp'];
     
