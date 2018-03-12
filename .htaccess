@@ -1,3 +1,6 @@
+# BLP 2018-03-12 -- change ExpireByType for text/plain to A0. Now text/html, text/css, 
+# application/x-javascript, and application/javascript are all A0 also.
+
 Header set Access-Control-Allow-Origin "*"
 order allow,deny
 allow from all
@@ -18,7 +21,7 @@ FileETag All
 </Files>
   ExpiresDefault "access plus 10 days"
   ExpiresByType text/css A0
-  ExpiresByType text/plain "access plus 1 month"
+  ExpiresByType text/plain A0
   ExpiresByType image/gif "access plus 1 month"
   ExpiresByType image/png "access plus 1 month"
   ExpiresByType image/jpeg "access plus 1 month"

@@ -1,37 +1,43 @@
 /* css for index.php */
-/* The blp.css in in the includes/head.i.php */
+/* The blp.css is in the includes/head.i.php */
 
 /* :root local to index.css */
 :root {
   --indexBkColor: #FCF6CF;
 }
+/* info from http://ipinfo.io */
 .locstr {
   margin: 1rem 0;
 }
+/* the ul with 'User Agent String' etc */
 .user-info {
   line-height: 1rem;
   margin: 0px;
 }
+/* "You have been here xx times" */
 .hereMsg {
   font-size: 1.2rem;
   font-weight: bold;
   padding-top: 1rem;
 }
+/*
 .mylinks {
   text-align: center;
   margin: auto;
-}
+}*/
 /* My Sites */
-.mysites {
+.mylinks {
+  text-align: center;
+  margin: auto;
   border-spacing: .5rem;
 }
-.mysites th {
+.mylinks th {
   background-color: var(--indexBkColor);
   padding: .2rem;
   border-radius: .2rem;
   border: 1px solid black;
 }
-.mysites button {
+.mylinks button {
   width: 100%;
   font-weight: bold;
   font-size: 1rem;
@@ -40,10 +46,10 @@
   border: none;
   cursor: pointer;
 }
-.mysites button:hover {
+.mylinks button:hover {
   color: green;
 }
-.mysites a {
+.mylinks a {
   text-decoration: none;
 }
 .subtitles { /* the h3's */
@@ -83,31 +89,34 @@
 #browser-info { /* section */
   border-top: 1px solid gray;
 }
-
-#blog { /* section */
-  width: 15rem;
+/* blog section */
+#blog { 
   text-align: center;
-  background-color: var(--indexBkColor); /*#FCF6CF;*/
-  padding: 20px;
-  margin: auto;
-  border: 1px solid #696969;
-  border-radius: .5rem;
 }
-#blog button {
+#blog a {
+  display: inline-block;
+  text-decoration: none;
+}
+#blog a button {
   width: 100%;
-  background-color: var(--indexBkColor); /*#FCF6CF;*/
-  border: none;
+  cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-}
-#blog button a {
-  text-decoration: none;
+  border-radius: .5rem;
+  border: 1px solid black;
+  padding: .3rem;
+  background-color: var(--indexBkColor);
   color: black;
 }
-#blog button a:hover {
+#blog a button:link, #blog a button:visited {
+  border: none;
+  background-color: red;
+}
+#blog a button:hover {
   color: green;
 }
-#mysites { /* section */
+/* sections */
+#mysites {
 }
 #projects {
   font-size: 1.5rem;
@@ -119,15 +128,10 @@
   border: 1px solid black;
   background-color: #FEFFF1;
 }
-/*
-#flex-section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  border: 1px solid black;
-  background-color: #FEFFF1;
+#grid-section ul {
+  list-style: none;
+  padding-left: 0;
 }
-*/
 #interesting, #adminstuff, #internet {
   padding: .5rem;
   border-left: 1px solid black;
@@ -142,21 +146,20 @@
 #smallScreen button {
   background-color: var(--indexBkColor);
 }
-@media (max-width: 650px) {
+/* Make the 'grid-section' into a block and remove borders from sections */
+@media (max-width: 799px) {
   #grid-section {
     display: block;
+    margin-top: 1rem;
   }
-/*
-  #flex-section {
-    display: block; 
-    border: none;
-  }
-*/
   #github, #interesting, #adminstuff, #internet {
     border: none;
   }
+  #grid-section ul {
+    padding-left: 2rem;
+  }
 }  
-/* For small screens make thing inline */
+/* For small screens make thing inline and remove bigScreen. Mke the isc.sans.edu image small */
 @media (max-width: 560px) {
   #bigScreen {
     display: none;
@@ -165,6 +168,6 @@
     display: block;
   }
   img[src="https://isc.sans.edu/images/status.gif"] {
-    width: 300px;
+    width: 300px; /* this should fit in any mobile dev */
   }
 }

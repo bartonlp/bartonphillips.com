@@ -63,9 +63,12 @@ Today is: <span id="datetoday">$date</span></div>
 </section>
 
 <section id="blog">
-<button><a target="_blank" href="proxy.php?https://bartonplp.blogspot.com">
-My BLOG with tips and tricks
-</a></button>
+<a target="_blank" href="proxy.php?https://bartonplp.blogspot.com">
+<button>
+My BLOG<br>
+Tips and Tricks
+</button>
+</a>
 </section>
 
 <section id="mysites">
@@ -84,7 +87,7 @@ My BLOG with tips and tricks
 <a target="_blank" href="https://mynode.bartonlp.org"><button>My node.js Page</button></a>
 </div>
 
-<table id="bigScreen" class="mysites mylinks">
+<table id="bigScreen" class="mylinks">
 <tbody>
 <tr>
 <th><a target="_blank" href="https://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
@@ -108,7 +111,7 @@ My BLOG with tips and tricks
 <div id="grid-section">
 
 <section id="github">
-<h2>GitHub Projects</h2>
+<h2 class="center">GitHub Projects</h2>
 <ul>
 <li><a target="_blank" href="proxy.php?https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
 <li><a target="_blank" href="proxy.php?https://bartonlp.github.io/site-class/">SiteClass</a></li>
@@ -118,7 +121,7 @@ My BLOG with tips and tricks
 </section>
 
 <section id="interesting">
-<h2>Interesting Sites</h2>
+<h2 class="center">Interesting Sites</h2>
 <ul>
 <li><a target="_blank" href="https://www.wunderground.com/personal-weather-station/dashboard?ID=KNCNEWBE48#history">
 Weather Underground</a></li>
@@ -131,7 +134,7 @@ Weather Underground</a></li>
 </section>
 $adminStuff
 <section id="internet">
-<h2>About the Internet</h2>
+<h2 class="center">About the Internet</h2>
 <ul>
 <li><a target="_blank" href="articles/historyofinternet.php">History &amp; Timeline</a></li>
 <li><a target="_blank" href="articles/howtheinternetworks.php">How It Works</a></li>
