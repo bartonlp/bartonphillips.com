@@ -1,5 +1,5 @@
 <?php
-// This is used by weewx-test.php and weewx-test2.php
+// This is used by weewx-test.php
 // Just makes things a little easier.
 
 return <<<EOF

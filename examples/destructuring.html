@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+Destructuring examples.
+-->
+<html>
+<head>
+</head>
+<body>
+<h1>Destructuring Examples</h1>
+<div></div>
+
+<script>
+  const div = document.querySelector('div');
+  
+  function mul(num1, num2) { return num1 * num2; };
+  
+  function a() {
+    return {
+      r1: mul(4, 10),
+      r2: 7
+    };
+  };
+
+  let str;
+  
+  console.log("x:", a());
+  str = Object.entries(a()).map(v => `${v[0]}: ${v[1]}`).join(', ');
+  div.innerHTML = `Return an object from a function: ${str}<br>`;      
+  
+  let {_internal, tooBig, ...cleanObject} = {el1: '1', _internal:"secret", tooBig:{}, el2: '2', el3: '3'};
+  console.log(cleanObject); // {el1: '1', el2: '2', el3: '3'};
+
+  str = Object.entries(cleanObject).map(v => `${v[0]}: ${v[1]}`).join(", ");
+  
+  div.innerHTML += `Remove items and put rest in 'cleanObject': ${str}<br>`;
+
+  var car = {
+    model: 'bmw 2018',
+    engine: {
+      v6: true,
+      turbo: true,
+      vin: 12345
+    }
+  }
+  const modelAndVIN = ({model, engine: {vin}}) => {
+    console.log(`model: ${model} vin: ${vin}`);
+    return {model: model, vin: vin};
+  }
+
+  console.log("modelAndVIN:", modelAndVIN(car)); // => model: bmw 2018  vin: 12345
+  
+  div.innerHTML += `Select only model and vin number:
+      ${Object.entries(modelAndVIN(car)).map((v) => `${v[0]}: ${v[1]} `)}<br>`;
+  
+  let arr = [1, 1, 2, 2, 3, 3];
+  let deduped = [...new Set(arr)]; // [1, 2, 3]
+  console.log("set:", deduped);
+  div.innerHTML += `Use a set to remove dups, original [1, 1, 2, 2, 3, 3]: result: ${deduped}`;
+  
+</script>
+</body>
+</html>

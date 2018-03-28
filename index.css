@@ -136,6 +136,10 @@
   padding: .5rem;
   border-left: 1px solid black;
 }
+/* center the h2 for index.php */
+#adminstuff > h2 {
+  text-align: center;
+}
 #github { /* section */
   padding: .5rem;
 }

@@ -24,12 +24,10 @@ The following are helper program not mentioned on https://www.bartonphillips.com
 
 * stockreaddata.php --  Reads the pricedata table.
 * stock.getalpha.php -- this does a alpha and iex request for a single stock.
-* stockfix.php -- a helper to fix stuff.
-* stockinit.php -- a helper to init tables.
 * stockinitsingle.php -- a helper to init a single stock
-* stockquotealpha.php -- a helper that uses *alpha* to get divident info.
+* stockvalue.php -- uses the `values` table to get the price*qty values and the 100 moving.
 
-## Programs in https://www.bartonphillips.com
+## Programs in https://www.bartonphillips.com/stocks
 
 1. **stock-price-update.php**. This is the main program that uses **stock-price-update.js** and
 **stock-price-update-worker.js**. It displays my stocks every five minutes during the working
@@ -52,5 +50,7 @@ percent change.
 1. **stockdiv.php** uses data from *IEX* to compute and display my dividnet information.
 
 1. **stockquotes.php** this is like **stock-price-update.php** but runs only once.
+
+1. **stockvalue.php** get the price*qty values from the `values` table.
 
 ## Contact me: [bartonphillips@gmail.com](mailto:bartonphillips@gmail.com)

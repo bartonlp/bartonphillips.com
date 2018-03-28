@@ -41,9 +41,11 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $r = $S->getResult();
 
+// The 'stocks' table has 'RDS-A' and iex needs 'RDS.A'
+
 while(list($stock, $price, $qty) = $S->fetchrow($r, 'num')) {
-  $st = $stock;
-  $stock = preg_replace(["/-BLP/", "/RDS-A/"], ["", "RDS.A"] , $stock);
+  $st = $stock; // Display as it is in the database 'RDS-A'
+  if($stock == "RDS-A") $stock = "RDS.A"; // For iex
   
   $str = "$prefix/stock/$stock/stats";
 
@@ -71,10 +73,9 @@ while(list($stock, $price, $qty) = $S->fetchrow($r, 'num')) {
   $S->query($sql);
   list($close) = $S->fetchrow('num');
   $close = number_format($close, 2);
-  
-  // Depending on who we use for detailed report this may be needed.
-  // For example for yahoo we need it as RDS-A.
 
+  // $st is how it is in the database we may need to fix this in the javascript if we use Yahoo
+  
   $quotes .= "<tr><td class='stock'><span>$st</span></td><td>$price</td><td>$qty</td>".
              "<td>$div</td><td>$orgyield</td><td>$close</td>".
              "<td>$divyield</td><td>$divxdiv</td><td>$ern</tr>";
@@ -164,7 +165,9 @@ jQuery(document).ready(function($) {
 
   $(".stock").on('click', function(e) {
     let stk = $('span', this).text();
-    stk = stk.replace(/-BLP/, '');
+    // For MarketWatch we need RDS.A, BUT for Yahoo we need RDS-A
+    // We are using marketwatch.com right now. If we use Yahoo then comment out the if(stk...
+    if(stk == 'RDS-A') stk='RDS.A';
     var url = "https://www.marketwatch.com/investing/stock/"+stk; 
     var w1 = window.open(url, '_blank');
     return false;

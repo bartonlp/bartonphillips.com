@@ -1,4 +1,6 @@
 <?php
+// stockinit.php
+// This is used only to initialize the empty table. NOT USED otherwise.
 // Initialize the 'pricedata' table with the last 100 closing prices.
 
 $_site = require_once(getenv("SITELOADNAME"));

@@ -1,5 +1,8 @@
 <?php
 // stockquotes.php
+// This is the OLD version. The new version is 'stock-price-update.php'
+// This does a singe access and does NOT refresh every 5min.
+
 // IEX: https://iextrading.com/
 // https://iextrading.com/developer/docs/
 
@@ -36,7 +39,6 @@ $h->script =<<<EOF
 jQuery(document).ready(function($) {
   $(".stock").click(function(e) {
     var stk = $(this).text();
-    stk = stk.replace(/-BLP/, '');
 
     var url = "https://www.marketwatch.com/investing/stock/"+stk; //"https://finance.yahoo.com/quote/"+stk+"/";
     var w1 = window.open(url, '_blank');
@@ -114,7 +116,6 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 }
 
 $arkeys = array_keys($stocks);
-$arkeys = preg_replace("/-BLP/", "", $arkeys);
 
 $str = "$prefix/stock/market/batch?symbols=" . implode(',', array_values($arkeys)) . "&types=quote";
 
@@ -136,14 +137,9 @@ $djichange = number_format($dom->find("#quote_change")->text, 2);
 $quotes = '';
 
 foreach($stocks as $sym=>$stock) {
-  // 1) remove -BLP from the key to $ar which is from iex
-  $key = preg_replace("/-BLP/", "", $sym);
-  $v = $ar->$key;
+  $v = $ar->$sym;
   
   $qt = $v->quote;
-  
-  // 2) here we use the symbol with -BLP for the display
-  $st = $sym;
   
   $date = date("Y-m-d H:i:s", $qt->latestUpdate / 1000);
 
@@ -178,11 +174,7 @@ foreach($stocks as $sym=>$stock) {
   }
   $orgprice = number_format($orgprice, 2);
 
-  // Depending on who we use for detailed report this may be needed.
-  // MarketWatch uses RDS.A but yahoo need it as RDS-A.
-  // $st = ($st == 'RDS.A') ? "RDS-A" : $st;
-
-  $quotes .= "<tr><td><span class='stock'>$st</span><div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
+  $quotes .= "<tr><td><span class='stock'>$sym</span><div id='stockname'>$company<br>$sector</div></td><td>$date</td>".
              "<td>$pricex</td><td>$value</td><td>$orgprice<br>$percent</td>".
              "<td>$volume</td><td>$close</td></tr>";
 }

@@ -1,16 +1,17 @@
-// stock-price-3.js
-// This is used by stock-price-3.php
-// This will be a  'worker'
+// stock-price-update.js
+// This is used by stock-price-update.php
+// This gets 'message's from stock-price-update-worker.js
+
+'use strict';
 
 var w1 = new Worker("stock-price-update-worker.js");
 let noper = "<span class='noper'>%</span>";
 
 w1.addEventListener("message", function(evt) {
-  let data = JSON.parse(evt.data);
-
-  djiAv = parseFloat(data[1], 10);
-  djiChange = parseFloat(data[2], 10);
-  djiPercent = parseFloat(data[3], 10) / 100;
+  let data = JSON.parse(evt.data),
+  djiAv = parseFloat(data[1], 10),
+  djiChange = parseFloat(data[2], 10),
+  djiPercent = parseFloat(data[3], 10) / 100,
   djiDate = data[4];
 
   if(djiChange < 0) {
@@ -39,7 +40,7 @@ ${djiPercent.toLocaleString(undefined, {
 <table border="1" id="stocks">
 <thead>
 <tr><th>Stock</th><th>Price</th><th>Av Price</th><th>Buy Price<br>% Diff</th><th>Qty</th>
-<th>Volume</th><th>Av Vol</th><th>Change<br>% Change</th><th>Status</th></tr>
+<th>Value</th><th>Volume<br>Av Vol</th><th>Change<br>% Change</th><th>Status</th></tr>
 </thead>
 <tbody>
 `;
@@ -48,6 +49,7 @@ ${djiPercent.toLocaleString(undefined, {
   
   for(let [k, v] of Object.entries(data[0])) {
     if(v.status == 'active') {
+      //console.log("stock: %s, price: %f, qty: %d", k, v.price, parseInt(v.qty));
       accTotal += v.price * v.qty;
       accDiff += v.change * v.qty;
     }
@@ -76,6 +78,9 @@ ${djiPercent.toLocaleString(undefined, {
     movingPer = moving
                 .toLocaleString(undefined, {style: 'percent',
                 minimumFractionDigits: 2, maximumFractionDigits: 2}),
+    value = (v.qty * v.price).toLocaleString(undefined, {style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2, maximumFractionDigits: 2}),
     orgPer = ((v.price - v.orgPrice) / v.orgPrice)
              .toLocaleString(undefined, {style: 'percent',
              minimumFractionDights: 2, maximumFractionDigits: 2});
@@ -108,7 +113,7 @@ ${djiPercent.toLocaleString(undefined, {
     
     str += `<tr><td><span>${k}</span><br><span>${company}</span></td><td>${price}</td>
 <td>${avPrice}${noper}<br>${movingPer}</td><td>${orgPrice}${noper}<br>${orgPer}</td><td>${qty}</td>
-<td>${vol}</td><td>${avVol}</td><td>${change}${noper}<br>${percent}</td><td>${status}</td></tr>`;
+<td>${value}</td><td>${vol}<br>${avVol}</td><td>${change}${noper}<br>${percent}</td><td>${status}</td></tr>`;
   }
   str += `
 </tbody>
@@ -128,8 +133,10 @@ ${djiPercent.toLocaleString(undefined, {
   $("body").on("click", "#stocks td:first-child", function(e) {
     // the td is stock and company each in a span. The stock is the
     // first span.
-    var stk = $('span:first-child', this).text().replace(/-BLP/, '');
+    var stk = $('span:first-child', this).text();
 
+    if(stk == 'RDS-A') stk = "RDS.A";
+    
     var url = "https://www.marketwatch.com/investing/stock/"+stk;
     var w1 = window.open(url, '_blank');
     return false;

@@ -154,7 +154,6 @@ $adminStuff
 <li><a target="_blank" href="articles/promise.php">Use AJAX and Promise</a></li>
 <li><a target="_blank" href="articles/fetch-promise.php">Use 'fetch' and Promise</a></li>
 <li><a target="_blank" href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
-<li><a target="_blank" href="articles/javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="articles/async-await-2.php">Use 'async/await'</a></li>
 <li><a target="_blank" href="https://www.bartonlp.com/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="articles/linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>

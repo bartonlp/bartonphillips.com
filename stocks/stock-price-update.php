@@ -1,7 +1,7 @@
 <?php
-// stock-price-3.php
-// uses stock-price-3.js which
-// uses stock-price-3-worker.js
+// stock-price-update.php
+// uses stock-price-update.js which
+// uses stock-price-update-worker.js
 // The worker does most of the real background work.
 // BLP 2018-03-07 -- Uses Roboto from /var/www/bartonphillips.com/fonts
 
@@ -26,7 +26,36 @@ function checkUser($S) {
   }
 };
 
-//error_log("POST: ".print_r($_POST, true));
+// AJAX.
+// Get Wall Street Journal DDAIF (Daimler AG)
+// BLP 2018-03-25 -- TO DO:
+// This is probably not the best way to do this. At some point I may not own Daimler any more. This
+// should probably be moved into the 'web' AJAX below and only do this if DDAIF is in my stocks.
+
+if($_GET['WSJ']) {
+  date_default_timezone_set("America/New_York");
+
+  $dom = new Dom;
+  $dom->loadFromUrl("http://quotes.wsj.com/DDAIF");
+
+  $quote = $dom->find("#quote_val")->text;
+  $change = $dom->find("#quote_change")->text;
+  $changePercent = $dom->find("#quote_changePer")->text;
+  $volume = $dom->find("#quote_volume")->text;
+  $quoteDate = $dom->find("#quote_dateTime")->text;
+  preg_match("~(\d{1,2}:\d{2}) (..) (...) (\d{2})/(\d{2})/(\d{2})~", $quoteDate, $m);
+  $str = "20$m[6]-$m[4]-$m[5] $m[1] $m[2]";
+  $date =  date("Y-m-d H:i T", strtotime($str));
+
+  $ret = ['curPrice'=>$quote, 'curChange'=>$change, 'curPercent'=>$changePercent,
+          'curVol'=>$volume, 'curUpdate'=>$date];
+
+  echo json_encode($ret);
+  exit();
+};
+
+// AJAX
+// Get info from stocks.stocks and DJIA (Dow Jones Industrial Average) from WSJ
 
 if($_POST['page'] == 'web') {
   $S = new Database($_site);
@@ -40,9 +69,7 @@ if($_POST['page'] == 'web') {
   $r = $S->getResult();
 
   while(list($stock, $price, $qty, $status, $company) = $S->fetchrow($r, 'num')) {
-    $stk = preg_replace("/-BLP/", '', $stock);
-
-    $sql = "select volume, price from stocks.pricedata where stock='$stk' order by date desc limit 100";
+    $sql = "select volume, price from stocks.pricedata where stock='$stock' order by date desc limit 100";
     $S->query($sql);
 
     for($cnt=0, $avVol=0, $avPrice=0; list($volume, $p) = $S->fetchrow('num'); ++$cnt) {

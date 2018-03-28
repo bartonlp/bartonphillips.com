@@ -1,9 +1,9 @@
 <?php
-// weewx-test2.php
-// Uses the https://www.bartonphillips.com/node-watch/weewx.watch2.js
-// weewx.watch2.js sets up a websocket server and watches ../weewx/index.php for a new version of
+// weewx-test.php
+// Uses the https://www.bartonphillips.com/examples/weewx-watch/weewx.watch.js
+// weewx.watch.js sets up a websocket server and watches $DOCROOT/weewx/index.php for a new version of
 // the file. When it gets one it write to the 'connection' and says it has a new file.
-// This program (weewx-test2.php) establishes a websocket client connection to the server and sends
+// This program (weewx-test.php) establishes a websocket client connection to the server and sends
 // a message to the server so a connection is set up. Then it wait until it gets a message that
 // there is a new file.
 // We use an 'iframe' to hold the page contents. To do the communication between the main program
@@ -31,7 +31,7 @@ EOF;
 $h->script = <<<EOF
 <script>
 $(function($) {
-  var wsUri = "wss://bartonlp.com:8080?BLP=8653"; // The BLP is used for authentication
+  var wsUri = "wss://bartonphillips.com:8080?BLP=8653"; // The BLP is used for authentication
 
   function testWebSocket() {
     websocket = new WebSocket(wsUri, 'watch'); // The server is 'watch'

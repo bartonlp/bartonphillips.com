@@ -1,5 +1,6 @@
 <?php
-// Initialize the 'pricedata' table with the last 100 closing prices.
+// stockinitsingle.php
+// Initializes a single stock using Alpha.
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);

@@ -24,6 +24,8 @@ function checkUser($S) {
   }
 };
 
+// AJAX
+
 if($_POST['avmove']) {
   $S = new Database($_site);
   checkUser($S);
@@ -31,7 +33,8 @@ if($_POST['avmove']) {
   $move = $_POST['avmove'];
 
   // Get all of the stocks in my portfolio
-
+  // The stocks table has 'RDS-A' which is what the pricedata table has also.
+  
   $sql = "select stock, status, price, name from stocks.stocks";
   $S->query($sql);
   $r = $S->getResult(); // Save result
@@ -43,24 +46,22 @@ if($_POST['avmove']) {
   $company;
 
   while(list($stock, $status, $buyprice, $coname) = $S->fetchrow($r, 'num')) {
-    $stock = $stock == "RDS.A" ? $stock = "RDS-A" : $stock;
-    $st = preg_replace("/-BLP/", "", $stock);
     $company[$stock] = $coname;
 
-    $sql = "select stock, date, price, volume from stocks.pricedata where stock='$st' ".
+    // pricedata has 'RDS-A' which is what is in the 'stocks' table.
+    
+    $sql = "select stock, date, price, volume from stocks.pricedata where stock='$stock' ".
            "order by date desc limit $move";
 
     $S->query($sql);
 
     // Loop through this stock and save info in $an
 
-    $st = $stock;
-
     while(list($stock, $date, $price, $volume) = $S->fetchrow('num')) {
       $stock = $stock == "DJI" ? "DJI-AVG" : $stock;
 
-      $an[$st][] = (object)array('price'=>"$price", 'date'=>"$date",
-                                 'status'=>$status, 'buyprice'=>$buyprice, 'volume'=>$volume);
+      $an[$stock][] = (object)array('price'=>"$price", 'date'=>"$date",
+                                    'status'=>$status, 'buyprice'=>$buyprice, 'volume'=>$volume);
     }
   }
 
@@ -281,7 +282,6 @@ jQuery(document).ready(function($) {
 
   $("body").on('click', "#moving td:first-child", function(e) {
     let stk = $(this).text();
-    stk = stk.replace(/-BLP/, '');
     var url = "https://www.marketwatch.com/investing/stock/"+stk; 
     var w1 = window.open(url, '_blank');
     return false;
