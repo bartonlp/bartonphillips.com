@@ -1,4 +1,8 @@
 <?php
+// stockquotealpha.php
+// Uses Alpha, and IEX
+// Get info for a single stock.
+
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
@@ -32,7 +36,6 @@ $S->query($sql);
 while(list($stock, $price, $qty) = $S->fetchrow('num')) {
   // NOTE Alpha needs RDS-A while iex wants RDS.A
 
-  $stock = preg_replace("/-BLP/", "", $stock);
   $stocks[$stock] = [$price, $qty];
 
   $str = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=".

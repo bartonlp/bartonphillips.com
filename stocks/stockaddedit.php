@@ -1,4 +1,7 @@
 <?php
+// stockaddedit.php
+// This adds and edits stocks in the `stocks` table.
+
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 
@@ -19,20 +22,26 @@ function checkUser($S) {
   }
 };
 
+// Form POST
+
 if($_POST) {
   $S = new Database($_site);
   checkUser($S); // If not me display 'Go Away' and exit
-  
+
+  // Remove a stock from 'stocks'
+
   if($_POST['remove']) {
     $remove = strtoupper($_POST['remove']);
 
-    if(!$S->query("delete from stocks.stocks where stock='$remove' and status='$status'")) {
+    if(!$S->query("delete from stocks.stocks where stock='$remove'")) {
       echo "<h1>Stock Symbol '$remove' Not Found in Database</h1>";
       exit();
     }
     // Now remove all of the items in 'pricedata'
     //$S->query("delete from stocks.pricedata where stock='$remove'");
   } else {
+    // Add a stock to 'stocks'
+    
     $stock = strtoupper($_POST['stock']);
     $qty = $_POST['qty'];
     $price = $_POST['price'];
@@ -45,12 +54,10 @@ if($_POST) {
     $price = $price == "" ? 0 : $price;
     
     try {
-      @$S->query("insert into stocks.stocks (stock, qty, price, name, bought, status) ".
-                "value ('$stock', '$qty', '$price', '$name', $bought, '$status')");
+      @$S->query("insert into stocks.stocks (stock, qty, price, name, status) ".
+                "value ('$stock', '$qty', '$price', '$name', '$status')");
 
       // If this is an insert we should update the pricedata table with 100 items.
-
-      $stock = preg_replace(["/-IRA/", "/-BLP/"], '', $stock);
 
       $alphakey = "FLT73FUPI9QZ512V";
       $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
@@ -64,8 +71,6 @@ if($_POST) {
       $alpha = json_decode($alpha, true); // decode as an array
 
       $ar = $alpha["Time Series (Daily)"];
-
-      //error_log("ar: ". print_r($ar, true));
 
       foreach($ar as $k=>$v) {
         $date = $k;
@@ -81,7 +86,7 @@ if($_POST) {
       if($e->getCode() == 1062) { // duplicate key
         // This is an edit so we don't add to the pricedata table.
         $S->query("update stocks.stocks set qty='$qty', ".
-                  "price='$price', name='$name', bought=$bought, status='$status' ".
+                  "price='$price', name='$name', status='$status' ".
                   "where stock='$stock'");  
       } else {
         throw($e);
@@ -176,8 +181,6 @@ $tbl
   <input type='number' step='.01' name='qty' value='{$editrow['qty']}'></td></tr>
 <tr><th>Stock Name</th><td>
   <input type='text' name='name' value='{$editrow['name']}'></td></tr>
-<tr><th>Bought</th><td>
-  <input type='date' name='bought' value='{$editrow['bought']}'</td></tr>
 <tr><th>Status</th><td>
   <select name='status' value='{$editrow['status']}' required>
   <option>active</option>

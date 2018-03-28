@@ -9,7 +9,7 @@ const Gaze = require('gaze').Gaze,
 fs = require('fs'),
 WebSocketServer = require('websocket').server, // websocket: npm install websocket
 http = require('https'),
-w = "../weewx/index.php",
+w = "/var/www/bartonphillips.com/weewx/index.php",
 watch = new Gaze(w);
 
 // Start watching. If no connection we don't do scripts.

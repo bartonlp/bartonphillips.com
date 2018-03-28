@@ -1,4 +1,24 @@
-// stock-price-3-worker.js
+// stock-price-update-worker.js
+// This is a javascript 'worker' that goes with stock-price-update.php,
+// and stock-price-update.js
+// BLP 2018-03-15 -- Add logic (below) to figure out daylight savings
+// time.
+
+'use strict';
+
+// Is this daylight savings time?
+
+Date.prototype.stdTimezoneOffset = function() {
+  var jan = new Date(this.getFullYear(), 0, 1); // Jan 1. NOTE Month starts at zero
+  var jul = new Date(this.getFullYear(), 6, 1); // July 1
+  return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}
+
+// Add a Date prototype for dst()
+
+Date.prototype.dst = function() {
+  return this.getTimezoneOffset() < this.stdTimezoneOffset();
+}
 
 var orgStock;
 
@@ -10,6 +30,9 @@ function getInfo(start=false) {
   let date = new Date();
   let time = date.getUTCHours(); // we only take reading from 9am to 4pm EST
   let day = date.getDay(); // we only take readings during the week not Sat. or Sun.
+  if(date.dst()) { // BLP 2018-03-15 -- if dst add 1 hour so 14 and 21 UTC are still correct.
+    ++time;
+  }
   // If con is an array that means that it is 'c' not 'connection'.
   // Check the time and the day of week.
   if(start !== true && ((time > 21 || time < 14) || (day == 6 || day == 7))) return;
@@ -17,21 +40,27 @@ function getInfo(start=false) {
   //console.log("start:", start, " date:", date);
   
   query().then(data => {
-    let dji = data.dji,
-    djichange = data.change,
-    djipercent = data.per,
-    djidate = data.date;
+    // data is an object with r1 and r2. r1 is the DDAIF data and r2 is
+    // the 'stocks' and the DJI data
+    let r1 = data.r1;
+    let r2 = data.r2;
+
+    // Get Dow Joins data.
+    
+    let dji = r2.dji,
+    djichange = r2.change,
+    djipercent = r2.per,
+    djidate = r2.date;
 
     // I want orgStock to be a new variable that is not changed when I do
     // the below map. This is the original data.stocks.
     
-    orgStock = JSON.parse(JSON.stringify(data.stocks)); 
+    orgStock = JSON.parse(JSON.stringify(r2.stocks)); 
         
-    let rows = data.stocks.map(x => {
+    let rows = r2.stocks.map(x => {
       if(x[0] == "RDS-A") {
         return x[0] = "RDS.A";
       }
-      x[0] = x[0].replace(/-BLP/, '');
       return x[0];
     });
 
@@ -61,17 +90,36 @@ function getInfo(start=false) {
         status = stocks[3] || 0, company = stocks[4], avVol = stocks[5], avPrice = stocks[6];
 
         // NOTE IEX wants RDS-A to be RDS.A!
+
+        let stx = st == 'RDS-A' ? 'RDS.A' : st;
+
+        let curPrice, curVol, curChange, curPercent, curUpdate;
         
-        let stx = st.replace(/-BLP/, '').replace(/RDS-A/, 'RDS.A');
-
-        t = d[stx].quote; // get the quote from data.
-
-        // st is the stock sym with the -BLP and RDS-A
+        if(typeof d[stx] == 'undefined') {
+          if(stx == "DDAIF") {
+            curPrice = r1.curPrice;
+            curVol = r1.curVol;
+            curChange = r1.curChange;
+            curPercent = r1.curPercent;
+            curUpdate = r1.curUpdate;
+          } else {
+            continue;
+          }
+        } else {
+          t = d[stx].quote; // get the quote from data.
+          curPrice = t.latestPrice;
+          curVol = t.latestVolume;
+          curChange = t.change;
+          curPercent = t.changePercent;
+          curUpdate = t.latestUpdate;
+        }
+        
+        // st is the stock sym with the RDS-A
         
         ar[st] = {
           orgPrice: orgPrice, qty: qty, status: status, company: company, avVol: avVol,
-          avPrice: avPrice, price: t.latestPrice, vol: t.latestVolume, change: t.change,
-          chper: t.changePercent, last: t.latestUpdate
+          avPrice: avPrice, price: curPrice, vol: curVol, change: curChange,
+          chper: curPercent, last: curUpdate
         };
       }
 
@@ -80,23 +128,32 @@ function getInfo(start=false) {
       var dataStr = JSON.stringify([ar, dji, djichange, djipercent, djidate]);
 
       // And send it to the client.
-      
+
       postMessage(dataStr);
     })
   }).catch(err => console.log("err:", err));
 };
 
 // query()
-// This uses 'fetch() to do a POST with form like data.
+// This uses 'fetch() to do a GET and a POST with form like data.
+// This is an 'async' function
 
-function query() {
-  // Again this is like an AJAX POST.
+async function query() {
+  // Again this is like AJAX. Both calls return JSON data.
+
+  // First do a GET for the Daimler data.
   
-  return fetch("./stock-price-update.php", {
+  let r1 = await fetch("./stock-price-update.php?WSJ=true").then(data => data.json());
+
+  // Then do a POST for stocks info and DJIA
+  
+  let r2 = await fetch("./stock-price-update.php", {
     body: "page=web", // make this look like form data
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded' // We need the x-www-form-urlencoded type
     }
-  }).then(data => data.json()); // 'stock-price-3.php' POST returns json data.
+  }).then(data => data.json());
+
+  return {r1: r1, r2: r2};
 };

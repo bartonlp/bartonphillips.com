@@ -1,6 +1,8 @@
 // index.js
 // This is the JavaScript for index.php
 
+'use strict';
+
 jQuery(document).ready(function($) {
   var weewx = '';
 

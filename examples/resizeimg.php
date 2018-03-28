@@ -20,11 +20,32 @@ EOF;
 
 // File and new size
 $filename = $_GET['image'];
+
+if(empty($filename)) {
+  echo <<<EOF
+$errorhdr
+<body>
+<p>Did you forget something? An image?</p>
+</body>
+</html>
+EOF;
+  exit();
+}
+
 $imgwidth = $_GET['width'];
 $imgheight = $_GET['height'];
 $imgpercent = $_GET['percent'];
 
-header('Content-type: image/jpg');
+if(!$imgwidth && !$imgheight && !$imgpercent) {
+  echo <<<EOF
+$errorhdr
+<body>
+<p>Did you forget something? An a width or height or percent?</p>
+</body>
+</html>
+EOF;
+  exit();
+}
 
 $newwidth = $imgwidth;
 $newheight = $imgheight;
@@ -47,10 +68,32 @@ if(!empty($imgpercent)) {
 }
 // Load
 $thumb = imagecreatetruecolor($newwidth, $newheight);
-$source = imagecreatefromjpeg($filename);
+$ext = pathinfo($filename)['extension'];
+switch($ext) {
+  case 'png':
+    $source = imagecreatefrompng($filename);
+    $mime = 'image/png';
+    $func = 'png';
+    break;
+  case 'jpg':
+    $source = imagecreatefromjpeg($filename);
+    $mime = 'image/jpg';
+    $func = 'jpeg';
+    break;
+  case 'gif':
+    $source = imagecreatefromgif($filename);
+    $mime = 'image/gif';
+    $func = 'gif';
+    break;
+  default:
+    throw(new Exception("Not an image file"));
+}
 
 // Resize
 imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
+header("Content-type: $mime");
+
 // Output
-imagejpeg($thumb);
+$func = "image$func";
+$func($thumb);
