@@ -10,7 +10,7 @@ $S = new $_site->className($_site);
 require_once("index.i.php"); // Get the majority of the php
 
 $h->title = $S->siteName;
-
+$h->desc = "Weather Station, Interesting Things, About the Internet, Tips and Tutorials";
 $h->banner = <<<EOF
 <div id='mainTitle'>
 $S->mainTitle<br>
@@ -22,7 +22,7 @@ $S->mainTitle<br>
 EOF;
 
 // link the index.css 
-$h->link = "<link rel='stylesheet' href='index.css'>";
+$h->link = "  <link rel='stylesheet' href='index.css'>";
 
 // get phpdate.js and set the js doGit to $GIT
 
@@ -40,14 +40,18 @@ list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
+<!-- Internet Under Attack. Status message or NOTHING -->
 $status
 <section id='browser-info'>
+<!-- Either 'You have been here nn' or 'Welcome' with user name -->
 $hereMsg
 <div class="locstr">
    Our domain is <i>bartonphillips.com</i><br/>
+<!-- Location information if NOT a bot -->
    $locstr
 Start: <span class='green'>$date in New Bern, NC</span><br>
-Today is: <span id="datetoday">$date</span></div>
+Today is: <span id="datetoday">$date</span>
+</div>
 <hr>
 <p>
    This page is dynamically generated using PHP on our server at
@@ -80,36 +84,36 @@ Tips and Tricks
 <a target="_blank" href="https://www.applitec.com"><button>Applied Technology Resouces Inc.</button></a>
 <a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
 <a target="_blank" href="https://www.mountainmessiah.com"><button>Mountain Messiah</button></a>
-<a target="_blank" href="https://www.bartonphillips.org"><button>bartonphillips.org</button></a>
+<a target="_blank" href="https://www.bartonphillips.org/myhomepage"><button>bartonphillips.org</button></a>
 <a target="_blank" href="https://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a>
 <a target="_blank" href="https://www.bartonlp.com"><button>bartonlp.com</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://mynode.bartonlp.org"><button>My node.js Page</button></a>
 </div>
 
+<!-- Large Screens -->
 <table id="bigScreen" class="mylinks">
 <tbody>
 <tr>
-<th><a target="_blank" href="https://www.granbyrotary.org"><button>The Granby Rotary Club</button></a></th>
-<th><a target="_blank" href="https://www.applitec.com"><button>Applied Technology Resouces Inc.</button></a></th>
-<th><a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a></th>
+<th><a target="_blank" href="https://www.granbyrotary.org">The Granby Rotary Club</a></th>
+<th><a target="_blank" href="https://www.applitec.com">Applied Technology Resouces Inc.</a></th>
+<th><a target="_blank" href="https://www.allnaturalcleaningcompany.com">All Natural Cleaning</a></th>
 </tr>
 <tr>
-<th><a target="_blank" href="https://www.mountainmessiah.com"><button>Mountain Messiah</button></a></th>
-<th><a target="_blank" href="https://www.bartonphillips.org"><button>bartonphillips.org</button></a></th>
-<th><a target="_blank" href="https://www.bartonlp.com/toweewx.php"><button>My Weather Station</button></a></th>
+<th><a target="_blank" href="https://www.mountainmessiah.com">Mountain Messiah</a></th>
+<th><a target="_blank" href="https://www.bartonphillips.org/myhomepage">bartonphillips.org</a></th>
+<th><a target="_blank" href="https://www.bartonlp.com/toweewx.php">My Weather Station</a></th>
 </tr>
 <tr>
-<th><a target="_blank" href="https://www.bartonlp.com"><button>bartonlp.com</button></a></th>
-<th><a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a></th>
-<th><a target="_blank" href="https://mynode.bartonlp.org"><button>My node.js Page</button></a></th>
+<th><a target="_blank" href="https://www.bartonlp.com">bartonlp.com</a></th>
+<th><a target="_blank" href="https://www.bartonlp.org">bartonlp.org</a></th>
+<th><a target="_blank" href="https://mynode.bartonlp.org">My node.js Page</a></th>
 </tr>
 </tbody>
 </table>
 </section>
 
 <div id="grid-section">
-
 <section id="github">
 <h2 class="center">GitHub Projects</h2>
 <ul>
@@ -132,6 +136,7 @@ Weather Underground</a></li>
 <li><a target="_blank" href="https://developers.google.com/web/">Google/Web</a></li>
 </ul>
 </section>
+<!-- If it is me add adminstuff -->
 $adminStuff
 <section id="internet">
 <h2 class="center">About the Internet</h2>
@@ -153,12 +158,12 @@ $adminStuff
 <li><a target="_blank" href="articles/javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="articles/promise.php">Use AJAX and Promise</a></li>
 <li><a target="_blank" href="articles/fetch-promise.php">Use 'fetch' and Promise</a></li>
-<li><a target="_blank" href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
 <li><a target="_blank" href="articles/async-await-2.php">Use 'async/await'</a></li>
+<li><a target="_blank" href="articles/scraper-await-fetch.php">How To Scrape a Websites</a></li>
 <li><a target="_blank" href="https://www.bartonlp.com/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="articles/linuxmint-from-iso.php">How to Install Linux Mint via ISO from Disk</a></li>
 <li><a target="_blank" href="articles/dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
-<li><a target="_blank" href="articles/localstorage.html">Local Storage Example: How To Resize An Image With JavaScript</a><br>
+<li><a target="_blank" href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a><br>
 <li><a target="_blank" href="articles/easter-example.php">When is Easter and other holidays realted to Easter?</a><br>
 </ul>
 
@@ -176,9 +181,11 @@ $adminStuff
 How to setup Linux Mint email via Gmail.com</a></li>
 </ul>
 </section>
+
 <section id='projects'>
 <a target="_blank" href='projects.php'>My GitHub and PHPClasses projects</a>
 </section>
+<!-- Stormwatch isc.sans.edu -->
 $stormwatchpage
 <hr>
 $footer

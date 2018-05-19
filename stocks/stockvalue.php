@@ -19,29 +19,45 @@ $h->css =<<<EOF
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
+$sql = "select stock, price, qty from stocks.stocks where status='active'";
+$S->query($sql);
 
-$S->query("select stock from stocks.stocks where status='active'");
-$r = $S->getResult();
+$stocks = [];
+
+while(list($stock, $price, $qty) = $S->fetchrow('num')) {
+  if($stock == 'RDS-A') $stock = 'RDS.A';
+  $stocks[$stock] = [$price, $qty];
+}
+
+$str = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" . implode(',', array_keys($stocks)) . "&types=quote";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $str);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$ret = curl_exec($ch);
+$ar = json_decode($ret);
 
 $total = 0.0;
 $curval = 0.0;
 
-while(list($stk) = $S->fetchrow($r, 'num')) {
+foreach($stocks as $stk=>$val) {
   if($stk == 'RDS-A') $stk = "RDS.A";
-  
-  //echo "$stk<br>";
-  
   $S->query("select value from stocks.`values` where stock='$stk' order by date desc limit 100");
   
   $cnt = 0;
-  
+
+  $curval += $ar->$stk->quote->latestPrice * $val[1]; // latestPrice is 0 or undfined so 0.
+
   while(list($value) = $S->fetchrow('num')) {
-    if($cnt == 0) {
-      $curval += $value;
-      error_log("stock: $stk, value: $value");
-    }
-    
     $total += $value;
+
+    // These is one stock that is not NOT in iex! So get them from Yesterday's Alpha.
+    
+    if($cnt == 0 && $stk == "DDAIF") {
+      //echo "$stk: $value<br>";
+      $curval += $value;
+    }
     ++$cnt;
   }
 }

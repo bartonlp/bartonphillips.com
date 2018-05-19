@@ -53,10 +53,10 @@ function getInfo(start=false) {
     djidate = r2.date;
 
     // I want orgStock to be a new variable that is not changed when I do
-    // the below map. This is the original data.stocks.
+    // the below map. This is the original data.r2.stocks.
     
-    orgStock = JSON.parse(JSON.stringify(r2.stocks)); 
-        
+    orgStock = JSON.parse(JSON.stringify(r2.stocks));
+    
     let rows = r2.stocks.map(x => {
       if(x[0] == "RDS-A") {
         return x[0] = "RDS.A";

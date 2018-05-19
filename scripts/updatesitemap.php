@@ -1,8 +1,10 @@
 #!/usr/bin/php
 <?php
+// BLP 2018-05-03 -- changed sitemap-new.txt to not have the full path but rather just 'filename'
+
 $path = getcwd();
   
-$file = file_get_contents($path ."/sitemap-new.txt");
+$file = file_get_contents($path ."/sitemap-new.json");
 $files = json_decode($file);
 
 $sitemap = <<<EOF
@@ -15,11 +17,15 @@ $sitemap = <<<EOF
 EOF;
 
 foreach($files as $file) {
-  $sitemap .= "\t<url>\n\t\t<loc>$file->item</loc>\n";
+  // if lastmod is 'no' then use the full url in $file->item.
+  // otherwise $file->item is a relative path from $path.
   if($file->lastmod != "no") {
-    $thisfile = basename($file->item);
+    $sitemap .= "\t<url>\n\t\t<loc>https://www.bartonphillips.com/$file->item</loc>\n";
+    $thisfile = $file->item;
     $time = gmdate("Y-m-d\TH:i:s\Z", filemtime($path ."/$thisfile"));
     $sitemap .= "\t\t<lastmod>$time</lastmod>\n";
+  } else {
+    $sitemap .= "\t<url>\n\t\t<loc>$file->item</loc>\n";
   }
   $sitemap .= "\t\t<changefreq>$file->frequency</changefreq>\n";
   $sitemap .= "\t\t<priority>$file->priority</priority>\n";
@@ -28,4 +34,3 @@ foreach($files as $file) {
 $sitemap .= "</urlset>\n";
 
 echo $sitemap;
-

@@ -6,10 +6,12 @@
 jQuery(document).ready(function($) {
   var weewx = '';
 
-  if($("#adminstuff").length != 0) {
-    $("#grid-section").css("grid-template-columns", "repeat(4, 1fr)");
+  if(window.CSS) {
+    if(CSS.supports('display', 'grid') && $("#adminstuff").length != 0) {
+      $("#grid-section").css("grid-template-columns", "repeat(4, 1fr)");
+    }
   }
-  
+
   // Local date/time for 'Today is' & 'Your Time is'
   
   setInterval(function() {
