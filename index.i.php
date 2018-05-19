@@ -1,13 +1,13 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
+// BLP 2018-04-25 -- change blp code to 8653 after a bot had old code
 // BLP 2018-03-06 -- break up index.php into index.i.php, index.js and index.css
 
 // Check if any of my sites have items that need to be added to the git repository
 
 function dogit() {
-    $ret = '';
-
+  $ret = '';
   $any = false;
   
   foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
@@ -55,6 +55,7 @@ EOF;
   <li>GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
 </ul>
+<span id="TrackerCount"></span>
 EOF;
 } // End of if(isBot..
 
@@ -98,7 +99,7 @@ $GIT = $GIT ? 1 : 0;
 // BLP 2018-02-10 -- The above should have found $adminStuff if we have a cookie
 // Do Admin Stuff if it is me
 
-if($_GET['blp'] == "7098") {
+if($_GET['blp'] == "8653") { // BLP 2018-04-25 -- new code
   if(!$adminStuff) {
     $blp = $_GET['blp'];
     
@@ -106,7 +107,7 @@ if($_GET['blp'] == "7098") {
     
     if($blp) {
       $blplogin = $blp;
-      error_log("bartonphillips.com/index.php. Using blp: $S->ip, $S->agent");
+      error_log("bartonphillips.com/index.i.php. Using blp: $S->ip, $S->agent");
     }
     $adminStuff = require("/var/www/bartonlp/adminsites.php");
   }
@@ -188,4 +189,3 @@ EOF;
 <center><h2>Error Contacting <i>https://isc.sans.edu</i></h2></center>
 EOF;
 }
-

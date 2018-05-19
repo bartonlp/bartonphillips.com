@@ -1,44 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>LocalStorage Example</title>
-  <!-- METAs -->
-  <meta name=viewport content="width=device-width, initial-scale=1">
-  <meta charset='utf-8'>
-  <meta name="Author"
-     content="Barton L. Phillips, mailto:bartonphillips@gmail.com">
-  <meta name="description"
-     content="LocalStorage Example. Resize a big image using JavaScript">
-  <meta name="keywords"
-     content="LocalStorage, Resize IMAGE with JavaScript">
+<?php
+// BLP 2018-03-31 -- convert localstorage.htm to a php file.
 
-  <!-- We don't want to cache the image we load the first time. -->  
-  <meta http-equiv="Cache-Control", content="no-store, no-cache, must-revalidate">
-  <meta http-equiv="Cache-Control" content="No-Cache">
-  <meta http-equiv="Pragma" content="No-Cache">
-  <meta http-equiv="Expires" content="0">
-  <!-- theme.css is for syntaxhighlighter.js -->
-  <link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">
-  <link rel="stylesheet" href="https://bartonphillips.net/css/blp.css" title="blp default" >
+if($_GET['page'] == 'source') {
+  $file = file_get_contents("localstorage.php");
+  echo $file;
+  exit();
+}
 
-  <!-- jQuery from Google site -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+$_site = require_once(getenv("SITELOADNAME"));
+$S = new $_site->className($_site);
 
-  <!-- Text highliting logic: https://alexgorbatchev.com/SyntaxHighlighter -->
-  <!-- Using 4.0.1 -->
-  <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
-  <!-- Our stuff -->
-  <script src="https://bartonphillips.net/js/localstorage.js"></script>
-</head>
-<body>
-<div>
-   <img id='blpimg' src="https://bartonphillips.net/images/blp-image.png" alt="Barton's Picture">
-   <img id='linuxcounter' src="https://bartonphillips.net/images/146624.png" alt="linux counter image.">
-</div>
+$h->title = "LocalStorage Example";
+$h->desc = "LocalStorage Example. Resize a big image using JavaScript";
+$h->keywords = "LocalStorage, Resize IMAGE with JavaScript";
+$h->script =<<<EOF
+<script src="https://bartonphillips.net/js/localstorage.js"></script>
+EOF;
+$h->link =<<<EOF
+<link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">
+EOF;
+$h->banner = "<h1 class='center'>LocalStorage Example: Resize a big image in JavaScript</h1>";
+$h->css =<<<EOF
+<style>
+.syntaxhighlighter {
+  overflow: initial !important;
+}
+</style>
+EOF;
 
+list($top, $footer) = $S->getPageTopBottom($h, $b);
+
+echo <<<EOF
+$top
+<hr>
 <div id="warnings"></div>
 <div class="cnt">IMAGE NOT LOADED YET</div>
-<h1>LocalStorage Example: Resize a big image in JavaScript</h1>
 <p id="size">Size of the picture</p>
 <p>To remove the localStorage and start over <button id="reload">Click Here</button> and
    notice the difference in load time.</p>
@@ -55,7 +51,7 @@
 <h3>A More Detailed Explanation</h3>
 <p>I used the JQuery library (framework) to make the JavaScript a little easier. I use the local
    storage 'length' property to tell me if this is the first time the page has been loaded:</p>
-<pre>
+<pre style="overflow: none;">
 if(localStorage.length) { ... } // already been here at least once
 else { ... } // this is the very first time here
 </pre>
@@ -132,18 +128,5 @@ if(localStorage.length) {
 <div id="showjs"></div>
 
 <hr>
-<div style="text-align: center;">
-<p id='lastmodified'>Last Modified&nbsp;Dec 15, 2016 11:11:37 PST</p>
-<p id='contactUs'><a href='mailto:bartonphillips@gmail.com'>Contact Us</a></p>
-</div>
-<!-- Just won't work without JavaScript-->
-<noscript>
-<div id="noscript-warning">
-   <h1>Without JavaScript the world will not turn.</h1>
-   <p>As implied by the title of this example it just will not work if you have JavaScrips
-      disabled.</p>
-   <p>Your browser has JavaScripts disabled.</p>
-</div>
-</noscript>
-</body>
-</html>
+$footer
+EOF;

@@ -4,9 +4,13 @@
 
 'use strict';
 
+// w1 is the new Worker. It does most of the real work.
 var w1 = new Worker("stock-price-update-worker.js");
+
+// No Percent
 let noper = "<span class='noper'>%</span>";
 
+// Listen for a message from the Worker
 w1.addEventListener("message", function(evt) {
   let data = JSON.parse(evt.data),
   djiAv = parseFloat(data[1], 10),
@@ -179,15 +183,15 @@ ${djiPercent.toLocaleString(undefined, {
         $("#stocks thead th:nth-child(4)").html("Sell Price");
       case 'active':
       case 'ALL':
-        $("#stocks td:nth-child(4), #stocks td:nth-child(5), "+
-            "#stocks th:nth-child(4), #stocks th:nth-child(5)").show();
+        $("#stocks td:nth-child(4), #stocks td:nth-child(5), #stocks td:nth-child(6) "+
+            "#stocks th:nth-child(4), #stocks th:nth-child(5), #stocks th:nth-child(6)").show();
         if(sel != 'sold') {
           $("#stocks thead th:nth-child(4)").html("Buy Price<br>% Diff");
         }
         break;
       case 'watch':
-        $("#stocks td:nth-child(4), #stocks td:nth-child(5), "+
-            "#stocks th:nth-child(4), #stocks th:nth-child(5)").hide();
+        $("#stocks td:nth-child(4), #stocks td:nth-child(5), #stocks td:nth-child(6)"+
+            "#stocks th:nth-child(4), #stocks th:nth-child(5), #stocks th:nth-child(6)").hide();
         break;
     }      
 

@@ -1,0 +1,19 @@
+{
+  "name": "http2-fastify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fastify-auto-push-app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "fastify": "^1.3.0",
+    "fastify-auto-push": "^0.4.0",
+    "path": "^0.12.7",
+    "util": "^0.10.3"
+  }
+}

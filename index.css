@@ -20,11 +20,6 @@
   font-weight: bold;
   padding-top: 1rem;
 }
-/*
-.mylinks {
-  text-align: center;
-  margin: auto;
-}*/
 /* My Sites */
 .mylinks {
   text-align: center;
@@ -32,28 +27,39 @@
   border-spacing: .5rem;
 }
 .mylinks th {
-  background-color: var(--indexBkColor);
-  padding: .2rem;
+  background-color: #FCF6CF;
+  @supports (background-color: var(--indexBkColor)) {
+    background-color: var(--indexBkColor);
+  }
+  padding: .2rem; 
   border-radius: .2rem;
   border: 1px solid black;
 }
-.mylinks button {
-  width: 100%;
+.mylinks th {
   font-weight: bold;
   font-size: 1rem;
-  display: table-cell;
-  background-color: var(--indexBkColor); /*#FCF6CF;*/
-  border: none;
+  background-color: #FCF6CF;
+  @supports (background-color: var(--indexBkColor)) {
+    background-color: var(--indexBkColor); /*#FCF6CF;*/
+  }
   cursor: pointer;
 }
-.mylinks button:hover {
+.mylinks a:hover {
   color: green;
 }
 .mylinks a {
   text-decoration: none;
+  color: black;
+  padding: .2rem;
 }
+
 .subtitles { /* the h3's */
   line-height: 0;
+}
+#TrackerCount {
+  display: inline;
+  font-size: .4rem;
+  color: lightgray;
 }
 /* Images */
 #blpimg { /* My Logo Image */
@@ -105,7 +111,10 @@
   border-radius: .5rem;
   border: 1px solid black;
   padding: .3rem;
-  background-color: var(--indexBkColor);
+  background-color: #FCF6CF;
+  @supports (background-color: var(--indexBkColor)) {
+    background-color: var(--indexBkColor);
+  }
   color: black;
 }
 #blog a button:link, #blog a button:visited {
@@ -122,11 +131,15 @@
   font-size: 1.5rem;
 }
 #grid-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
   border: 1px solid black;
   background-color: #FEFFF1;
+}
+@supports (display: grid) {
+  #grid-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+  }
 }
 #grid-section ul {
   list-style: none;
@@ -148,7 +161,10 @@
   text-align: center;
 }
 #smallScreen button {
-  background-color: var(--indexBkColor);
+  background-color: #FCF6CF;
+  @supports (background-color: var(--indexBkColor)) {
+    background-color: var(--indexBkColor);
+  }
 }
 /* Make the 'grid-section' into a block and remove borders from sections */
 @media (max-width: 799px) {
