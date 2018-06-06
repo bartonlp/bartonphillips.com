@@ -56,13 +56,12 @@ return <<<EOF
     content="{$arg['desc']}">
   <meta name="keywords"
     content="{$arg['keywords']}">
-  <link rel="canonical" href="https://www.bartonphillips.com">
   <!-- ICONS, RSS -->
   <link rel="shortcut icon" href="https://bartonphillips.net/images/favicon.ico">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="https://bartonphillips.net/css/blp.css" title="blp default">
   <!-- css is not css but a link to tracker via .htaccess RewriteRule. -->
-  <link rel="stylesheet" type="text/css" href="/csstest-{$this->LAST_ID}.css" title="blp test">
+  <link rel="stylesheet" href="/csstest-{$this->LAST_ID}.css" title="blp test">
 {$arg['link']}
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"

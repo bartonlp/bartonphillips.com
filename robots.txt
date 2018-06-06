@@ -1,10 +1,5 @@
 User-agent: *
-Disallow: /MySitemap.php
 Disallow: /mysitemap.json
-Disallow: /resizeimg.php
-Disallow: /download.php
-Disallow: /downloadpdf.php
-Disallow: /make-webstats.php
 Disallow: /test/
 Disallow: /other/
 Disallow: /script/

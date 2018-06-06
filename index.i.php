@@ -70,7 +70,7 @@ if(!($hereId = $_COOKIE['SiteId'])) {
   if($hereCount > 1) {
     $hereMsg =<<<EOF
 <div class="hereMsg">You have been to our site $hereCount since $created<br>
-Why not <a target="_blank" href="register.php">register</a>
+Why not <a href="register.php">register</a>
 </div>
 EOF;
   }

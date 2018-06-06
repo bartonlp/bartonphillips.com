@@ -12,7 +12,6 @@ return <<<EOF
     content="{$arg['desc']}">
   <meta name="keywords"
     content="Barton Phillips, Granby, Applitec Inc., Rotary, Programming, Tips and tricks, blog">
-  <link rel="canonical" href="https://www.bartonphillips.com">
   <!-- ICONS, RSS -->
   <link rel="shortcut icon" href="https://bartonphillips.net/images/favicon.ico">
   <!-- Custom CSS -->

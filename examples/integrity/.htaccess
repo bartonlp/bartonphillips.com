@@ -1,0 +1,7 @@
+Options Indexes FollowSymLinks
+
+# Set the 'Content-Security-Policy' header. 
+Header set Content-Security-Policy "default-src 'none'; \
+script-src 'self' bartonphillips.net 'unsafe-inline' 'unsafe-eval'; \
+style-src 'self' bartonphillips.net https://fonts.googleapis.com 'unsafe-inline'; \
+img-src *; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com bartonphillips.net;"

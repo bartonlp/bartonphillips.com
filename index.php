@@ -21,8 +21,11 @@ $S->mainTitle<br>
 </div>
 EOF;
 
-// link the index.css 
-$h->link = "  <link rel='stylesheet' href='index.css'>";
+// link the index.css and rel=conanical
+$h->link =<<<EOF
+  <link rel="canonical" href="https://www.bartonphillips.com">
+  <link rel='stylesheet' href='index.css'>
+EOF;
 
 // get phpdate.js and set the js doGit to $GIT
 
