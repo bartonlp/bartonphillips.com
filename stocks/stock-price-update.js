@@ -10,6 +10,22 @@ var w1 = new Worker("stock-price-update-worker.js");
 // No Percent
 let noper = "<span class='noper'>%</span>";
 
+// Put select into div
+
+let msg = `
+<p>You can select which status to show:
+<select>
+  <option>ALL</option>
+  <option selected>active</option>
+  <option>watch</option>
+  <option>sold</option>
+  </select>
+</p>
+`;
+
+$("#selectstatus").html(msg);
+
+
 // Listen for a message from the Worker
 w1.addEventListener("message", function(evt) {
   let data = JSON.parse(evt.data),
@@ -146,24 +162,24 @@ ${djiPercent.toLocaleString(undefined, {
     return false;
   });
 
-  // Put select into div
-  
-  let msg = `
-<p>You can select which status to show:
-<select>
-  <option>ALL</option>
-  <option selected>active</option>
-  <option>watch</option>
-  <option>sold</option>
-</select>
-</p>
-`;
-
-  $("#selectstatus").html(msg);
-
   // Hide All rows then look at status to tell what to do.
+//****** This must change so only if select matches the last-child do
+//****** we show it.
+
+  var status = $("#selectstatus select").val();
+  console.log("status:", status);
   
   $("#stocks tbody tr").each(function() {
+    $(this).hide();
+    if($("td:last-child", this).text() == status) {
+      if(status == 'watch') {
+        $("td:nth-child(4), td:nth-child(5)", this).text("");
+      }
+      $(this).closest('tr').show();
+    }
+  });
+  
+/*  $("#stocks tbody tr").each(function() {
     $(this).hide();
     let status = $("td:last-child", this).text();
     switch(status) {
@@ -175,7 +191,8 @@ ${djiPercent.toLocaleString(undefined, {
         break;
     }
   });
-
+*/
+  
   $("body").on('change', "#selectstatus select", function(e) {
     let sel = $(this).val();
     switch(sel) {
