@@ -5,6 +5,9 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
+//vardump("myIP", $S->myIp);
+//echo "ip: $S->ip<br>";
+
 if($_GET['blp'] != '7098') {
   // myIp can be an array made from the myUri from mysitemap.json
   if(is_array($S->myIp)) {
