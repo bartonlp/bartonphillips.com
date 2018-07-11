@@ -25,7 +25,11 @@ function dogit() {
 // if this is a bot don't bother with getting a location.
 
 if($S->isBot) {
-  $locstr = '';
+  $locstr = <<<EOF
+<ul calss="user-info">
+  <li>IP Address: <i class='green'>$S->ip</i></li>
+</ul>
+EOF;
 } else {
   $ref = $_SERVER['HTTP_REFERER'];
 

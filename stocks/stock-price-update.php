@@ -191,6 +191,12 @@ select {
 .noper {
   visibility: hidden;
 }
+#loading {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin-left: 50%;
+}
 </style>
 EOF;
 
@@ -210,7 +216,7 @@ $top
 <div>The <i>Av Price</i> and <i>Av Vol</i> are computed over the last 100 days.<br>
 <i>Vol</i> in <span class="current">green</span> indicates the current volume,
 otherwise it is the closing volume from the last trading day.</div>
-<div id='stock-data'></div>
+<div id='stock-data'><img id="loading" src="https://bartonphillips.net/images/loading.gif"</img></div>
 <hr>
 $footer
 EOF;

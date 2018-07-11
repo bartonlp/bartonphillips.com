@@ -163,8 +163,6 @@ ${djiPercent.toLocaleString(undefined, {
   });
 
   // Hide All rows then look at status to tell what to do.
-//****** This must change so only if select matches the last-child do
-//****** we show it.
 
   var status = $("#selectstatus select").val();
   console.log("status:", status);
@@ -178,20 +176,6 @@ ${djiPercent.toLocaleString(undefined, {
       $(this).closest('tr').show();
     }
   });
-  
-/*  $("#stocks tbody tr").each(function() {
-    $(this).hide();
-    let status = $("td:last-child", this).text();
-    switch(status) {
-      case 'watch': // if watch remove bye price and qty
-        $("td:nth-child(4), td:nth-child(5)", this).text("");
-        break;
-      case 'active': // if active show the row
-        $(this).closest('tr').show();
-        break;
-    }
-  });
-*/
   
   $("body").on('change', "#selectstatus select", function(e) {
     let sel = $(this).val();
