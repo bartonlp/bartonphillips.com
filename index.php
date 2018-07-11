@@ -52,7 +52,7 @@ $hereMsg
    Our domain is <i>bartonphillips.com</i><br/>
 <!-- Location information if NOT a bot -->
    $locstr
-Start: <span class='green'>$date in New Bern, NC</span><br>
+Start: <span class='green'>$date in Goldsboro, NC</span><br>
 Today is: <span id="datetoday">$date</span>
 </div>
 <hr>
