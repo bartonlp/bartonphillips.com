@@ -12,7 +12,7 @@ dir=other
 #day=`date | sed -e 's/  / /g' | cut -d " " -f 3`
 bkupdate=`date +%B-%d-%y`
 filename="BLP_BACKUP.$bkupdate.sql"
-echo "Bartonphillips backup "$bkupdate
+#echo "Bartonphillips backup "$bkupdate
 mysqldump --user=barton --no-data --password=7098653 bartonphillips 2>/dev/null > $dir/bartonphillips.schema
 mysqldump --user=barton --add-drop-table --password=7098653 bartonphillips 2>/dev/null >$dir/$filename
 mysqldump --user=barton --add-drop-table --password=7098653 stocks 2>/dev/null >>$dir/$filename
@@ -20,6 +20,8 @@ mysqldump --user=barton --add-drop-table --password=7098653 stocks 2>/dev/null >
 gzip --quiet -c $dir/$filename > $dir/$filename.gz
 rm $dir/$filename
 
-echo "bkupdb.sh for bartonphillips.com Done"
+find $dir -atime +28 -type f -exec rm '{}' \;
+
+#echo "bkupdb.sh for bartonphillips.com Done"
 
 

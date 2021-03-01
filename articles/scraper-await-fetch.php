@@ -21,14 +21,13 @@ use PHPHtmlParser\Dom;
 
 if($_GET['page'] == 'one') {
   $dom = new Dom;
-  // grab the file. We need the HTML not PHP so we use the 'htttps' protocal.
+  // grab the file. We need the HTML not PHP so we use the 'https' protocal.
   // The returned information is just the html.
   
-  $file = file_get_contents("https://www.bartonphillips.com/index.php");
-  $dom->load($file);
-
+  $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
+  
   // Get everything from the <section> with the id of 'mysite'
-  $mysite = $dom->find("#mysites");
+  $mysite = $x->find("#mysites");
   // There is a 'smallscreen' section that I want to remove.
   $small = $mysite->find("#smallscreen");
   $small->delete();
@@ -44,11 +43,10 @@ if($_GET['page'] == 'one') {
 if($_POST['page'] == 'two') {
   $dom = new Dom;
   // Same as above.
-  $file = file_get_contents("https://www.bartonphillips.com/index.php");    
-  $dom->load($file);
+  $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
   // This time we get two <h2> item from each section.
-  $interesting = $dom->find("#interesting h2")->text;
-  $internet = $dom->find("#internet h2")->text;
+  $interesting = $x->find("#interesting h2")->text;
+  $internet = $x->find("#internet h2")->text;
   $ret = ['interesting'=>$interesting, 'internet'=>$internet];
   
   echo json_encode($ret);
@@ -60,8 +58,7 @@ if($_POST['page'] == 'two') {
 $S = new $_site->className($_site);
 
 // This is the source code and we change all of the < and > to '&amp;lt;', '&amp;gt;'
-
-$sourceCode = escapeltgt(file_get_contents('scraper-await-fetch.php'));
+$sourceCode = escapeltgt(file_get_contents('articles/scraper-await-fetch.php'));
 
 // $h is an object that has information to include in the output.
 
@@ -161,7 +158,7 @@ list($top, $footer) = $S->getPageTopBottom($h);
 echo <<<EOF
 $top
 <hr>
-<p>This program gets three pieces of information from my home page (https://www.bartonphillips.com).
+<p>This program gets two pieces of information from my home page (https://www.bartonphillips.com).
 The information is displayed below in two boxes. You can look at the source code by clicking on
 the button below.</p>
 

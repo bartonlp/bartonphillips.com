@@ -1,59 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    :root {
-      --color: blue;
-      --bg-color: #98FB98;
-    }
-
-    @font-face {
-      font-family: 'FontFace';
-      src: 
-        url("https://bartonphillips.net/fonts/ibm-plex-otf/IBMPlexSans-Regular.otf");
-    }
-
-    #test {
-      font-family: 'FontFace';
-      font-size: 30px;
-      color: red;
-    }
-    
-    @supports (color: var(--color)) {
-      #test {
-        color: var(--color);
-      }
-    }
-
-    body {
-      background-color: khaki;
-    }
-
-    @supports (background-color: var(--bg-color)) {
-      body {
-        background-color: var(--bg-color);
-      }
-    }
-
-    @supports not(background-color: var(--bg-color)) {
-      body {
-        background-color: tomato;
-      }
-    }
-  </style>
 </head>
 <body>
-<p id='test'>This is a test</p>
-<p>More test</p>
-<script>
-  let ok = CSS.supports('display', 'grid');
-  let div = document.createElement("div");
-  if(ok) {
-    div.innerHTML = "Supports GRID";
-  } else {
-    div.innerHTML = "Does NOT Support GRID";
-  }
-  document.body.append(div);
-</script>
+<p class="one">This is a test
+  <span class='another'>ABC</span>
+  <span class='Two'>1234.12</span>
+</p>
 </body>
 </html>

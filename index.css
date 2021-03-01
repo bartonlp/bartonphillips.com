@@ -5,6 +5,7 @@
 :root {
   --indexBkColor: #FCF6CF;
 }
+.center { text-align: center; }
 /* info from http://ipinfo.io */
 .locstr {
   margin: 1rem 0;
@@ -19,38 +20,6 @@
   font-size: 1.2rem;
   font-weight: bold;
   padding-top: 1rem;
-}
-/* My Sites */
-.mylinks {
-  text-align: center;
-  margin: auto;
-  border-spacing: .5rem;
-}
-.mylinks th {
-  background-color: #FCF6CF;
-  @supports (background-color: var(--indexBkColor)) {
-    background-color: var(--indexBkColor);
-  }
-  padding: .2rem; 
-  border-radius: .2rem;
-  border: 1px solid black;
-}
-.mylinks th {
-  font-weight: bold;
-  font-size: 1rem;
-  background-color: #FCF6CF;
-  @supports (background-color: var(--indexBkColor)) {
-    background-color: var(--indexBkColor); /*#FCF6CF;*/
-  }
-  cursor: pointer;
-}
-.mylinks a:hover {
-  color: green;
-}
-.mylinks a {
-  text-decoration: none;
-  color: black;
-  padding: .2rem;
 }
 
 .subtitles { /* the h3's */
@@ -95,38 +64,7 @@
 #browser-info { /* section */
   border-top: 1px solid gray;
 }
-/* blog section */
-#blog { 
-  text-align: center;
-}
-#blog a {
-  display: inline-block;
-  text-decoration: none;
-}
-#blog a button {
-  width: 100%;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  border-radius: .5rem;
-  border: 1px solid black;
-  padding: .3rem;
-  background-color: #FCF6CF;
-  @supports (background-color: var(--indexBkColor)) {
-    background-color: var(--indexBkColor);
-  }
-  color: black;
-}
-#blog a button:link, #blog a button:visited {
-  border: none;
-  background-color: red;
-}
-#blog a button:hover {
-  color: green;
-}
-/* sections */
-#mysites {
-}
+
 #projects {
   font-size: 1.5rem;
 }
@@ -156,16 +94,50 @@
 #github { /* section */
   padding: .5rem;
 }
+/* Other Websites smallScreen */
 #smallScreen {
   display: none;
   text-align: center;
 }
 #smallScreen button {
-  background-color: #FCF6CF;
-  @supports (background-color: var(--indexBkColor)) {
-    background-color: var(--indexBkColor);
-  }
+  background-color: var(--indexBkColor);
 }
+/* Other Websites bigScreen */
+#bigS {
+        width: 60%;
+        text-align: center;
+        margin: auto auto;
+        padding: 10px 10px;
+}
+#bigScreen {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        padding: 10px 10px;
+}
+/* Other Websites bigScreen mylinks */
+.mylinks p {
+        grid-column: span 3;
+        background-color: var(--indexBkColor);
+        padding: .2rem; 
+        border-radius: .2rem;
+        border: 1px solid black;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: -3px 0px;
+}
+/*.mylinks p:nth-of-type(n + 3) { grid-column: span 2; }*/
+
+.mylinks a:hover {
+  color: green;
+}
+.mylinks a {
+  text-decoration: none;
+  color: black;
+  padding: .2rem;
+}
+
 /* Make the 'grid-section' into a block and remove borders from sections */
 @media (max-width: 799px) {
   #grid-section {
@@ -180,8 +152,8 @@
   }
 }  
 /* For small screens make thing inline and remove bigScreen. Mke the isc.sans.edu image small */
-@media (max-width: 560px) {
-  #bigScreen {
+@media (max-width: 800px) {
+  #bigS {
     display: none;
   }
   #smallScreen {

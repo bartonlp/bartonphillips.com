@@ -3,13 +3,18 @@
 // curl -X POST "http://www.bartonphillips.com/examples/testpost.php" -d "test=something&something=test"
 // This shows how to both use php://input and $_POST.
 
+require(getenv("SITELOADNAME"));
 $data = file_get_contents("php://input");
-var_dump("data", $data);
+vardumpNoEscape("data", $data);
+vardumpNoEscape("POST", $_POST);
+$post = json_decode($data);
 
-if($_POST['test']) {
-  $test = $_POST['test'];
-  $some = $_POST['something'];
-  echo "test: $test, some=$some\n";
+if($_POST['test'] || $post->test) {
+  // this is like x = a || b; in JavaScript. Use the ?? which says 'if a exists use it, otherwise
+  // use b' (since php 7)
+  $test = $_POST['test'] ?? $post->test;
+  $some = $_POST['something'] ?? $post->something;
+  echo "test: $test, some: $some\n";
   exit();
 }
 

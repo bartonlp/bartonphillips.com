@@ -1,6 +1,7 @@
 <?php
 // stockaddedit.php
 // This adds and edits stocks in the `stocks` table.
+// BLP 2020-10-21 -- removed pricedata. Added back try for duplicate key.
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
@@ -33,12 +34,10 @@ if($_POST) {
   if($_POST['remove']) {
     $remove = strtoupper($_POST['remove']);
 
-    if(!$S->query("delete from stocks.stocks where stock='$remove'")) {
+    if(!$S->query("delete from stocks where stock='$remove'")) {
       echo "<h1>Stock Symbol '$remove' Not Found in Database</h1>";
       exit();
     }
-    // Now remove all of the items in 'pricedata'
-    //$S->query("delete from stocks.pricedata where stock='$remove'");
   } else {
     // Add a stock to 'stocks'
     
@@ -52,48 +51,22 @@ if($_POST) {
     $bought = empty($_POST['bought']) ? 'NULL' : "'{$_POST['bought']}'";
     $qty = $qty == "" ? 0 : $qty;
     $price = $price == "" ? 0 : $price;
-    
+        
     try {
-      @$S->query("insert into stocks.stocks (stock, qty, price, name, status) ".
-                "value ('$stock', '$qty', '$price', '$name', '$status')");
-
-      // If this is an insert we should update the pricedata table with 100 items.
-
-      $alphakey = "FLT73FUPI9QZ512V";
-      $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
-
-      $h = curl_init();
-      curl_setopt($h, CURLOPT_URL, $str);
-      curl_setopt($h, CURLOPT_HEADER, 0);
-      curl_setopt($h, CURLOPT_RETURNTRANSFER, true);
-
-      $alpha = curl_exec($h);
-      $alpha = json_decode($alpha, true); // decode as an array
-
-      $ar = $alpha["Time Series (Daily)"];
-
-      foreach($ar as $k=>$v) {
-        $date = $k;
-        $price = $v["4. close"];
-        $volume = $v["5. volume"];
-        //echo "$stock: $date: $price<br>";
-        $sql = "insert into stocks.pricedata (stock, date, price, volume) ".
-               "values('$stock', '$date', '$price', '$volume') ".
-               "on duplicate key update date='$date', price='$price', volume='$volume'";
-        $S->query($sql);
-      }
+      @$S->query("insert into stocks (stock, qty, price, name, status) ".
+                 "value ('$stock', '$qty', '$price', '$name', '$status')");
     } catch(Exception $e) {
       if($e->getCode() == 1062) { // duplicate key
-        // This is an edit so we don't add to the pricedata table.
-        $S->query("update stocks.stocks set qty='$qty', ".
+        // This is an edit
+        $S->query("update stocks set qty='$qty', ".
                   "price='$price', name='$name', status='$status' ".
                   "where stock='$stock'");  
       } else {
         throw($e);
       }
     }
-  }
-  
+  } 
+    
   header("location: stockaddedit.php");
   exit();
 }
@@ -106,7 +79,7 @@ $T = new dbTables($S);
 
 if($_GET['stock']) {
   $stock = $_GET['stock'];
-  $S->query("select * from stocks.stocks where stock='$stock'");
+  $S->query("select * from stocks where stock='$stock'");
   $editrow = $S->fetchrow('assoc');
   if($editrow['qty'] == 0) $editrow['qty'] = '';
   if($editrow['price'] == 0) $editrow['price'] = '';
@@ -163,7 +136,7 @@ function callback(&$row, &$desc) {
   }
 }
 
-$sql = "select * from stocks.stocks";
+$sql = "select * from stocks";
 list($tbl) = $T->maketable($sql, ['callback'=>'callback', 'attr'=>['border'=>1, 'id'=>'stocks']]);
 
 echo <<<EOF

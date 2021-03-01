@@ -215,7 +215,7 @@ $top
 <div id="response"></div>
 <hr>
 <button id="showpromise">View the file
-<b>promise.php</b>,<b>query.ajax.php</b> and <b>uptest.php</b></button>
+<b>promise.php</b>, <b>query.ajax.php</b> and <b>uptest.php</b></button>
 <div id="promise">
 <p>promise.php</p>
 <pre class='brush: php'>

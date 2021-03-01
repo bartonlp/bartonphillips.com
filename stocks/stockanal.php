@@ -35,7 +35,7 @@ if($_POST['avmove']) {
   // Get all of the stocks in my portfolio
   // The stocks table has 'RDS-A' which is what the pricedata table has also.
   
-  $sql = "select stock, status, price, name from stocks.stocks";
+  $sql = "select stock, status, price, name from stocks";
   $S->query($sql);
   $r = $S->getResult(); // Save result
 
@@ -50,7 +50,7 @@ if($_POST['avmove']) {
 
     // pricedata has 'RDS-A' which is what is in the 'stocks' table.
     
-    $sql = "select stock, date, price, volume from stocks.pricedata where stock='$stock' ".
+    $sql = "select stock, date, price, volume from pricedata where stock='$stock' ".
            "order by date desc limit $move";
 
     $S->query($sql);
@@ -74,13 +74,13 @@ if($_POST['avmove']) {
   $moving = '';
 
   foreach($an as $k=>$v) {
-  // If $k != $kk then this is a new stock
+    // If $k != $kk then this is a new stock. $kk at start is null
 
     if($k != $kk) {
     // But if $kk is null this is the first time through so don't show the info until next time.
 
       if($kk) {
-      // watch the order of formating. Must do $price after $av
+        // watch the order of formating. Must do $price after $av
         $av = $price / $c;
         $avVol = $volume == 0 ? 0 : $volume / $c;
         

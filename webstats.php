@@ -36,7 +36,7 @@ $S->siteDomain = $S->siteName;
 
 if(isset($_POST['submit'])) {
   $siteName = $_POST['site'];
-
+  //echo "siteName: $siteName<br>";
   $S->siteDomain = $S->siteName = $siteName;
 }
 
@@ -90,7 +90,7 @@ list($S->top, $S->footer) = $S->getPageTopBottom($h);
 
 $members = $S->memberTable ? "\n<li><a href='#table7a'>Goto Table: memberTable</a></li>" : '';
 
-list($top, $footer) = $S->getPageTopBottom();
+list($top, $footer) = $S->getPageTopBottom(null);
 
 echo renderPage($S, $page);
 exit();
@@ -215,7 +215,7 @@ EOF;
 
   // There should be ONE UNIQUE ip in the rows. So count them into the date.
 
-  $tmp = '';
+  $tmp = [];
   
   while(list($ip, $date) = $S->fetchrow('num')) {
     $tmp[$date][$ip] = '';
@@ -444,12 +444,6 @@ $errMsg
     <option>BartonlpOrg</option>
     <option>Bartonphillips</option>
     <option>BartonphillipsOrg</option>
-    <option>GranbyRotary</option>
-    <option>Messiah</option>
-    <option>Puppiesnmore</option>
-    <option>Weewx</option>
-    <option>Rpi</option>
-    <option>Rpi2</option>
   </select>
 
   <button type="submit" name='submit'>Submit</button>
