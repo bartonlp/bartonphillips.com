@@ -10,8 +10,8 @@ function dogit() {
   $ret = '';
   $any = false;
   
-  foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
-           '/bartonphillipsnet', '/bartonphillips.org', '/granbyrotary.org', '/messiah'] as $site) {
+  foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
+           '/bartonphillipsnet'] as $site) {
     chdir("/var/www/$site");
     exec("git status", $out); // put results into $out
     $out = implode("\n", $out);
@@ -42,11 +42,13 @@ EOF;
   
   // Use ipinfo.io to get the country for the ip
   $cmd = "http://ipinfo.io/$S->ip";
+
   $ch = curl_init($cmd);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $loc = json_decode(curl_exec($ch));
 
   $clientname = gethostbyaddr($S->ip);
+
   $locstr = <<<EOF
 <ul class="user-info">
   $ref
@@ -65,7 +67,7 @@ EOF;
 
 // Do we have a cookie? If not offer to register
 // BLP 2018-02-10 -- if we have a cookie and it is me then set $adminStuff
-
+// The $hereId is the index into the members table. It is 
 if(!($hereId = $_COOKIE['SiteId'])) {
   $S->query("select count, date(created) from $S->masterdb.logagent ".
             "where ip='$S->ip' and agent='$S->agent' and site='$S->siteName'");
@@ -79,11 +81,11 @@ Why not <a href="register.php">register</a>
 EOF;
   }
 } else {
-  $sql = "select name from members where id=$hereId";
+  $sql = "select name, email from members where id=$hereId";
   
   if($n = $S->query($sql)) {
-    list($memberName) = $S->fetchrow('num');
-    if($memberName == "Barton Phillips") {
+    list($memberName, $memberEmail) = $S->fetchrow('num');
+    if($memberEmail == "bartonphillips@gmail.com") {
       // don't do this for a while
       //$GIT = dogit();
 
@@ -142,7 +144,7 @@ $date = date("l F j, Y H:i:s T");
 
 // use the Dom class to get the Sans '.diary h2' as text.
 // This class is great for scrubing sites.
-
+/*
 use PHPHtmlParser\Dom;
 
 try {
@@ -193,3 +195,5 @@ EOF;
 <center><h2>Error Contacting <i>https://isc.sans.edu</i></h2></center>
 EOF;
 }
+
+*/

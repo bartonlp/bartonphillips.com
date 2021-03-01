@@ -27,7 +27,7 @@ if($stock = $_POST['stock']) {
 
   $alpha = print_r($alpha, true);
 
-  $str = "https://api.iextrading.com/1.0/stock/market/batch?symbols=$stock&types=quote";
+  $str = "https://cloud.iexapis.com/stable/stock/$stock/batch?types=quote&token=pk_feb2cd9902f24ed692db213b2b413272";
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $str);
@@ -36,16 +36,17 @@ if($stock = $_POST['stock']) {
 
   // We get the stocks from the array above  
   $ret = curl_exec($ch);
-  
   $ar = json_decode($ret);
   $iex = print_r($ar, true);
-
-  $str = "https://api.iextrading.com/1.0/stock/$stock/stats";
+  
+  $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=pk_feb2cd9902f24ed692db213b2b413272";
+  //$str = "https://api.iextrading.com/1.0/stock/$stock/stats";
 
   curl_setopt($ch, CURLOPT_URL, $str);
   $ret = curl_exec($ch);
   $ar = json_decode($ret, true);
-  $alphadiv = print_r($ar, true);
+  
+  $iexdiv = print_r($ar, true);
   
   $h->title = "Raw Data";
   $h->banner = "<h1>Raw Results From alpha and iex</h1>";
@@ -79,9 +80,9 @@ $top
 <div id="alpha">
 $alpha
 </div>
-<h3>Alpha Div</h3>
+<h3>IEX Div</h3>
 <div id="alpha">
-$alphadiv
+$iexdiv
 </div>
 <h3>Iex</h3>
 <div id="iex">

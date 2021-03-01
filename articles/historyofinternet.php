@@ -51,20 +51,20 @@ $article =<<<EOF
   <section id="overview">
   <h2>Overview, An Incredible Journey</h2>
 
-<p>From the beginning of electronic communication with the telegraph in 1833 to the present it has
+<p>From the beginning of electronic communication with the telegraph in 1833 to the present, it has
 all happened in 181 years. The pace of technological advancements has been accelerating at what
-seems like an exponential rate. It is hard to believe that when I was born in 1944 TV was just a
-nascent technology, vinyl records where still 78 RPM, long distant travel was via train
-and transatlantic trip were via ship.</p>
+seems like an exponential rate. It is hard to believe that when I was born in 1944, TV was just a
+nascent technology, vinyl records were still 78 RPM, long-distance travel was via train,
+and transatlantic trips were via ship.</p>
 
-<p>The <b>record</b>, that is vinyl records, had a 100 year run, while the CD, first pressed in 1982, has
-already been mostly replaced by solid state devices and smartphones via the Internet.
-And the Internet has gone from a glimmer in a few scientists eyes to a trillion dollar business
+<p>The <b>record</b>, a vinyl one, had a 100-year run while the CD, first pressed in 1982, has
+already been replaced, mostly, by solid-state devices and smartphones via the Internet.
+And the Internet has gone from a glimmer in a few scientists' eyes to a trillion-dollar business
 in a little over 30 years.</p>
 
 <p>Communication speed has gone from the teletype at 75 <a href="#bitsbytes">bits per second</a>
-(bps) in the 1960's to gigabits per second (Gbs) speeds today. When the Internet was born in the
-late 1960's it ran at 1,200 bps and today the
+(bps) in the 1960s to gigabits per second (Gbs) speeds today. When the Internet was born in the
+late 1960s, it ran at 1,200 bps and today the
 <a href="http://en.wikipedia.org/wiki/Internet_backbone">Internet backbone</a> using fiber optic cable
 and transmission protocols like SONET (Synchronous Optical Networking) and ATM (Asynchronous
 Transfer Mode) hits over 400 Gbs. This incredible speed improvement has made possible music and
@@ -72,12 +72,12 @@ video on demand over the Internet as well as telephone and data that supports th
 business communities around the world.</p>
 
 <p>This phenomenal growth is due to the development of the transistor, integrated circuits and the
-microcomputer. Without these technologies <b>packet switching networks</b> which are at the heart of
-the Internet would not be possible.  The development of packet-switching time domain multiplexing
+microcomputer. Without these technologies <b>packet switching networks</b>, which are at the heart of
+the Internet, would not be possible.  The development of packet-switching time domain multiplexing
 required the speed of the microcomputer. The old <b>circuit switching</b> technology of the
-telephone companies just was not viable for a world wide data communication grid.</p>
+telephone companies just was not viable for a worldwide data communication grid.</p>
 
-<p>The following timeline highlights some of what I feel were the seminal breakthroughs of the last
+<p>The following timeline highlights some of what I believe were the seminal breakthroughs of the last
 century and a half.</p>
   </section>
   <section id="timeline">
@@ -85,40 +85,41 @@ century and a half.</p>
 <ul>
   <li><span class="important">1833</span> Telegraph: Carl Friedrich Gauss and Wilhelm Weber, G&#246;ttingen
     Germany.</li>
-  <li>1837 Samuel Morse, the telegraph in the USA and Mores Code.</li>
-  <li>1867 American, Sholes the first successful and modern typewriter.</li>
-  <li><span class="important">1876</span> Alexander Graham Bell patents the electric telephone.</li>
-  <li>1877 Thomas Edison patents the phonograph - with a wax cylinder as recording medium.</li>
-  <li>1887 Emile Berliner invents the gramophone - a system of recording which could be used over and
-    over again. </li>
-  <li>1888 George Eastman patents Kodak roll film camera.</li>
-  <li>1894 Guglielmo Marconi improves wireless telegraphy.</li>
-  <li><span class="important">1902</span> Guglielmo Marconi transmits radio signals from Cornwall to
-    Newfoundland -  the first radio signal across the Atlantic Ocean.</li>
+  <li>1837 Morse Code and telegraph in the USA: Samuel Morse.</li>
+  <li>1867 First successful and modern typewriter: American, Sholes.</li>
+  <li><span class="important">1876</span> Telephons: Alexander Graham Bell.</li>
+  <li>1877 Ponograph: Thomas Edison - with a wax cylinder as recording medium.</li>
+  <li>1887 Gramophone: Emile Berliner - a system of recording which could be used over and
+    over. </li>
+  <li>1888 Kodak Roll Film: George Eastman.</li>
+  <li>1894 Wireless telegaphy: Guglielmo Marconi.</li>
+  <li><span class="important">1902</span> First Transatlanic Radio: Guglielmo Marconi - from Cornwall to
+    Newfoundland.</li>
   <li><span class="important">1906</span>
-    <a href="http://en.wikipedia.org/wiki/Lee_De_Forest">Lee Deforest</a> invents the electronic
-    <a href="http://en.wikipedia.org/wiki/Vacuum_tube">amplifying tube</a> or triode -
-    this allowed all electronic signals to be amplified improving all electronic communications </li>
-  <li>1923 The television or iconoscope (cathode-ray tube) invented by Vladimir Kosma Zworykin -
+    Electronic
+    <a href="http://en.wikipedia.org/wiki/Vacuum_tube">Amplifying Tube</a> or Triode:
+    <a href="http://en.wikipedia.org/wiki/Lee_De_Forest">Lee Deforest</a> -
+    this allowed all electronic signals to be amplified improving electronic communications </li>
+  <li>1923 The Telivision or Iconoscope (cathode-ray tube): Vladimir Kosma Zworykin -
     first television camera.</li>
-  <li>1939 Scheduled television broadcasts begin.</li>
+  <li>1939 Scheduled television broadcasts.</li>
   <li><span class="important">1944</span> Barton Phillips born April 11.<br>
-    <span class="important"><a href="#tubecomputer">Computers</a>
+    <span class="important"><a href="#tubecomputer">Computers</a>:
       put into public service - government owned - the age of Information Science
-      begins.</span><br>The <a href="http://en.wikipedia.org/wiki/Colossus_computer">Colossus</a> at Bletchley Park England was used at the end
+      begins.</span><br>The <a href="http://en.wikipedia.org/wiki/Colossus_computer">Colossus</a>: Bletchley Park England was used at the end
       of World War II to break encrypted German messages.
       Ten Colossi were in use by the end of the war.</li>
   <li><span class="important">1948</span>
-    <a href="http://en.wikipedia.org/wiki/Transistor">Transistor</a> invented at Bell Labs -
+    <a href="http://en.wikipedia.org/wiki/Transistor">Transistor</a>: invented at Bell Labs -
       enabling the miniaturization of electronic devices.</li>
   <li>1948-1950 Cable TV and subscription TV services.</li>
-  <li>1950-1961 Development of T-1 transmition lines by Bell Labs.</li>
+  <li>1950-1961 Development of T-1 transmition lines: Bell Labs.</li>
   <li><span class="important">1951</span> Computers are first sold commercially.</li>
   <li>1952 CERN (&quot;Conseil Europ&#233;en pour la Recherche Nucl&#233;aire&quot; or 
     European Organization for Nuclear Research) founded in Switzerland.</li>
-  <li><span class="important">1958</span> Integrated Circuits invented enabling the further miniaturization
-    of electronic devices and  computers.</li>
-  <li><span class="important">1960</span> Packet Switching: Paul Baran, Donald Davies and Leonard Kleinrock initial work.</li>
+  <li><span class="important">1958</span> Integrated Circuits: enabling the further miniaturization
+    of electronic devices and computers.</li>
+  <li><span class="important">1960</span> Packet Switching: Paul Baran, Donald Davies and Leonard Kleinrock.</li>
   <li>1961 Host based email CTTS systems (Compatible Time-Sharing System. Big Main Fraims)</li>
   <li><span class="important">1964</span> Barton Phillips graduates from UCLA and enter
     the Air Force.</li>

@@ -27,10 +27,21 @@ checkUser($S);
 
 date_default_timezone_set("America/New_York");
 
-$prefix = "https://api.iextrading.com/1.0";
+$prefix = "https://cloud.iexapis.com/stable";
+$token = "token=pk_feb2cd9902f24ed692db213b2b413272";
 
-$sql = "select stock, price, qty from stocks.stocks where status not in('mutual','watch','sold')";
+$sql = "select stock, price, qty from stocks where status not in('watch','sold')";
 $S->query($sql);
+
+$ar = [];
+$stocks = "";
+
+while(list($stock, $price, $qty) = $S->fetchrow('num')) {
+  if($stock == "RDS-A") $stock = "RDS.A";
+  $stocks .= "$stock,";
+  $ar[$stock] = ['price'=>$price, 'qty'=>$qty];
+}
+
 
 $totalyield = 0;
 $totalcnt = 0;
@@ -38,45 +49,38 @@ $totalcnt = 0;
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$str = "$prefix/stock/market/batch?symbols=$stocks&types=quote,stats&filter=latestPrice,companyName,ttmDividendRate,dividendYield,exDividendDate&$token";
 
-$r = $S->getResult();
+curl_setopt($ch, CURLOPT_URL, $str);
+$ret = curl_exec($ch);
+$ret = json_decode($ret);
 
-// The 'stocks' table has 'RDS-A' and iex needs 'RDS.A'
-
-while(list($stock, $price, $qty) = $S->fetchrow($r, 'num')) {
-  $st = $stock; // Display as it is in the database 'RDS-A'
-  if($stock == "RDS-A") $stock = "RDS.A"; // For iex
+foreach($ret as $k=>$v) {
+  $price = $ar[$k]['price'];
+  $qty = $ar[$k]['qty'];
+  $close = number_format($v->quote->latestPrice, 2);
   
-  $str = "$prefix/stock/$stock/stats";
+  $v = $v->stats;
+  $company = $v->companyName;
 
-  curl_setopt($ch, CURLOPT_URL, $str);
-  $ret = curl_exec($ch);
-  $ret = json_decode($ret);
+  $divyield = number_format($v->dividendYield,2) * 100 . "%";
+  $divxdiv = substr($v->exDividendDate, 0, 10);
 
-  $company[$stock] = $ret->companyName;
+  $div = $v->ttmDividendRate;
+  $totalyield += $orgyield = ($div / $price) * 100;
   
-  $div = number_format($ret->dividendRate, 2);
-  $divyield = number_format($ret->dividendYield,2) . "%";
-  $divxdiv = substr($ret->exDividendDate, 0, 10);
-
-  $totalyield += $orgyield = ($ret->dividendRate / $price) * 100;
   $totalcnt++;
-
   $orgyield = number_format($orgyield, 2). "%";
   
   $total += $ern = $div * $qty;
-  $ern = number_format($ern, 2);
 
-  $sql = "select price from stocks.pricedata ".
-         "where lasttime > current_date() - interval 1 day and stock='$stock'";
+  $div = number_format($v->ttmDividendRate, 2);
   
-  $S->query($sql);
-  list($close) = $S->fetchrow('num');
-  $close = number_format($close, 2);
+  $ern = number_format($ern, 2);
 
   // $st is how it is in the database we may need to fix this in the javascript if we use Yahoo
   
-  $quotes .= "<tr><td class='stock'><span>$st</span></td><td>$price</td><td>$qty</td>".
+  $quotes .= "<tr><td class='stock'><span>$k</span><br>$company</td><td>$price</td><td>$qty</td>".
              "<td>$div</td><td>$orgyield</td><td>$close</td>".
              "<td>$divyield</td><td>$divxdiv</td><td>$ern</tr>";
 }
@@ -129,38 +133,13 @@ $h->css =<<<EOF
   </style>
 EOF;
 
-$jsoncompany = json_encode($company);
-
 $h->script =<<<EOF
   <script>
 jQuery(document).ready(function($) {
-  var companyName = JSON.parse('$jsoncompany');
-
   // Remove message. If it isn't there no problem.
 
   $("body").on('click', function(e) {
     $("#message").remove();
-  });
-
-  // Clicked on the first column 'Symbol'
-
-  $(".stock").on('contextmenu', function(e) {
-    let stk = $('span', this).text();
-
-    let pos = $(this).position(),
-        width = $(this).innerWidth(),
-        xpos = pos.left+width,
-        ypos = pos.top,
-        company = companyName[stk];
-
-    $("#message").remove();
-    $("<div id='message' style='position: absolute; "+
-      "left: "+xpos+"px; top: "+ypos+"px; "+
-      "background-color: white; border: 5px solid black;padding: 10px'>"+
-      company+"</div>").appendTo($(this));
-
-    e.stopPropagation();
-    return false;
   });
 
   $(".stock").on('click', function(e) {
@@ -184,13 +163,12 @@ $avyield = number_format($totalyield / $totalcnt, 2);
 echo <<<EOF
 $top
 <p>Left <b>click</b> on the symbol name to goto <i>www.marketwatch.com/investing/stock/</i>
-for that stock.<br>
-Right <b>click</b> on the symbol name to see the stock <i>Name</i></p>
+for that stock.</p>
 
 <table id="stocktable" border="1">
 <thead>
 <tr><th>Sybmol</th><th>Buy Price</th><th>Qty</th><th>Dividend</th><th>Buy Yield</th>
-<th>Yest. Close</th><th>Curr Yield</th><th>X Div Date</th><th>Ernings</th></tr>
+<th>LatestPrice</th><th>Curr Yield</th><th>X Div Date</th><th>Ernings</th></tr>
 </thead>
 <tbody>
 $quotes

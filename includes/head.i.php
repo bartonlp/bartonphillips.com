@@ -56,6 +56,7 @@ return <<<EOF
     content="{$arg['desc']}">
   <meta name="keywords"
     content="{$arg['keywords']}">
+
   <!-- ICONS, RSS -->
   <link rel="shortcut icon" href="https://bartonphillips.net/images/favicon.ico">
   <!-- Custom CSS -->

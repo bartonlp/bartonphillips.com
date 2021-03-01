@@ -3,13 +3,12 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->title = "Load LinuxMint 17 from ISO";
-$h->banner = "<h1 class='center'>How to Load LinuxMint via ISO from Disk</h1>";
+$h->title = "Load Linux from ISO";
+$h->banner = "<h1 class='center'>How to Load Linux via ISO from your hard drive</h1>";
 $h->css =<<<EOF
   <style>
 #update {
   border: 1px solid black;
-  background-color: pink;
   color: black;
   padding: 1em;
 }
@@ -38,31 +37,21 @@ list($top, $footer) = $S->getPageTopBottom($h);
 echo <<<EOF
 $top
 <div id="update">
-<p>
-<span class='update'>&lt;update 2015-01-13&gt;</span><br>
-I originally wrote this for Linux Mint 15 but have used the same
-instruction to upgraded to Linux Mint 16, 17 and 17.1 without any problems.
-Just change the Mint release number and everything should work. In fact this should
-continue to work for susequent versions
-unless Linux Mint changes its ISO filesystem structure significantly.<br>
-<span class='update'>&lt;/update 2015-01-13&gt;</span></p>
-</div>
 
-<p>Instead of burning a CD or using a USB flash stick you can install Linux Mint 15 (and
-most other Linux distributions) from a hard disk. All you need is a small (about 2 GB)
-extra partition somewhere.  This example is for 'Linux Mint 15 Mate 64'. The arguments
-you would use for other distribution might (and probably will be) different.</p>
+<p>Instead of burning a CD or using a USB flash stick you can install most Linux distribution from a hard disk.
+All you need is a small (about 2 GB)
+extra partition somewhere.</p>
 
 <p>This method uses GRUB2 but I believe GRUB will also work with different syntax (not
 shown here).</p>
 
 <p>You should edit the GRUB2 configruation rather than editing
-<b>/boot/grub/grub.cfg</b>. The
-configuration files are at <b>/etc/grub.d/</b> and the file you want to edit is
+<b>/boot/grub/grub.cfg</b>. The configuration files are at <b>/etc/grub.d/</b> and the file you want to edit is
 <b>40_custom</b>.</p>
 
 <p>There will probably be nothing in that file to begin with other than the first five
-lines below.  Add the following lines after the header that was there:</p>
+lines below.  Add the following lines after the header that was there.
+The items within {} should be the location and name of the iso file.</p>
 
 <pre>
 #!/bin/sh
@@ -71,9 +60,9 @@ exec tail -n +3 \$0
 # menu entries you want to add after this comment.  Be careful not to change
 # the 'exec tail' line above.
 
-menuentry "Linux Mint 15 Mate ISO" {
- loopback loop (hd1,msdos5)/barton/Downloads/linuxmint-15-mate-dvd-64bit.iso
- linux (loop)/casper/vmlinuz file=/cdrom/preseed/mint.seed boot=casper initrd=/casper/initrd.lz iso-scan/filename=/barton/Downloads/linuxmint-15-mate-dvd-64bit.iso noeject noprompt splash --
+menuentry "{name of distribution}" {
+ loopback loop (hd1,msdos5)/{location where the iso resides}/{iso file name}.iso
+ linux (loop)/casper/vmlinuz file=/cdrom/preseed/mint.seed boot=casper initrd=/casper/initrd.lz iso-scan/filename={location of the iso file and fill name of the file} noeject noprompt splash --
  initrd (loop)/casper/initrd.lz
 }
 </pre>
@@ -85,19 +74,17 @@ that start with 'loopback' and 'linux'. On my system I have a seperate partition
 <b>home</b> directory is safe and I can also put my ISO somewhere on that partition.</p>
 
 <pre>
-(hd1,msdos5)/barton/Downloads/linuxmint-15-mate-dvd-64bit.iso
+(hd1,msdos5)/barton/Downloads/{distribution name}.iso
 </pre>
 
 <p><i>(hd1,msdos5)</i> means the second hard disk in my system (I have two internal hard
 drives one with 320 GB and one with 500 GB). <i>hd1</i> is the 500 GB drive which has
 five partitions. My <b>home</b> directory is on partition five (msdos5).
-In the <b>/home</b> directory is my home <b>/home/barton/</b> and the 'Linux Mint ISO'
+In the <b>/home</b> directory is my home <b>/home/barton/</b> and the distribution iso
 is in the <b>/home/barton/Downloads</b> directory.<br>
-<span class='update'>&lt;update 2015-01-13&gt;</span><br>If your disk is GPT
-(GUID Partition Table) rather than MSDOS you will need to use <i>(hd1,gpt1)</i>
+If your disk is GPT (GUID Partition Table) rather than MSDOS you will need to use <i>(hd1,gpt1)</i>
 instead. If you run '<code>sudo parted -l</code>' you will see either
-'Partition Table: gpt' or 'Partition Table: msdos'.<br>
-<span class='update'>&lt;/update 2015-01-13&gt;</span></p>
+'Partition Table: gpt' or 'Partition Table: msdos'.</p>
 
 <p>The ISO is only about one GB so you really don't need a very big partition.
 Unfortunatly you do need a partition other than the one where you will install the new
@@ -106,7 +93,7 @@ OS. If you don't have a seperate partition for <b>/home</b> you can use 'parted'
 little partition, 2 GB is plenty.</p>
 
 <p>The next line which starts with 'linux' only needs the section<br>
-<i>iso-scan/filename=/barton/Downloads/linuxmint-15-mate-dvd-64bit.iso</i><br>
+<i>iso-scan/filename=/barton/Downloads/{distribution name}.iso</i><br>
 changed to match where your ISO is, which is the same as the line above without the
 <i>(h1,msdos5)</i> part.</p>
 
@@ -117,7 +104,7 @@ changed to match where your ISO is, which is the same as the line above without 
 as without the option the output goes to stdout. I would create a file somewhere other
 than <b>/boot/grub</b> so I could look at the output first and make sure it is OK.</p>
 
-<p>Once you think the output of OK you can move it to the location of <b>grub.cfg</b>
+<p>Once you think the output is OK you can move it to the location of <b>grub.cfg</b>
 (usually at <b>/boot/grub</b>).
 You might want to make a backup of the original file (or not, up to you).</p>
 
@@ -131,7 +118,7 @@ have them, and anything else that is on the partition where the new OS is going 
 don't want to lose. If your <b>/home</b> directory is on that partition you should
 probably back it up also.</p>
 
-<p>When you reboot select the new 'Linux Mint 15 Mate ISO' entry which brings up the
+<p>When you reboot select the new distribution ISO entry which brings up the
 'Live CD' from which you can install the new OS.</p>
 
 <p><strong>But, maybe it doesn't work.</strong><br>You can use the GRUB edit facilities and command line to
@@ -145,13 +132,7 @@ Partitions start at one not zero, so '(hd1,msdos1) means the second disk drive o
 system and the first parition ('consistency is the hobgoblin of small minds').</p>
 
 <p>If you still can't get the boot to work reboot your old OS and review everything and
-maybe do some 'google' searches. This all worked for me for the last three Linux Mint
-releases and two Ubuntu releases before that. Note that some the the arguments have
-changed on different releases. These arguments work for 'Linux Mint 15 Mate 64'
-<span class='update'>&lt;update 2015-01-13&gt;</span>
-16, 17 and now 17.1
-<span class='update'>&lt;/update 2015-01-13&gt;</span>
-  </p>
+maybe do some 'google' searches. This all worked for several distribution changes (Linx Mint, to Ubuntu Mate).</p>
 
 <p>I hope this helps. Any questions please email
 <a href= "mailto: bartonphillips@gmail.com">me</a>.</p>

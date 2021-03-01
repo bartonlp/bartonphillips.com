@@ -68,7 +68,7 @@ function start($S, $DEBUG) {
 <hr>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
+  list($top, $footer) = $S->getPageTopBottom($h);
 
   echo <<<EOF
 $top
@@ -104,7 +104,7 @@ function verify($S, $DEBUG) {
     $echo_command = $echo_response = 0;
   }
 
-  $nl2br = $S->nb2br;
+  $nl2br = $S->nl2br;
   
   $uploads_dir = "/tmp";
   $inx = 0;
@@ -127,7 +127,7 @@ function verify($S, $DEBUG) {
   $query = <<<EOF
 create table verifyemail (
   listId int(11) not null auto_increment,
-  contactName varchar(20),
+  contactName varchar(255),
   contactEmail varchar(255) not null,
   teststatus varchar(10),
   primary key(listId)
@@ -143,6 +143,7 @@ EOF;
       for($i=0; $i < count($ar); ++$i) {
         $ar[$i] = $S->escape($ar[$i]);
       }
+      
       $S->query("insert into verifyemail (contactName, contactEmail, teststatus) values('$ar[0]', '$ar[1]', 'nottested')");
     }
   } else {
@@ -156,12 +157,13 @@ EOF;
 <hr>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
+  list($top, $footer) = $S->getPageTopBottom($h);
 
   echo $top;
 
-  $bad = array();
-  $dontknow = array();
+  $OKEmail = [];
+  $bad = [];
+  $dontknow = [];
 
   $domain = "bartonphillips.com";
   $from_mail = "barton@applitec.com"; //"barton@granbyrotary.org";
@@ -178,18 +180,28 @@ EOF;
 
     if($contactEmail == "") continue;
 
-    echo "<br><br>**********************<br>\nRecord for $contactName, $contactEmail<br>\n";
+    if($DEBUG) echo "<br><br>**********************<br>\nRecord for $contactName, $contactEmail<br>\n";
   
     // From the email get the mx
     // Extract the host from the email
 
     if(preg_match("/@(.*)$/", $contactEmail, $m)) {
-      $host = $m[1];
+      $host = trim($m[1]);
     } else {
       echo "Error: $contactEmail<br>\n";
       continue;
     }
-  
+
+    $ret = '';
+    $out = null;
+    
+    exec("ping -c 1 -W 1 $host", $out, $ret);
+    if($ret === 1) {
+      array_push($bad, "$listId, $contactName, $contactEmail");
+      if($DEBUG) echo "Host Does Not Respond<br>";
+      continue;
+    }
+    
     if(!getmxrr($host, $mx_records, $mx_weight)) {
       echo "getmxrr failed: $host<br>\n";
       $mx_records = array($host);
@@ -197,7 +209,7 @@ EOF;
       continue;
     }
 
-    unset($mxs);
+    $mxs = [];
   
     // Put the records together in a array we can sort
 
@@ -207,12 +219,13 @@ EOF;
 
     asort($mxs );
     reset($mxs);
-    $to_mail = $contactEmail;
+    $to_mail = trim($contactEmail);
 
-    $ok = 0;
-
-    while(list($mx_host, $mx_weight) = each($mxs) ) {
+    foreach($mxs as $mx_host => $mx_weight) {
+      //while(list($mx_host, $mx_weight) = each($mxs) ) {
       if($DEBUG) echo "<br>Trying MX Server: $mx_host, Weight: $mx_weight<br><br>\n";
+
+      $ok = 0;
 
       $smtp_server = $mx_host; 
 
@@ -256,7 +269,8 @@ EOF;
       $ret = smtp_command($handle, "RCPT TO:<$to_mail>\r\n", $echo_response, $nl2br);
       if($DEBUG) echo "REPT TO: $ret<br>\n";
       if(!preg_match("/^250/sm", $ret)) {
-        echo "RCPT TO Error: $ret<br>\n";
+        if($DEBUG) echo "RCPT TO Error: $ret<br>\n";
+        if($DEBUG) echo "$to_mail account not found on server<br>";
         if($ret)
           continue;
       }
@@ -279,21 +293,29 @@ EOF;
     }
     switch($ok) {
       case 0:
-        echo "Contact Email could not be verified for $contactName, $contactEmail<br>\n";
+        if($DEBUG) echo "Contact Email could not be verified for $contactName, $contactEmail<br>\n";
         array_push($bad, "$listId, $contactName, $contactEmail");
         break;
       case 1:
         // OK
-        echo "Email OK<br>\n";
+        if($DEBUG) echo "Email OK<br>\n";
+        array_push($OKEmail, "$listId, $contactName, $contactEmail");
         $S->query("update verifyemail set teststatus='ok' where listId='$listId'");
         break;
       case 2:
-        echo "Server Says Ok to Anything:  $contactName, $contactEmail<br>\n";
+        if($DEBUG) echo "Server Says Ok to Anything:  $contactName, $contactEmail<br>\n";
         array_push($dontknow, "$listId, $contactName, $contactEmail");
         break;
     }         
   }
 
+  if(count($OKEmail) > 0) {
+    echo "<br>---------------------<br>List Of OK Emails<br>\n";
+    foreach($OKEmail as $line) {
+      echo "$line<br>\n";
+    }
+  }
+  
   if(count($bad) > 0) {
     echo "<br>---------------------<br>List Of Bad Emails<br>\n";
     foreach($bad as $line) {
@@ -334,7 +356,7 @@ function verifyone($S, $DEBUG) {
     $echo_command = $echo_response = 0;
   }
 
-  $contactEmail = $_POST['emailaddress'];
+  $contactEmail = trim($_POST['emailaddress']);
 
   $nl2br = $S->nl2br;
   
@@ -344,7 +366,7 @@ function verifyone($S, $DEBUG) {
 <hr>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
+  list($top, $footer) = $S->getPageTopBottom($h);
 
   echo $top;
 
@@ -361,10 +383,21 @@ EOF;
     exit();
   }
 
+  $ret = '';
+  $out = [];
+    
+  exec("ping -c 1 -W 1 $host", $out, $ret);
+  //vardump("out", $out); 
+  //echo "ret: $ret<br>";
+  if($ret == 1) {
+    echo "$contactEmail Host Does Not Respond<br>";
+    exit();
+  }
+    
   if($DEBUG) echo "host: $host<br>";
-  
+
   if(!getmxrr($host, $mx_records, $mx_weight)) {
-    echo "getmxrr failed: $host<br>\n$footer";
+    echo "getmxrr failed: |$host|<br>\n$footer";
     $mx_records = array($host);
     $mx_weight = array(0);
     exit();
@@ -372,8 +405,7 @@ EOF;
 
   if($DEBUG) vardump("mx_records", $mx_records);
   
-  //unset($mxs);
-  $mxs = '';
+  $mxs = [];
   
   // Put the records together in a array we can sort
 
@@ -387,12 +419,14 @@ EOF;
   if($DEBUG) vardump("mxs", $mxs);
 
   $to_mail = $contactEmail;
-  if($DEBUG) echo "contactEmail: $contactEmail<br>";
   
-  $ok = 0;
-
-  while(list($mx_host, $mx_weight) = each($mxs) ) {
+  if($DEBUG) echo "contactEmail: $to_mail<br>";
+  
+  foreach($mxs as $mx_host => $mx_weight) {
+    //while(list($mx_host, $mx_weight) = each($mxs) ) {
     if($DEBUG) echo "<br>Trying MX Server: $mx_host, Weight: $mx_weight<br><br>\n";
+
+    $ok = 0;
 
     $smtp_server = $mx_host; 
 
@@ -422,6 +456,7 @@ EOF;
     }
 
     $ret =  smtp_command($handle, "MAIL FROM:<$from_mail>\r\n", $echo_response, $nl2br);
+    
     if($DEBUG) echo "MAIL FROM: $ret<br>\n";
 
     if(!preg_match("/^250/sm", $ret)) {
@@ -461,21 +496,21 @@ EOF;
 
   switch($ok) {
     case 0:
-      echo "Contact Email could not be verified for $contactEmail<br>\n";
+      echo "Contact Email could not be verified for $host<br>\n";
       break;
     case 1:
       // OK
-      echo "Email address $contactEmail OK<br>\n";
+      echo "Email address $hoost OK<br>\n";
       break;
     case 2:
-      echo "Server Says Ok to Anything: $contactEmail<br>\n";
+      echo "Server Says Ok to Anything: $host<br>\n";
       break;
     case 3:
       echo "$ret<br>";
       break;
   }         
 
-  echo "<hr>$footer";
+  echo "$footer";
 }
 
 // ********************************************************************************

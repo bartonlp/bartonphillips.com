@@ -3,6 +3,14 @@
 // and stock-price-update.js
 // BLP 2018-03-15 -- Add logic (below) to figure out daylight savings
 // time.
+// BLP 2020-06-04 -- Get the day200MovingAvg and TotalVolume from iex.
+// BLP 2020-09-17 -- Remove r1 from query();
+// BLP 2020-09-28 -- Upgraded to iex paid plan. Same key.
+
+// This is for iex cloud the new way to get stock info.
+// API Token: pk_feb2cd9902f24ed692db213b2b413272 
+// Account No. 7e36c73b36687b93ac549e7f828447c2 
+// SECRET sk_6f07cb9018994f51a6d27eb7b27d5ebf
 
 'use strict';
 
@@ -20,29 +28,48 @@ Date.prototype.dst = function() {
   return this.getTimezoneOffset() < this.stdTimezoneOffset();
 }
 
+// Define the iex token key.
+var iex_token = 'pk_feb2cd9902f24ed692db213b2b413272';
+
 var orgStock;
+
+// Set timer for five minutes.
 
 setInterval(getInfo, 300000); // Five Min.
 
-getInfo(true);
+// Do this at least once. The function will be called every five
+// minutes hereafter.
+
+getInfo(true); // pass true as start.
 
 function getInfo(start=false) {
+  // Get today's date
+  
   let date = new Date();
+
+  // Get time and day
+  
   let time = date.getUTCHours(); // we only take reading from 9am to 4pm EST
   let day = date.getDay(); // we only take readings during the week not Sat. or Sun.
+
+  //console.log("day: "+day+", time: "+time);
+  
   if(date.dst()) { // BLP 2018-03-15 -- if dst add 1 hour so 14 and 21 UTC are still correct.
     ++time;
   }
-  // If con is an array that means that it is 'c' not 'connection'.
-  // Check the time and the day of week.
+
+  // Check the time and the day of week. We only want to do this from
+  // 9am to 4pm. Note time is UTC or Grenich time
+
   if(start !== true && ((time > 21 || time < 14) || (day == 6 || day == 7))) return;
 
-  //console.log("start:", start, " date:", date);
+  //console.log("start:", start, ", time:", time, " day: ", day, ", date:", date);
   
   query().then(data => {
+    // BLP 2020-09-17 -- 
     // data is an object with r1 and r2. r1 is the DDAIF data and r2 is
     // the 'stocks' and the DJI data
-    let r1 = data.r1;
+    //let r1 = data.r1;
     let r2 = data.r2;
 
     // Get Dow Joins data.
@@ -56,7 +83,7 @@ function getInfo(start=false) {
     // the below map. This is the original data.r2.stocks.
     
     orgStock = JSON.parse(JSON.stringify(r2.stocks));
-    
+
     let rows = r2.stocks.map(x => {
       if(x[0] == "RDS-A") {
         return x[0] = "RDS.A";
@@ -67,18 +94,24 @@ function getInfo(start=false) {
     // Send the data from sql stocks to iex
 
     let t = rows.join(',');
+
+    // BLP 2020-04-02 -- This uses the NEW cloud version ipxapis.com 
+    // BLP 2020-06-04 -- add filter and avgTotalVolume and
+    // day200MovingAvg.
     
-    const url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" +
-                t + "&types=quote";
+    const url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols="+t+
+                "&types=quote,stats&filter=latestPrice,latestVolume,change,changePercent,latestUpdate,"+
+                "avgTotalVolume,day200MovingAvg"+
+                "&token=" + iex_token;
 
     // In lieu of AJAX. This does a GET from url.
-    
+
     fetch(url)
         .then(data => data.text())
         .then(data => {
       let ar = {};
       let d = JSON.parse(data);
-
+      
       // orgStock is from above, it is the value from the data.stocks
       // from the query().
       
@@ -87,39 +120,34 @@ function getInfo(start=false) {
         // [3] = status, [4] = company, [5] = avVol, [6] = avPrice
         
         let t, st = stocks[0], orgPrice = stocks[1] || 0, qty = stocks[2] || 0,
-        status = stocks[3] || 0, company = stocks[4], avVol = stocks[5], avPrice = stocks[6];
+        status = stocks[3] || 0, company = stocks[4]; 
 
         // NOTE IEX wants RDS-A to be RDS.A!
 
         let stx = st == 'RDS-A' ? 'RDS.A' : st;
 
         let curPrice, curVol, curChange, curPercent, curUpdate;
-        
-        if(typeof d[stx] == 'undefined') {
-          if(stx == "DDAIF") {
-            curPrice = r1.curPrice;
-            curVol = r1.curVol;
-            curChange = r1.curChange;
-            curPercent = r1.curPercent;
-            curUpdate = r1.curUpdate;
-          } else {
-            continue;
-          }
-        } else {
-          t = d[stx].quote; // get the quote from data.
-          curPrice = t.latestPrice;
-          curVol = t.latestVolume;
-          curChange = t.change;
-          curPercent = t.changePercent;
-          curUpdate = t.latestUpdate;
-        }
+        let avPrice, avVol;
+
+        t = d[stx].quote; // get the quote from data.
+        curPrice = t.latestPrice;
+        curVol = t.latestVolume;
+        curChange = t.change;
+        curPercent = t.changePercent;
+        curUpdate = t.latestUpdate;
+
+        // BLP 2020-06-04 -- 
+        avVol = t.avgTotalVolume;
+        avPrice = d[stx].stats.day200MovingAvg;
         
         // st is the stock sym with the RDS-A
         
         ar[st] = {
-          orgPrice: orgPrice, qty: qty, status: status, company: company, avVol: avVol,
-          avPrice: avPrice, price: curPrice, vol: curVol, change: curChange,
-          chper: curPercent, last: curUpdate
+          orgPrice: orgPrice, qty: qty, status: status, company: company,
+          price: curPrice, vol: curVol, change: curChange,
+          chper: curPercent, last: curUpdate,
+          // BLP 2020-06-04 -- 
+          avPrice: avPrice, avVol: avVol
         };
       }
 
@@ -137,15 +165,12 @@ function getInfo(start=false) {
 // query()
 // This uses 'fetch() to do a GET and a POST with form like data.
 // This is an 'async' function
+// BLP 2020-09-17 -- remove the r1 fetch(). Now we ONLY return r2 which
+// has all the stocks from stocks.stocks, the dji value, change,
+// changePer and dateTime.
 
 async function query() {
   // Again this is like AJAX. Both calls return JSON data.
-
-  // First do a GET for the Daimler data.
-  
-  let r1 = await fetch("./stock-price-update.php?WSJ=true").then(data => data.json());
-
-  // Then do a POST for stocks info and DJIA
   
   let r2 = await fetch("./stock-price-update.php", {
     body: "page=web", // make this look like form data
@@ -155,5 +180,5 @@ async function query() {
     }
   }).then(data => data.json());
 
-  return {r1: r1, r2: r2};
+  return {r2: r2};
 };

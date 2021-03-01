@@ -12,9 +12,8 @@ $S = new $_site->className($_site); // $S gives access to my framework.
 if($_POST['page'] == 'form') {
   $name = $_POST['username'];
   $value = $_POST['id'];
-  //error_log("form: ". print_r($_POST, true));
-  
-  echo "AJAX Form: name=$name, value=$value";
+  $ret = ["AJAX Form: name=$name, value=$value"];
+  echo json_encode($ret); //"AJAX Form: name=$name, value=$value");
   exit();
 }
 
@@ -22,7 +21,8 @@ if($_POST['page'] == 'form') {
 
 if($_POST['page'] == 'ajax') {
   $data = $_POST['data'];
-  echo "AJAX hello World: $data";
+  $ret = ["AJAX hello World: $data"];
+  echo json_encode($ret); //"AJAX hello World: $data");
   exit();
 }
 
@@ -46,7 +46,7 @@ function getIt(type, url, data=undefined) {
 
   if(type.toLowerCase() == 'post') {
     obj = {
-      body: $.param(data),
+      body: data,
       method: 'POST',
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -55,13 +55,30 @@ function getIt(type, url, data=undefined) {
   }
 
   return fetch(url, obj)
-  .then(data => data.text());
+  .then(data => {
+    let ret = data.json();
+    console.log("json", ret);
+    return ret;
+  });
 }
 
 $(function() {
-  // use the function above to do an ajax call. This uses the code at the start.
+  // Using JSON.stringify() and sending it as 'application/json'
+  // The return is text (data.text())
 
-  getIt('post', 'fetch-promise.php', {page: 'ajax', data: 'this is a test'})
+  fetch("../examples/testpost.php", {
+    body: JSON.stringify({test: "yes", something: "a test"}), // This could be a variable
+    method: "POST",
+    headers: {
+      'content-type': 'application/json' // use json to send this
+    }
+  })
+  .then(data => data.text()) // testpost.php returns plain text.
+  .then(data => console.log("testpost", data));
+
+  // use the function above to do an ajax type calls. This uses the code at the start.
+
+  getIt('post', 'fetch-promise.php', "page=ajax&data=this is a test") 
   .then(data => {
     console.log("Success!", data);
     $("#response").html(data);
@@ -73,7 +90,6 @@ $(function() {
   
   getIt('get', '/examples/uptest.php?test=yes')
   .then(data => {
-    data = JSON.parse(data);
     console.log("DATA", data);
     $("#startup").html("fetch: " + data.TEST);
   })
@@ -90,9 +106,8 @@ $(function() {
   $("#send").on("click", function() {
     // Setup the select for the curtime().
 
-    getIt('post', '/examples/query.ajax.php', {sql: 'select curtime() as data'})
+    getIt('post', '/examples/query.ajax.php', "sql=select curtime() as data")
     .then(data => {
-      data = JSON.parse(data);
       console.log("query.ajax:", data);
       $("#response").html(data[0].data);
     })
@@ -116,15 +131,16 @@ $(function() {
 // Send form data via AJAX
 
 function urlencodeFormData(fd) {
-  let s = {};
+  let s = '';
 
   function encode(s) {
-    return encodeURIComponent(s).replace(/%20/g,'+');
+    let ret = encodeURIComponent(s).replace(/%20/g,'+');
+    return ret;
   }
 
   for(let pair of fd) {
-    if(typeof pair[1]=='string'){
-      s[encode(pair[0])] = encode(pair[1]);
+    if(typeof pair[1] == 'string') {
+      s += encode(pair[0]) +"="+encode(pair[1])+"&";
     }
   }
   return s;
@@ -134,7 +150,9 @@ function sendForm() {
   let formData = new FormData(this);
   formData.append("page", "form");
 
-  getIt("post", this.action, urlencodeFormData(formData))
+  let val = urlencodeFormData(formData);
+ 
+  getIt("post", this.action, val)
   .then(data => {
     console.log("DATA:", data);
     $("#response").html(data);
@@ -160,12 +178,44 @@ $h->css =<<<EOF
   </style>
 EOF;
 
+$h->banner = "<h1>Fetch/Promise</h1>";
+
 // Get the $top and $footer using my framework
 
 list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
+<p>'fetch()' is the new way to do an 'AJAX' call. 'fetch' returns a 'Promise' which many think is a much
+better way to handle async events than with 'callbacks'. 'fetch' can do both 'GET' and 'POST' functions as well as
+any other HTTP command. To use 'fetch' you would do a call with two argments: the URL and an optional option
+argument. 'fetch' returns a 'Promise' which resolves to a 'response' object.</p>
+<pre>
+fetch(url, opt)
+.then(resp => {
+  // The 'response' object contains a 'body' object which can be parsed as 'json' or 'text'
+  return resp.json();
+})
+.then(data => {
+  // The result of the 'json' or 'text' method is the data.
+  console.log(data);
+});
+</pre>
+<p>To do a 'POST' you would fill in the 'opt' argments:</p>
+<pre>
+const opt = {
+  body: "arg1=one&arg2=two", // This can also be passed as json date
+  method: "POST",
+  headers: {
+    'content-type': 'application/x-www-form-urlencoded'
+    // 'content-type': 'applicatin/json' // if you pass json data
+    // Note that your application on the server can return any kind of data it wants (text or json
+    // or xml etc).
+  }
+};
+</pre>
+<hr>
+<h3>Example</h3>
 <form id="myform" name="myform" action="fetch-promise.php">
   <input type="text" name="username" value="johndoe">
   <input type="number" name="id" value="123456">
@@ -176,7 +226,7 @@ $top
 <div id="response"></div>
 <hr>
 <button id="showpromise">View the file
-<b>fetch-promise.php</b>,<b>query.ajax.php</b> and <b>uptest.php</b></button>
+<b>fetch-promise.php</b>, <b>query.ajax.php</b> and <b>uptest.php</b></button>
 <div id="promise">
 <p>fetch-promise.php</p>
 <pre class='brush: php'>
