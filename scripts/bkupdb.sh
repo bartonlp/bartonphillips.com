@@ -11,16 +11,19 @@ dir=other
 # use sed to remove the extra space if it is there.
 #day=`date | sed -e 's/  / /g' | cut -d " " -f 3`
 bkupdate=`date +%B-%d-%y`
-filename="BLP_BACKUP.$bkupdate.sql"
+filename="BARTONPHILLIPS_BACKUP.$bkupdate.sql"
 #echo "Bartonphillips backup "$bkupdate
-mysqldump --user=barton --no-data --password=7098653 bartonphillips 2>/dev/null > $dir/bartonphillips.schema
-mysqldump --user=barton --add-drop-table --password=7098653 bartonphillips 2>/dev/null >$dir/$filename
-mysqldump --user=barton --add-drop-table --password=7098653 stocks 2>/dev/null >>$dir/$filename
-
+mysqldump --defaults-file=~/ps --user=barton --no-data bartonphillips 2>/dev/null > $dir/bartonphillips.schema
+mysqldump --defaults-file=~/ps --user=barton --add-drop-table bartonphillips 2>/dev/null >$dir/$filename
 gzip --quiet -c $dir/$filename > $dir/$filename.gz
 rm $dir/$filename
 
-find $dir -atime +28 -type f -exec rm '{}' \;
+mysqldump --defaults-file=~/ps --user=barton --no-data bartonphillips stocks 2>/dev/null > $dir/stocks.schema
+mysqldump --defaults-file=~/ps --user=barton --add-drop-table bartonphillips stocks 2>/dev/null >>$dir/STOCKS_BACKUP.sql;
+gzip --quiet -c $dir/STOCKS_BACKUP.sql > $dir/STOCKS_BACKUP.sql.gz
+rm $dir/STOCKS_BACKUP.sql
+
+find $dir -atime +30 -type f -exec rm '{}' \;
 
 #echo "bkupdb.sh for bartonphillips.com Done"
 

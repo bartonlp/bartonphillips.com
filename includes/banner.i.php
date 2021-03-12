@@ -4,8 +4,8 @@ return <<<EOF
   <a href="http://www.bartonphillips.com">
     <img id='logo' src="https://bartonphillips.net/images/blp-image.png"></a>
   <!-- the 'a' tag must be at the end of the image src otherwise we get an '-'-->
-  <a href="http://linuxcounter.net/">
-    <img id='linuxcounter' src="tracker.php?page=normal&id=$this->LAST_ID">
+  <a>
+    <img id='dummy' src="tracker.php?page=normal&id=$this->LAST_ID">
   </a>
 $mainTitle
 <noscript>

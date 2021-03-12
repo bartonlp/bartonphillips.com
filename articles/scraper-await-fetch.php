@@ -12,6 +12,7 @@
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
+ErrorClass::setNoEmailErrs(true);
 use PHPHtmlParser\Dom;
 
 // We have two demo server function that return pieces of my webpage.
@@ -25,29 +26,28 @@ if($_GET['page'] == 'one') {
   // The returned information is just the html.
   
   $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
-  
-  // Get everything from the <section> with the id of 'mysite'
-  $mysite = $x->find("#mysites");
+
+  // Get everything from the <section> with the id of 'othersites'
+  $mysite = $x->find("#othersites");
   // There is a 'smallscreen' section that I want to remove.
   $small = $mysite->find("#smallscreen");
   $small->delete();
   unset($small); // remove the variable also.
-  
-  $ret = ['mysite'=>$mysite->innerHtml];
+
+  $ret = ['mysite'=>$mysite->innerHTML];
   echo json_encode($ret);
   exit();
 };
 
-// If $_POST['page'] equals 'two'. This a a POST call from 'query()'
+// If $_POST['page'] equals 'two'. This a POST call from 'query()'
 
 if($_POST['page'] == 'two') {
   $dom = new Dom;
   // Same as above.
   $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
   // This time we get two <h2> item from each section.
-  $interesting = $x->find("#interesting h2")->text;
-  $internet = $x->find("#internet h2")->text;
-  $ret = ['interesting'=>$interesting, 'internet'=>$internet];
+  $interesting = $x->find("#interesting ul")->innerHTML; //text;
+  $ret = ['interesting'=>$interesting];
   
   echo json_encode($ret);
   exit();
@@ -58,7 +58,7 @@ if($_POST['page'] == 'two') {
 $S = new $_site->className($_site);
 
 // This is the source code and we change all of the < and > to '&amp;lt;', '&amp;gt;'
-$sourceCode = escapeltgt(file_get_contents('articles/scraper-await-fetch.php'));
+$sourceCode = escapeltgt(file_get_contents('scraper-await-fetch.php'));
 
 // $h is an object that has information to include in the output.
 
@@ -97,11 +97,11 @@ jQuery(document).ready(function($) {
   // Note, that 'syntaxhighlighter' changes the <pre class='brush: php'> into <div>s.
   // The div class is 'syntaxhightlighter'.
 
-  $('.syntaxhighlighter').hide(); // Hide the source code.
+  $('#source').hide(); // Hide the source code.
 
   $('#showsource').on("click", function(e) {
      $('#showsource').remove();
-     $('.syntaxhighlighter').show();
+     $('#source').show();
   });
 
   // While loading the async stuff put up a message
@@ -121,7 +121,7 @@ jQuery(document).ready(function($) {
 \${d.r1.mysite}</div>
 r2:
 <div id="r2">
-\${d.r2.interesting}<br>\${d.r2.internet}</div>`);
+\${d.r2.interesting}</div>`);
   })
   .catch(err => console.log(err)); // catch any errors
 
@@ -163,7 +163,9 @@ The information is displayed below in two boxes. You can look at the source code
 the button below.</p>
 
 <button id="showsource">Show Source Code</button>
+<div id="source">
 <pre class='brush: php'>$sourceCode</pre>
+</div>
 <div id='info'></div>
 <hr>
 $footer

@@ -22,8 +22,5 @@
   {"item": "articles/promise.php", "frequency": "monthly", "priority": ".6"},
   {"item": "articles/fetch-promise.php", "frequency": "monthly", "priority": ".6"},
   {"item": "articles/async-await-2.php", "frequency": "monthly", "priority": ".6"},
-  {"item": "articles/scraper-await-fetch.php", "frequency": "monthly", "priority": ".6"},
-  {"item": "https://www.bartonphillips.com/weewx/index.php", "frequency": "always", "priority": "1", "lastmod": "no"},
-  {"item": "http://bartonplp.blogspot.com", "frequency": "daily", "priority": "1", "lastmod": "no"}
+  {"item": "articles/scraper-await-fetch.php", "frequency": "monthly", "priority": ".6"}
 ]
-

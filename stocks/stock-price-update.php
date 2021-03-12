@@ -64,10 +64,19 @@ if($_POST['page'] == 'web') {
   $dom = new Dom;
 
   $dom->loadFromUrl('https://www.marketwatch.com/investing/index/djia');
+
   $quoteDate = $dom->find(".timestamp__time bg-quote")->text();
+
+  /*
   $dji = $dom->find(".intraday__data .value")->text();
   $change = $dom->find(".intraday__data .change--point--q")->text();
   $changePercent = $dom->find(".intraday__data .change--percent--q")->text();
+  */
+
+  $group = $dom->find(".markets__group");
+  $dji = $group->find(".price bg-quote")->text;
+  $change = $group->find(".change bg-quote")->text;
+  $changePercent = $group->find(".percent bg-quote")->text;
 
   //error_log("dji: $dji, change: $change, per: $changePercent, time: $quoteDate");
   

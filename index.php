@@ -75,8 +75,6 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="http://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
 <a target="_blank" href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
 <a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
-<a target="_blank" href="https://www.bartonphillips.org/myhomepage"><button>bartonphillips.org</button></a>
-<a target="_blank" href="https://www.bartonlp.com"><button>bartonlp.com</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 </div>
 
@@ -86,8 +84,6 @@ Today is: <span id="datetoday">$date</span>
 <p><a target="_blank" href="http://www.bnai-sholem.com">Temple B'nai Sholem</a></p>
 <p><a target="_blank" href="https://newbernrotary.org"<button>New Bern Breakfast Rotary</button></a></p>
 <p><a target="_blank" href="https://www.allnaturalcleaningcompany.com">All Natural Cleaning</a></p>
-<p><a target="_blank" href="https://www.bartonphillips.org/myhomepage">bartonphillips.org</a></p>
-<p><a target="_blank" href="https://www.bartonlp.com">bartonlp.com</a></p>
 <p><a target="_blank" href="https://www.bartonlp.org">bartonlp.org</a></p>
 </div>
 </div>
@@ -107,8 +103,7 @@ Today is: <span id="datetoday">$date</span>
 <section id="interesting">
 <h2 class="center">Interesting Sites</h2>
 <ul>
-<li><a target="_blank" href=https://www.wunderground.com/weather/us/nc/newbern/28560">
-Weather Underground</a></li>
+<li><a target="_blank" href=https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a target="_blank" href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a target="_blank" href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
 <li><a target="_blank" href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
@@ -137,13 +132,13 @@ $adminStuff
 <h3 class='subtitles'>Tutorials</h3>
 <p class='subtitles'>Demo plus Source.</p>
 <ul>
-<li><a target="_blank" href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>
+<!--<li><a target="_blank" href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>-->
 <li><a target="_blank" href="articles/javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a target="_blank" href="articles/promise.php">Use AJAX and Promise</a></li>
 <li><a target="_blank" href="articles/fetch-promise.php">Use 'fetch' and Promise</a></li>
 <li><a target="_blank" href="articles/async-await-2.php">Use 'async/await'</a></li>
 <li><a target="_blank" href="articles/scraper-await-fetch.php">How To Scrape a Website</a></li>
-<li><a target="_blank" href="https://www.bartonlp.com/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
+<li><a target="_blank" href="bartonlp/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="articles/linuxmint-from-iso.php">How to Install Linux via ISO from your hard drive</a></li>
 <li><a target="_blank" href="articles/dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
 <li><a target="_blank" href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a><br>
@@ -152,14 +147,15 @@ $adminStuff
 
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
-<li><a target="_blank" href="https://www.bartonlp.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
-<li><a target="_blank" href="https://www.bartonlp.com/base64.php">Decode Base 64</a></li>
+<!-- Get Markdown from our DEFAULT server -->
+<li><a target="_blank" href="http://157.245.129.4/bartonlp/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a target="_blank" href="bartonlp/base64.php">Decode Base 64</a></li>
 <li><a target="_blank" href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a target="_blank" href="articles/urlcountrycodes.php">Find the country given a url country code</a><br>
-<li><a target="_blank" href="https://www.bartonlp.com/getcountryfromip.php">Get Country from IP Address</a></li>
+<li><a target="_blank" href="bartonlp/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a target="_blank" href="articles/verifyemailaddress.php">Verify Email Address</a></li>
-<li><a target="_blank" href="https://www.bartonlp.com/getIP.php">Check Ip Address</a></li>
+<li><a target="_blank" href="bartonlp/getIP.php">Check Ip Address</a></li>
 </ul>
 </section>
 
