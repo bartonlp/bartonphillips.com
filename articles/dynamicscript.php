@@ -2,8 +2,10 @@
 // create a data-url for <script> tag.
 // dynamically create a <script> tag with a data url for the src= item
 $_site = require_once(getenv("SITELOADNAME"));
+ErrorClass::setDevelopment(true);
+ErrorClass::setNoEmailErrs(true);
 $S = new $_site->className($_site);
-
+        
 $data =<<<EOF
 <!DOCTYPE HTML>
 <html>
@@ -155,14 +157,6 @@ list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
 
 echo <<<EOF
 $top
-<noscript>
-<div style='color: red; border: 1px solid black; padding: 10px'>
-<h3 style='text-align: center'>No JavaScript</h3>
-<p>Sorry but this page really needs JavaScript as it is a demo about how to create dynamic
-JavaScript 'script' tags. This will not be much fun without JavaScript!</p>
-</div>
-</noscript>
-
 <article>
 <p>There are many ways to load JavaScript, here are a few:</p>
 <ul>
@@ -188,17 +182,23 @@ a script tag via a base64 'data-uri'.</p>
 // on the element with id 'clickme' and fire an alert box.
 \$thescript =&lt;&lt;&lt;EOF
 // by using 'on' this will work even though the paragraph is not yet appended.
-$(document).on('click', '#clickme', function() {
-  alert('click');
-});
-EOF&#59;
+//$(document).on('click', '#clickme', function() {
+//  alert('click');
+//});
+//EOF&#59;
+</pre>
 
-// Turn the script we created above into base64
-\$thescript = base64_encode(\$thescript);
+<p>
+<p>Turn the script we created above into base64</p>
 
-// Here is the magic that makes a data url script.
-// We create this JavaScript and place it in the \$script variable.
-\$script =&lt;&lt;&lt;EOF
+<pre class='brush: php'>\$thescript = base64_encode(\$thescript);</pre>
+
+<p>Here is the magic that makes a data url script.<br>
+We create this JavaScript and place it in the \$script variable.<br>
+</p>
+<pre class='brush: js'>
+\$script = &lt;&lt;&lt;EOF
+
 &lt;script id="plugger"&gt;
 (function(){
     var plug=document.createElement('script');
@@ -206,12 +206,15 @@ EOF&#59;
     plug.setAttribute("name", "dynamic script");
     document.getElementsByTagName("head")[0].appendChild(plug);
 })();
+
 $('#plugger').remove(); // Remove this script tag to keep it clean as everything has been done.
 &lt;/script&gt;
-EOF&#59;
+<span>EOF;</span>
 </pre>
+
 <p>Now \$script has an anonymous JavaScript function. When we output the page we just need to include
 this variable like so:</p>
+
 <pre class='brush: html'>
 echo &lt;&lt;&lt;EOF
 &lt;!DOCTYPE HTML&gt;
@@ -226,8 +229,9 @@ echo &lt;&lt;&lt;EOF
 &lt;body&gt;
 &lt;p id='clickme' style='color: red'&gt;ClickMe&lt;/p&gt;
 &lt;!-- More stuff goes here --&gt;
-EOF&#59;
+&shy;EOF;
 </pre>
+
 <p>Now if you click the red 'ClickMe' paragraph the alert fires.</p>
 <p id='clickme' style='color: red'>ClickMe</p>
 <p>You can look at the code using Firebug or Chrome tools (and I am sure there is some way to
@@ -265,7 +269,7 @@ jQuery(document).ready(function($) {
   document.head.appendChild(script);
   $('#script1').remove();
 });
-<\/script>
+<&shy;/script>
 ]]></script>
 <p>Below is the green 'ClickMe2' paragraph:</p>
 <p id='clickme2' style='color: green'>ClickMe2</p>
@@ -292,13 +296,13 @@ to base64 and then add 'data:application/x-javascript;base64,' to the start.</p>
 &lt;p&gt;Dynamically created iframe using PHP.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF&#59;
+&shy;EOF;
 // Turn it into a data uri
 \$data = "data:text/html;base64," . base64_encode(\$data);
+
 </pre>
 
 <p>Then in your HTML source just add the iframe as usual with the 'src' tag.</p>
-
 <script type="syntaxhighlighter" class="brush: xml"><![CDATA[
 <iframe id="frame" style="width: 50%;" src="\$data"></iframe>
 ]]></script>
@@ -339,5 +343,6 @@ if(window.Blob && URL) {
 
 </section>
 </article>
+<hr>
 $footer
 EOF;

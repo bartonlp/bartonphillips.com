@@ -67,7 +67,8 @@ EOF;
 
 // Do we have a cookie? If not offer to register
 // BLP 2018-02-10 -- if we have a cookie and it is me then set $adminStuff
-// The $hereId is the index into the members table. It is 
+// The $hereId is the index into the members table. 
+
 if(!($hereId = $_COOKIE['SiteId'])) {
   $S->query("select count, date(created) from $S->masterdb.logagent ".
             "where ip='$S->ip' and agent='$S->agent' and site='$S->siteName'");
@@ -96,7 +97,9 @@ EOF;
 <div class="hereMsg">Welcome $memberName</div>
 EOF;
   } else {
-    error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
+    //error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
+    header("Location: ../bartonlp/register.php");
+    exit();
   }
 }
 
