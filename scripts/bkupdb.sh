@@ -23,7 +23,7 @@ mysqldump --defaults-file=~/ps --user=barton --add-drop-table bartonphillips sto
 gzip --quiet -c $dir/STOCKS_BACKUP.sql > $dir/STOCKS_BACKUP.sql.gz
 rm $dir/STOCKS_BACKUP.sql
 
-find $dir -atime +30 -type f -exec rm '{}' \;
+find $dir -mtime +30 -type f -exec rm '{}' \;
 
 #echo "bkupdb.sh for bartonphillips.com Done"
 

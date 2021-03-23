@@ -67,25 +67,16 @@ Today is: <span id="datetoday">$date</span>
 </p>
 </section>
 
-<section id="otherSites">
-<h2 class="center">Visit one of the other web sites designed by Barton Phillips</h2>
+<section id="others">
+<h2>Visit one of the other web sites designed by Barton Phillips</h2>
 
-<!-- Small Screens -->
-<div id="smallScreen">
+<!-- Other Sites That I have made -->
+<div id="otherSites" class="mylinks">
 <a target="_blank" href="http://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
 <a target="_blank" href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
 <a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
+<a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
-</div>
-
-<!-- Large Screens -->
-<div id="bigS">
-<div id="bigScreen" class="mylinks">
-<p><a target="_blank" href="http://www.bnai-sholem.com">Temple B'nai Sholem</a></p>
-<p><a target="_blank" href="https://newbernrotary.org"<button>New Bern Breakfast Rotary</button></a></p>
-<p><a target="_blank" href="https://www.allnaturalcleaningcompany.com">All Natural Cleaning</a></p>
-<p><a target="_blank" href="https://www.bartonlp.org">bartonlp.org</a></p>
-</div>
 </div>
 </section>
 
@@ -111,7 +102,6 @@ Today is: <span id="datetoday">$date</span>
 <li><a target="_blank" href="https://developers.google.com/web/">Google/Web</a></li>
 <li><a target="_blank" href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
 <li><a target="_blank" href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
-<li><a target="_blank" href="https://www.newbern-nc.info">The Tyson Group</a></li>
 </ul>
 </section>
 <!-- If it is me add adminstuff -->
@@ -148,7 +138,7 @@ $adminStuff
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
 <!-- Get Markdown from our DEFAULT server -->
-<li><a target="_blank" href="http://157.245.129.4/bartonlp/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a target="_blank" href="https://bartonlp.org/bartonlp/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a target="_blank" href="bartonlp/base64.php">Decode Base 64</a></li>
 <li><a target="_blank" href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a target="_blank" href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>

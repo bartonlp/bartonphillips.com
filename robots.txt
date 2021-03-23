@@ -1,12 +1,12 @@
 User-agent: *
+Disallow: /Archive/
+Disallow: /webstats.php
+Disallow: /webstats-ajax.php
 Disallow: /mysitemap.json
 Disallow: /test/
 Disallow: /other/
 Disallow: /script/
 Disallow: /fonts/
 Disallow: /geo/
-Disallow: /heidi/
-Disallow: /tbs_class/
-Disallow: /sqlscripts/
 
 Sitemap: http://www.bartonphillips.com/Sitemap.xml
