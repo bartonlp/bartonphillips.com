@@ -11,7 +11,7 @@ return <<<EOF
 <address>
   Copyright &copy; $this->copyright<br>
 $this->address<br>
-<a href='mailto:bartonphillips@gmail.com'>bartonphillips@gmail.com</a>
+<a href='mailto:$this->EMAILADDRESS'>$this->EMAILADDRESS</a>
 </address>
 </div>
 {$arg['msg']}

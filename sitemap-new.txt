@@ -12,7 +12,6 @@
   {"item": "articles/mx330.php", "frequency": "monthly", "priority": ".6"},
   {"item": "articles/urlcountrycodes.php", "frequency": "monthly", "priority": ".6"},
   {"item": "articles/verifyemailaddress.php", "frequency": "monthly", "priority": ".6"},
-  {"item": "webstats.php", "frequency": "daily", "priority": ".6"},
   {"item": "aboutwebsite.php", "frequency": "monthly", "priority": ".5"},
   {"item": "articles/easter-example.php", "frequency": "monthly", "priority": ".3"},
   {"item": "articles/easterdatecalculator.php", "frequency": "monthly", "priority": ".3"},

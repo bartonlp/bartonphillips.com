@@ -94,30 +94,20 @@
 #github { /* section */
   padding: .5rem;
 }
-/* Other Websites smallScreen */
-#smallScreen {
-  display: none;
-  text-align: center;
-}
-#smallScreen button {
-  background-color: var(--indexBkColor);
-}
-/* Other Websites bigScreen */
-#bigS {
-        width: 60%;
+/* Other Websites */
+#others {
+        width: 90%;
         text-align: center;
         margin: auto auto;
         padding: 10px 10px;
+        margin-bottom: 5px;
 }
-#bigScreen {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
-        padding: 10px 10px;
+#others h2 {
+        margin-bottom: 3px;
+        text-align: center;
 }
 /* Other Websites bigScreen mylinks */
-.mylinks p {
-        grid-column: span 3;
+.mylinks button {
         background-color: var(--indexBkColor);
         padding: .2rem; 
         border-radius: .2rem;
@@ -125,9 +115,8 @@
         font-weight: bold;
         font-size: 1rem;
         cursor: pointer;
-        margin: -3px 0px;
+        margin: 2px 0px;
 }
-/*.mylinks p:nth-of-type(n + 3) { grid-column: span 2; }*/
 
 .mylinks a:hover {
   color: green;
@@ -138,28 +127,19 @@
   padding: .2rem;
 }
 
-/* Make the 'grid-section' into a block and remove borders from sections */
+/* Make the 'grid-section' into a block and remove borders from sections, make others 100%  */
 @media (max-width: 799px) {
-  #grid-section {
-    display: block;
-    margin-top: 1rem;
-  }
-  #github, #interesting, #adminstuff, #internet {
-    border: none;
-  }
-  #grid-section ul {
-    padding-left: 2rem;
-  }
+        #others {
+                width: 100%;
+        }
+        #grid-section {
+                display: block;
+                margin-top: 1rem;
+        }
+        #github, #interesting, #adminstuff, #internet {
+                border: none;
+        }
+        #grid-section ul {
+                padding-left: 2rem;
+        }
 }  
-/* For small screens make thing inline and remove bigScreen. Mke the isc.sans.edu image small */
-@media (max-width: 800px) {
-  #bigS {
-    display: none;
-  }
-  #smallScreen {
-    display: block;
-  }
-  img[src="https://isc.sans.edu/images/status.gif"] {
-    width: 300px; /* this should fit in any mobile dev */
-  }
-}
