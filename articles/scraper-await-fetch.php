@@ -10,9 +10,11 @@
 // This demo uses my SiteClass mini-framework. Full documentation can be found at
 // https://github.com/bartonlp/site-class
 
+// Instanciate the SiteClass
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
-ErrorClass::setNoEmailErrs(true);
+$S = new $_site->className($_site);
+
 use PHPHtmlParser\Dom;
 
 // We have two demo server function that return pieces of my webpage.
@@ -28,12 +30,7 @@ if($_GET['page'] == 'one') {
   $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
 
   // Get everything from the <section> with the id of 'othersites'
-  $mysite = $x->find("#othersites");
-  // There is a 'smallscreen' section that I want to remove.
-  $small = $mysite->find("#smallscreen");
-  $small->delete();
-  unset($small); // remove the variable also.
-
+  $mysite = $x->find("#others");
   $ret = ['mysite'=>$mysite->innerHTML];
   echo json_encode($ret);
   exit();
@@ -52,10 +49,6 @@ if($_POST['page'] == 'two') {
   echo json_encode($ret);
   exit();
 }
-
-// Instanciate the SiteClass
-
-$S = new $_site->className($_site);
 
 // This is the source code and we change all of the < and > to '&amp;lt;', '&amp;gt;'
 $sourceCode = escapeltgt(file_get_contents('scraper-await-fetch.php'));
@@ -76,6 +69,12 @@ $h->css = <<<EOF
 }
 #info p {
   color: red;
+}
+pre {
+  background: lightblue;
+  margin: 5px;
+  padding: 5px;
+  overflow-x: auto;
 }
 .mylinks {
   text-align: center;
@@ -151,6 +150,53 @@ EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
 
+$r2 = <<<EOF
+<section id="interesting">
+<h2 class="center">Interesting Sites</h2>
+<ul>
+<li><a href=https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
+<li><a href="http://www.raspberrypi.org/">RaspberryPi</a></li>
+<li><a href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
+<li><a href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
+<li><a href="http://www.computerscienceonline.org">Computer Science Online</a></li>
+<li><a href="https://developers.google.com/web/">Google/Web</a></li>
+<li><a href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
+<li><a href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
+</ul>
+</section>
+EOF;
+$r1 = <<<EOF
+<section id="others">
+<h2>Visit one of the other web sites designed by Barton Phillips</h2>
+
+<!-- Other Sites That I have made -->
+<div id="otherSites" class="mylinks">
+<a href="http://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
+<a href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
+<a href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
+<a href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
+<a href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
+</div>
+</section>
+EOF;
+$r2 = <<<EOF
+<section id="interesting">
+<h2 class="center">Interesting Sites</h2>
+<ul>
+<li><a href=https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
+<li><a href="http://www.raspberrypi.org/">RaspberryPi</a></li>
+<li><a href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
+<li><a href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
+<li><a href="http://www.computerscienceonline.org">Computer Science Online</a></li>
+<li><a href="https://developers.google.com/web/">Google/Web</a></li>
+<li><a href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
+<li><a href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
+</ul>
+</section>
+EOF;
+$r1 = escapeltgt($r1);
+$r2 = escapeltgt($r2);
+
 // Now render the page.
 // Note that the <pre> is turned into <div>'s by 'syntaxhightlighter' so we need to use the new
 // class name as mentioned above.
@@ -158,8 +204,16 @@ list($top, $footer) = $S->getPageTopBottom($h);
 echo <<<EOF
 $top
 <hr>
-<p>This program gets two pieces of information from my home page (https://www.bartonphillips.com).
-The information is displayed below in two boxes. You can look at the source code by clicking on
+<p>This program gets two pieces of information from my home page (https://www.bartonphillips.com).</p>
+<p>The 'r1' looks like this:</p>
+<pre>
+$r1
+</pre>
+<p>The 'r2' looks like this:</p>
+<pre>
+$r2
+</pre>
+<p>The information is displayed below in boxes 'r1' and 'r2'. You can look at the source code by clicking on
 the button below.</p>
 
 <button id="showsource">Show Source Code</button>
