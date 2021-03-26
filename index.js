@@ -1,5 +1,6 @@
 // index.js
 // This is the JavaScript for index.php
+// BLP 2021-03-26 --
 
 'use strict';
 
@@ -23,7 +24,9 @@ jQuery(document).ready(function($) {
   }, 1000);
 
   // We set this in PHP above and now if it is true we will notify me.
-
+  // BLP 2021-03-26 -- we have set doGit to "" in the bottom script in
+  // index.php so we will NOT do this.
+  
   if(doGit !== "") {
     function notifyMe(msg) {
       // Let's check if the browser supports notifications

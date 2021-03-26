@@ -1,5 +1,8 @@
 <?php
 // Main page for bartonphillips.com
+// BLP 2021-03-26 -- set doGit in the bottom script to blank so we don't do the notify. We don't
+// want to force $GIT to blank because it is used in adminstuff.php to show that something has
+// changed.
 // BLP 2021-03-24 -- remove 'target="_blank"' from all links
 // BLP 2018-03-06 -- Break this up into index.js, index.i.php and index.css
 // BLP 2018-02-10 -- use cookie to determin if we show adminStuff
@@ -30,7 +33,8 @@ EOF;
 
 $b->script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
-  <script>var doGit = '$GIT';</script>
+  <!--<script>var doGit = '$GIT';</script>-->
+  <script>var doGit = ''; // don't do this</script>
   <script src='index.js'></script>
 EOF;
 
