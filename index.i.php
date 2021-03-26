@@ -11,18 +11,22 @@ $blp = $_GET['blp']; // Get the secret value if supplied.
   
 function dogit() {
   $ret = '';
-  $any = false;
-
-  foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
+  $any1 = '';
+  $any2 = '';
+  
+  foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
            '/bartonphillipsnet', '/allnaturalcleaningcompany'] as $site) {
     chdir("/var/www/$site");
     exec("git status", $out); // put results into $out
     $out = implode("\n", $out);
     if(!preg_match('/working directory clean/s', $out)) {
-      $any = true;
+      $any1 = ' *';
+    }
+    if(!preg_match("~'origin/master' by (\d+) commit~s", $out, $m)) {
+      $any2 = ' !';
     }
   }
-  return $any;
+  return [$any1, $any2];
 }
 
 // if this is a bot don't bother with getting a location.
@@ -90,8 +94,7 @@ EOF;
   if($n = $S->query($sql)) {
     list($memberName, $memberEmail) = $S->fetchrow('num');
     if($memberEmail == "bartonphillips@gmail.com") {
-      $GIT = dogit() ? ' *' : '';
-      
+      $GIT = dogit(); // This is an array of two bools
       // BLP 2018-02-10 -- If it is me do the 'adminStuff'
       $adminStuff = require("/var/www/bartonlp/adminsites.php");
     }
