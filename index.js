@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
 
   // We set this in PHP above and now if it is true we will notify me.
 
-  if(doGit == true) {
+  if(doGit !== "") {
     function notifyMe(msg) {
       // Let's check if the browser supports notifications
       if (!("Notification" in window)) {
@@ -53,7 +53,7 @@ jQuery(document).ready(function($) {
 
       notification.onclick = function(event) {
         event.preventDefault(); // prevent the browser from focusing the Notification's tab
-        window.open('https://www.bartonphillips.com/gitstatus.php', '_blank');
+        window.open('https://www.bartonphillips.com/bartonlp/gitstatus.php', '_blank');
         notification.close();
       }
     }

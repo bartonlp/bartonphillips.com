@@ -182,10 +182,10 @@ a script tag via a base64 'data-uri'.</p>
 // on the element with id 'clickme' and fire an alert box.
 \$thescript =&lt;&lt;&lt;EOF
 // by using 'on' this will work even though the paragraph is not yet appended.
-//$(document).on('click', '#clickme', function() {
-//  alert('click');
-//});
-//EOF&#59;
+$(document).on('click', '#clickme', function() {
+  alert('click');
+});
+&shy;EOF;
 </pre>
 
 <p>

@@ -17,11 +17,18 @@ $h->css =<<<EOF
 .per {
   color: red;
 }
+#info {
+  text-align: center;
+  width: 420px;
+  padding: 5px;
+  border: 5px solid black;
+  margin: auto;
+}
 </style>
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
-$sql = "select stock, price, qty from stocks.stocks where status='active'";
+$sql = "select stock, price, qty from stocks where status='active'";
 $S->query($sql);
 
 $stocks = [];
@@ -59,8 +66,10 @@ if($percent[0] == '-') {
                          
 echo <<<EOF
 $top
+<div id="info">
 Current value: $$curval<br>
 200 Day Moving Average: $$av<br>
-Percent: $percent<br>
+Percent curent to moving average: $percent%<br>
+</div>
 $footer
 EOF;

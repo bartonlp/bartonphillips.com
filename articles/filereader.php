@@ -95,7 +95,8 @@ $top
 <style>
   #byte_content {
     margin: 5px 0;
-    max-height: 100px;
+    max-height: 300px;
+    border: 1px solid black;
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -110,7 +111,7 @@ $top
   <button>entire file</button>
 </span>
 <div id="byte_range"></div>
-<div id="byte_content"></div>
+<div><pre id="byte_content"></pre></div>
 
 <script>
   function readBlob(opt_startByte, opt_stopByte) {

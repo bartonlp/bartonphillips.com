@@ -1,17 +1,21 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
+// BLP 2021-03-26 -- force $GIT to '' so we don't do the notify in index.js
+// BLP 2021-03-24 -- move $_GET['blp'] to top so it is available for all requires of adminsites.php  
 // BLP 2018-04-25 -- change blp code to 8653 after a bot had old code
 // BLP 2018-03-06 -- break up index.php into index.i.php, index.js and index.css
 
 // Check if any of my sites have items that need to be added to the git repository
 
+$blp = $_GET['blp']; // Get the secret value if supplied.
+  
 function dogit() {
   $ret = '';
   $any = false;
-  
+
   foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
-           '/bartonphillipsnet'] as $site) {
+           '/bartonphillipsnet', '/allnaturalcleaningcompany'] as $site) {
     chdir("/var/www/$site");
     exec("git status", $out); // put results into $out
     $out = implode("\n", $out);
@@ -69,7 +73,7 @@ EOF;
 // BLP 2018-02-10 -- if we have a cookie and it is me then set $adminStuff
 // The $hereId is the index into the members table. 
 
-if(!($hereId = $_COOKIE['SiteId'])) {
+if(!($hereId = $_COOKIE['SiteId'])) { // if no cookie
   $S->query("select count, date(created) from $S->masterdb.logagent ".
             "where ip='$S->ip' and agent='$S->agent' and site='$S->siteName'");
 
@@ -81,15 +85,16 @@ Why not <a href="register.php">register</a>
 </div>
 EOF;
   }
-} else {
+} else { // we found a cookie and it is $hereId
   $sql = "select name, email from members where id=$hereId";
   
   if($n = $S->query($sql)) {
     list($memberName, $memberEmail) = $S->fetchrow('num');
     if($memberEmail == "bartonphillips@gmail.com") {
       // don't do this for a while
-      //$GIT = dogit();
-
+      //$GIT = dogit() ? ' *' : '';
+      $GIT = '';
+      
       // BLP 2018-02-10 -- If it is me do the 'adminStuff'
       $adminStuff = require("/var/www/bartonlp/adminsites.php");
     }
@@ -103,23 +108,16 @@ EOF;
   }
 }
 
-$GIT = $GIT ? 1 : 0;
-
 // BLP 2018-02-10 -- The above should have found $adminStuff if we have a cookie
-// Do Admin Stuff if it is me
+// BLP 2021-03-24 -- $blp is set at the very top so it is available here and above for the require of adminsites.php
 
-if($_GET['blp'] == "8653") { // BLP 2018-04-25 -- new code
-  if(!$adminStuff) {
-    $blp = $_GET['blp'];
-    
-    //error_log("bartonphillips.com/index.php: No 'adminStuff'");
-    
-    if($blp) {
-      $blplogin = $blp;
-      error_log("bartonphillips.com/index.i.php. Using blp: $S->ip, $S->agent");
-    }
-    $adminStuff = require("/var/www/bartonlp/adminsites.php");
-  }
+if($blp == "8653" && !$adminStuff) { // BLP 2018-04-25 -- new code
+  //error_log("bartonphillips.com/index.php: No 'adminStuff'");
+  // if we didn't load adminsites above then who is this? I guess I will still let them see the
+  // adminsite. I will review logs and decide.
+  
+  error_log("bartonphillips.com/index.i.php. Using blp: $S->ip, $S->agent");
+  $adminStuff = require("/var/www/bartonlp/adminsites.php");
 }
 
 $ip = $S->ip;
