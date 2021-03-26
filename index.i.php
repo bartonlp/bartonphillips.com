@@ -1,7 +1,6 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
-// BLP 2021-03-26 -- force $GIT to '' so we don't do the notify in index.js
 // BLP 2021-03-24 -- move $_GET['blp'] to top so it is available for all requires of adminsites.php  
 // BLP 2018-04-25 -- change blp code to 8653 after a bot had old code
 // BLP 2018-03-06 -- break up index.php into index.i.php, index.js and index.css
@@ -91,9 +90,7 @@ EOF;
   if($n = $S->query($sql)) {
     list($memberName, $memberEmail) = $S->fetchrow('num');
     if($memberEmail == "bartonphillips@gmail.com") {
-      // don't do this for a while
-      //$GIT = dogit() ? ' *' : '';
-      $GIT = '';
+      $GIT = dogit() ? ' *' : '';
       
       // BLP 2018-02-10 -- If it is me do the 'adminStuff'
       $adminStuff = require("/var/www/bartonlp/adminsites.php");
