@@ -19,10 +19,11 @@ function dogit() {
     chdir("/var/www/$site");
     exec("git status", $out); // put results into $out
     $out = implode("\n", $out);
-    if(!preg_match('/working directory clean/s', $out)) {
+    if(preg_match('/nothing to commit, working tree clean/s', $out) === 0) {
       $any1 = ' *';
-    }
-    if(!preg_match("~'origin/master' by (\d+) commit~s", $out, $m)) {
+    } else error_log("need to commit");
+    
+    if(preg_match("~'origin/master' by (\d+) commit~s", $out, $m) === 1) {
       $any2 = ' !';
     }
   }
