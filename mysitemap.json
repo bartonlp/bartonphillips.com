@@ -12,7 +12,7 @@
       "host": "localhost",
       "user": "barton",
       "password": "7098653",
-      "database": "bartonphillips",
+      "database": "bartonphillips", // we have a seperate database from barton.
       "engine": "mysqli"
     },
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
