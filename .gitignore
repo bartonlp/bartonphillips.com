@@ -2,3 +2,5 @@ other/
 Sitemap.xml
 *.asv#
 test_examples/
+package.json
+package-lock.json
