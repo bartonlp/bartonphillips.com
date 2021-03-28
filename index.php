@@ -90,10 +90,10 @@ Today is: <span id="datetoday">$date</span>
 <section id="github">
 <h2 class="center">GitHub Projects</h2>
 <ul>
-<li><a href="proxy.php?https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
-<li><a href="proxy.php?https://bartonlp.github.io/site-class/">SiteClass</a></li>
-<li><a href="proxy.php?https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
-<li><a href="proxy.php?https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
+<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
+<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
+<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
+<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
 </ul>
 </section>
 
@@ -104,7 +104,7 @@ Today is: <span id="datetoday">$date</span>
 <li><a href=https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
-<li><a href="proxy.php?http://www.swam.us">Southwest Aquatic Master</a></li>
+<li><a href="proxy.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a href="http://www.computerscienceonline.org">Computer Science Online</a></li>
 <li><a href="https://developers.google.com/web/">Google/Web</a></li>
 <li><a href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
