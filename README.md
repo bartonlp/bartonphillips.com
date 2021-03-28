@@ -1,6 +1,6 @@
 # https://www.bartonphillips.com
 
-* Contact (Me)[mailto:bartonphillips@gmail.com]
+* Contact [Me](mailto:bartonphillips@gmail.com)
 * Website: https://www.bartonphillips.com  
 * This is set up to use http and https. If you use http it will redirect to https. The https is via Let's Encript.
 
