@@ -15,7 +15,7 @@ This site has projects created by Barton Phillips.
                                                           
 # ARTICLES
 
-I have created an * articles*  directory and have moved all of the * __Helpful Programs and Tips__* 
+I have created an *articles*  directory and have moved all of the *__Helpful Programs and Tips__* 
 programs into that directory. This is an attempt to clean up the directory structure.
 
 
