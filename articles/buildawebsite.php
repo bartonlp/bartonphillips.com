@@ -67,7 +67,7 @@ echo $top;
 <h2>Step One</h2>
 
 <p>Of these four steps the first is really the simplest. HTML is easy to create just look at my
-  <a href="http://www.bartonphillips.com/howtowritehtml.php">tutorial</a>. The tutorial will give
+  <a href="howtowritehtml.php">tutorial</a>. The tutorial will give
   the the basics. In addition you will need a little boilerplate at the top of the page. Here is
   some example test that should be enough to start with:</p>
 
@@ -129,21 +129,16 @@ PUT YOUR HTML FOR THE PAGE HERE
   <li><a href="http://lamphost.net">Lamphost.net</a> (in San Diego CA).
     They are very easy to work with and provide excellent support and service.
     They register via Tucows. Domain registration is $15/year and web hosting is $10/month.</li>
-  <li><a href="http://1and1.com">1and1.com</a>.
-    I host <a href="http://www.myphotochannel.com">www.myphotochannel.com</a> with
-    1and1 and have been quite satisfied with their service. Domains are via GoDaddy and 1and1 offers
-    a lot of first year deals, after the first year they are about the same as most other
-    ISP's.</li>
   <li><a href="http://www.digitalocean.com">DigitalOcean.com</a>.
     This ISP is my current favorite.
-    I host www.bartonphillips.com, www.bartonphillips.org, www.bartonphillips.net,
-    www.bartonlp.com, www.bartonlp.org, www.applitec.com, www.mountainmessiah.com,
-    www.allnaturalcleaningcompany.com and www.granbyrotary.com at DigitalOcean. I
-    have two 'Virtual Private Servers' where I have FULL adminstrator (root) access. The servers are fast, economical and
+    I host www.bartonphillips.com, www.bartonphillips.net,
+    www.bartonlp.com, www.bartonlp.org, www.applitec.com,
+    www.allnaturalcleaningcompany.com and www.newbern-nc.info at DigitalOcean.
+    I have a 'Virtual Private Servers' where I have FULL adminstrator (root) access. The servers are fast, economical and
     secure. These servers do require a good understanding of system administration however; there is
     very little hand holding. The hosting costs between $5 and $10/month.<br>
-    The above domains are registered with <a href="www.enom.com">Enom.com</a>,
-    GoDaddy, Tucows and InMotionHosting for about $15/year each.</li>
+    The above domains are registered with <a href="www.hover.com">hover.com</a>,
+    GoDaddy and Tucows for about $15/year each.</li>
 </ul>
 
 <p>There are thousands of ISP's from very very big to very small. Any of those above should be pretty

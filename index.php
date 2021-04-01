@@ -103,7 +103,6 @@ Today is: <span id="datetoday">$date</span>
 <ul>
 <li><a href=https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a href="http://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a href="http://www.bartonphillips.com/spacestation.php">Space Station Location</a></li>
 <li><a href="proxy.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a href="http://www.computerscienceonline.org">Computer Science Online</a></li>
 <li><a href="https://developers.google.com/web/">Google/Web</a></li>
@@ -138,14 +137,15 @@ $adminStuff
 <li><a href="bartonlp/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a href="articles/linuxmint-from-iso.php">How to Install Linux via ISO from your hard drive</a></li>
 <li><a href="articles/dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
-<li><a href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a><br>
-<li><a href="articles/easter-example.php">When is Easter and other holidays related to Easter?</a><br>
+<li><a href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a></li>
+<li><a href="articles/easter-example.php">When is Easter and other holidays related to Easter?</a></li>
+<li><a href="articles/cssvariables.php">Use CSS var(--variable) to do 'hover' etc.</a></li>
 </ul>
 
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
 <!-- Get Markdown from our DEFAULT server -->
-<li><a href="https://bartonlp.org/bartonlp/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a href="https://www.bartonphillips.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a href="bartonlp/base64.php">Decode Base 64</a></li>
 <li><a href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
