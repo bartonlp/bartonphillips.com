@@ -7,7 +7,7 @@ if($this->nodb !== true && $this->noTrack !== true) {
     <img id='linuxcounter' src="/tracker.php?page=normal&id=$this->LAST_ID" alt="linux counter image.">
   </a>
 EOF;
-  $image3 = '<img src="tracker.php?page=noscript&id=$this->LAST_ID">';
+  $image3 = "<img src='tracker.php?page=noscript&id=$this->LAST_ID'>";
 }
 
 return <<<EOF

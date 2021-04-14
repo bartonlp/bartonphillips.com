@@ -7,6 +7,7 @@
     "copyright": "Barton L. Phillips",
     "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com",
     "address": "New Bern, North Carolina",
+    "favicon": "https://bartonphillips.net/images/favicon.ico",
     "masterdb": "barton",
     "dbinfo": {
       "host": "localhost",
