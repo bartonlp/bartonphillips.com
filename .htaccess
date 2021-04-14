@@ -1,58 +1,16 @@
-# BLP 2018-03-12 -- change ExpireByType for text/plain to A0. Now text/html, text/css, 
-# application/x-javascript, and application/javascript are all A0 also.
+Order Allow,Deny
+Allow from All
+Options +Includes
+# include .shtml files or files with the execution bit set
+AddType text/html .shtml .php
+AddOutputFilter INCLUDES .shtml
+XBitHack on
 
 Header set Access-Control-Allow-Origin "*"
-order allow,deny
-allow from all
 
 SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
 SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
 
-#Header unset Pragma
-#FileETag None
-#Header unset ETag
-FileETag All
-
-# BEGIN EXPIRES
-<IfModule mod_expires.c>
-  ExpiresActive On
-<Files *.php>
-  ExpiresByType text/html A0
-</Files>
-  ExpiresDefault "access plus 10 days"
-  ExpiresByType text/css A0
-  ExpiresByType text/plain A0
-  ExpiresByType image/gif "access plus 1 month"
-  ExpiresByType image/png "access plus 1 month"
-  ExpiresByType image/jpeg "access plus 1 month"
-  ExpiresByType application/x-javascript A0
-  ExpiresByType application/javascript A0
-  ExpiresByType application/x-icon "access plus 1 year"
-</IfModule>
-# END EXPIRES
-
-# BEGIN NO Cookies for static items
-<FilesMatch "\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|ico|swf)$">
-	RequestHeader unset Cookie
-	Header unset Cookie
- 	Header unset Set-Cookie
-</FilesMatch>
-# END NO Cookies
-
-AddType application/x-javascript .js
-AddType text/css .css
-AddType text/xml .xml
-AddType text/cache-manifest .manifest
-AddType application/x-font-woff .woff
-AddType application/x-font-ttf .ttf
-
-AddDefaultCharset UTF-8
-
-# Do compression of the followin types
-
-AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
-
-# 11/3/10 hack attempts
 RewriteEngine on
 # Don't allow these robots
 RewriteCond %{HTTP_USER_AGENT} "baiduspider" [NC]
@@ -62,14 +20,28 @@ RewriteRule (.*) - [F,L]
 RewriteRule ^robots\.txt$ robots.php [L,NC]
 RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 
-# rewrite the address of csstest.css to tracker.php?csstest
+# rewrite the address of csstest.css to tracker.php?id=$1&csstest
 RewriteRule ^csstest-(.*)\.css$ tracker.php?id=$1&csstest [L,QSA]
 
 # Keep others fro looking at these files.
 RewriteRule ^(\.git|other|script)/.*$ - [F,L]
 RewriteRule ^(\.gitignore|mysitemap\.json|sitemap-new\.txt)$  - [F,L]
 
-# Do compression of the followin types
+FileETag All
+
+# BEGIN EXPIRES
+ExpiresActive On
+ExpiresDefault "access plus 10 day"
+ExpiresByType text/html A0
+ExpiresByType application/x-javascript A0
+ExpiresByType application/javascript A0
+ExpiresByType text/css "access plus 1 month"
+ExpiresByType text/plain "access plus 1 month"
+ExpiresByType image/gif "access plus 1 month"
+ExpiresByType image/png "access plus 1 month"
+ExpiresByType image/jpeg "access plus 1 month"
+ExpiresByType application/x-icon "access plus 1 year"
+# END EXPIRES
 
 AddOutputFilterByType DEFLATE \
   "application/atom+xml" \
@@ -84,6 +56,7 @@ AddOutputFilterByType DEFLATE \
   "application/vnd.geo+json" \
   "application/vnd.ms-fontobject" \
   "application/x-font-ttf" \
+  "application/x-font-woff" \
   "application/x-web-app-manifest+json" \
   "application/xhtml+xml" \
   "application/xml" \
@@ -97,8 +70,5 @@ AddOutputFilterByType DEFLATE \
   "text/plain" \
   "text/vtt" \
   "text/x-component" \
-  "text/xml" \
-  "image/png" \
-  "image/jpg" \
-  "image/gif" 
-
+  "text/xml"
+ 
