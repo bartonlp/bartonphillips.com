@@ -21,7 +21,7 @@ RewriteRule ^robots\.txt$ robots.php [L,NC]
 RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 
 # rewrite the address of csstest.css to tracker.php?id=$1&csstest
-RewriteRule ^csstest-(.*)\.css$ tracker.php?id=$1&csstest [L,QSA]
+RewriteRule ^csstest-(.*)\.css$ https://bartonphillips.net/tracker.php?id=$1&csstest [L,QSA]
 
 # Keep others fro looking at these files.
 RewriteRule ^(\.git|other|script)/.*$ - [F,L]

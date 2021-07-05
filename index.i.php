@@ -97,14 +97,14 @@ EOF;
     if($memberEmail == "bartonphillips@gmail.com") {
       $GIT = dogit(); // This is an array of two bools
       // BLP 2018-02-10 -- If it is me do the 'adminStuff'
-      $adminStuff = require("/var/www/bartonlp/adminsites.php");
+      $adminStuff = require("/var/www/bartonphillipsnet/adminsites.php");
     }
     $hereMsg =<<<EOF
 <div class="hereMsg">Welcome $memberName</div>
 EOF;
   } else {
     //error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
-    header("Location: ../bartonlp/register.php");
+    header("Location: register.php");
     exit();
   }
 }
@@ -118,7 +118,7 @@ if($blp == "8653" && !$adminStuff) { // BLP 2018-04-25 -- new code
   // adminsite. I will review logs and decide.
   
   error_log("bartonphillips.com/index.i.php. Using blp: $S->ip, $S->agent");
-  $adminStuff = require("/var/www/bartonlp/adminsites.php");
+  $adminStuff = require("/var/www/bartonbartonphillipsnet/adminsites.php");
 }
 
 $ip = $S->ip;

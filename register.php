@@ -1,1 +1,1 @@
-../bartonlp/register.php
+../bartonphillipsnet/register.php

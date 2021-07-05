@@ -1,7 +1,7 @@
 {
     "siteDomain": "bartonphillips.com",
     "siteName": "Bartonphillips",
-    "mainTitle": "Barton Phillips Home Page",
+//    "mainTitle": "Barton Phillips Home Page",
     "path": "/var/www/bartonphillips.com",
     "className": "SiteClass",
     "copyright": "Barton L. Phillips",
@@ -16,6 +16,7 @@
       "database": "bartonphillips", // we have a seperate database from barton.
       "engine": "mysqli"
     },
+    "memberTable": "members", // Currently bartonphillips.com is the ONLY one with a member table!
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
     "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
     "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
