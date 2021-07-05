@@ -1,19 +1,31 @@
 <?php
+// BLP 2021-06-06 -- Modifed to use tracker in https://bartonphillips.net/tracker.php.
+// The main logo image (id="logo") has the attribute "data-image" which has the image. This is
+// usually from the mysitemap.json file and is "trackerImg1" and "trackerImg2", but it can be any
+// image we want to use.
+// $image2 has the 'normal' image and we put the &image= set to that image (usually trackerImg2).
+// $image3 is the 'noscript' image and it always is a blank so we do not need to specify an image.
+// The https://bartonphillips.net/js/trackerjs file uses the data-image attribute to add the image
+// onto the file
+// "https://bartonphillips.net/tracker.php?page=script&id=$this-LAST_ID&image={image}.
+// {image} is value of the data-image attribute.
+// Like wise in head.i.php the csstest is added by tracker.js. See comments in head.i.php
 // BLP 2021-03-26 -- add nodb logic
 
 if($this->nodb !== true && $this->noTrack !== true) {
   $image2 =<<<EOF
   <a>
-    <img id='linuxcounter' src="/tracker.php?page=normal&id=$this->LAST_ID" alt="linux counter image.">
+    <img src="https://bartonphillips.net/tracker.php?page=normal&id=$this->LAST_ID&image=$this->trackerImg2" alt="linux counter image.">
   </a>
 EOF;
-  $image3 = "<img src='tracker.php?page=noscript&id=$this->LAST_ID'>";
+  $image3 = "<img src='https://bartonphillips.net/tracker.php?page=noscript&id=$this->LAST_ID'>";
 }
 
 return <<<EOF
 <header>
-  <a href="http://www.bartonphillips.com">
-    <img id='logo' src="https://bartonphillips.net/images/blp-image.png"></a>
+  <a href="https://www.bartonphillips.com">
+    <!-- The logo line is changes by tracker.js -->
+    <img id='logo' data-image="$this->trackerImg1" src="https://bartonphillips.net/images/blp-image.png"></a>
 $image2
 $mainTitle
 <noscript>

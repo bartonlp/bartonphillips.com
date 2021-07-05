@@ -7,14 +7,23 @@
 // NOTE: $arg takes presidence over mysitemap.json.
 
 // BLP 2021-03-26 -- Added logic to not do tracker stuff if nodb or noTrack set.
-// NOTE not via $h.
+// NOTE this is not done via $h.
+
 if($this->noTrack === true || $this->nodb === true) {
   $trackerStr = '';
 } else {
+  // The tracker.js script has a attrubute of data-lastid which the script then grabs and add the
+  // csstest-{LAST_ID}.css before the script with the data-lastid attribute. See the start of
+  // tracker.js
+  // For this to work we MUST have a RewriteRule that changes the csstest into a call to
+  // tracker.php?id={LAST_ID}&csstest. See .htaccess
+  
   $trackerStr =<<<EOF
+<!-- Add tracker.js and csstest-{LAST_ID} before it. -->
 <script data-lastid="$this->LAST_ID" src="https://bartonphillips.net/js/tracker.js"></script>
 EOF;
-} 
+}
+
 // BLP 2021-03-26 -- some sites may have a different defaultCss. If not set use our default
 if(empty($arg['defaultCss'])) {
   $arg['defaultCss'] = $this->defaultCss ?? 'https://bartonphillips.net/css/blp.css';
