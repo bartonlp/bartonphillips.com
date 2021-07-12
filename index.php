@@ -25,7 +25,7 @@ EOF;
 // link the index.css and rel=conanical
 $h->link =<<<EOF
   <link rel="canonical" href="https://www.bartonphillips.com">
-  <link rel='stylesheet' href='index.css'>
+  <link rel='stylesheet' href='/index.css'>
 EOF;
 
 // get phpdate.js and set the js doGit to $GIT
@@ -101,7 +101,7 @@ Today is: <span id="datetoday">$date</span>
 <section id="interesting">
 <h2 class="center">Interesting Sites</h2>
 <ul>
-<li><a href=https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
+<li><a href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a href="http://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a href="proxy.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a href="http://www.computerscienceonline.org">Computer Science Online</a></li>
@@ -144,7 +144,6 @@ $adminStuff
 
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
-<!-- Get Markdown from our DEFAULT server -->
 <li><a href="https://www.bartonphillips.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a href="bartonlp/base64.php">Decode Base 64</a></li>
 <li><a href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
@@ -159,8 +158,6 @@ $adminStuff
 <section id='projects'>
 <a href='projects.php'>My GitHub and PHPClasses projects</a>
 </section>
-<!-- Stormwatch isc.sans.edu -->
-<!-- $stormwatchpage -->
 <hr>
 $footer
 EOF;
