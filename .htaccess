@@ -16,6 +16,8 @@ RewriteEngine on
 RewriteCond %{HTTP_USER_AGENT} "baiduspider" [NC]
 RewriteRule (.*) - [F,L]
 
+#RewriteRule ^(.*\.php).*$ $1 [L,NC]
+
 # direct robots.txt to robots.php
 RewriteRule ^robots\.txt$ robots.php [L,NC]
 RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
@@ -23,7 +25,7 @@ RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 # rewrite the address of csstest.css to tracker.php?id=$1&csstest
 RewriteRule ^csstest-(.*)\.css$ https://bartonphillips.net/tracker.php?id=$1&csstest [L,QSA]
 
-# Keep others fro looking at these files.
+# Keep others from looking at these files.
 RewriteRule ^(\.git|other|script)/.*$ - [F,L]
 RewriteRule ^(\.gitignore|mysitemap\.json|sitemap-new\.txt)$  - [F,L]
 
