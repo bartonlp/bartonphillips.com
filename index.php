@@ -82,6 +82,7 @@ Today is: <span id="datetoday">$date</span>
 <a href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
 <a href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
 <a href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
+<a href="http://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 </div>
 </section>

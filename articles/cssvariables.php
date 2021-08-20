@@ -102,7 +102,7 @@ article h2:hover {
   background: var(--custome_color);
   color: var(--color);
 }
-h2 {
+article h2 {
   font-size: 1.8rem;
   margin-bottom: .5rem;
 }
@@ -128,7 +128,7 @@ $my_element1
 <pre class="brush: js">
 $my_element2
 </pre>
-<p>Now when you click the line that says This is without' you will see the 'hello world' in light blue.</p>
+<p>Now when you click the line that says 'This is without' you will see the 'hello world' in light blue.</p>
 <p>The two lines above 'This is without' are also done with a CSS variable (NO javascript) to get the hover effect.</p>
 <pre class="brush: html">
 $other
