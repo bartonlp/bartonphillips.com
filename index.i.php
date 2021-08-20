@@ -113,7 +113,6 @@ EOF;
 // BLP 2021-03-24 -- $blp is set at the very top so it is available here and above for the require of adminsites.php
 
 if($blp == "8653" && !$adminStuff) { // BLP 2018-04-25 -- new code
-  //error_log("bartonphillips.com/index.php: No 'adminStuff'");
   // if we didn't load adminsites above then who is this? I guess I will still let them see the
   // adminsite. I will review logs and decide.
   
