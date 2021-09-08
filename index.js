@@ -7,13 +7,16 @@
 jQuery(document).ready(function($) {
   var weewx = '';
 
+  // If we have adminstuff we need another column.
+  
   if(window.CSS) {
     if(CSS.supports('display', 'grid') && $("#adminstuff").length != 0) {
       $("#grid-section").css("grid-template-columns", "repeat(4, 1fr)");
     }
   }
 
-  // Local date/time for 'Today is' & 'Your Time is'
+  // Local date/time for 'Today is' & 'Your Time is'. Uses phpdate.js
+  // loaded in index.php
   
   setInterval(function() {
     var d = date("l F j, Y");
@@ -33,18 +36,13 @@ jQuery(document).ready(function($) {
       if (!("Notification" in window)) {
         alert("This browser does not support desktop notification");
       } else if(Notification.permission === "granted") {
-        //console.log("hi 0");
-
         var notification = new Notification("Hi there!", {
           body: msg,
           icon: "https://bartonphillips.net/images/favicon.ico"
         });
       } else if(Notification.permission !== "denied") {
-        //console.log("hi ask permision 2");
-
         Notification.requestPermission(function (permission) {
           // If the user accepts, let's create a notification
-          //console.log("hi 3");
           if(permission === "granted") {
             var notification = new Notification("First Time!", {
               body: msg,

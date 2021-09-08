@@ -1,21 +1,22 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
+// BLP 2021-08-21 -- add tysonweb and newbernzig.com to dogit().
 // BLP 2021-03-24 -- move $_GET['blp'] to top so it is available for all requires of adminsites.php  
 // BLP 2018-04-25 -- change blp code to 8653 after a bot had old code
 // BLP 2018-03-06 -- break up index.php into index.i.php, index.js and index.css
 
-// Check if any of my sites have items that need to be added to the git repository
-
 $blp = $_GET['blp']; // Get the secret value if supplied.
   
+// Check if any of my sites have items that need to be added to the git repository
+
 function dogit() {
   $ret = '';
   $any1 = '';
   $any2 = '';
   
   foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
-           '/bartonphillipsnet', '/allnaturalcleaningcompany'] as $site) {
+           '/bartonphillipsnet', '/allnaturalcleaningcompany', '/tysonweb', '/newbernzig.com'] as $site) {
     chdir("/var/www/$site");
     exec("git status", $out); // put results into $out
     $out = implode("\n", $out);

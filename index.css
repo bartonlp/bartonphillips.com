@@ -28,7 +28,7 @@
 #TrackerCount {
   display: inline;
   font-size: .4rem;
-  color: lightgray;
+  color: #8aa492;
 }
 /* Images */
 #blpimg { /* My Logo Image */
@@ -45,20 +45,6 @@
 }
 .red {
   color: red;
-}
-/* Main Title div in $h->banner */
-#mainTitle {
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 1;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-#mainTitle > span {
-  font-size: 1.5rem;
-}
-#mainTitle span:last-child {
-  font-size: 1.2rem;
 }
 /* Sections */
 #browser-info { /* section */

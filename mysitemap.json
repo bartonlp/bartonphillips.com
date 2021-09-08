@@ -5,7 +5,7 @@
 {
     "siteDomain": "bartonphillips.com",
     "siteName": "Bartonphillips",
-//    "mainTitle": "Barton Phillips Home Page",
+    "mainTitle": "<h1>Barton Phillips Home Page</h1>",
     "path": "/var/www/bartonphillips.com",
     "className": "SiteClass",
     "copyright": "Barton L. Phillips",
