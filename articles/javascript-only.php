@@ -3,6 +3,9 @@
 // Get the original php file
 $file = file_get_contents("javascript-only.php");
 // Clean up left and right arrows, $ \n and quotes. Make them all displayable.
+// * Note that when viewing the file the $ sign has a double back slash before it and \\n will
+// * show as a line break so you will not see it.
+
 $file = preg_replace(array("/</", "/>/", "/\\$/", "/\n/", '/"/'), array("&lt;", "&gt;", "\$", "<br>", "'"), $file);
 
 echo <<<EOF
@@ -12,7 +15,7 @@ echo <<<EOF
 jQuery(document).ready(function($) {
   $("").append("<html>");
   $("html").append("<head>");
-  $("head").append("<title>JavaScript Only</title>"+
+  $("head").append("<title>JavaScript with jQuery</title>"+
     "<meta name=viewport content='width=device-width, initial-scale=1'>"+
     "<meta charset='utf-8'>"+
     "<meta name='copyright' content='2016 Barton L. Phillips'>"+
@@ -32,11 +35,12 @@ jQuery(document).ready(function($) {
   $("script").remove();
 
   $("head").after("<body>");
-  $("body").html("<h1>Test of Java Only jQuery no SiteClass</h1>"+
-  "<a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
-  "<a href='dummy.php'>Dummy</a><br><br>"+
+  $("body").html("<h1><i>javascript</i> and <i>jQuery</i> but no <i>SiteClass</i></h1>"+
+  "<h3>This program does not have a fancy header or footer.</h3>" +
+  "This a another link as an example: <a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
+  "And another: <a href='dummy.php'>Dummy</a><br><br>"+
   "<a href='javascript-siteclass.php'>JavaScript only plus jQuery and SiteClass</a><br>"+
-  "<a href='proxy.php?javascript-only-nojquery.php'>JavaScript only no jQuery or SiteClass</a><br>"+
+  "<a href='javascript-only-nojquery.html'>JavaScript only no jQuery or SiteClass</a><br>"+
   "<p>PHP file that created this page:</p>"+
   "<pre>$file</pre>"
   );

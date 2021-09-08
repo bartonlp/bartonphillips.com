@@ -12,6 +12,8 @@ $h->css =<<<EOF
 }
   </style>
 EOF;
+$h->banner = "<h1>My Projects</h1><hr>";
+
 list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
@@ -36,11 +38,11 @@ complex as some of the popular frameworks out there.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
 <p>The <b>SiteClass</b> framework is hosted at<br>
-<a target="_blank" href="proxy.php?blp=ingrid&https://github.com/bartonlp/SiteClass">GitHub
+<a target="_blank" href="goto.php?blp=ingrid&https://github.com/bartonlp/SiteClass">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
 <a target="_blank"
-href="proxy.php?blp=ingrid&https://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
+href="goto.php?blp=ingrid&https://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
 <hr>
@@ -49,11 +51,11 @@ href="proxy.php?blp=ingrid&https://www.phpclasses.org/package/9105-PHP-Create-da
 <p>This class works with SiteClass. It lets you create sections or articles in a webpage that can be edited via the
 web browser. The sections are stored in a database (MySql is prefered).</p>
 <p>You can find my <b>UpdateSite Class</b> at<br>
-<a target="_blank" href="proxy.php?blp=ingrid&https://github.com/bartonlp/updatesite">GitHub
+<a target="_blank" href="goto.php?blp=ingrid&https://github.com/bartonlp/updatesite">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
 and also at 
 <a target="_blank"
-href="proxy.php?blp=ingrid&http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-website-.html">
+href="goto.php?blp=ingrid&http://www.phpclasses.org/package/10042-PHP-Updateable-section-in-a-website-.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>
 and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Documentation</a>.</p>
 <hr>
@@ -75,10 +77,10 @@ slide show presentation.</p>
   
 <p>You can find my <b>Slide Show Class</b> at<br>
 <a target="_blank"
-href="proxy.php?blp=ingrid&https://github.com/bartonlp/slideshow">GitHub
+href="goto.php?blp=ingrid&https://github.com/bartonlp/slideshow">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank"
-href="proxy.php?blp=ingrid&https://www.phpclasses.org/browse/author/592640.html">
+href="goto.php?blp=ingrid&https://www.phpclasses.org/browse/author/592640.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
 alt="php classes logo" /></a></p>
 <hr>
@@ -92,9 +94,9 @@ The main class can retrieve lists of images to be displayed from a MySQL databas
 The actual images can be stored on the filesystem or in the MySql table as base64 data.</p>
   
 <p>You can find my <b>MySql Slide Show Class</b> at<br>
-<a target="_blank" href="proxy.php?blp=ingrid&http://github.com/bartonlp/mysqlslideshow">GitHub
+<a target="_blank" href="goto.php?blp=ingrid&http://github.com/bartonlp/mysqlslideshow">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
-<a target="_blank" href="proxy.php?blp=ingrid&https://www.phpclasses.org/browse/author/592640.html">
+<a target="_blank" href="goto.php?blp=ingrid&https://www.phpclasses.org/browse/author/592640.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>
@@ -103,9 +105,9 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 
 <p>This package can read and get information from an RSS feed. It is simple to use.</p>
 <p>You can find my <b>RssFeed Class</b> at<br>
-<a target="_blank" href="proxy.php?blp=ingrid&https://github.com/bartonlp/rssfeed">GitHub
+<a target="_blank" href="goto.php?blp=ingrid&https://github.com/bartonlp/rssfeed">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
-<a target="_blank" href="proxy.php?blp=ingrid&https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
+<a target="_blank" href="goto.php?blp=ingrid&https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'
  alt="php classes logo" /></a></p>
 <hr>

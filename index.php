@@ -16,11 +16,12 @@ require_once("index.i.php"); // Get the majority of the php
 
 $h->title = $S->siteName;
 $h->desc = "Interesting Things, About the Internet, Tips and Tutorials";
-$h->banner = <<<EOF
+/*$h->banner = <<<EOF
 <div id='mainTitle'>
 $S->mainTitle<br>
 </div>
 EOF;
+*/
 
 // link the index.css and rel=conanical
 $h->link =<<<EOF
@@ -78,11 +79,11 @@ Today is: <span id="datetoday">$date</span>
 
 <!-- Other Sites That I have made -->
 <div id="otherSites" class="mylinks">
-<a href="http://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
+<a href="https://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
 <a href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
 <a href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
 <a href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
-<a href="http://www.newbernzig.com"><button>New Bern Zig</button></a>
+<a href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 </div>
 </section>
@@ -91,10 +92,10 @@ Today is: <span id="datetoday">$date</span>
 <section id="github">
 <h2 class="center">GitHub Projects</h2>
 <ul>
-<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
-<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
-<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
-<li><a href="proxy.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
+<li><a href="goto.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
+<li><a href="goto.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
+<li><a href="goto.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
+<li><a href="goto.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
 </ul>
 </section>
 
@@ -103,9 +104,9 @@ Today is: <span id="datetoday">$date</span>
 <h2 class="center">Interesting Sites</h2>
 <ul>
 <li><a href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
-<li><a href="http://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a href="proxy.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
-<li><a href="http://www.computerscienceonline.org">Computer Science Online</a></li>
+<li><a href="https://www.raspberrypi.org/">RaspberryPi</a></li>
+<li><a href="goto.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
+<li><a href="https://www.computerscienceonline.org">Computer Science Online</a></li>
 <li><a href="https://developers.google.com/web/">Google/Web</a></li>
 <li><a href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
 <li><a href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
@@ -145,7 +146,7 @@ $adminStuff
 
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
-<li><a href="https://www.bartonphillips.com/showmarkdown.php">Display <b>Markdown</b> files</a></li>
+<li><a href="/showmarkdown.php">Display <b>Markdown</b> files</a></li>
 <li><a href="bartonlp/base64.php">Decode Base 64</a></li>
 <li><a href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>

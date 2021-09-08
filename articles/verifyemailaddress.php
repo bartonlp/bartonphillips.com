@@ -77,7 +77,7 @@ $top
 a comma. Elements can be encapsolated by double quotes if desired or if the element contains a comma. One Contact/email per line.</p>
 <table id="gettemplate">
 <tbody>
-<tr><th>CSV file on local machine</th><td><input name="tempfile[]" type="file" /></td></tr>
+<tr><td>CSV file on local machine<br>This should have<br><i>"Name","emailaddress"</i> </td><td><input name="tempfile[]" type="file" /></td></tr>
 </tbody>
 </table>
 <input type="hidden" name="page" value="verify" />
@@ -136,10 +136,12 @@ EOF;
 
   $S->query($query);
 
-  //echo "filel=$tempfile[0]<br>";
+  //echo "file: $tempfile[0]<br>";
 
   if(($hdl = fopen($tempfile[0], "r")) !== false) {
-    while(($ar = fgetcsv($hdl, 0, ",")) !== false) {
+    while(($ar = fgetcsv($hdl)) !== false) {
+      //echo "count: " . count($ar) . "<br>";
+      //vardump("ar", $ar);
       for($i=0; $i < count($ar); ++$i) {
         $ar[$i] = $S->escape($ar[$i]);
       }
@@ -150,7 +152,27 @@ EOF;
     echo "Can't open file $tempfile[0]<br>";
     exit();
   }
-  
+
+  $h->css = <<<EOF
+<style>
+:root {
+  --bad: red;
+  --ok: green;
+  --anything: yellow;
+  --anythingbg: black;
+  --over: inherit;
+  --under: 600px;
+}
+.over { margin-left: 0; width: var(--over); }
+.underok { margin-left: 0; width: var(--under); border: 5px solid var(--ok); }
+.underbad { margin-left: 0; width: var(--under); border: 5px solid var(--bad); }
+.underanything { margin-left: 0; width: var(--under); border: 5px solid var(--anything); }           
+.ok { color: var(--ok); }
+.bad { color: var(--bad); }
+.anything { color: var(--anything); background: var(--anythingbg); }
+</style>
+EOF;
+
   $h->title = "Test Smtp Reciept";  
   $h->banner = <<<EOF
 <h1>Test Email Addresses With MX Server</h1>
@@ -310,14 +332,14 @@ EOF;
   }
 
   if(count($OKEmail) > 0) {
-    echo "<br>---------------------<br>List Of OK Emails<br>\n";
+    echo "<span class='ok'>OK Emails</span><hr class='underok'>\n";
     foreach($OKEmail as $line) {
       echo "$line<br>\n";
     }
   }
   
   if(count($bad) > 0) {
-    echo "<br>---------------------<br>List Of Bad Emails<br>\n";
+    echo "<hr class='over'><span class='bad'>Bad Emails</span><hr class='underbad'>\n";
     foreach($bad as $line) {
       echo "$line<br>\n";
       if(preg_match("/^(\d+),/", $line, $m)) {
@@ -329,7 +351,7 @@ EOF;
     }
   }
   if(count($dontknow) > 0) {
-    echo "<br>---------------------<br>Can't Say Emails<br>\n";
+    echo "<hr class='over'><span class='anything'>Server says OK to anything</span><hr class='underanything'>\n";
     foreach($dontknow as $line) { 
       echo "$line<br>\n";
       if(preg_match("/^(\d+),/", $line, $m)) {
@@ -342,6 +364,7 @@ EOF;
   }
 
   echo <<<EOF
+<hr>
 $footer
 EOF;
 }
@@ -496,21 +519,24 @@ EOF;
 
   switch($ok) {
     case 0:
-      echo "Contact Email could not be verified for $host<br>\n";
+      echo "Contact Email <b>$contactEmail</b> could not be verified for <i>$host</i><br>\n";
       break;
     case 1:
       // OK
-      echo "Email address $hoost OK<br>\n";
+      echo "Email address <b>$contactEmail</b> on <i>$host</i> OK<br>\n";
       break;
     case 2:
-      echo "Server Says Ok to Anything: $host<br>\n";
+      echo "Email <b>$contactEmail</b>, but server <i>$host</i> says Ok to Anything<br>\n";
       break;
     case 3:
       echo "$ret<br>";
       break;
   }         
 
-  echo "$footer";
+  echo <<<EOF
+<hr>
+$footer
+EOF;
 }
 
 // ********************************************************************************

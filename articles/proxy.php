@@ -1,1 +1,0 @@
-../../bartonlp/proxy.php

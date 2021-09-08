@@ -1,16 +1,16 @@
 <?php
 // JavaScript Only with jQuery and SiteClass
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 // Get the original php file
 $file = file_get_contents("javascript-siteclass.php");
-// Clean up left and right arrows, $, \\n and quotes. Note the forth argument to the first array
-// is \\n which you can't see.
-// Make them all displayable.
-$file = preg_replace(array("/</", "/>/", "/\\$/", "/\n/", '/"/'),
-                     array("&lt;","&gt;", "\$", "<br>", "'"), $file);
+// Clean up left and right arrows, $, \n and quotes. Make them all displayable.
+// * Note that when viewing the file the $ sign has a double back slash before it and \\n will
+// * show as a line break so you will not see it.
 
-$h->title = "JavaScriptOnly";
+$file = preg_replace(array("/</", "/>/", "/\\$/", "/\n/", '/"/'), array("&lt;","&gt;", "\$", "<br>", "'"), $file);
+
+$h->title = "JavaScript+jQuery+SiteClass";
 $h->css =<<<EOF
   <style>
 pre {
@@ -27,11 +27,12 @@ $h->script=<<<EOF
   <script>
 jQuery(document).ready(function($) {
   $("head").after("<body>");
-  $("<h1>JavaScript Only with jQuery and SiteClass</h1>"+
-    "<a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
-    "<a href='dummy.php'>Dummy</a><br><br>"+
-    "<a href='proxy.php?javascript-only-nojquery.php'>JavaScript only no jQuery or SiteClass</a><br>"+
-    "<a href='proxy.php?javascript-only.php'>JavaScript only with jQuery and no SiteClass</a><br>"+
+  $("<hr><h1><i>javaScript</i> with <i>jQuery</i> and <i>SiteClass</i></h1>"+
+    "<h3>This program uses jQuery and has a nice header and footer due to SiteClass.</h3>" +
+    "This a another link as an example: <a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
+    "And another: <a href='dummy.php'>Dummy</a><br><br>"+
+    "<a href='javascript-only-nojquery.html'>JavaScript only no jQuery or SiteClass</a><br>"+
+    "<a href='javascript-only.php'>JavaScript only with jQuery and no SiteClass</a><br>"+
     "<p>PHP file that created this page:</p>"+
     "<pre>$file</pre>"
   ).insertBefore('footer');

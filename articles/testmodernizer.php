@@ -62,7 +62,7 @@ list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
 
 echo <<<EOF
 $top
-<header>
+<div>
 
 <p>Your browser has identified itself as: 
 <span id="browserid">{$S->agent}</span> via its &quot;User Agent String&quot;.</p>
@@ -87,7 +87,7 @@ information on how 'modernizr' works.</p>
 
 <p>Modernizr shows the following features for your browser:</p>
 
-</header>
+</div>
 <article>
    <table border='1'>
     <thead>

@@ -56,7 +56,8 @@ EOF;
 
 $mutual = "";
 
-$sql = "select stock, qty from stocks.stocks where status = 'mutual'";
+// BLP 2021-09-08 -- remove stocks from stocks.stocks. There is no stocks database.
+$sql = "select stock, qty from stocks where status = 'mutual'";
 
 $S->query($sql);
 

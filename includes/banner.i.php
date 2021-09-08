@@ -22,6 +22,7 @@ EOF;
 }
 
 return <<<EOF
+<!-- body tag is added by SiteClass::getPageBanner() -->
 <header>
   <a href="https://www.bartonphillips.com">
     <!-- The logo line is changes by tracker.js -->
@@ -36,5 +37,4 @@ experience will be significantly impaired. If your browser supports JavaScripts 
 JavaScripts conditionally if your browser supports that. Sorry for the inconvienence.</p>
 </noscript>
 </header>
-<!-- body tag is added by SiteClass::getPageBanner() -->
 EOF;
