@@ -10,23 +10,11 @@ $h->css = "<style>table { width: 100%; font-size: 10px; }</style>";
 
 list($top, $footer) = $S->getPageTopBottom($h, $b);
 
-$sql = "select name, email, ip, agent, created from members";
-$S->query($sql);
+$T = new dbTables($S);
 
-$tbl = <<<EOF
-<table border="1">
-<thead>
-<tr>
-<th>Name</th><th>Email</th><th>IP</th><th>Agent</th><th>Created</th></tr>
-</thead>
-<tody>
-EOF;
+$sql = "select name, email, ip, agent, created, lasttime from members";
 
-while([$name, $email, $ip, $agent, $created] = $S->fetchrow("num")) {
-  $tbl .= "<tr><td>$name</td><td>$email</td><td>$ip</td><td>$agent</td><td>$created</td></tr>";
-}
-
-$tbl .= "</tbody>\n</table>\n";
+[$members] = $T->maketable($sql, array('attr'=>array('border'=>'1', 'id'=>'members')));
 
 // ***************
 // Render the page
@@ -34,7 +22,7 @@ $tbl .= "</tbody>\n</table>\n";
 
 echo <<<EOF
 $top
-$tbl
+$members
 $footer
 EOF;
 

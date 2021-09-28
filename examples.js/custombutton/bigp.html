@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p is='big-p'>
+  This is a test
+</big-p>
+
+<script>
+class BigP extends HTMLParagraphElement {
+  constructor() {
+    // Always call super first in constructor
+    super();
+  }
+  connectedCallback() {
+    let p = document.querySelector('big-p');
+    p.style.fontSize = "100px";
+  }
+}
+
+// Define the new element
+customElements.define('big-p', BigP, { extends: "p" });
+  </script>
+</body>
+</html>

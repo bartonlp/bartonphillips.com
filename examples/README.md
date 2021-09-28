@@ -19,38 +19,5 @@ stuff with different object/classes.
 
 1. **ssh2-sftp.php** uses PHP ssh2 module to send itself to 'bartonphillips.net'.
 
-1. **weewx-test.php** displays my weather station. The reload every 5 minutes is done via a websocket
-server at **./weewx-watch/weewx.watch.js** (see the README.md in that directory). 
-
-   We set `$_site->headFile = 'head.php'` and the other two '...File' to *null* instead
-of what is in the mysitemap.json file.
-
-   The css is set to:
-
-   ```css
-  body, html {width: 100%; height: 100%; margin: 0; padding: 0}
-  /* NOTE and iframe is default 'inline' */
-  iframe {display: block; width: 100%; height: 100%; border: none;}
-```
-
-   This makes the *iframe* fill the whole viewport without a border. The *block* display is instead of the
-normal *inline* for an *iframe*.
-
-   We use a javascript function in the *iframe* (stopLoad()) to stop the normal reloading of the file
-**index.php** in the *weewx* directory.
-
-   ```javascript
-  $('iframe').attr("src", "https://www.bartonphillips.com/weewx/");
-  $('iframe').on('load', function() {
-     const frame = document.querySelector('iframe');
-     frame.contentWindow.stopLoad();
-  });
-```
-
-   To use the *contentWindow* the *frame* must be native javascript not jQuery (no idea why). Anyway,
-the `frame.contentWindow.stopLoad();` is actually in the **index.php** file in the *weewx*
-directory.
-
-   That is about it for **weewx-test.php**. See the README.md in the *./weewx-watch* directory.
 
 # Contact me at [bartonphillips@gmail.com](mailto:bartonphillips@gmail.com)

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+This should be run from the browser. First run 'websocket-server.js' via node.js.
+This program will communicate with the server on 'ws://bartonlp.org:8080?BlP=8653'. The url query is
+a key to let us run.
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+</head>
+<body>
+<h2>WebSocket Test</h2>
+<input type="text" autofocus><br>
+<button id='click'>Click Me</button>
+<div id="output"></div>
+<script>
+  var wsUri = "ws://bartonlp.org:8080?BLP=8653";
+  var output;
+  function init() {
+    output = document.getElementById("output");
+    testWebSocket();
+  }
+  
+  function testWebSocket() {
+    websocket = new WebSocket(wsUri, 'slideshow');
+    websocket.onopen = function(evt) {
+      onOpen(evt)
+    };
+    websocket.onclose = function(evt) {
+      onClose(evt)
+    };
+    websocket.onmessage = function(evt) {
+      onMessage(evt)
+    };
+    websocket.onerror = function(evt) {
+      onError(evt)
+    };
+  }
+  function onOpen(evt) {
+    writeToScreen("CONNECTED");
+    var jmsg = JSON.stringify({event: 'hello', siteId: 'ALL', prog: 'Test'});
+    doSend(jmsg);
+  }
+  function onClose(evt) {
+    writeToScreen("DISCONNECTED");
+  }
+  function onMessage(evt) {
+    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+    //websocket.close();
+  }
+  function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
+  function doSend(message) {
+    writeToScreen("SENT: " + message);
+    websocket.send(message);
+  }
+  function writeToScreen(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+  }
+  window.addEventListener("load", init, false);
+
+  var but = document.querySelector("#click");
+  
+  but.addEventListener("click", function(e) {
+    var inp = document.querySelector("input");
+    var txt = inp.value;
+    var jmsg = JSON.stringify({event: 'hello', siteId: 'ALL', prog: txt});
+    doSend(jmsg);
+    return false;
+  });
+  
+  if (!('performance' in window)) {
+    console.log('No performance');
+  }
+</script>
+
+</body>
+</html>

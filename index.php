@@ -1,5 +1,6 @@
 <?php
 // Main page for bartonphillips.com
+// BLP 2021-09-21 -- Update the registration process. See index.i.php and register.php
 // BLP 2021-03-26 -- set doGit in the bottom script to blank so we don't do the notify. We don't
 // want to force $GIT to blank because it is used in adminstuff.php to show that something has
 // changed.
@@ -16,12 +17,8 @@ require_once("index.i.php"); // Get the majority of the php
 
 $h->title = $S->siteName;
 $h->desc = "Interesting Things, About the Internet, Tips and Tutorials";
-/*$h->banner = <<<EOF
-<div id='mainTitle'>
-$S->mainTitle<br>
-</div>
-EOF;
-*/
+
+// I am using the mainTitle in mysitemap.json
 
 // link the index.css and rel=conanical
 $h->link =<<<EOF
@@ -43,12 +40,11 @@ list($top, $footer) = $S->getPageTopBottom($h, $b);
 
 // ***************
 // Render the page
+// BLP 2021-09-22 -- $hereMsg is set in index.i.php along with $locstr, $adminstuff and $date
 // ***************
 
 echo <<<EOF
 $top
-<!-- Internet Under Attack. Status message or NOTHING -->
-$status
 <section id='browser-info'>
 <!-- Either 'You have been here nn' or 'Welcome' with user name -->
 $hereMsg
@@ -75,8 +71,8 @@ Today is: <span id="datetoday">$date</span>
 
 <!-- BLP 2021-03-25 -- If we change this it will affect scraper-await-fetch.php -->
 <section id="others">
+<!-- BLP 2021-03-25 -- end warning -->
 <h2>Visit one of the other web sites designed by Barton Phillips</h2>
-
 <!-- Other Sites That I have made -->
 <div id="otherSites" class="mylinks">
 <a href="https://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
@@ -101,6 +97,7 @@ Today is: <span id="datetoday">$date</span>
 
 <!-- BLP 2021-03-25 -- If we change this it will affect scraper-await-fetch.php -->
 <section id="interesting">
+<!-- BLP 2021-03-25 -- End warning -->
 <h2 class="center">Interesting Sites</h2>
 <ul>
 <li><a href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
@@ -112,6 +109,7 @@ Today is: <span id="datetoday">$date</span>
 <li><a href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
 </ul>
 </section>
+
 <!-- If it is me add adminstuff -->
 $adminStuff
 <section id="internet">
@@ -130,13 +128,12 @@ $adminStuff
 <h3 class='subtitles'>Tutorials</h3>
 <p class='subtitles'>Demo plus Source.</p>
 <ul>
-<!--<li><a href="https://www.bartonlp.org/pug-examples.php">Examples Using Pug</a>-->
 <li><a href="articles/javascript-siteclass.php">Create a JavaScript Only Site</a></li>
 <li><a href="articles/promise.php">Use AJAX and Promise</a></li>
 <li><a href="articles/fetch-promise.php">Use 'fetch' and Promise</a></li>
 <li><a href="articles/async-await-2.php">Use 'async/await'</a></li>
 <li><a href="articles/scraper-await-fetch.php">How To Scrape a Website</a></li>
-<li><a href="bartonlp/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
+<li><a href="/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a href="articles/linuxmint-from-iso.php">How to Install Linux via ISO from your hard drive</a></li>
 <li><a href="articles/dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
 <li><a href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a></li>
@@ -147,13 +144,13 @@ $adminStuff
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
 <li><a href="/showmarkdown.php">Display <b>Markdown</b> files</a></li>
-<li><a href="bartonlp/base64.php">Decode Base 64</a></li>
+<li><a href="/base64.php">Decode Base 64</a></li>
 <li><a href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
 <li><a href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a href="articles/urlcountrycodes.php">Find the country given a url country code</a><br>
-<li><a href="bartonlp/getcountryfromip.php">Get Country from IP Address</a></li>
+<li><a href="/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a href="articles/verifyemailaddress.php">Verify Email Address</a></li>
-<li><a href="bartonlp/getIP.php">Check Ip Address</a></li>
+<li><a href="/getIP.php">Check Ip Address</a></li>
 </ul>
 </section>
 

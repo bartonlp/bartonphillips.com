@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test jQuery</title>
+<!--  <script src="https://code.jquery.com/jquery-3.2.1.js"
+    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script> -->
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script> 
+  <script src="jquery-migrate-3.0.0.min.js"></script>
+  
+  <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script> -->
+
+  <script>
+    jQuery.migrateMute = false;
+    jQuery.migrateTrace = false;
+    jQuery(document).ready(function($) {
+      $.ajax({
+        url: 'fetch.ajax.php',
+        data: {sql: "select * from test"},
+        type: 'post',
+        //success: function(data) {
+          //console.log("data:", data);
+        //},
+        error: function(err) {
+          console.log("err:", err);
+        }
+      })
+      .success(console.log("SUCCESS works due to migrate"))
+      .complete(console.log("COMPLETE works due to migrate"));
+    });
+  </script>
+  
+</head>
+<body>
+<h1>jQuery 3.2.1 Test of depreciated <i>success</i> and <i>complete</i></h1>
+<p>With <i>jquery-migrate-3.0.0.min.js</i>. The debug console should show that the two are
+  no longer supported but due to the <i>jquery-micrate</i> package they still work.</p>
+<p>Here is what the console should look like:</p>
+<pre>
+jquery-migrate-3.0.0.min.js:2 JQMIGRATE: Migrate is installed, version 3.0.0
+jquery-migrate-3.0.0.min.js:2 JQMIGRATE: jQXHR.success is deprecated and removed
+c @ jquery-migrate-3.0.0.min.js:2
+get @ jquery-migrate-3.0.0.min.js:2
+(anonymous) @ jquery-test.html:32
+j @ jquery-3.2.1.min.js:2
+k @ jquery-3.2.1.min.js:2
+setTimeout (async)
+(anonymous) @ jquery-3.2.1.min.js:2
+i @ jquery-3.2.1.min.js:2
+fireWith @ jquery-3.2.1.min.js:2
+fire @ jquery-3.2.1.min.js:2
+i @ jquery-3.2.1.min.js:2
+fireWith @ jquery-3.2.1.min.js:2
+ready @ jquery-3.2.1.min.js:2
+S @ jquery-3.2.1.min.js:3
+jquery-test.html:32 SUCCESS works due to migrate
+jquery-migrate-3.0.0.min.js:2 JQMIGRATE: jQXHR.complete is deprecated and removed
+c @ jquery-migrate-3.0.0.min.js:2
+get @ jquery-migrate-3.0.0.min.js:2
+(anonymous) @ jquery-test.html:33
+j @ jquery-3.2.1.min.js:2
+k @ jquery-3.2.1.min.js:2
+setTimeout (async)
+(anonymous) @ jquery-3.2.1.min.js:2
+i @ jquery-3.2.1.min.js:2
+fireWith @ jquery-3.2.1.min.js:2
+fire @ jquery-3.2.1.min.js:2
+i @ jquery-3.2.1.min.js:2
+fireWith @ jquery-3.2.1.min.js:2
+ready @ jquery-3.2.1.min.js:2
+S @ jquery-3.2.1.min.js:3
+jquery-test.html:33 COMPLETE works due to migrate
+</pre>
+</body>
+</html>
+
