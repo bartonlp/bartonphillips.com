@@ -23,13 +23,13 @@ $referer = $_SERVER["HTTP_REFERER"] ?? "NONE";
 
 if(empty($referer) || strpos($referer, "bartonphillips.com") === false) {
   // BLP 2021-04-14 -- for testing make the href='' and click the 'Return to welcome page".
-  error_log("bartonphillips.com/articles/download.php -- referer: $referer, file: $file, path: $path, ip: $S->ip, agent: $S->agent -- Go Away");
+  error_log("bartonphillips.com/articles/download.php_$S->ip -- referer: $referer, file: $file, path: $path, agent: $S->agent -- Go Away");
   echo "<h1>You got here by accident! <a href='https://www.bartonphillips.com'>Return to welcome page</a></h1>";
   exit();
 }
 
 if(empty($file)) {
-  error_log("bartonphillips.com/articles/download.php -- referer: $referer, file: No file given, path: $path, ip: $S->ip, agent: $S->agent");
+  error_log("bartonphillips.com/articles/download.php_$S->ip -- referer: $referer, file: No file given, path: $path, agent: $S->agent");
   
   echo <<<EOF
 <h1>No file given. The Webmaster has been notified. Sorry</h1>
@@ -48,7 +48,7 @@ EOF;
   exit();
 }
 
-error_log("bartonphillips.com/articles/download.php -- referer: $referer, file: $file, path: $path, ip: $S->ip, agent: $S->agent -- OK");
+error_log("bartonphillips.com/articles/download.php_$S->ip -- referer: $referer, file: $file, path: $path, agent: $S->agent -- OK");
 
 header('Content-Type: application/octet-stream');
 header("Content-Disposition: attachment;filename=$file");
