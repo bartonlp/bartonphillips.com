@@ -1,0 +1,27 @@
+{
+    "siteDomain": "www.bartonphillips.com",
+    "siteName": "User-Test",
+    "path": "/var/www/bartonphillips.com/examples/user-test",
+    "className": "SiteClass",
+    "copyright": "Barton L. Phillips",
+    "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com",
+    "address": "New Bern, North Carolina 28562",
+    "headFile": "./head.i.php",
+    "bannerFile": "./banner.i.php",
+    "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
+    "masterdb": "barton", // can't do anything with the barton database because user 'test' has no prvilages.
+    "dbinfo": {
+        "host": "localhost",
+        "user": "test", // can't do anything with the barton masterdb because the user is not authorized in any other database
+        "password": "7098653",
+        "database": "test", // This is the ONLY database and it has only one file 'test'
+        "engine": "mysqli"
+    },
+    "count": false,
+    "countMe": false,
+    "noTrack": true,
+    //"myUri": "bartonphillips.dyndns.org",
+    "EMAILADDRESS": "bartonphillips@gmail.com",
+    "EMAILRETURN": "bartonphillips@gmail.com",
+    "EMAILFROM": "bartonphillips@gmail.com"
+}

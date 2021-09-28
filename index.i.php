@@ -1,37 +1,79 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
+// BLP 2021-09-27 -- NO TOO CONFUSING (add homeIp to members if it is me.)
+// BLP 2021-09-23 -- remove several 'else' and just return.
+// BLP 2021-09-23 -- table layout of members changed.
+// BLP 2021-09-22 -- moved adminsites.php from bartonphillipsnet to bartonphillips.com.
+// BLP 2021-09-21 -- Change the way we register and save myIp. See index.php, register.php
 // BLP 2021-08-21 -- add tysonweb and newbernzig.com to dogit().
 // BLP 2021-03-24 -- move $_GET['blp'] to top so it is available for all requires of adminsites.php  
 // BLP 2018-04-25 -- change blp code to 8653 after a bot had old code
 // BLP 2018-03-06 -- break up index.php into index.i.php, index.js and index.css
+/*
+  BLP 2021-09-23 -- Removed id and changed key to email only.
+  The members table is in the bartonphillips database
+  The 'ip' is the last 'ip' that was set for 'bartonphillips@gmail.com'
+  
+CREATE TABLE `members` (
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `ip` varchar(30) DEFAULT NULL,
+  `agent` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
+
+  The myip table is in $S->masterdb (which should be 'bartonlp') database
+  'myIp' will be all of the computers that I have used.
+  
+CREATE TABLE `myip` (
+  `myIp` varchar(40) NOT NULL DEFAULT '',
+  `createtime` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT NULL,
+  PRIMARY KEY (`myIp`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 
+*/
 
 $blp = $_GET['blp']; // Get the secret value if supplied.
+date_default_timezone_set("America/New_York");
+$date = date("l F j, Y H:i:s T");
   
 // Check if any of my sites have items that need to be added to the git repository
+// dogit() is called below to set the $GIT array. $GIT is used by adminsites.php
+// (bartonphillipsnet) to indicate 1) items to commit, 2) items that need to be pushed
 
 function dogit() {
-  $ret = '';
-  $any1 = '';
-  $any2 = '';
+  array($any);
   
   foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
            '/bartonphillipsnet', '/allnaturalcleaningcompany', '/tysonweb', '/newbernzig.com'] as $site) {
+
     chdir("/var/www/$site");
     exec("git status", $out); // put results into $out
     $out = implode("\n", $out);
+
+    // If the phrase below is found then there is nothing to commit.
+    
     if(preg_match('/nothing to commit, working tree clean/s', $out) === 0) {
-      $any1 = ' *';
+      // Needs to be commited
+      
+      $any[0] = ' *';
     }
+
+    // If the phrase below is found then we need to 'push' to github.
     
     if(preg_match("~'origin/master' by (\d+) commit~s", $out, $m) === 1) {
-      $any2 = ' !';
+      // We need a push
+      
+      $any[1] = ' !';
     }
   }
-  return [$any1, $any2];
+  return $any;
 }
 
-// if this is a bot don't bother with getting a location.
+// if this is a bot don't bother with getting a location. And it will not have a SiteId.
 
 if($S->isBot) {
   $locstr = <<<EOF
@@ -39,26 +81,28 @@ if($S->isBot) {
   <li>IP Address: <i class='green'>$S->ip</i></li>
 </ul>
 EOF;
-} else {
-  $ref = $_SERVER['HTTP_REFERER'];
+  return; // just return with what we have so far.
+}
 
-  if($ref) {
-    if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
-    $ref =<<<EOF
+// Not a bot. Get ipinfo.io information
+  
+if($ref = $_SERVER['HTTP_REFERER']) {
+  if(preg_match("~(.*?)\?~", $ref, $m)) $ref = $m[1];
+  $ref =<<<EOF
 <li>You came to this site from: <i class='green'>$ref</i></li>
 EOF;
-  }
+}
   
-  // Use ipinfo.io to get the country for the ip
-  $cmd = "http://ipinfo.io/$S->ip";
+// Use ipinfo.io to get the country for the ip
 
-  $ch = curl_init($cmd);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  $loc = json_decode(curl_exec($ch));
+$cmd = "http://ipinfo.io/$S->ip";
+$ch = curl_init($cmd);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$loc = json_decode(curl_exec($ch));
 
-  $clientname = gethostbyaddr($S->ip);
+$clientname = gethostbyaddr($S->ip);
 
-  $locstr = <<<EOF
+$locstr = <<<EOF
 <ul class="user-info">
   $ref
   <li>User Agent String is:<br>
@@ -72,17 +116,21 @@ EOF;
 </ul>
 <span id="TrackerCount"></span>
 EOF;
-} // End of if(isBot..
 
 // Do we have a cookie? If not offer to register
+// BLP 2021-09-21 -- new logic for myip and members tables. See index.php and register.php.
+// $ipEmail is now the ip and email address separated by a colen (:). 
 // BLP 2018-02-10 -- if we have a cookie and it is me then set $adminStuff
-// The $hereId is the index into the members table. 
+// The $myIp is the last ip address for this browser/CPU from $_COOKIE
 
-if(!($hereId = $_COOKIE['SiteId'])) { // if no cookie
+if(!($ipEmail = $_COOKIE['SiteId'])) { // if no cookie
+  // check logagent table to see how may times this ip has been here.
+  
   $S->query("select count, date(created) from $S->masterdb.logagent ".
             "where ip='$S->ip' and agent='$S->agent' and site='$S->siteName'");
 
-  list($hereCount, $created) = $S->fetchrow('num');
+  [$hereCount, $created] = $S->fetchrow('num');
+
   if($hereCount > 1) {
     $hereMsg =<<<EOF
 <div class="hereMsg">You have been to our site $hereCount since $created<br>
@@ -90,24 +138,61 @@ Why not <a href="register.php">register</a>
 </div>
 EOF;
   }
-} else { // we found a cookie and it is $hereId
-  $sql = "select name, email from members where id=$hereId";
   
-  if($n = $S->query($sql)) {
-    list($memberName, $memberEmail) = $S->fetchrow('num');
-    if($memberEmail == "bartonphillips@gmail.com") {
-      $GIT = dogit(); // This is an array of two bools
-      // BLP 2018-02-10 -- If it is me do the 'adminStuff'
-      $adminStuff = require("/var/www/bartonphillipsnet/adminsites.php");
-    }
-    $hereMsg =<<<EOF
+  return; // return with what we have so far.
+} 
+
+// BLP 2021-09-21 -- break $ipEmail into $myIp and $cookieEmail
+
+[$myIp, $cookieEmail] = explode(':', $ipEmail);
+
+// BLP 2021-09-21 -- If this cookie email is ME then do special stuff
+  
+if($cookieEmail == "bartonphillips@gmail.com") {
+  $GIT = dogit(); // This is an array, $GIT[0] could be an '*' while $GIT[1] could be an '!'. It is used by adminsites.php
+
+  // BLP 2018-02-10 -- If it is me do the 'adminStuff'
+  
+  $adminStuff = require("/var/www/bartonphillips.com/adminsites.php");
+
+  // BLP 2021-09-21 -- insert/update the ip with the current ip
+    
+  $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
+         "on duplicate key update myIp='$S->ip', lasttime=now()";
+
+  $S->query($sql);
+
+  /*
+  // BLP 2021-09-27 -- Always insert or update the members table with my info.
+
+  $homeIp = gethostbyname('bartonphillips.dyndns.org'); // Use my home ip
+  
+  $sql = "insert into members (name, email, ip, agent, created, lasttime) values('Barton Phillips', '$cookieEmail', '$homeIp', '$S->agent', now(), now()) ".
+         "on duplicate key update name='Barton Phillips', email='$cookieEmail', ip='$homeIp', agent='$S->agent', lasttime=now()";
+
+  $S->query($sql);
+  */
+}
+
+// BLP 2021-09-21 -- We do this for everyone if we found a cookie. Note change to members table.
+// See the header above, the key is 'email' and 'name' and 'id' are no longer keys.
+  
+$sql = "select name from members where email='$cookieEmail'";
+  
+if($S->query($sql)) {
+  // Found the record.
+    
+  [$memberName] = $S->fetchrow('num');
+   
+  $hereMsg =<<<EOF
 <div class="hereMsg">Welcome $memberName</div>
 EOF;
-  } else {
-    //error_log("$S->siteName: members id ($hereId) not found at line ".__LINE__);
-    header("Location: register.php");
-    exit();
-  }
+} else {
+  // BLP 2021-09-21 -- If the cookie email is not found goto register.php
+    
+  error_log("$S->siteName/index.i.php: members ipEmail: '$ipEmail' not found at line ".__LINE__);
+  header("Location: register.php");
+  exit();
 }
 
 // BLP 2018-02-10 -- The above should have found $adminStuff if we have a cookie
@@ -117,30 +202,6 @@ if($blp == "8653" && !$adminStuff) { // BLP 2018-04-25 -- new code
   // if we didn't load adminsites above then who is this? I guess I will still let them see the
   // adminsite. I will review logs and decide.
   
-  error_log("bartonphillips.com/index.i.php. Using blp: $S->ip, $S->agent");
+  error_log("bartonphillips.com/index.i.php. Using blp but not ME: $S->ip, $S->agent");
   $adminStuff = require("/var/www/bartonbartonphillipsnet/adminsites.php");
 }
-
-$ip = $S->ip;
-
-// Get todays count and visitors from daycounts table
-
-
-$S->query("select sum(`real`+bots) as count, sum(visits) as visits ".
-          "from $S->masterdb.daycounts ".
-          "where date=current_date() and site='$S->siteName'");
-
-$row = $S->fetchrow('assoc');
-$count = number_format($row['count'], 0, "", ",");
-$visits = number_format($row['visits'], 0, "", ",");
-
-// Get total number for today.
-$n = $S->query("select distinct ip from $S->masterdb.tracker where lasttime>=current_date() and site='$S->siteName'");
-$visitors = number_format($n, 0, "", ",");
-
-$visitors .= ($visitors < 2) ? " visitor" : " visitors";
-
-date_default_timezone_set("America/New_York");
-
-$date = date("l F j, Y H:i:s T");
-

@@ -1,12 +1,38 @@
 <?php
 // Register yours name and email address
-// This is for index.php
+// This is for bartonphillips.com/index.php
+// BLP 2021-09-15 -- Change how we register
+/*
+  BLP 2021-09-23 -- table layout of members changed. Removed id and changed key to email only.
+  The members table is in the bartonphillips database
+  The 'ip' is the last 'ip' that was set for 'bartonphillips@gmail.com'
+  The logic in index.i.php keeps us from having duplicate errors.
+  
+CREATE TABLE `members` (
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `ip` varchar(30) DEFAULT NULL,
+  `agent` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
+
+  The myip table is in $S->masterdb (which should be 'bartonlp') database
+  'myIp' will be all of the computers that I have used.
+  
+CREATE TABLE `myip` (
+  `myIp` varchar(40) NOT NULL DEFAULT '',
+  `createtime` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT NULL,
+  PRIMARY KEY (`myIp`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 
+*/
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
-$ip = $S->ip;
 $agent = $S->agent;
 $site = $S->siteName;
 
@@ -26,41 +52,35 @@ EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
 
+// If a post from the form
+
 if($_POST) {
   $name = $S->escape($_POST['name']);
   $email = $S->escape($_POST['email']);
 
-  /* BLP 2021-03-09 -- members is a table in the dbinfo structure in mysitemap.json.
-     The masterdb has the main database which is usually 'barton'.
-     For bartonphillips.com the dbinfo->database has the 'bartonphillips' database.
-  */
+  if($email == "bartonphillips@gmail.com") {
+    $name = "Barton Phillips"; // Force name
+    //error_log("email: $email");
 
-  try {
-    $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
-           "values('$name', '$email', '$ip', '$agent', now(), now())";
+    // Update the myip tables.
+    $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
+           "on duplicate key update myIp='$S->ip', lasttime=now()";
 
-    if(!$S->query($sql)) {
-      echo "Error in Register POST<br>";
-      throw(new Exception("register.php", $this));
-    }
-    $id = $S->getLastInsertId();
-  } catch(Exception $e) {
-    // If we failed to do an insert
-    // then try an update with name and email which are unique keys.
-    
-    $sql = "update members set ip='$ip', agent='$agent', lasttime=now() ".
-           "where name='$name' and email='$email'";
-    
     $S->query($sql);
-
-    // Now we need to get the id from the update.
-    
-    $sql = "select id from members where name='$name'";
-    $S->query($sql);
-    list($id) = $S->fetchrow('num');
   }
+  // Do this for everyone.
+  // For me the ip is for the last registration and really has no meaning!
   
-  if($S->setSiteCookie('SiteId', "$id", date('U') + 31536000, '/') === false) {
+  $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
+         "values('$name', '$email', '$S->ip', '$agent', now(), now()) " .
+         "on duplicate key update name='$name', email='$email', ip='$S->ip', agent='$agent', lasttime=now()";
+
+  $S->query($sql);
+  
+  // Always set the cookie. We use the sql id from the members table.
+  // BLP 2021-09-21 -- Add email with ip.
+  
+  if($S->setSiteCookie('SiteId', "$S->ip:$email", date('U') + 31536000, '/') === false) {
     echo "Can't set cookie in register.php<br>";
     throw(new Exception("Can't set cookie register.php " . __LINE__));
   }
@@ -74,23 +94,10 @@ echo <<<EOF
 $top
 <h1>Register</h1>
 <form method="post">
-<p>Get our newsletter once a month. The newsletter has information on new and updated projects by me.
-We currently have several projects:</p>
-
-<ul>
-<li>SiteClass: A mini framework for small sites.
-  <a href="https://github.com/bartonlp/site-class">SiteClass on GitHub</a></li>
-<li>SlideShow: A slideshow of images from a local or remote site.
-  <a href="https://github.com/bartonlp/slideshow">Slideshow on GitHub</a></li>
-<li>MySqlSlideshow: A slideshow of images via a MySql table.
-  <a href="https://github.com/bartonlp/mysqlslideshow">MySqlSlideshow on GitHub</a></li>
-<li>Blog Updates</li>
-</ul>
-
 <table>
 <tbody>
 <tr>
-<td><span class="lynx">Enter Name </span><input type="text" name="name" autofocus required placeholder="Enter Name"></td>
+<td><span class="lynx">Enter Name </span><input type="text" name="name" placeholder="Enter Name"></td>
 </tr>
 <tr>
 <td><span class="lynx">Enter Email Address </span><input type="text" name="email" autofocus required placeholder="Enter Email Address"></td>

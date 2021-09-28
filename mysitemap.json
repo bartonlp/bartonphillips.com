@@ -32,7 +32,8 @@
     "trackerImg2": "/images/146624.png",
     // myUri can be a string, an array or a full url to
     // https://bartonphillips.net/myUri.json
-    "myUri": "https://bartonphillips.net/myUri.json",
+    //"myUri": "https://bartonphillips.net/myUri.json", // We no longer
+    //need this as of BLP 2021-09-15 -- see SiteClass
     "EMAILADDRESS": "bartonphillips@gmail.com",
     "EMAILRETURN": "bartonphillips@gmail.com",
     "EMAILFROM": "webmaster@bartonphillips.com"

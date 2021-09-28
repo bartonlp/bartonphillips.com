@@ -1,0 +1,2 @@
+got beacon:
+Beacon: Mon May 03 2021 21:34:50 GMT-0400 (Eastern Daylight Time) from test-beacon-client.html

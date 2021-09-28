@@ -1,6 +1,5 @@
 # https://www.bartonphillips.com
 
-* Contact [Me](mailto:bartonphillips@gmail.com)
 * Website: https://www.bartonphillips.com  
 * This is set up to use http and https. If you use http it will redirect to https. The https is via Let's Encript.
 
@@ -11,13 +10,11 @@ The framework provides database access and helpfull methods to simplify the repe
 providing boiler plates for headers, footers and banners. It also provides methods for hit counting
 and analysis.
 
+All of my sites and programs are backed up on [https://github.com/bartonlp](https://github.com/bartonlp/).
+
 This site has projects created by Barton Phillips.
                                                           
-# ARTICLES
-
-I have created an *articles*  directory and have moved all of the *__Helpful Programs and Tips__* 
-programs into that directory. This is an attempt to clean up the directory structure.
-
+[__CHANGES__](https://bartonphillips.com/CHANGES.md)
 
 ## Contact me: [bartonphillips@gmail.com](mailto:bartonphillips@gmail.com)
 
