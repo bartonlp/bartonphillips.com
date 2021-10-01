@@ -7,8 +7,10 @@ $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 
 function checkUser($S) {
-  if($userId = $_COOKIE['SiteId']) {
-    $sql = "select name from members where id=$userId";
+  //echo "cookie: ". $_COOKIE['SiteId']."<br>";
+  
+  if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
+    $sql = "select name from members where email='$userEmail'";
 
     if($n = $S->query($sql)) {
       list($memberName) = $S->fetchrow('num');
