@@ -15,4 +15,7 @@ I have also changed the *SiteId* cookie to have the IP address plus the email ad
 
 __BLP 2021-09-22__ -- move adminsites.php from bartonphillipsnet to bartonphillips.com.
 
-__BLP 2021-09-23__ -- changed layout of the members table in the bartonphillips database. Removed *id* and now only *email* is a key.
+__BLP 2021-09-23__ -- changed layout of the members table in the *bartonphillips* database. Removed *id* and now only *email* is a key.
+
+__BLP 2021-10-01__ -- removed symlinks to __bartonlp__ and __wordpress__. I have cleaned up the __bartonlp__ directory so there is amost nothing there
+accept the __other__, __scripts__, __apache-conf__ and __reiverside__ directories.
