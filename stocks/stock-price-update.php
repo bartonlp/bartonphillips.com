@@ -24,8 +24,8 @@ use PHPHtmlParser\Dom;
 function checkUser($S) {
   //echo "cookie: ". $_COOKIE['SiteId']."<br>";
   
-  if($userId = $_COOKIE['SiteId']) {
-    $sql = "select name from members where id=$userId";
+  if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
+    $sql = "select name from members where email='$userEmail'";
 
     if($n = $S->query($sql)) {
       list($memberName) = $S->fetchrow('num');
