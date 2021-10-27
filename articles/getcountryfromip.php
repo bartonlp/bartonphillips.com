@@ -1,4 +1,6 @@
 <?php
+// BLP 2021-10-03 -- remove the GET and do it all in POST
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
@@ -32,39 +34,6 @@ function Dot2LongIP($IPaddr) {
   }
 }
 
-// via file_get_contents('webstats.php?list=<iplist>
-// Given a list of ip addresses get a list of countries as $ar[$ip] = $name of country.
-// FOR THIS APP we only have a single item in the 'list' and this also uses a $_GET not a $_POST as
-// does the webstat-ajax.php.
-
-if($list = $_GET['list']) {
-  $S = new Database($_site);
-
-  $list = json_decode($list);
-  $ar = array();
-
-  foreach($list as $ip) {
-    $iplong = Dot2LongIP($ip);
-    if(strpos($ip, ":") === false) {
-      $table = "ipcountry";
-    } else {
-      $table = "ipcountry6";
-    }
-    $sql = "select countryLONG from $S->masterdb.$table ".
-            "where '$iplong' between ipFROM and ipTO";
-
-    $S->query($sql);
-    
-    list($name) = $S->fetchrow('num');
-
-    //error_log("name: $name, iplong: $iplong");
-    $ar[$ip] = $name;
-  }
-  //error_log("ar: ".print_r($ar, true));
-  echo json_encode($ar);
-  exit();
-}
-
 $h->title = "get country from ip";
 $h->banner = "<h1>Get Country From IP</h1>";
 $h->css = <<<EOF
@@ -83,28 +52,65 @@ span {
   font-style: italic;
   font-family: "Times New Roman", Times, serif;
 }
-  </style>
+@keyframes spin {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+.spinner {
+  animation: spin 1000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50px;
+}
+</style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+$b->script =<<<EOF
+<script>
+$("button").on("click", function() {
+  $("#name").html("<img class='spinner' src='https://bartonphillips.net/images/spinner.svg'>");
+});
+</script>
+EOF;
+
+list($top, $footer) = $S->getPageTopBottom($h, $b);
+
+// BLP 2021-10-03 -- This now does both the ipcountry and the ipinfo.io lookup
 
 if($ip = $_POST['ip']) {
-  $ip = trim($ip, " \t\n\r\0\x0B_"); // strip the _. Have no idea where that comes from?
-  $request = '["'. $ip . '"]';
-  $ar = file_get_contents("http://www.bartonlp.com/getcountryfromip.php?list=$request");
-  //error_log("AR: $ar");
-  $list = json_decode($ar);
-  //error_log("LIST: ".print_r($list, true));
+  //$ip = trim($ip, " \t\n\r\0\x0B_"); // strip the _. Have no idea where that comes from?
+
+  $S = new Database($_site);
+
+  $iplong = Dot2LongIP($ip);
+  if(strpos($ip, ":") === false) {
+    $table = "ipcountry";
+  } else {
+    $table = "ipcountry6";
+  }
+  $sql = "select countryLONG from $S->masterdb.$table ".
+         "where '$iplong' between ipFROM and ipTO";
+
+  $S->query($sql);
+    
+  [$name] = $S->fetchrow('num');
   
-  $list = $list->$ip;
-  //error_log("list: $list");
   // Use ipinfo.io to get the country for the ip
+
   $cmd = "http://ipinfo.io/$ip";
   $ch = curl_init($cmd);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $loc = json_decode(curl_exec($ch));
 
   $locstr = <<<EOF
+<h2>Country is: <span>$name</span></h2>
 <ul class="user-info">
   <li>Hostname: <i class='green'>$loc->hostname</i></li>
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
@@ -120,8 +126,9 @@ $top
 Enter IP: <input autofocus type='text' name='ip' value='$ip'><br>
 <button type='submit'>Submit</button>
 </form>
-<h2>Country is: <span>$list</span></h2>
+<div id="name">
 $locstr
+</div>
 <hr>
 $footer
 EOF;

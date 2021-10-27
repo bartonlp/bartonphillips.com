@@ -1,11 +1,12 @@
 <?php
+// BLP 2021-10-13 -- major rework of SiteClass. Now the getPageHead($h) looks at all of the posible
+// alternatives.
 // BLP 2021-04-03 -- The first section lets use use either the values set by the $arg array or via
 // the mysitemap.json info. There are a lot of ways to do this:
 // 1) assign values via $h for getPageTopBottom().
 // 2) assign values in mysitemap.json
 // 3) assign to $S after it is instantiated (which ends up in $this.
 // NOTE: $arg takes presidence over mysitemap.json.
-
 // BLP 2021-03-26 -- Added logic to not do tracker stuff if nodb or noTrack set.
 // NOTE this is not done via $h.
 
@@ -24,48 +25,30 @@ if($this->noTrack === true || $this->nodb === true) {
 EOF;
 }
 
-// BLP 2021-03-26 -- some sites may have a different defaultCss. If not set use our default
-if(empty($arg['defaultCss'])) {
-  $arg['defaultCss'] = $this->defaultCss ?? 'https://bartonphillips.net/css/blp.css';
-}
-// BLP 2021-03-26 -- $arg takes president over $this from mysitemap.json
-if(empty($arg['keywords'])) {
-  $arg['keywords'] = $this->keywords;
-}
-if(empty($arg['title'])) {
-  $arg['title'] = $this->title;
-}
-if(empty($arg['desc'])) {
-  $arg['desc'] = $this->desc;
-}
-if(empty($arg['favicon'])) {
-  $arg['favicon'] = $this->favicon ?? 'https://bartonphillips.net/images/favicon.ico';
-}
-
 return <<<EOF
 <head>
-  <title>{$arg['title']}</title>
+  <title>{$h->title}</title>
   <!-- METAs -->
-  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset='utf-8'>
   <meta name="copyright" content="$this->copyright">
   <meta name="Author" content="$this->author">
-  <meta name="description" content="{$arg['desc']}">
-  <meta name="keywords" content="{$arg['keywords']}">
+  <meta name="description" content="{$h->desc}">
+  <meta name="keywords" content="{$h->keywords}">
   <!-- More meta data -->
-{$arg['meta']}
+{$h->meta}
   <!-- ICONS, RSS -->
-  <link rel="shortcut icon" href="{$arg['favicon']}">
+  <link rel="shortcut icon" href="{$h->favicon}">
   <!-- default CSS -->
-  <link rel="stylesheet" href="{$arg['defaultCss']}" title="default">
-{$arg['link']}
+  <link rel="stylesheet" href="{$h->defaultCss}" title="default">
+{$h->link}
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js" integrity="sha256-Ap4KLoCf1rXb52q+i3p0k2vjBsmownyBTE1EqlRiMwA=" crossorigin="anonymous"></script>
   <script>jQuery.migrateMute = false; jQuery.migrateTrace = false;</script>
 $trackerStr
-{$arg['extra']}
-{$arg['script']}
-{$arg['css']}
+{$h->extra}
+{$h->script}
+{$h->css}
 </head>
 EOF;

@@ -1,7 +1,10 @@
 # Includes for the bartonphillips.com domain
 The head.i.php and footer.i.php files are used by most of my domains. Some, like bartonlp.org (at www/html), 
 use the entire includes directory as a simlink while others just have head.i.php or footer.i.php symlinked.
-There is now logic in these file to use elements from the mysitemap.json file for things like defaultCss and favicon.
+
+# Update BLP 2021-10-13 -- 
+The head.i.php file now uses $h instead of $arg. The footer.i.php file now uses $b instead of $arg. SiteClass has been changed.
+getPageTop($h) now uses only the object $h. getPageHead($h) now only uses object $h. getPageFooter($b) now only uses object $b.
 
 # Update BLP 2021-06-07 -- 
 I have changed the way tracker.php is used. Now tracker.php resides with http://bartonphillips.net/tracker.php.  

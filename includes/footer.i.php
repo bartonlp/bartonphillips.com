@@ -1,8 +1,9 @@
 <?php
 // Footer file
+// BLP 2021-10-24 -- counterWidget and lastmod are passed from getPageFooter()
 // BLP 2018-02-24 -- added 'script' just before </body>
 
-$lastmod = date("M j, Y H:i", getlastmod());
+// getPageFooter($b) uses only the object $b.
 
 return <<<EOF
 <footer>
@@ -14,14 +15,14 @@ $this->address<br>
 <a href='mailto:$this->EMAILADDRESS'>$this->EMAILADDRESS</a>
 </address>
 </div>
-{$arg['msg']}
-{$arg['msg1']}
+{$b->msg}
+{$b->msg1}
 <br>
 $counterWigget
-Last Modified: $lastmod
-{$arg['msg2']}
+$lastmod
+{$b->msg2}
 </footer>
-{$arg['script']}
+{$b->script}
 </body>
 </html>
 EOF;

@@ -4,6 +4,7 @@
 // BLP 2021-03-26 -- set doGit in the bottom script to blank so we don't do the notify. We don't
 // want to force $GIT to blank because it is used in adminstuff.php to show that something has
 // changed.
+// BLP 2021-10-25 -- Move geo stuff to bartonphillips.net/js/geo.js
 // BLP 2021-03-24 -- remove 'target="_blank"' from all links
 // BLP 2018-03-06 -- Break this up into index.js, index.i.php and index.css
 // BLP 2018-02-10 -- use cookie to determin if we show adminStuff
@@ -13,9 +14,9 @@ $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
-require_once("index.i.php"); // Get the majority of the php
+require_once("./index.i.php"); // Get the majority of the php
 
-$h->title = $S->siteName;
+$h->title = "Barton Phillips";
 $h->desc = "Interesting Things, About the Internet, Tips and Tutorials";
 
 // I am using the mainTitle in mysitemap.json
@@ -26,14 +27,14 @@ $h->link =<<<EOF
   <link rel='stylesheet' href='/index.css'>
 EOF;
 
-// get phpdate.js and set the js doGit to $GIT
+// get phpdate.js, geo.js, index.js and set the js doGit to $GIT
 // This goes at the bottom.
 
 $b->script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
-  <!--<script>var doGit = '$GIT';</script>-->
-  <script>var doGit = ''; // don't do this</script>
-  <script src='index.js'></script>
+  <script>var doGit = ''; // MUST be before index.js. Don't do this</script>
+  <script src='/index.js'></script>
+  <script src='https://bartonphillips.net/js/geo.js'></script>
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h, $b);
@@ -143,13 +144,12 @@ $adminStuff
 
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
-<li><a href="/showmarkdown.php">Display <b>Markdown</b> files</a></li>
-<li><a href="/base64.php">Decode Base 64</a></li>
-<li><a href="articles/testmodernizer.php">What Features does Your Browser Have</a></li>
-<li><a href="articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
-<li><a href="articles/urlcountrycodes.php">Find the country given a url country code</a><br>
-<li><a href="/getcountryfromip.php">Get Country from IP Address</a></li>
-<li><a href="articles/verifyemailaddress.php">Verify Email Address</a></li>
+<li><a href="/showmarkdown.php">Display <b>Markdown</b> files</a></li> <!-- needs to be in DOCROOT -->
+<li><a href="/articles/base64.php">Decode Base 64</a></li>
+<li><a href="/articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
+<li><a href="/articles/urlcountrycodes.php">Find the country given a url country code</a><br>
+<li><a href="/articles/getcountryfromip.php">Get Country from IP Address</a></li>
+<li><a href="/articles/verifyemailaddress.php">Verify Email Address</a></li>
 <li><a href="/getIP.php">Check Ip Address</a></li>
 </ul>
 </section>

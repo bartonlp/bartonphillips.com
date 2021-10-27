@@ -21,6 +21,8 @@ EOF;
   $image3 = "<img src='https://bartonphillips.net/tracker.php?page=noscript&id=$this->LAST_ID'>";
 }
 
+// $mainTitle is passed in from getPageBanner($mainTitle, $bodytab)
+
 return <<<EOF
 <!-- body tag is added by SiteClass::getPageBanner() -->
 <header>

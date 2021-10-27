@@ -9,4 +9,6 @@ mv Sitemap.xml $dir/$filename
 mv sitemap.$$ Sitemap.xml
 gzip $dir/$filename
 
+find $dir -ctime +30 -type f -exec rm '{}' \;
+
 #echo "updatesitemap.sh for bartonlp.com Done"
