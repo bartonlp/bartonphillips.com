@@ -82,26 +82,26 @@
 }
 /* Other Websites */
 #others {
-        width: 90%;
-        text-align: center;
-        margin: auto auto;
-        padding: 10px 10px;
-        margin-bottom: 5px;
+  width: 90%;
+  text-align: center;
+  margin: auto auto;
+  padding: 10px 10px;
+  margin-bottom: 5px;
 }
 #others h2 {
-        margin-bottom: 3px;
-        text-align: center;
+  margin-bottom: 3px;
+  text-align: center;
 }
 /* Other Websites bigScreen mylinks */
 .mylinks button {
-        background-color: var(--indexBkColor);
-        padding: .2rem; 
-        border-radius: .2rem;
-        border: 1px solid black;
-        font-weight: bold;
-        font-size: 1rem;
-        cursor: pointer;
-        margin: 2px 0px;
+  background-color: var(--indexBkColor);
+  padding: .2rem; 
+  border-radius: .2rem;
+  border: 1px solid black;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 2px 0px;
 }
 
 .mylinks a:hover {
@@ -115,17 +115,17 @@
 
 /* Make the 'grid-section' into a block and remove borders from sections, make others 100%  */
 @media (max-width: 799px) {
-        #others {
-                width: 100%;
-        }
-        #grid-section {
-                display: block;
-                margin-top: 1rem;
-        }
-        #github, #interesting, #adminstuff, #internet {
-                border: none;
-        }
-        #grid-section ul {
-                padding-left: 2rem;
-        }
+  #others {
+    width: 100%;
+  }
+  #grid-section {
+    display: block;
+    margin-top: 1rem;
+  }
+  #github, #interesting, #adminstuff, #internet {
+    border: none;
+  }
+  #grid-section ul {
+    padding-left: 2rem;
+  }
 }  

@@ -12,6 +12,7 @@ $h->css =<<<EOF
  * --height: 350px;
  * can be used in another as height: var(--height); or as height: var(--height, 500px); which
  * means, if --height is defined use --height otherwise use 500px.
+ */
 :root {
   /*--background: pink;*/
   --height: 350px;

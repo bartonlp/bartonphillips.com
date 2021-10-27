@@ -8,6 +8,7 @@
     "mainTitle": "<h1>Barton Phillips Home Page</h1>",
     "path": "/var/www/bartonphillips.com",
     "className": "SiteClass",
+    //"defaultCss": false,
     "copyright": "Barton L. Phillips",
     "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com",
     "address": "New Bern, North Carolina",

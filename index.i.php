@@ -1,6 +1,7 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
+// BLP 2021-10-03 -- add set cookie and set members
 // BLP 2021-09-27 -- NO TOO CONFUSING (add homeIp to members if it is me.)
 // BLP 2021-09-23 -- remove several 'else' and just return.
 // BLP 2021-09-23 -- table layout of members changed.
@@ -39,7 +40,7 @@ CREATE TABLE `myip` (
 $blp = $_GET['blp']; // Get the secret value if supplied.
 date_default_timezone_set("America/New_York");
 $date = date("l F j, Y H:i:s T");
-  
+
 // Check if any of my sites have items that need to be added to the git repository
 // dogit() is called below to set the $GIT array. $GIT is used by adminsites.php
 // (bartonphillipsnet) to indicate 1) items to commit, 2) items that need to be pushed
@@ -113,6 +114,8 @@ $locstr = <<<EOF
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
   <li>GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
+  <li id="geo">Your Location: <i class='green'></i></li>
+  <li id="finger">Your fingerprint: <i class='green'></i></li>
 </ul>
 <span id="TrackerCount"></span>
 EOF;
@@ -147,13 +150,15 @@ EOF;
 [$myIp, $cookieEmail] = explode(':', $ipEmail);
 
 // BLP 2021-09-21 -- If this cookie email is ME then do special stuff
-  
+
+//vardump("cookie", $cookieEmail);
+
 if($cookieEmail == "bartonphillips@gmail.com") {
   $GIT = dogit(); // This is an array, $GIT[0] could be an '*' while $GIT[1] could be an '!'. It is used by adminsites.php
 
   // BLP 2018-02-10 -- If it is me do the 'adminStuff'
   
-  $adminStuff = require("/var/www/bartonphillips.com/adminsites.php");
+  $adminStuff = require("adminsites.php");
 
   // BLP 2021-09-21 -- insert/update the ip with the current ip
     
@@ -162,16 +167,32 @@ if($cookieEmail == "bartonphillips@gmail.com") {
 
   $S->query($sql);
 
-  /*
-  // BLP 2021-09-27 -- Always insert or update the members table with my info.
+  // BLP 2021-10-03 -- Get the ip from members
 
-  $homeIp = gethostbyname('bartonphillips.dyndns.org'); // Use my home ip
-  
-  $sql = "insert into members (name, email, ip, agent, created, lasttime) values('Barton Phillips', '$cookieEmail', '$homeIp', '$S->agent', now(), now()) ".
-         "on duplicate key update name='Barton Phillips', email='$cookieEmail', ip='$homeIp', agent='$S->agent', lasttime=now()";
-
+  $sql = "select ip, agent from members where email='bartonphillips@gmail.com'";
   $S->query($sql);
-  */
+  [$memberIp, $memberAgent] = $S->fetchrow('num');
+
+  // BLP 2021-10-03 -- if memberIp is not our current ip then update the members table.
+
+  if($memberIp !== $S->ip || $memberAgent !== $S->agent) {
+    $sql = "insert into members (name, email, ip, agent, created, lasttime) ". // The insert should fail with duplicate
+           "values('Barton Phillips', 'bartonphillips@gmail.com', '$S->ip', '$S->agent', now(), now()) ".
+           "on duplicate key update ip='$S->ip', agent='$S->agent', lasttime=now()"; // Update the ip, agent and lasttime
+
+    $S->query($sql);
+  }
+
+  // BLP 2021-10-03 --  check my cookie IP against the current ip 
+    
+  if($myIp !== $S->ip) {
+    // BLP 2021-10-03 -- Update my cookie with the current ip address
+
+    if($S->setSiteCookie('SiteId', "$S->ip:$cookieEmail", date('U') + 31536000, '/') === false) {
+      echo "Can't set cookie in register.php<br>";
+      throw(new Exception("Can't set cookie register.php " . __LINE__));
+    }
+  }
 }
 
 // BLP 2021-09-21 -- We do this for everyone if we found a cookie. Note change to members table.
@@ -203,5 +224,5 @@ if($blp == "8653" && !$adminStuff) { // BLP 2018-04-25 -- new code
   // adminsite. I will review logs and decide.
   
   error_log("bartonphillips.com/index.i.php. Using blp but not ME: $S->ip, $S->agent");
-  $adminStuff = require("/var/www/bartonbartonphillipsnet/adminsites.php");
+  $adminStuff = require("adminsites.php");
 }

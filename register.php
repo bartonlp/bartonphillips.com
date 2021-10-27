@@ -58,6 +58,8 @@ if($_POST) {
   $name = $S->escape($_POST['name']);
   $email = $S->escape($_POST['email']);
 
+  error_log("bartonphillips: name: $name, email: $email");
+  
   if($email == "bartonphillips@gmail.com") {
     $name = "Barton Phillips"; // Force name
     //error_log("email: $email");

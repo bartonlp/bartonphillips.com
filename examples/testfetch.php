@@ -33,7 +33,7 @@ let ret2 = fetch("testpost.php", {
 }).then(res => res.text());
 
 ret.then(data => console.log("data", data));
-ret2.then(data => console.log("data2", data));
+ret2.then(data => {console.log("data2", data); $("#test").html(data);} );
 
   </script>
 EOF;
@@ -43,6 +43,7 @@ list($top, $footer) = $S->getPageTopBottom($h);
 echo <<<EOF
 $top
 <h1>Test</h1>
+<div id="test"></div>
 $footer
 EOF;
 
