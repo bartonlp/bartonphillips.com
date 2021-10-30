@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+// Delete entries from the myIp table older than three days that are not my home IP
 // BLP 2021-10-26 -- change interval from 1 to 3 days
 // BLP 2021-10-01 -- I now set SITELOADNAME in ~/.profile
 

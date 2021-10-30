@@ -1,3 +1,4 @@
+// Special for the 'test' database
 {
     "siteDomain": "www.bartonphillips.com",
     "siteName": "User-Test",
@@ -13,7 +14,7 @@
     "dbinfo": {
         "host": "localhost",
         "user": "test", // can't do anything with the barton masterdb because the user is not authorized in any other database
-        "password": "7098653",
+        //"password": "7098653",
         "database": "test", // This is the ONLY database and it has only one file 'test'
         "engine": "mysqli"
     },
