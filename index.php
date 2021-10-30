@@ -30,10 +30,13 @@ EOF;
 // get phpdate.js, geo.js, index.js and set the js doGit to $GIT
 // This goes at the bottom.
 
+$FINGER_TOKEN = require_once("/var/www/bartonphillipsnet/PASSWORDS/finger-token");
+
 $b->script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
   <script>var doGit = ''; // MUST be before index.js. Don't do this</script>
   <script src='/index.js'></script>
+  <script>var FINGER_TOKEN = "$FINGER_TOKEN"; </script>
   <script src='https://bartonphillips.net/js/geo.js'></script>
 EOF;
 

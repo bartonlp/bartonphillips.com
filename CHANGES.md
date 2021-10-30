@@ -1,5 +1,5 @@
 # CHANGES (oldest first)
-
+__BLP 2021-10-29__ -- Add gps and mapping.
 __BLP 2018-03-06__ -- break up index.php into index.i.php, index.js and index.css.  
 Also create the *articles* directory directory and moved all of the *__Helpful Programs and Tips__* 
 programs into that directory. This is an attempt to clean up the directory structure.

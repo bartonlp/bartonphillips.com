@@ -1,6 +1,9 @@
 /*
  * SPECIAL json for use by siteload.php. Normal json will not allow
  * comments.
+ * BLP 2021-10-28 -- Removed 'password' from Database. Now we get the
+ * password from a secure location at
+ * /var/www/bartonphillipsnet/PASSWORDS/database-password
  */
 {
     "siteDomain": "bartonphillips.com",
@@ -17,7 +20,7 @@
     "dbinfo": {
       "host": "localhost",
       "user": "barton",
-      "password": "7098653",
+/*      "password": "7098653", // not used */
       "database": "bartonphillips", // we have a seperate database from barton.
       "engine": "mysqli"
     },
