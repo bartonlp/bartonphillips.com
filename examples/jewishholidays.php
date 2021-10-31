@@ -1,4 +1,8 @@
 <?php
+// BLP 2021-10-31 -- This is 'include'ed in holidays.php. This file does NOT run by it self.
+
+echo "<p style='display: none;'>This is jewishholidays.php which is included</p>";
+
 function isJewishLeapYear($year) {
   if ($year % 19 == 0 || $year % 19 == 3 || $year % 19 == 6 ||
       $year % 19 == 8 || $year % 19 == 11 || $year % 19 == 14 ||

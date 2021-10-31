@@ -1,13 +1,15 @@
 <?php
-// https://leafletjs.com/reference-1.3.0.html#url-template
+// BLP 2021-10-31 -- goto: https://leafletjs.com/examples/quick-start/
+// You will need an up to date accessToken from https://account.mapbox.com/access-tokens/
+// You may need to login to mapbox.com: Account: bartonphillips@gmail.com, Password: 709Blp8653
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 $h->link =<<<EOF
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
-    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-    crossorigin=""/>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
 EOF;
 
 $h->css =<<<EOF
@@ -18,13 +20,13 @@ $h->css =<<<EOF
   </style>
 EOF;
 
-$h->script =<<<EOF
-  <!-- Make sure you put this AFTER Leaflet's CSS -->
-  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
-    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
-    crossorigin=""></script>
-
-  <script>
+$b->script =<<<EOF
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin="">
+</script>
+<script>  
 jQuery(document).ready(function($) {
   var mymap = L.map('mapid').setView([35.110966, -77.092889], 13);
   var marker = L.marker([35.110966, -77.092889]).addTo(mymap);
@@ -41,19 +43,19 @@ jQuery(document).ready(function($) {
 
   mymap.on('click', onMapClick);
 
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, '+
-     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; ' +
-     '<a href="https://www.mapbox.com/">Mapbox</a>',
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoiYmFydG9ubHAiLCJhIjoiY2poZGp5NXN4MGMxdTNkbWxrYWR0em1mMiJ9.Ilrp-SUZvMW8aHqW_A5nAw'
-  }).addTo(mymap);
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiYmFydG9ubHAiLCJhIjoiY2t2ZjBtNzl5Ym5xczJ2bnpnaWlidjVvaCJ9.Z0Odk3_BG1T0_iP9LT66HQ'
+}).addTo(mymap);
 });
-  </script>
+</script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+list($top, $footer) = $S->getPageTopBottom($h, $b);
 
 echo <<<EOF
 $top

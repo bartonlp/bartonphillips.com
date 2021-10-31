@@ -51,7 +51,7 @@ async function sql(sql) {
 
 // Everything is displayed via console.log so there is NO browser output.
 
-var test = sql("select * from stocks.stocks");
+var test = sql("select * from stocks");
 
 var ret = '';
 
