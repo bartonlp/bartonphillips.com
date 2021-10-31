@@ -1,5 +1,6 @@
 <?php
 // Show only non-robots and non 0 isJavaScript from 'tracker'
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
@@ -58,7 +59,7 @@ if(!$_GET) {
   list($top, $footer) = $S->getPageTopBottom();
   echo <<<EOF
 $top
-<h1>Enter Site Name</h1>
+<h1>Enter Site Name (like Newbernzig or Tysonweb etc.)</h1>
 <form method='get'>
 <input type='text' name='site' autofocus><br>
 <input type='submit' value="Submit">

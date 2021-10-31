@@ -1,5 +1,5 @@
 <?php
-// AJAX for http://www.bartonphillips.con/promise.php
+// AJAX for http://www.bartonphillips.con/articles/promise.php
 // We send test==yes.
 
 if($_GET['test'] == 'yes') {

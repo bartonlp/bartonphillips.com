@@ -51,6 +51,10 @@ function re_calc() {
   document.forms['thisform'].submit();
 }
 jQuery(document).ready(function($) {
+  $("#show").on("click", function() {
+    $("#code").show();
+    $(this).hide();
+  });
 });
   </script>
 EOF;
@@ -70,6 +74,7 @@ code {
 #easterExample {
   width: 100%;
 }
+#code { display: none; border: 1px solid black; }
 #year {
   font-size: 1em;
   width: 4rem;
@@ -95,15 +100,16 @@ Easter can also be calculated:</p>
 
 <p>This is done by a PHP Class. You can download the class
 <a href="download.php?file=easterdatecalculator.php">here</a>.</p>
-$easterExample
+<button id="show">Show Code</button>
+<div id="code">$easterExample</div>
 <form id='thisform' name='thisform' method='post'>
 Enter The Year You Are Interested In:
 <input type='text' id='year' name='year' value="$year"
   onchange='re_calc();' autofocus><br/>
-Easter is on {$day->easter($year)} day of year=$day->dayofyear<br/>
-Mardi Gras on {$day->mardi_grass($year)} day of year=$day->dayofyear<br>
-Assention on {$day->assention($year)} day of year=$day->dayofyear<br>
-Pentacost on {$day->pentecost($year)} day of year=$day->dayofyear<br>
+Easter is on {$day->easter($year)}, day of year=$day->dayofyear<br/>
+Mardi Gras on {$day->mardi_grass($year)}, day of year=$day->dayofyear<br>
+Assention on {$day->assention($year)}, day of year=$day->dayofyear<br>
+Pentacost on {$day->pentecost($year)}, day of year=$day->dayofyear<br>
 </form>
 
 <p>My birthday is April 11, 1944. Easter falls on that date on these years from 1944 to 2070</p>
