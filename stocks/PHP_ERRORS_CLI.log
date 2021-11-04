@@ -1,3 +1,0 @@
-[02-Apr-2020 18:25:11 America/Los_Angeles] PHP Parse error:  syntax error, unexpected ']', expecting ',' or ')' in /var/www/bartonphillips.com/stocks/stockfix.php on line 15
-[02-Apr-2020 18:30:09 America/Los_Angeles] PHP Parse error:  syntax error, unexpected ']', expecting ',' or ')' in /var/www/bartonphillips.com/stocks/stockfix.php on line 18
-[02-Apr-2020 18:30:21 America/Los_Angeles] PHP Warning:  Unterminated comment starting line 14 in /var/www/bartonphillips.com/stocks/stockfix.php on line 14
