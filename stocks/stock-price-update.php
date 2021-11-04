@@ -10,11 +10,6 @@
 // BLP 2020-10-21 -- Include mutual funds in list returned by AJAX. Move qty and value together. In stock-price-update.js include mutual funds
 // along with 'active'.
 
-// This is for iex cloud the new way to get stock info. Which is used in the worker.
-// API Token: pk_feb2cd9902f24ed692db213b2b413272 
-// Account No. 7e36c73b36687b93ac549e7f828447c2 
-// SECRET sk_6f07cb9018994f51a6d27eb7b27d5ebf
-
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 ErrorClass::setNoEmailErrs(true);
@@ -47,17 +42,59 @@ function checkUser($S) {
 if($_POST['page'] == 'web') {
   $S = new Database($_site); // All we need here is the database.
 
+  // BLP 2021-11-03 -- get token from secure location
+  
+  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  error_log("stock-price-update.php AJAX: iex_token=$iex_token");
+  
   // BLP 2020-10-21 -- include mutual funds
   
   $sql = "select stock, price, qty, status, name from stocks";
   //"where status != 'mutual'";
   
   $S->query($sql);
-  $ar = [];
 
   while(list($stock, $price, $qty, $status, $company) = $S->fetchrow('num')) {
-    $ar[] = [$stock, $price, $qty, $status, $company];
+    if($stock == "RDS-A") {
+      $stock = "RDS.A";
+    }
+    $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
   }
+
+  $symboleList = implode(",", array_keys($ar));
+
+  //error_log("stock-price-update.php AJAX: symboleList=$symboleList");
+
+  $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=$symboleList".
+         "&types=quote,stats&filter=latestPrice,latestVolume,change,changePercent,latestUpdate,".
+         "avgTotalVolume,day200MovingAvg".
+         "&token=$iex_token";
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $str);
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+  $iex = curl_exec($ch);
+  //error_log("stock-price-update.php AJAX: iex string=$iex");
+  
+  $iex = json_decode($iex, true); // decode as an array
+
+  foreach($iex as $k=>$v) {
+    $a = $ar[$k];
+    $i = $iex[$k]['quote'];
+
+    $ar[$k]['moving'] = $iex[$k]['stats']['day200MovingAvg'];
+    
+    $ar[$k]['latestPrice'] = $iex[$k]['quote']['latestPrice'];
+    $ar[$k]['latestVolume'] = $iex[$k]['quote']['latesVolume'];
+    $ar[$k]['change'] = $iex[$k]['quote']['change'];
+    $ar[$k]['changePercent'] = $iex[$k]['quote']['changePercent'];
+    $ar[$k]['latestUpdate'] = $iex[$k]['quote']['latestUpdate'];
+    $ar[$k]['avgTotalVolume'] = $iex[$k]['quote']['avgTotalVolume'];
+  }
+   
+  //error_log("stock-price-update.php AJAX: ar=" . print_r($ar, true));
 
   // Dom lets one use the dom to scape the website.
   
@@ -74,6 +111,7 @@ if($_POST['page'] == 'web') {
   */
 
   $group = $dom->find(".markets__group");
+
   $dji = $group->find(".price bg-quote")->text;
   $change = $group->find(".change bg-quote")->text;
   $changePercent = $group->find(".percent bg-quote")->text;
