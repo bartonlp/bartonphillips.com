@@ -48,7 +48,7 @@ $date = date("l F j, Y H:i:s T");
 function dogit() {
   array($any);
   
-  foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
+  foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
            '/bartonphillipsnet', '/allnaturalcleaningcompany', '/tysonweb', '/newbernzig.com'] as $site) {
 
     chdir("/var/www/$site");
