@@ -14,7 +14,9 @@ $S = new $_site->className($_site);
 
 if($stock = $_POST['stock']) {
   $stock = strtoupper($stock);
-  $alphakey = "FLT73FUPI9QZ512V";
+  $alphakey = require_once("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  
   $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
 
   $ch = curl_init();
@@ -27,7 +29,7 @@ if($stock = $_POST['stock']) {
 
   $alpha = print_r($alpha, true);
 
-  $str = "https://cloud.iexapis.com/stable/stock/$stock/batch?types=quote&token=pk_feb2cd9902f24ed692db213b2b413272";
+  $str = "https://cloud.iexapis.com/stable/stock/$stock/batch?types=quote&token=$iex_token";
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $str);
@@ -39,7 +41,7 @@ if($stock = $_POST['stock']) {
   $ar = json_decode($ret);
   $iex = print_r($ar, true);
   
-  $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=pk_feb2cd9902f24ed692db213b2b413272";
+  $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=$iex_token";
   //$str = "https://api.iextrading.com/1.0/stock/$stock/stats";
 
   curl_setopt($ch, CURLOPT_URL, $str);

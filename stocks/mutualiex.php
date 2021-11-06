@@ -9,12 +9,15 @@ ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 if($_POST['mutual']) {
+  $iex_token = require_once('/var/www/bartonphillipsnet/PASSWORDS/iex-token');
+  //error_log("mutualiex.php AJAX: token=$iex_token");
+  
   $mutual = $_POST['mutual'];
   
   $url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=". $mutual .
               "&types=quote,stats&filter=latestPrice,change,changePercent,latestUpdate,".
               "day200MovingAvg".
-              "&token=pk_feb2cd9902f24ed692db213b2b413272";
+              "&token=$iex_token";
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -57,6 +60,7 @@ EOF;
 $mutual = "";
 
 // BLP 2021-09-08 -- remove stocks from stocks.stocks. There is no stocks database.
+
 $sql = "select stock, qty from stocks where status = 'mutual'";
 
 $S->query($sql);
@@ -89,7 +93,7 @@ $context  = stream_context_create($options);
 
 // Now this is going to do a POST!
 
-$info = file_get_contents("https://www.bartonphillips.com/examples/stockquotes/mutualiex.php",
+$info = file_get_contents("https://www.bartonphillips.com/stocks/mutualiex.php",
                             false, $context);
 
 $info = json_decode($info, true);

@@ -1,6 +1,8 @@
 // stock-price-update.js
 // This is used by stock-price-update.php
-// This gets 'message's from stock-price-update-worker.js
+// BLP 2021-11-04 -- Removed stock-price-update-worker.js. Now all of
+// the work is done here and in the AJAX in stock-price-update.php
+// which uses the IPX secret from a secure location.
 // BLP 2020-06-04 -- changed the php and worker files to use ipx to get
 // 200dayMovingAvg and avgTotalVolume. No changes were required to this
 // program
@@ -171,8 +173,6 @@ ${djiPercent}</span>
       
       qty = qty.toLocaleString();
 
-      status = status;
-
       company =company.toLowerCase();
       
       avVol = (avVol == null ? 0 : avVol).toLocaleString();
@@ -305,7 +305,9 @@ ${djiPercent}</span>
 };
 
 async function query() {
-  // Again this is like AJAX. Both calls return JSON data.
+  // Again this is like AJAX.
+  // BLP 2021-11-04 -- stock-price-update.php does the IPX logic and
+  // uses a secure secret token.
 
   let r2 = await fetch("./stock-price-update.php", {
     body: "page=web", // make this look like form data

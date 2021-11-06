@@ -10,6 +10,8 @@ ErrorClass::setDevelopment(true);
 
 $S = new $_site->className($_site);
 
+$iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+
 $h->title = "Stock Values";
 $h->banner = "<h1>Stock Values</h1>";
 $h->css =<<<EOF
@@ -39,7 +41,7 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 }
 
 $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=" . implode(',', array_keys($stocks)) .
-       "&types=quote,stats&filter=day200MovingAvg,latestPrice&token=pk_feb2cd9902f24ed692db213b2b413272";
+       "&types=quote,stats&filter=day200MovingAvg,latestPrice&token=$iex_token";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $str);

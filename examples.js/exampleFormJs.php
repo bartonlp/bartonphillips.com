@@ -1,5 +1,5 @@
 <?php
-// BLP 2021-10-31 -- This files uses example1.php for AJAX.
+// BLP 2021-10-31 -- This files uses exampleAjax.php for AJAX.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
@@ -11,7 +11,7 @@ jQuery(document).ready(function($) {
     let json = { test1: "test one", test2: "test two" };
   
     $.ajax({
-      url: 'example1.php',
+      url: 'exampleAjax.php',
       data: {page: 'beacon', test: 'This is beacon speaking!', json: json},
       type: 'post',
       success: function(data) {
@@ -43,7 +43,7 @@ $top
 
 <div id="form">
 <p>The form below will do a regular <form method="post" ...></p>
-<form method="post" action="example1.php">
+<form method="post" action="exampleAjax.php">
 <h2>Form</h2>
 Text to forward: <input type="text" name="test"><br>
 siteName: <input type="text" name="siteName"><br>

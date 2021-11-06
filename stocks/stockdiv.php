@@ -1,6 +1,7 @@
 <?php
 // stockdiv.php
 // Use IEX to get the dividend info.
+// BLP 2021-11-04 -- get ipx token from secure location.
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
@@ -30,7 +31,7 @@ checkUser($S);
 date_default_timezone_set("America/New_York");
 
 $prefix = "https://cloud.iexapis.com/stable";
-$token = "token=pk_feb2cd9902f24ed692db213b2b413272";
+$token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
 
 $sql = "select stock, price, qty from stocks where status not in('watch','sold')";
 $S->query($sql);
@@ -51,7 +52,7 @@ $totalcnt = 0;
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$str = "$prefix/stock/market/batch?symbols=$stocks&types=quote,stats&filter=latestPrice,companyName,ttmDividendRate,dividendYield,exDividendDate&$token";
+$str = "$prefix/stock/market/batch?symbols=$stocks&types=quote,stats&filter=latestPrice,companyName,ttmDividendRate,dividendYield,exDividendDate&token=$token";
 
 curl_setopt($ch, CURLOPT_URL, $str);
 $ret = curl_exec($ch);

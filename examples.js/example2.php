@@ -26,7 +26,7 @@ $options = ['http' => [
                 // [content] => test=test+from+example2&siteName=bartonlp.com
 
 $context  = stream_context_create($options);
-$retvalue = file_get_contents("https://www.bartonphillips.com/examples.js/example1.php", false, $context);
+$retvalue = file_get_contents("https://www.bartonphillips.com/examples.js/exampleAjax.php", false, $context);
 
 echo <<<EOF
 $top

@@ -1,8 +1,7 @@
 <?php
 // stock-price-update.php
-// uses stock-price-update.js which
-// uses stock-price-update-worker.js
-// The worker does most of the real background work.
+// uses stock-price-update.js
+// BLP 2021-11-04 -- Remove stock-price-update-worker.js. Fixed secret.
 // BLP 2018-03-07 -- Uses Roboto from /var/www/bartonphillips.com/fonts
 // BLP 2020-06-04 -- Use iex to get the avgTotalVolume and day200MovingAvg instead of reading the
 // database.
@@ -17,8 +16,6 @@ ErrorClass::setNoEmailErrs(true);
 use PHPHtmlParser\Dom;
 
 function checkUser($S) {
-  //echo "cookie: ". $_COOKIE['SiteId']."<br>";
-  
   if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
     $sql = "select name from members where email='$userEmail'";
 
@@ -45,7 +42,7 @@ if($_POST['page'] == 'web') {
   // BLP 2021-11-03 -- get token from secure location
   
   $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
-  error_log("stock-price-update.php AJAX: iex_token=$iex_token");
+  //error_log("stock-price-update.php AJAX: iex_token=$iex_token");
   
   // BLP 2020-10-21 -- include mutual funds
   
