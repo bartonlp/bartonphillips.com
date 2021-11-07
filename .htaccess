@@ -1,5 +1,9 @@
-Order Allow,Deny
-Allow from All
+# Apache2 2.4 uses Require
+Require all granted
+
+#Order Allow,Deny
+#Allow from All
+
 Options +Includes
 # include .shtml files or files with the execution bit set
 AddType text/html .shtml .php

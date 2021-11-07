@@ -2,7 +2,7 @@ other/
 Sitemap.xml
 *.asv#
 test_examples/
-examples/node-programs
+examples.js/node-programs
 package.json
 package-lock.json
 .cache_ggshield
