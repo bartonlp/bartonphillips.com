@@ -12,7 +12,6 @@ return <<<EOF
 <li><a target="_blank" href="/getcookie.php">Get/Reset Cookie</a></li>
 <li><a target="_blank" href="http://www.bartonphillips.dyndns.org:8080">Rpi</a></li>
 <li><a target="_blank" href="https://www.bartonphillips.org">Bartonphillips.org</a></li>
-<li><a target="_blank" href="https://www.applitec.com/glencabin">Glen's Cabin</a></li>
 <li><a target="_blank" href="https://newbernrotary.org/wp-admin/">New Bern Rotary ADMIN</a></li>
 <li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">Bnai-sholem ADMIN</a></li>
 <li><a target="_blank" href="https://rivertownerentals.info/wp-admin">Rivertown Rental ADMIN</a></li>

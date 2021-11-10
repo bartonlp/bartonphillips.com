@@ -13,11 +13,7 @@
 // BLP 2021-03-26 -- add nodb logic
 
 if($this->nodb !== true && $this->noTrack !== true) {
-  $image2 =<<<EOF
-  <a>
-    <img src="https://bartonphillips.net/tracker.php?page=normal&id=$this->LAST_ID&image=$this->trackerImg2" alt="linux counter image.">
-  </a>
-EOF;
+  $image2 = "<img src='https://bartonphillips.net/tracker.php?page=normal&id=$this->LAST_ID&image=$this->trackerImg2' alt='linux counter image.'>";
   $image3 = "<img src='https://bartonphillips.net/tracker.php?page=noscript&id=$this->LAST_ID'>";
 }
 
