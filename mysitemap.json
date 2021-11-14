@@ -20,7 +20,6 @@
     "dbinfo": {
       "host": "localhost",
       "user": "barton",
-/*      "password": "7098653", // not used */
       "database": "bartonphillips", // we have a seperate database from barton.
       "engine": "mysqli"
     },
