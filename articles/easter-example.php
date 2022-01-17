@@ -1,6 +1,11 @@
 <?php
+// This file show the date of easter given a year. It uses the class easterdatecalculator.php on
+// github.
+
 $_site = require_once(getenv("SITELOADNAME"));
+ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
+$day = new easterdatecalculator;
 
 if (empty($_POST['year'])) {
   $year = date("Y");
@@ -12,16 +17,13 @@ $easterExample = escapeltgt(file_get_contents("easter-example.php"));
 
 $easterExample = <<<EOF
 <p>Here is this file (easter-example.php). It uses 'SiteClass' (the require_once at the top)
-which you can get at <a href="https://github.com/bartonlp/site-class">here.</a></p>
+which you can get from <a href="https://github.com/bartonlp/site-class">GitHub</a></p>
 <div id='easterExample'>
 <pre class='brush: php'>
 $easterExample
 </pre>
 </div>
 EOF;
-
-require_once("easterdatecalculator.php");
-$day = new easterdatecalculator;
 
 // My birthday is April 11, 1944. this shows how many times Easter has and will fall on that date.
 // Of course I may not be around for all of these.
@@ -84,6 +86,7 @@ code {
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
+$path = __DIR__;
 
 echo <<<EOF
 $top
@@ -98,8 +101,8 @@ Easter can also be calculated:</p>
 <li>Pentecost     +49 days from Easter
 </ul>
 
-<p>This is done by a PHP Class. You can download the class
-<a href="download.php?file=easterdatecalculator.php">here</a>.</p>
+<p>This is done by a PHP Class. You can download the class from 
+<a href="https://github.com/bartonlp/easterdatecalculator">GitHub</a>.</p>
 <button id="show">Show Code</button>
 <div id="code">$easterExample</div>
 <form id='thisform' name='thisform' method='post'>
