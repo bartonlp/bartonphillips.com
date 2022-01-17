@@ -1,21 +1,8 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
-// BLP 2021-10-03 -- add set cookie and set members
-// BLP 2021-09-27 -- NO TOO CONFUSING (add homeIp to members if it is me.)
-// BLP 2021-09-23 -- remove several 'else' and just return.
-// BLP 2021-09-23 -- table layout of members changed.
-// BLP 2021-09-22 -- moved adminsites.php from bartonphillipsnet to bartonphillips.com.
-// BLP 2021-09-21 -- Change the way we register and save myIp. See index.php, register.php
-// BLP 2021-08-21 -- add tysonweb and newbernzig.com to dogit().
-// BLP 2021-03-24 -- move $_GET['blp'] to top so it is available for all requires of adminsites.php  
-// BLP 2018-04-25 -- change blp code to 8653 after a bot had old code
-// BLP 2018-03-06 -- break up index.php into index.i.php, index.js and index.css
+// BLP 2022-01-16 -- Reworked several areas.
 /*
-  BLP 2021-09-23 -- Removed id and changed key to email only.
-  The members table is in the bartonphillips database
-  The 'ip' is the last 'ip' that was set for 'bartonphillips@gmail.com'
-  
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -27,17 +14,19 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
   The myip table is in $S->masterdb (which should be 'bartonlp') database
-  'myIp' will be all of the computers that I have used.
+  'myIp' will be all of the computers that I have used in the last THREE days.
+  A cron job removes entries that are older than three days and not my HOME ip address.
   
 CREATE TABLE `myip` (
   `myIp` varchar(40) NOT NULL DEFAULT '',
+  `count` int DEFAULT NULL,
   `createtime` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
   PRIMARY KEY (`myIp`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 
 */
 
-$blp = $_GET['blp']; // Get the secret value if supplied.
+$BLP = $_GET['blp']; // Get the secret value if supplied.
 date_default_timezone_set("America/New_York");
 $date = date("l F j, Y H:i:s T");
 
@@ -110,7 +99,6 @@ $locstr = <<<EOF
     <i class='green'>$S->agent</i></li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
   <li>Clientname: <i class='green'>$clientname</i></li>
-<!--  <li>Hostname: <i class='green'>$loc->hostname</i></li> -->
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
   <li>GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
@@ -121,10 +109,9 @@ $locstr = <<<EOF
 EOF;
 
 // Do we have a cookie? If not offer to register
-// BLP 2021-09-21 -- new logic for myip and members tables. See index.php and register.php.
-// $ipEmail is now the ip and email address separated by a colen (:). 
-// BLP 2018-02-10 -- if we have a cookie and it is me then set $adminStuff
-// The $myIp is the last ip address for this browser/CPU from $_COOKIE
+// The 'SiteId' cookie is the ip and email address separated by a colen (:). 
+// If we have a cookie and it is me then set $adminStuff
+// The $cookieIp is the last ip address for this browser/CPU from $_COOKIE
 
 if(!($ipEmail = $_COOKIE['SiteId'])) { // if no cookie
   // check logagent table to see how may times this ip has been here.
@@ -136,93 +123,92 @@ if(!($ipEmail = $_COOKIE['SiteId'])) { // if no cookie
 
   if($hereCount > 1) {
     $hereMsg =<<<EOF
-<div class="hereMsg">You have been to our site $hereCount since $created<br>
+<div class="hereMsg">You have been to our site $hereCount times since $created<br>
 Why not <a href="register.php">register</a>
 </div>
 EOF;
   }
-  
-  return; // return with what we have so far.
 } 
 
-// BLP 2021-09-21 -- break $ipEmail into $myIp and $cookieEmail
+// Is this $S->ip in the $S->myIp (from the myip table).
 
-[$myIp, $cookieEmail] = explode(':', $ipEmail);
-
-// BLP 2021-09-21 -- If this cookie email is ME then do special stuff
-
-//vardump("cookie", $cookieEmail);
-
-if($cookieEmail == "bartonphillips@gmail.com") {
-  $GIT = dogit(); // This is an array, $GIT[0] could be an '*' while $GIT[1] could be an '!'. It is used by adminsites.php
-
-  // BLP 2018-02-10 -- If it is me do the 'adminStuff'
+if($S->isMe()) {
+  // This ip is one of the $S->myIp entries.
   
-  $adminStuff = require("adminsites.php");
+  [$cookieIp, $cookieEmail] = explode(':', $ipEmail); // The cookie is 'IP:Email'
 
-  // BLP 2021-09-21 -- insert/update the ip with the current ip
+  // Is the email address in the cookie my email address?
+  
+  if($cookieEmail == "bartonphillips@gmail.com") {
+    $GIT = dogit(); // This is an array, $GIT[0] could be an '*' while $GIT[1] could be an '!'. It is used by adminsites.php
+
+    // Get the admin sites.
     
-  $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
-         "on duplicate key update myIp='$S->ip', lasttime=now()";
+    $adminStuff = require("adminsites.php");
 
-  $S->query($sql);
+    // Get the ip address and agent that is in the members table and check to see if it is still
+    // the same as before.
 
-  // BLP 2021-10-03 -- Get the ip from members
-
-  $sql = "select ip, agent from members where email='bartonphillips@gmail.com'";
-  $S->query($sql);
-  [$memberIp, $memberAgent] = $S->fetchrow('num');
-
-  // BLP 2021-10-03 -- if memberIp is not our current ip then update the members table.
-
-  if($memberIp !== $S->ip || $memberAgent !== $S->agent) {
-    $sql = "insert into members (name, email, ip, agent, created, lasttime) ". // The insert should fail with duplicate
-           "values('Barton Phillips', 'bartonphillips@gmail.com', '$S->ip', '$S->agent', now(), now()) ".
-           "on duplicate key update ip='$S->ip', agent='$S->agent', lasttime=now()"; // Update the ip, agent and lasttime
-
+    $sql = "select ip, agent from members where email='bartonphillips@gmail.com'";
     $S->query($sql);
-  }
+    [$memberIp, $memberAgent] = $S->fetchrow('num');
 
-  // BLP 2021-10-03 --  check my cookie IP against the current ip 
-    
-  if($myIp !== $S->ip) {
-    // BLP 2021-10-03 -- Update my cookie with the current ip address
+    // If memberIp is not our current ip  or $memberAgent is not the current agent then update the members table.
 
-    if($S->setSiteCookie('SiteId', "$S->ip:$cookieEmail", date('U') + 31536000, '/') === false) {
-      echo "Can't set cookie in register.php<br>";
-      throw(new Exception("Can't set cookie register.php " . __LINE__));
+    if($memberIp !== $S->ip || $memberAgent !== $S->agent) {
+      $sql = "insert into members (name, email, ip, agent, created, lasttime) ". // The insert should fail with duplicate
+             "values('Barton Phillips', 'bartonphillips@gmail.com', '$S->ip', '$S->agent', now(), now()) ".
+             "on duplicate key update ip='$S->ip', agent='$S->agent', lasttime=now()"; // Update the ip, agent and lasttime
+
+      $S->query($sql);
+    }
+
+    // Check my cookie IP against the current ip 
+
+    if($cookieIp !== $S->ip) {
+      // Update my cookie with the current ip address
+
+      if($S->setSiteCookie('SiteId', "$S->ip:$cookieEmail", date('U') + 31536000, '/') === false) {
+        echo "Can't set cookie in index.i.php<br>";
+        throw(new Exception("Can't set cookie index.i.php " . __LINE__));
+      }
     }
   }
-}
 
-// BLP 2021-09-21 -- We do this for everyone if we found a cookie. Note change to members table.
-// See the header above, the key is 'email' and 'name' and 'id' are no longer keys.
+  // It is still Me because $S->ip was in $S->myIp ($S->isMe()) even if
+  // $cookieEmail is not 'bartonphillips@gmail.com'.
+  // The 'SiteId' cookie ($ipEmail) might even be null.
   
-$sql = "select name from members where email='$cookieEmail'";
-  
-if($S->query($sql)) {
-  // Found the record.
-    
-  [$memberName] = $S->fetchrow('num');
-   
-  $hereMsg =<<<EOF
+  $sql = "select name from members where email='$cookieEmail'";
+
+  if($S->query($sql)) {
+    // Found the record.
+
+    [$memberName] = $S->fetchrow('num');
+
+    $hereMsg =<<<EOF
 <div class="hereMsg">Welcome $memberName</div>
 EOF;
+  }
+
+  // The above should have found $adminStuff if we have a cookie, BUT we may not have one!
+  // We should still check for the magic $BLP to see if is is set to the secret value.
+
+  if($BLP == "8653" && !$adminStuff) {
+    // if we didn't load adminsites above then who is this? I guess I will still let them see the
+    // adminsite. I will review logs and decide.
+
+    error_log("bartonphillips.com/index.i.php. The secret code was given as a query: $S->ip, $S->agent");
+    $adminStuff = require("adminsites.php");
+  }
 } else {
-  // BLP 2021-09-21 -- If the cookie email is not found goto register.php
-    
-  error_log("$S->siteName/index.i.php: members ipEmail: '$ipEmail' not found at line ".__LINE__);
-  header("Location: register.php");
-  exit();
-}
+  // This $S->ip was not in $S->isMe() which means $S->ip is not in the myip table.
 
-// BLP 2018-02-10 -- The above should have found $adminStuff if we have a cookie
-// BLP 2021-03-24 -- $blp is set at the very top so it is available here and above for the require of adminsites.php
-
-if($blp == "8653" && !$adminStuff) { // BLP 2018-04-25 -- new code
-  // if we didn't load adminsites above then who is this? I guess I will still let them see the
-  // adminsite. I will review logs and decide.
+  if($ipEmail) { // BLP 2022-01-15 -- only if something was set.
+    error_log("$S->siteName/index.i.php $S->ip: '\$S->myIp()' returned false. Removing cookie 'SiteId' for $ipEmail. ".__LINE__);
   
-  error_log("bartonphillips.com/index.i.php. Using blp but not ME: $S->ip, $S->agent");
-  $adminStuff = require("adminsites.php");
+    if($S->setSiteCookie('SiteId', '', -1) === false) {
+      error_log("index.i.php $S->ip: remove cookie Error. " . __LINE__);
+    }
+  }
 }

@@ -30,14 +30,10 @@ EOF;
 // get phpdate.js, geo.js, index.js and set the js doGit to $GIT
 // This goes at the bottom.
 
-$FINGER_TOKEN = require_once("/var/www/bartonphillipsnet/PASSWORDS/finger-token");
-
 $b->script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
   <script>var doGit = ''; // MUST be before index.js. Don't do this</script>
   <script src='/index.js'></script>
-  <script>var FINGER_TOKEN = "$FINGER_TOKEN"; </script>
-  <script src='https://bartonphillips.net/js/geo.js'></script>
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h, $b);
@@ -85,6 +81,7 @@ Today is: <span id="datetoday">$date</span>
 <a href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
+<a href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
 </div>
 </section>
 
