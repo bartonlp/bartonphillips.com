@@ -1,13 +1,8 @@
 <?php
 // Register yours name and email address
 // This is for bartonphillips.com/index.php
-// BLP 2021-09-15 -- Change how we register
+// NOTE *** This is the only way to get an ip into the myip table!
 /*
-  BLP 2021-09-23 -- table layout of members changed. Removed id and changed key to email only.
-  The members table is in the bartonphillips database
-  The 'ip' is the last 'ip' that was set for 'bartonphillips@gmail.com'
-  The logic in index.i.php keeps us from having duplicate errors.
-  
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -19,10 +14,11 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
   The myip table is in $S->masterdb (which should be 'bartonlp') database
-  'myIp' will be all of the computers that I have used.
+  'myIp' will be all of the computers that I have used in the last three days.
   
 CREATE TABLE `myip` (
   `myIp` varchar(40) NOT NULL DEFAULT '',
+  `count` int DEFAULT NULL,
   `createtime` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
   PRIMARY KEY (`myIp`)
@@ -31,10 +27,57 @@ CREATE TABLE `myip` (
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
-$S = new $_site->className($_site);
 
-$agent = $S->agent;
-$site = $S->siteName;
+// If a post from the form
+
+if($_POST) {
+  $S = new Database($_site);
+  
+  $name = $S->escape($_POST['name']);
+  $email = $S->escape($_POST['email']);
+
+  // error_log("bartonphillips: name: $name, email: $email");
+  
+  if($email == "bartonphillips@gmail.com") {
+    $name = "Barton Phillips"; // Force name
+    //error_log("email: $email");
+
+    // Update the myip tables.
+    $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
+           "on duplicate key update lasttime=now()";
+
+    $S->query($sql);
+  }
+  // Do this for everyone.
+  // For me the ip is for the last registration and really has no meaning!
+  
+  $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
+         "values('$name', '$email', '$S->ip', '$S->agent', now(), now()) " .
+         "on duplicate key update name='$name', email='$email', ip='$S->ip', agent='$S->agent', lasttime=now()";
+
+  $S->query($sql);
+  
+  // Always set the cookie. We use the sql id from the members table.
+  // BLP 2021-09-21 -- Add email with ip.
+
+  $options =  array(
+                    'expires' => date('U') + 31536000,
+                    'path' => '/',
+                    'domain' => "." . $S->siteDomain, // leading dot for compatibility or use subdomain
+                    'secure' => true,      // or false
+                    'httponly' => false,    // or true. If true javascript can't be used.
+                    'samesite' => 'Lax'    // None || Lax  || Strict // BLP 2021-12-20 -- changed to Lax
+                   );
+
+  if(setcookie('SiteId', "$S->ip:$email", $options) === false) {
+    echo "Can't set cookie in register.php<br>";
+    throw(new Exception("Can't set cookie register.php " . __LINE__));
+  }
+  header("Location: /");
+  exit();
+}
+
+$S = new $_site->className($_site);
 
 $h->title = "Register";
 $h->css = <<<EOF
@@ -52,45 +95,7 @@ EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
 
-// If a post from the form
-
-if($_POST) {
-  $name = $S->escape($_POST['name']);
-  $email = $S->escape($_POST['email']);
-
-  error_log("bartonphillips: name: $name, email: $email");
-  
-  if($email == "bartonphillips@gmail.com") {
-    $name = "Barton Phillips"; // Force name
-    //error_log("email: $email");
-
-    // Update the myip tables.
-    $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
-           "on duplicate key update myIp='$S->ip', lasttime=now()";
-
-    $S->query($sql);
-  }
-  // Do this for everyone.
-  // For me the ip is for the last registration and really has no meaning!
-  
-  $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
-         "values('$name', '$email', '$S->ip', '$agent', now(), now()) " .
-         "on duplicate key update name='$name', email='$email', ip='$S->ip', agent='$agent', lasttime=now()";
-
-  $S->query($sql);
-  
-  // Always set the cookie. We use the sql id from the members table.
-  // BLP 2021-09-21 -- Add email with ip.
-  
-  if($S->setSiteCookie('SiteId', "$S->ip:$email", date('U') + 31536000, '/') === false) {
-    echo "Can't set cookie in register.php<br>";
-    throw(new Exception("Can't set cookie register.php " . __LINE__));
-  }
-  header("Location: /");
-  exit();
-}
-
-// Start Page
+// Render Page
 
 echo <<<EOF
 $top

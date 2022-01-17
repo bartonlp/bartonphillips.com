@@ -3,7 +3,7 @@
 
 return <<<EOF
 <head>
-  <title>{$arg['title']}</title>
+  <title>{$h->title}</title>
   <!-- METAs -->
   <meta charset='utf-8'/>
   <meta name="copyright" content="$this->copyright">
