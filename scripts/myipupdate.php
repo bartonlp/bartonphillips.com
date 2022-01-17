@@ -6,7 +6,7 @@
 
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
-$S = new $_site->className($_site);
+$S = new Database($_site);
 
 $home = gethostbyname("bartonphillips.dyndns.org");
 echo "home: $home\n";
