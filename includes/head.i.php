@@ -25,6 +25,13 @@ if($this->noTrack === true || $this->nodb === true) {
 EOF;
 }
 
+/*
+ * '$this' has values from mysitemap.json.
+ * $h are items passed in from getPageTopBottom().
+ * If $h->favicon or $h->defaultCss are not set then use those values from mysitemap.json,
+ * if they do not exist in mysitemap.json then use the values at https://bartonphillips.net (images or css).
+ */
+
 return <<<EOF
 <head>
   <title>{$h->title}</title>
