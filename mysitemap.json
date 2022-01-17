@@ -1,6 +1,10 @@
 /*
  * SPECIAL json for use by siteload.php. Normal json will not allow
  * comments.
+ * BLP 2022-01-15 -- headFile, bannerFile and footerFile MUST be paths
+ * not URLs! Also in this file the full path because some of the
+ * directories below this do NOT have a mysitemap.json which means they
+ * get their infor form this file.
  * BLP 2021-10-28 -- Removed 'password' from Database. Now we get the
  * password from a secure location at
  * /var/www/bartonphillipsnet/PASSWORDS/database-password
@@ -24,19 +28,16 @@
       "engine": "mysqli"
     },
     "memberTable": "members", // Currently bartonphillips.com is the ONLY one with a member table!
+    // BLP 2022-01-15 -- NOTE these are include via require() so these must be absolute
+    // or relative paths not URLs
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
     "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
     "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
     "count": true,
     "countMe": true,
-//    "favicon": "Some favicon", // Use the favicon from here    
     "ctrmsg": "Counter Reset: Feb. 4, 2017",
     "trackerImg1": "/images/blp-image.png", // The trackerImg must have a slash before or make them a full url.
     "trackerImg2": "/images/146624.png",
-    // myUri can be a string, an array or a full url to
-    // https://bartonphillips.net/myUri.json
-    //"myUri": "https://bartonphillips.net/myUri.json", // We no longer
-    //need this as of BLP 2021-09-15 -- see SiteClass
     "EMAILADDRESS": "bartonphillips@gmail.com",
     "EMAILRETURN": "bartonphillips@gmail.com",
     "EMAILFROM": "webmaster@bartonphillips.com"
