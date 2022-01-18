@@ -10,7 +10,7 @@
 
 'use strict';
 
-var str, accTotal = 0, accDiff = 0;
+var str;
 
 // Put the select text into the 'selectstatus' div
 
@@ -37,9 +37,12 @@ Date.prototype.dst = function() {
   return this.getTimezoneOffset() < this.stdTimezoneOffset();
 }
 
-setInterval(getInfo, 300000); // Five Min.
+setInterval(getInfo, 300000); // Five Min. NOTE getinfo(start) is false if not present which is the default.
 
 getInfo(true); // pass true as start.
+
+// start will be true the first time from the above call, but will be
+// false from every call by setInterval().
 
 function getInfo(start=false) {
   // Get today's date
@@ -96,7 +99,7 @@ ${djiPercent}</span>
     str = `            
 <table border="1" id="stocks">
 <thead>
-<tr><th>Stock</th><th>Price</th><th>Av Price</th><th>Buy Price<br>% Diff</th><th>Qty<br>Value</th><th>Volume<br>Av Vol</th><th>Change<br>% Change</th><th>Status</th></tr>
+<tr><th>Stock</th><th>Price</th><th>Av Price</th><th>Buy Price<br>% Diff</th><th>Qty<br>Value</th><th>Av Vol</th><th>Change<br>% Change</th><th>Status</th></tr>
 </thead>
 <tbody>
 `;
@@ -109,7 +112,8 @@ ${djiPercent}</span>
     // Send the data from sql stocks to iex
 
     let ar = [];
-
+    let accTotal = 0, accDiff = 0;
+    
     for(const stocks in orgStock) {
       let st = stocks;
       let s = orgStock[stocks];
@@ -117,11 +121,10 @@ ${djiPercent}</span>
       let orgPrice = s.price || 0, qty = s.qty || 0,
       status = s.status || 0, company = s.company; 
 
-      let curPrice, curVol, curChange, curPercent, curUpdate;
+      let curPrice, curChange, curPercent, curUpdate;
       let avPrice, avVol;
 
       curPrice = s.latestPrice || 0;
-      curVol = s.latestVolume;
       curChange = s.change || 0;
       curPercent = s.changePercent;
       curUpdate = s.latestUpdate;
@@ -129,10 +132,12 @@ ${djiPercent}</span>
       avVol = s.avgTotalVolume;
       avPrice = s.moving || 0;
 
-      console.log("st: " + st + ", change: " + curChange + ", curPrice: " + curPrice + ", avPrice: " + avPrice);
+      //console.log("st: " + st + ", change: " + curChange + ", curPrice: " + curPrice + ", avPrice: " + avPrice);
 
       if(status == 'active' || status == 'mutual') {
-        //console.log("stock: %s, price: %f, qty: %d", k, v.price, parseInt(v.qty));
+        // We always show the total and diff for the active or mutual
+        // stocks. All the others (watch, sold) are not counted.
+        
         accTotal += curPrice * qty;
         accDiff += curChange * qty;
       }
@@ -155,12 +160,10 @@ ${djiPercent}</span>
       }
 
       // Take data[0] appart into price, qty, avPrice, change, percent,
-      // volume, avgVolume, moving
+      // avgVolume, moving
   
       let price = curPrice.toLocaleString(undefined, {style: 'currency',
       currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
-
-      let vol = (curVol == null ? 0 : curVol).toLocaleString();
 
       let change = curChange.toLocaleString(undefined, {style: 'currency', currency: 'USD',
       minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -196,18 +199,11 @@ ${djiPercent}</span>
         movingPer = `<span class='neg'>${movingPer}</span>`;
       }
     
-      // Is todays day the same as last? If yes then this is a 'current'
-      // volume otherwise it is from the close.
-    
-      if(new Date(curUpdate).toDateString() == new Date().toDateString()) {
-        vol = '<span class="current">' + vol + '</span>';
-      }
-
       // Make the row
     
       str += `<tr><td><span>${st}</span><br><span>${company}</span></td><td>${price}</td>
 <td>${avPrice}<br>${movingPer}</td><td>${orgPrice}<br>${orgPer}</td>
-<td>${qty}<br>${value}</td><td>${vol}<br>${avVol}</td><td>${change}<br>${percent}</td><td>${status}</td></tr>`;
+<td>${qty}<br>${value}</td><td>${avVol}</td><td>${change}<br>${percent}</td><td>${status}</td></tr>`;
     }
 
     // Now Make totals row
@@ -244,29 +240,44 @@ ${djiPercent}</span>
       return false;
     });
 
-    // Hide All rows then look at status to tell what to do.
-    // Only when the worker provides new data.
-
     var status = $("#selectstatus select").val();
+
+    // This is the value from the <select><option>
+    // It could be ALL, active, watch or sold.
+    
     //console.log("New status:", status);
+
+    // Hide All rows then look at status to tell what to do.
 
     $("#stocks tbody tr").hide();
 
     $("#stocks tbody tr").each(function() {
-      let stat = $("td:last-child", this).text();
+      let stat = $("td:last-child", this).text(); // active, mutual, watch or sold
+
+      // If the status is active and the last column says mutual show
+      // the row.
+      
       if(status == 'active' && stat == 'mutual') {
         $(this).closest('tr').show();
       } else {
+        // If the status equals the last column show the row. Here for
+        // example status could be watch and if the last column is
+        // watch we will show the row.
+        
         if(status == stat) {
           $(this).closest('tr').show();
         }
       }
     });
 
+    // When we change the <select><option>
+    
     $("body").on('change', "#selectstatus select", function(e) {
       let sel = $(this).val();
       //console.log("change: "+sel);
 
+      // We change some of the headers depending on the selection
+      
       switch(sel) {
         case 'sold':
           $("#stocks thead th:nth-child(4)").html("Sell Price<br>% Diff");
@@ -282,12 +293,16 @@ ${djiPercent}</span>
 
       let tr = $("#stocks tbody tr");
 
+      // Now do the same thing for the body
+      
       if(sel == 'ALL') {
         tr.show();
       } else {
         tr.hide();
         let status = $("#stocks td:last-child"); // status
 
+        // This is similar to the above.
+        
         status.each(function() {
           // BLP 2020-10-21 -- a mutual fund and sel is active.
 

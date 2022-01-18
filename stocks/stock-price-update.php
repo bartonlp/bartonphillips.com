@@ -1,6 +1,7 @@
 <?php
-// stock-price-update.php
+// stock-price-update.php (Stock Quotes)
 // uses stock-price-update.js
+// BLP 2022-01-18 -- use $v foreach($iex as $k=>$v) and remove $a and $i. Add comments
 // BLP 2021-11-04 -- Remove stock-price-update-worker.js. Fixed secret.
 // BLP 2018-03-07 -- Uses Roboto from /var/www/bartonphillips.com/fonts
 // BLP 2020-06-04 -- Use iex to get the avgTotalVolume and day200MovingAvg instead of reading the
@@ -63,7 +64,7 @@ if($_POST['page'] == 'web') {
   //error_log("stock-price-update.php AJAX: symboleList=$symboleList");
 
   $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=$symboleList".
-         "&types=quote,stats&filter=latestPrice,latestVolume,change,changePercent,latestUpdate,".
+         "&types=quote,stats&filter=latestPrice,change,changePercent,latestUpdate,".
          "avgTotalVolume,day200MovingAvg".
          "&token=$iex_token";
 
@@ -78,21 +79,15 @@ if($_POST['page'] == 'web') {
   $iex = json_decode($iex, true); // decode as an array
 
   foreach($iex as $k=>$v) {
-    $a = $ar[$k];
-    $i = $iex[$k]['quote'];
-
-    $ar[$k]['moving'] = $iex[$k]['stats']['day200MovingAvg'];
+    $ar[$k]['moving'] = $v['stats']['day200MovingAvg'];
     
-    $ar[$k]['latestPrice'] = $iex[$k]['quote']['latestPrice'];
-    $ar[$k]['latestVolume'] = $iex[$k]['quote']['latesVolume'];
-    $ar[$k]['change'] = $iex[$k]['quote']['change'];
-    $ar[$k]['changePercent'] = $iex[$k]['quote']['changePercent'];
-    $ar[$k]['latestUpdate'] = $iex[$k]['quote']['latestUpdate'];
-    $ar[$k]['avgTotalVolume'] = $iex[$k]['quote']['avgTotalVolume'];
+    $ar[$k]['latestPrice'] = $v['quote']['latestPrice'];
+    $ar[$k]['change'] = $v['quote']['change'];
+    $ar[$k]['changePercent'] = $v['quote']['changePercent'];
+    $ar[$k]['latestUpdate'] = $v['quote']['latestUpdate'];
+    $ar[$k]['avgTotalVolume'] = $v['quote']['avgTotalVolume'];
   }
    
-  //error_log("stock-price-update.php AJAX: ar=" . print_r($ar, true));
-
   // Dom lets one use the dom to scape the website.
   
   $dom = new Dom;
@@ -113,7 +108,10 @@ if($_POST['page'] == 'web') {
   $change = $group->find(".change bg-quote")->text;
   $changePercent = $group->find(".percent bg-quote")->text;
 
-  //error_log("dji: $dji, change: $change, per: $changePercent, time: $quoteDate");
+  // here 'stocks' is the $ar array which has
+  // $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
+  // to start and then gets the iex data added as 'moving', 'latestPrice',
+  // 'change', 'changePercent', 'latestUpdate' and 'avgTotalVolume'.
   
   $ret = json_encode(array('stocks'=>$ar,
                            'dji'=>$dji,
@@ -208,10 +206,6 @@ select {
 .small {
   font-size: .8rem;
 }
-/* A span to show volumes that are current rather than closing */
-.current {
-  color: green;
-}
 #loading {
   display: block;
   width: 80px;
@@ -239,9 +233,7 @@ $top
 <h4>Today is: $date</h4>            
 
 <div id="selectstatus"></div>
-<div>The <i>Av Price</i> is a moving average over the last 200 days. <i>Av Vol</i> is the average over last 30 days.<br>
-<i>Vol</i> in <span class="current">green</span> indicates the current volume,
-</div>
+<div>The <i>Av Price</i> is a moving average over the last 200 days. <i>Av Vol</i> is the average over last 30 days.</div>
 <div id='dji'></div>
 <div id='stock-data'><img id="loading" src="https://bartonphillips.net/images/loading.gif"</img></div>
 <div id='attribution'></div>
