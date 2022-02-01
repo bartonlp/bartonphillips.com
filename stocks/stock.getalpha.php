@@ -2,7 +2,6 @@
 // stock.getalpha.php
 // Get the info from Alphavantage and iex for one stock.
 
-// alpha vantage api key: FLT73FUPI9QZ512V
 // https://www.alphavantage.co/documentation
 // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
 // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo
@@ -14,8 +13,11 @@ $S = new $_site->className($_site);
 
 if($stock = $_POST['stock']) {
   $stock = strtoupper($stock);
+  // BLP 2022-01-21 -- Get the keys form my secure location
+  
   $alphakey = require_once("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
-  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  // $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  $iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
   
   $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
 
@@ -42,7 +44,6 @@ if($stock = $_POST['stock']) {
   $iex = print_r($ar, true);
   
   $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=$iex_token";
-  //$str = "https://api.iextrading.com/1.0/stock/$stock/stats";
 
   curl_setopt($ch, CURLOPT_URL, $str);
   $ret = curl_exec($ch);

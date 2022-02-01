@@ -9,7 +9,8 @@ ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 if($_POST['mutual']) {
-  $iex_token = require_once('/var/www/bartonphillipsnet/PASSWORDS/iex-token');
+  //$iex_token = require_once('/var/www/bartonphillipsnet/PASSWORDS/iex-token');
+  $iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");  
   //error_log("mutualiex.php AJAX: token=$iex_token");
   
   $mutual = $_POST['mutual'];

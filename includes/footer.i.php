@@ -5,10 +5,6 @@
 // BLP 2018-02-24 -- added 'script' just before </body>
 
 // getPageFooter($b) uses only the object $b.
-
-if($b->noGeo !== true) {
-  $geo = "<script src='https://bartonphillips.net/js/geo.js'></script>";
-}
   
 return <<<EOF
 <footer>

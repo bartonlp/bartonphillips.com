@@ -1,1 +1,0 @@
-../../bartonlp/sitemap.php

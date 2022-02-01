@@ -27,9 +27,19 @@
       "database": "bartonphillips", // we have a seperate database from barton.
       "engine": "mysqli"
     },
+    "errorMode": {
+      "development": true, // development automatically sets email to true.
+                         // If development is true then noEmail will be
+                         // set to true unless noEmail is set to false!
+                         // Only false not null or just missing.
+      "noEmail": null,   // Set it to null will not affect the true above which sets it to true also.
+      "noHtml": false,
+      "noOutput": false
+    },
     "memberTable": "members", // Currently bartonphillips.com is the ONLY one with a member table!
     // BLP 2022-01-15 -- NOTE these are include via require() so these must be absolute
     // or relative paths not URLs
+    //"headFile": "/var/www/bartonphillips.com/includes/head.i.php",
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
     "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
     "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",

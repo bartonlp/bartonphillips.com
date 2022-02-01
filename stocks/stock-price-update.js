@@ -81,7 +81,7 @@ function getInfo(start=false) {
 
     str = `
 <h2><span class='small'>Last Update: ${djiDate}<br></span>
-Dow Jones Average: $${djiAv},
+<a target='_blank' href='https://www.marketwatch.com/investing/index/djia/charts?mod=mw_quote_advanced'>Dow Jones Average: $${djiAv}</a>,
 Change: <span class='posNeg'>$${djiChange}</span>,
 <span class='posNeg'>
 ${djiPercent}</span>

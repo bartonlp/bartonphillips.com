@@ -31,22 +31,27 @@ checkUser($S);
 date_default_timezone_set("America/New_York");
 
 $prefix = "https://cloud.iexapis.com/stable";
-$token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
 
-$sql = "select stock, price, qty from stocks where status not in('watch','sold')";
+//BLP 2022-01-21 -- Get iex-token form my secure location
+
+//$token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+$token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
+$sql = "select stock, price, qty, status from stocks where status not in('watch','sold')";
 $S->query($sql);
 
 $ar = [];
 $stocks = "";
 
-while(list($stock, $price, $qty) = $S->fetchrow('num')) {
+while([$stock, $price, $qty, $status] = $S->fetchrow('num')) {
   if($stock == "RDS-A") $stock = "RDS.A";
   $stocks .= "$stock,";
-  $ar[$stock] = ['price'=>$price, 'qty'=>$qty];
+  $ar[$stock] = ['price'=>$price, 'qty'=>$qty, 'status'=>$status];
 }
 
 
 $totalyield = 0;
+$total = 0;
+$totalReinvested = 0;
 $totalcnt = 0;
 
 $ch = curl_init();
@@ -61,6 +66,8 @@ $ret = json_decode($ret);
 foreach($ret as $k=>$v) {
   $price = $ar[$k]['price'];
   $qty = $ar[$k]['qty'];
+  $status = $ar[$k]['status'];
+  
   $close = number_format($v->quote->latestPrice, 2);
   
   $v = $v->stats;
@@ -69,18 +76,31 @@ foreach($ret as $k=>$v) {
   $divyield = number_format($v->dividendYield,2) * 100 . "%";
   $divxdiv = substr($v->exDividendDate, 0, 10);
 
-  $div = $v->ttmDividendRate;
-  $totalyield += $orgyield = ($div / $price) * 100;
+  $div = $v->ttmDividendRate; // Total $ per year per one share.
+
+  $orgyield = ($div / $price) * 100; // total $ per share dividend divided by my original price * 100 is percent.
+
+  // BLP 2022-01-21 -- My Mutual fund reinvest their monies each year so I don't earn that at the
+  // end of the year.
+
+  $y = number_format($orgyield, 2). "%";
+  $e = $div * $qty; // total $ per share dividend times the quantity is $ estimated-earning per YEAR.
+  $ern = number_format($e, 2);
+  $totalyield += $orgyield;
+  
+  if($status != "mutual") {
+    $total += $e;
+  } else {
+    $totalReinvested += $e;
+    $ern = "<span style='color: red'>$ern</span>";
+  }
+
+  $orgyield = $y;
   
   $totalcnt++;
-  $orgyield = number_format($orgyield, 2). "%";
-  
-  $total += $ern = $div * $qty;
 
   $div = number_format($v->ttmDividendRate, 2);
   
-  $ern = number_format($ern, 2);
-
   // $st is how it is in the database we may need to fix this in the javascript if we use Yahoo
   
   $quotes .= "<tr><td class='stock'><span>$k</span><br>$company</td><td>$price</td><td>$qty</td>".
@@ -95,40 +115,49 @@ $h->css =<<<EOF
   <style>
 #stocktable {
   width: 100%;
+  background: lightblue;
+  border-collapse: collapse; /* to allow a border on the tfoot tr */
+  border: 5px solid black;
 }
-#stocktable td:nth-child(1) {
+#stocktable tr { background: white; border: 1px solid black}
+#stocktable td, #stocktable th {
+  border: 1px solid black;
+  padding: 2px 5px;
 }
-#stocktable th {
-}
-#stocktable td {
-  padding: .2rem .5rem;
-}
-#stocktable td:nth-child(2) {
+#stocktable tbody td:nth-of-type(2) {
   text-align: right;
 }
-#stocktable td:nth-child(3) {
+#stocktable tbody td:nth-of-type(3) {
   text-align: right;
 }
-#stocktable td:nth-child(4) {
+#stocktable tbody td:nth-of-type(4) {
   text-align: right;
 }
-#stocktable td:nth-child(5) {
+#stocktable tbody td:nth-of-type(5) {
   text-align: right;
 }
-#stocktable td:nth-child(6) {
-  text-align: right;
-  background-color: lightgreen;
-}
-#stocktable td:nth-child(7) {
+#stocktable tbody td:nth-of-type(6) {
   text-align: right;
   background-color: lightgreen;
 }
-#stocktable td:nth-child(8) {
+#stocktable tbody td:nth-of-type(7) {
+  text-align: right;
+  background-color: lightgreen;
+}
+#stocktable tbody td:nth-of-type(8) {
   text-align: right;
 }
-#stocktable td:nth-child(9) {
+#stocktable tbody td:nth-of-type(9) {
   text-align: right;
 }
+/* for the footer */  
+#stocktable tfoot tr { border: 5px solid black; } /* only if border-collapse: collapse; */
+#stocktable tfoot th { text-align: left; }
+#stocktable tfoot td { text-align: right; }
+#stocktable tfoot td:nth-of-type(1) { border: none; background: lightblue; }
+#stocktable tfoot td:nth-of-type(2) { vertical-align: top; }
+#stocktable tfoot td:nth-of-type(3) { border: none; background: lightblue; }
+#stocktable tfoot td:nth-of-type(4) { vertical-align: bottom; }
 .stock {
   cursor: pointer;
   background-color: lightblue;
@@ -161,24 +190,30 @@ EOF;
 list($top, $footer) = $S->getPageTopBottom($h);
 
 $total = number_format($total, 2);
+$totalReinvested = "<span style='color: red'>" . number_format($totalReinvested, 2) . "</span>";
 $avyield = number_format($totalyield / $totalcnt, 2);
 
 echo <<<EOF
 $top
 <p>Left <b>click</b> on the symbol name to goto <i>www.marketwatch.com/investing/stock/</i>
 for that stock.</p>
+<p>Note: 'Estimate Ernings per Year" for mutual funds are reinvested and are show as a seperate total at the bottom.</p>
 
-<table id="stocktable" border="1">
+<table id="stocktable">
 <thead>
-<tr><th>Sybmol</th><th>Buy Price</th><th>Qty</th><th>Dividend</th><th>Buy Yield</th>
-<th>LatestPrice</th><th>Curr Yield</th><th>X Div Date</th><th>Ernings</th></tr>
+<tr><th>Sybmol</th><th>Buy Price</th><th>Qty</th><th>Dividend<br>per Year<br>per Share</th><th>Buy Yield</th>
+<th>Latest<br>Price</th><th>Curr Yield</th><th>X Div Date</th><th>Estimated<br>Earnings<br>per Year</th></tr>
 </thead>
 <tbody>
 $quotes
 </tbody>
+<tfoot>
+<tr>
+<th>Average Buy Yield<br>Total End of Year Earnings<br>Total Earnings Reinvested</th>
+<td colspan='3'><td>${avyield}%</td>
+<td colspan='3'></td><td>$total<br>$totalReinvested</td>
+</tr>
+</tfoot>
 </table>
-<p>Total Ernings:     $total<br>
-   Average Buy Yield: ${avyield}%</p>
-<hr>
 $footer
 EOF;

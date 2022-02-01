@@ -1,6 +1,9 @@
 <?php
 // stock-price-update.php (Stock Quotes)
 // uses stock-price-update.js
+// BLP 2022-02-01 -- Had to update PHPHtmlParser\Dom Node/Collections.php to add 'mixed' as a
+// return type (or could have added #[\ReturnTypeWillChange] before the function offsetGet(). No
+// actual change in this file. 
 // BLP 2022-01-18 -- use $v foreach($iex as $k=>$v) and remove $a and $i. Add comments
 // BLP 2021-11-04 -- Remove stock-price-update-worker.js. Fixed secret.
 // BLP 2018-03-07 -- Uses Roboto from /var/www/bartonphillips.com/fonts
@@ -11,8 +14,6 @@
 // along with 'active'.
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
-ErrorClass::setNoEmailErrs(true);
 
 use PHPHtmlParser\Dom;
 
@@ -43,8 +44,9 @@ if($_POST['page'] == 'web') {
   // BLP 2021-11-03 -- get token from secure location
   
   $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  //$iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
   //error_log("stock-price-update.php AJAX: iex_token=$iex_token");
-  
+
   // BLP 2020-10-21 -- include mutual funds
   
   $sql = "select stock, price, qty, status, name from stocks";
@@ -87,7 +89,7 @@ if($_POST['page'] == 'web') {
     $ar[$k]['latestUpdate'] = $v['quote']['latestUpdate'];
     $ar[$k]['avgTotalVolume'] = $v['quote']['avgTotalVolume'];
   }
-   
+
   // Dom lets one use the dom to scape the website.
   
   $dom = new Dom;
@@ -96,12 +98,11 @@ if($_POST['page'] == 'web') {
 
   $quoteDate = $dom->find(".timestamp__time bg-quote")->text();
 
-  /*
+/*
   $dji = $dom->find(".intraday__data .value")->text();
   $change = $dom->find(".intraday__data .change--point--q")->text();
   $changePercent = $dom->find(".intraday__data .change--percent--q")->text();
-  */
-
+*/
   $group = $dom->find(".markets__group");
 
   $dji = $group->find(".price bg-quote")->text;
@@ -112,7 +113,7 @@ if($_POST['page'] == 'web') {
   // $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
   // to start and then gets the iex data added as 'moving', 'latestPrice',
   // 'change', 'changePercent', 'latestUpdate' and 'avgTotalVolume'.
-  
+
   $ret = json_encode(array('stocks'=>$ar,
                            'dji'=>$dji,
                            'change'=>$change,
