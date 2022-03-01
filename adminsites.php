@@ -20,6 +20,7 @@ return <<<EOF
 <li><a target="_blank" href="/stocks/stockaddedit.php">Add/Edit Stocks</a></li>
 <li><a target="_blank" href="/stocks/stockdiv.php">Stock Dividends</a></li>
 <li><a target="_blank" href="/stocks/stockvalue.php">Stock Value</a></li>
+<li><a target="_blank" href="/stocks/stock-mov-avg.php">Stock Info</a></li>
 <li><a target="_blank" href="/examples/">examples</a></li>
 <li><a target="_blank" href="/examples.js/">examples.js</a></li>
 <li><a target="_blank" href="/test_examples/">examples just for testing</a></li>

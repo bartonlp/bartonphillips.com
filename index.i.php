@@ -211,4 +211,14 @@ EOF;
       error_log("index.i.php $S->ip: remove cookie Error. " . __LINE__);
     }
   }
+
+  // Check once again to see if my secret is set
+  
+  if($BLP == "8653" && !$adminStuff) {
+    // if we didn't load adminsites above then who is this? I guess I will still let them see the
+    // adminsite. I will review logs and decide.
+
+    error_log("bartonphillips.com/index.i.php. The secret code was given as a query: $S->ip, $S->agent");
+    $adminStuff = require("adminsites.php");
+  }
 }

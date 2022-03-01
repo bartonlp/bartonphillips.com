@@ -62,6 +62,8 @@ switch(strtoupper($_SERVER['REQUEST_METHOD'])) {
 // Ask for a file with contactName, contactEmail
 
 function start($S, $DEBUG) {
+  global $h;
+  
   $h->title = "Test Smtp Reciept";  
   $h->banner = <<<EOF
 <h1>Test Email Addresses With MX Server</h1>
@@ -373,6 +375,8 @@ EOF;
 // Verfily One address
 
 function verifyone($S, $DEBUG) {
+  global $h;
+  
   if($DEBUG) {
     $echo_command = $echo_response = 1;
   } else {

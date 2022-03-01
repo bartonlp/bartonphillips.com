@@ -45,12 +45,12 @@ jQuery(document).ready(function($) {
 EOF;
 
 $h->banner = "<h1>Country from URL sufix</h1>";
-list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
+list($top, $footer) = $S->getPageTopBottom($h);
 
 if($code = $_POST['code']) {
   $n = $S->query("select description from urlcountrycodes where code='$code'");
   if($n) {
-    $row = $S->fetchrow();
+    $row = $S->fetchrow('num');
     $desc = $row[0];
     $other = "";
     if(preg_match("/(.*?)\s*(\(.*?\))$/", $desc, $m)) {
@@ -80,5 +80,6 @@ Enter the Country Code: <input type="text" name="code" autofocus><br/>
 <input type="submit" value="Submit"/>
 </form>
 <div id='results'></div>
+<hr>
 $footer
 EOF;

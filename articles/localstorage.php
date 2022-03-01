@@ -28,7 +28,7 @@ $h->css =<<<EOF
 </style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+list($top, $footer) = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top

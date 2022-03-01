@@ -11,7 +11,6 @@
 // BLP 2017-03-23 -- set up to work with https
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 require_once("./index.i.php"); // Get the majority of the php
