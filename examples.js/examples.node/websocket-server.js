@@ -1,6 +1,6 @@
-#!/usr/bin/env node
-// This server runs on port 8080. The html files should be run from the
-// browser as 'www.bartonphillipx.com/examples.js/examples.node/...html'
+#!/usr:/bin/env node
+// This server runs on port 8089. The html files should be run from the
+// browser as 'www.bartonphillips.com/examples.js/examples.node/...html'
 
 // NOTE: For the myphotochannel app this can be run via upstart see the
 // websocket.conf here and in /etc/init. We could make a systemd config
@@ -64,43 +64,48 @@
    4000-4999	 	              Available for use by applications.
 */
 
-var WebSocketServer = require('websocket').server; // websocket: npm install websocket
+const WebSocketServer = require('websocket').server; // websocket: npm install websocket
+const dateformat = require('dateformat'); // dateformat: npm install dateformat
+const fs = require('fs'); // internal to nodejs
+const http = require('https'); // internal to nodejs
 
-var dateformat = require('dateformat'); // dateformat: npm install dateformat
-
-var fs = require('fs'); // internal to nodejs
-var http = require('http'); // internal to nodejs
+let jmsg, connection;
 
 // Logging function for websocket.log
 // Make sure that websocket.log is owned by barton and group is
 // www-data and mod is 664
 
-var now = new Date; // get start date/time
+const now = new Date; // get start date/time
 
 // Make sure we can read and write to the log file
 
 fs.appendFileSync("/var/www/bartonphillips.com/examples.js/examples.node/websocket.log", "\n" + now + " Websocket Startup\n");
 // 1000=uid barton, 33=uid/gid www-data
-fs.chownSync("/var/www/bartonphillips/examples.js/examples.node/websocket.log", 1000, 33);
+fs.chownSync("/var/www/bartonphillips.com/examples.js/examples.node/websocket.log", 1000, 33);
 // chmod u=rw g=rw o=r (user rw, group rw, other r)
-fs.chmodSync("/var/www/bartonphillips/examples.js/examples.node/websocket.log", 0664);
+fs.chmodSync("/var/www/bartonphillips.com/examples.js/examples.node/websocket.log", 0664);
 
 // Log information to websocket.log, If mode === true then don't add the date
 
-function logit(msg, mode) {
-  if(mode !== true) {
-    var now = dateformat();
-    msg = now + ', ' + msg;
+const DEBUG = true;
+
+function logit(msg) {
+  let date = new Date;
+  msg = date + ' ' + msg;
+  
+  if(DEBUG === true) {
+    console.log(msg);
+  } else {
+    fs.appendFileSync("/var/www/bartonphillips.com/examples.js/examples.node/websocket.log", msg + "\n");
   }
-  console.log(msg);
 }
 
 // Create an http server. If someone actually tries to connect send a
-// 403 back.
 
-var server = http.createServer(function(request, response) {
-  logit('Received request for ' + request.url + " from: " +
-        request.connection.remoteAddress);
+const server = http.createServer({ cert: fs.readFileSync('./fullchain9.pem'), key: fs.readFileSync('./privkey9.pem')});
+
+server.on('request', function(request, response) {
+  logit('Received request for ' + request.url + " from: " + request.connection.remoteAddress);
   response.writeHead(403); // Forbiden
   response.end("<h1>403 Forbiden</h1>"+
                "<h2>Go Away</h2>"+
@@ -109,10 +114,10 @@ var server = http.createServer(function(request, response) {
                "http://www.bartonphillips.com/examples.node/websocket-...html.</p>");
 });
 
-// Start listening on port 8080
+// Start listening on port 8089
 
-server.listen(8080, function() {
-  logit('Websocket-server is listening on port 8080');
+server.listen(8089, function() {
+  logit('Websocket-server is listening on port 8089');
 });
 
 // Create the websocket server
@@ -130,7 +135,7 @@ wsServer = new WebSocketServer({
 // Check the origin of the connection
 
 function originIsAllowed(origin, r) {
-  //console.log("r:", r, origin)
+  //console.log("r:" , r , "origin: " + origin);
   if(r.BLP == '8653') return true;
   return false;
 }
@@ -141,11 +146,13 @@ function originIsAllowed(origin, r) {
 // the array is resized at the onclose event where we re-index the
 // array.
 
-var c = [], inx = 0;
+let c = [], inx = 0;
 
 // When we receive a request
 
 wsServer.on('request', function(request) {
+  logit("Remote Address: " + request.remoteAddress);
+
   if(!originIsAllowed(request.origin, request.resourceURL.query)) {
     // Make sure we only accept requests from an allowed origin
     request.reject();
@@ -156,15 +163,15 @@ wsServer.on('request', function(request) {
   // Catch the NO protocal exception
 
   try {
-    var connection = request.accept('slideshow', request.origin);
-    //console.log("slideshow");
+    connection = request.accept('slideshow', request.origin);
   } catch(e) {
     logit("request.accept Error: "+ e);
     return false;
   }
-  
+
   connection.inx = inx;
-  c[inx++] = connection; // Add to connections array
+  c[inx] = connection; // Add to connections array
+  ++inx;
   
   logit('Connection accepted. inx: ' + connection.inx);
 
@@ -181,12 +188,13 @@ wsServer.on('request', function(request) {
       // jmsg keys: event, siteId, ...
       // event: register, fastcall, startup, startup-update, shutdown
       
-      var jmsg = JSON.parse(message.utf8Data);
+      jmsg = JSON.parse(message.utf8Data);
       
       if(typeof connection.siteId == 'undefined') {
         connection.siteId = jmsg.siteId;
         c[connection.inx].siteId = jmsg.siteId;
       }
+
       if(typeof connection.prog == 'undefined') {
         connection.prog = jmsg.prog;
         c[connection.inx].prog = jmsg.prog;
@@ -194,21 +202,27 @@ wsServer.on('request', function(request) {
 
       switch(jmsg.event) {
         case 'hello':
+          console.log("inx: " + connection.inx + ", sendUTF 'Hello World: " + jmsg.prog + "'");
+          
           connection.sendUTF("Hello World: " + jmsg.prog); // send to the client that messaged me
+
           // Send this info to programs that have registered as ALL
 
           for(var i=0; i < c.length; ++i) {
             if(connection.inx == c[i].inx) {
+              console.log("this is me so skip: inx="+connection.inx);
               continue; // skip this connection
             }
 
             // If the siteId matchs ALL then send the message to the site
 
+            console.log("inx="+c[i].inx+ ", siteId: " + c[i].siteId + ", prog: " + c[i].prog);
+            
             if(c[i].siteId == "ALL") {
-              //console.log("c[i]: %d, connection: %d", c[i].inx, connection.inx);
+              console.log("c[i]: %d, connection: %d", c[i].inx, connection.inx);
 
               logit(jmsg.event + "::ALL, inx: "+
-                    c[i].inx +"\n\tsiteId: "+jmsg.siteId+
+                    c[i].inx +", siteId: "+jmsg.siteId+
                     ", inx: "+connection.inx+", prog: "+jmsg.prog);
 
               c[i].sendUTF(JSON.stringify({event: jmsg.event,
@@ -242,7 +256,7 @@ wsServer.on('request', function(request) {
             // If the siteId matchs ALL then send the message to the site
 
             if(c[i].siteId == "ALL") {
-              //console.log("c[i]: %d, connection: %d", c[i].inx, connection.inx);
+              console.log("c[i]: %d, connection: %d", c[i].inx, connection.inx);
               
               logit(jmsg.event + "::ALL, inx: "+
                     c[i].inx +"\n\tsiteId: "+jmsg.siteId+
@@ -259,6 +273,7 @@ wsServer.on('request', function(request) {
         case 'shutdown':
           // This is handled by the onclose event which send shutdown
           // to programs that registered as ALL
+          connection.close();
           break;
         case 'newinx': // playbingo
         case 'fastcall':
@@ -382,7 +397,7 @@ wsServer.on('request', function(request) {
 //      logit("c: "+i+", inx: "+c[i].inx+", prog: "+c[i].prog);
 //    }
     
-    logit("\n", true);
+//    logit("\n", true);
   });
 });
 

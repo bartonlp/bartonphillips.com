@@ -9,7 +9,7 @@ version of node.js. Enter
 
 `node websocket-server.js`
 
-It will listen on port 8080 for client requests from the client programs.
+It will listen on port 8089 for client requests from the client programs.
 
 **websocket-client.js** and **websocket-test.php** will send 'hello' to the server which will
 echo the message back to the clients.
