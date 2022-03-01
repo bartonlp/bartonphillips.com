@@ -10,8 +10,8 @@ ErrorClass::setDevelopment(true);
 
 $S = new $_site->className($_site);
 
-//$iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
-$iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
+$iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+//$iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
 
 $h->title = "Stock Values";
 $h->banner = "<h1>Stock Values</h1>";
@@ -31,7 +31,7 @@ $h->css =<<<EOF
 EOF;
 
 list($top, $footer) = $S->getPageTopBottom($h);
-$sql = "select stock, price, qty from stocks where status='active'";
+$sql = "select stock, price, qty from stocks where status in('active','mutual')";
 $S->query($sql);
 
 $stocks = [];
@@ -72,7 +72,7 @@ $top
 <div id="info">
 Current value: $$curval<br>
 200 Day Moving Average: $$av<br>
-Percent curent to moving average: $percent%<br>
+Percent current to moving average: $percent%<br>
 </div>
 $footer
 EOF;

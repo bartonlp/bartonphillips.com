@@ -1,6 +1,8 @@
 <?php
 // stock-price-update.php (Stock Quotes)
 // uses stock-price-update.js
+// BLP 2022-02-19 -- Add EndOfDay GET used by ../scripts/updatestocktotals.sh. This is run by CRON
+// Mon-Fri.
 // BLP 2022-02-01 -- Had to update PHPHtmlParser\Dom Node/Collections.php to add 'mixed' as a
 // return type (or could have added #[\ReturnTypeWillChange] before the function offsetGet(). No
 // actual change in this file. 
@@ -33,6 +35,65 @@ function checkUser($S) {
     exit();
   }
 };
+
+// AJAX GET. EndOfDay is run by CRON at 1700.
+/*
+CREATE TABLE `stocktotals` (
+  `total` varchar(50) NOT NULL,
+  `created` date NOT NULL,
+  PRIMARY KEY (`total`,`created`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+*/
+
+if($_GET['page'] == "EndOfDay") {
+  $S = new Database($_site);
+  
+  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+
+  // Get our stocks
+  
+  $sql = "select stock, qty from stocks where status in ('active','mutual')";
+  //"where status != 'mutual'";
+  
+  $S->query($sql);
+
+  while([$stock, $qty] = $S->fetchrow('num')) {
+    if($stock == "RDS-A") {
+      $stock = "RDS.A";
+    }
+    $ar[$stock] = $qty;
+  }
+
+  $symboleList = implode(",", array_keys($ar));
+
+  $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=$symboleList".
+         "&types=quote".
+         "&token=$iex_token";
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $str);
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+  $iex = curl_exec($ch);
+  $iex = json_decode($iex, true); // decode as an array
+
+  $total = 0;
+  $value = 0;
+  
+  foreach($iex as $k=>$v) {
+    $value = $v['quote']['latestPrice'] * $ar[$k];
+    echo "$k: $value, $ar[$k]\n";
+    $total += $value;
+  }
+
+  $total = number_format(round($total, 2), 2);
+  $date = date("Y-m-d H:i:s");
+  echo "\nTotal $date: $total\n";
+
+  $S->query("insert ignore into stocktotals (total, created) values('$total', current_date())");
+  exit();
+}
 
 // AJAX
 // Get info from stocks table and DJIA (Dow Jones Industrial Average) from WSJ

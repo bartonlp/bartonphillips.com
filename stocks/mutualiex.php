@@ -59,6 +59,7 @@ $top
 EOF;
 
 $mutual = "";
+$stocks = new stdClass;
 
 // BLP 2021-09-08 -- remove stocks from stocks.stocks. There is no stocks database.
 
@@ -66,7 +67,7 @@ $sql = "select stock, qty from stocks where status = 'mutual'";
 
 $S->query($sql);
 
-while(list($stock, $qty) = $S->fetchrow("num")) {
+while([$stock, $qty] = $S->fetchrow("num")) {
   $mutual .= "$stock,";
   $stocks->$stock = $qty;
 }
