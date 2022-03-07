@@ -58,9 +58,6 @@ if($_GET['page'] == "EndOfDay") {
   $S->query($sql);
 
   while([$stock, $qty] = $S->fetchrow('num')) {
-    if($stock == "RDS-A") {
-      $stock = "RDS.A";
-    }
     $ar[$stock] = $qty;
   }
 
@@ -116,9 +113,6 @@ if($_POST['page'] == 'web') {
   $S->query($sql);
 
   while(list($stock, $price, $qty, $status, $company) = $S->fetchrow('num')) {
-    if($stock == "RDS-A") {
-      $stock = "RDS.A";
-    }
     $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
   }
 

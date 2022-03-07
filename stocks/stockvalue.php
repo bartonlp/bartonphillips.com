@@ -37,7 +37,6 @@ $S->query($sql);
 $stocks = [];
 
 while(list($stock, $price, $qty) = $S->fetchrow('num')) {
-  if($stock == 'RDS-A') $stock = 'RDS.A';
   $stocks[$stock] = [$price, $qty];
 }
 

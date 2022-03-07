@@ -43,7 +43,6 @@ $ar = [];
 $stocks = "";
 
 while([$stock, $price, $qty, $status] = $S->fetchrow('num')) {
-  if($stock == "RDS-A") $stock = "RDS.A";
   $stocks .= "$stock,";
   $ar[$stock] = ['price'=>$price, 'qty'=>$qty, 'status'=>$status];
 }
@@ -176,9 +175,6 @@ jQuery(document).ready(function($) {
 
   $(".stock").on('click', function(e) {
     let stk = $('span', this).text();
-    // For MarketWatch we need RDS.A, BUT for Yahoo we need RDS-A
-    // We are using marketwatch.com right now. If we use Yahoo then comment out the if(stk...
-    if(stk == 'RDS-A') stk='RDS.A';
     var url = "https://www.marketwatch.com/investing/stock/"+stk; 
     var w1 = window.open(url, '_blank');
     return false;

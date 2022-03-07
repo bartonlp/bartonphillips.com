@@ -81,7 +81,7 @@ function getInfo(start=false) {
 
     str = `
 <h2><span class='small'>Last Update: ${djiDate}<br></span>
-<a target='_blank' href='https://www.marketwatch.com/investing/index/djia/charts?mod=mw_quote_advanced'>Dow Jones Average: $${djiAv}</a>,
+<a target='_blank' href='https://www.marketwatch.com/investing/index/djia'>Dow Jones Average: $${djiAv}</a>,
 Change: <span class='posNeg'>$${djiChange}</span>,
 <span class='posNeg'>
 ${djiPercent}</span>
@@ -232,9 +232,6 @@ ${djiPercent}</span>
       // the td is stock and company each in a span. The stock is the
       // first span.
       var stk = $('span:first-child', this).text();
-
-      if(stk == 'RDS-A') stk = "RDS.A";
-
       var url = "https://www.marketwatch.com/investing/stock/"+stk;
       var w1 = window.open(url, '_blank');
       return false;

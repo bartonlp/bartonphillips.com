@@ -41,6 +41,11 @@ $end = number_format($ar[$cnt -1], 2);
 $diff = number_format($ar[$cnt -1] - $ar[0], 2);
 $moving = number_format($totalAmt / $cnt, 2);
 
+$per = number_format(($diff / $start * 100), 2);
+if($per < 0) {
+  $per = "<span style='color: red'>$per</span>";
+}
+
 echo <<<EOF
 $top
 <hr>
@@ -58,7 +63,7 @@ Heighest value: $hi<br>
 Lowest value: $low<br>
 <!-- totalAmt=$amt<br> -->
 Moving Avg for $cnt days: $moving<br>
-From start ($start) to today ($end) difference is: $diff<br>
+From start ($start) to today ($end) difference is: $diff ($per%)<br>
 <hr>
 $footer
 EOF;

@@ -81,6 +81,8 @@ Today is: <span id="datetoday">$date</span>
 <a href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
+<a href="https://www.bartonphillips.org"><button>Home HP</button></a>
+<a href="http://www.bartonphillips.dyndns.org:8080"><button>RPI</button></a>
 </div>
 </section>
 
@@ -103,7 +105,6 @@ Today is: <span id="datetoday">$date</span>
 <li><a href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a href="https://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a href="goto.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
-<li><a href="https://www.computerscienceonline.org">Computer Science Online</a></li>
 <li><a href="https://developers.google.com/web/">Google/Web</a></li>
 <li><a href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
 <li><a href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
