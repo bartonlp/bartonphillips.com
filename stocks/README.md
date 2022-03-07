@@ -19,13 +19,12 @@ The stock file are:
 * stockanal.php -- does moving averages on my stocks.
 * stockdiv.php -- uses iex to get the dividend information
 * stockquotes.php -- gets stock prives
+* stock-mov-avg.php -- gets the diff since 2022-02-10 and current.
 
 The following are helper program not mentioned on https://www.bartonphillips.com:
 
-* stockreaddata.php --  Reads the pricedata table.
 * stock.getalpha.php -- this does a alpha and iex request for a single stock.
-* stockinitsingle.php -- a helper to init a single stock
-* stockvalue.php -- uses the `values` table to get the price*qty values and the 100 moving.
+* stockvalue.php -- get info from eix using stocks from the stocks table.
 
 ## Programs in https://www.bartonphillips.com/stocks
 
@@ -33,14 +32,8 @@ The following are helper program not mentioned on https://www.bartonphillips.com
 **stock-price-update-worker.js**. It displays my stocks every five minutes during the working
 hours of the stock markets during the week. 
 
-   **stock-price-update.js** is just the JavaScript
+1. **stock-price-update.js** is just the JavaScript
 for the main program.
-
-   **stock-price-update-worker.js** is a *Worker* program that runs in a seperate thread and does 
-all the hard work.
-The *Worker* does a *query* of the *stocks.stocks* table (via a POST fetch) to get the stock names
-and also scrapes the *Wall Street Journal* site for the *DJIA* (Dow Jones Average), change and
-percent change.
 
 1. **stockaddedit.php** adds and updates the *stocks.stocks* table.
 
@@ -52,5 +45,9 @@ percent change.
 1. **stockquotes.php** this is like **stock-price-update.php** but runs only once.
 
 1. **stockvalue.php** get the price*qty values from the `values` table.
+
+1. **stock-mov-avg.php** get the diff from 2022-02-10 to today and shows moving average high and low.
+
+Last Modified: BLP 2022-03-07 -- 
 
 ## Contact me: [bartonphillips@gmail.com](mailto:bartonphillips@gmail.com)
