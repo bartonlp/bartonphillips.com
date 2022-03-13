@@ -1,15 +1,6 @@
 <?php
-$_site = require_once(getenv("SITELOAD")."/siteload.php");
+$_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
-/*
-// HTML to PDF
-// http://mpdf1.com/manual/ Documentation
-include("/home/barton11/includes/MPDF57/mpdf.php");
-$mpdf = new mPDF;
-*/
-
-// For the time being NO manifest
-//$h->htmlextra = "manifest='/historyofinternet.manifest'";
 
 $h->extra =<<<EOF
 <style>
@@ -44,6 +35,8 @@ EOF;
 
 $h->title = "History of the Internet";
 $h->banner = "<h1 class='center'>History of the Internet</h1><hr>";
+$h->meta = "<meta name='Editor' content='Bonnie Burch'>";
+
 list($top, $footer) = $S->getPageTopBottom($h);
 
 $article =<<<EOF
@@ -58,7 +51,7 @@ nascent technology, vinyl records were still 78 RPM, long-distance travel was vi
 and transatlantic trips were via ship.</p>
 
 <p>The <b>record</b>, a vinyl one, had a 100-year run while the CD, first pressed in 1982, has
-already been replaced, mostly, by solid-state devices and smartphones via the Internet.
+already been replaced, mostly by solid-state devices and smartphones via the Internet.
 And the Internet has gone from a glimmer in a few scientists' eyes to a trillion-dollar business
 in a little over 30 years.</p>
 
@@ -67,13 +60,13 @@ in a little over 30 years.</p>
 late 1960s, it ran at 1,200 bps and today the
 <a href="http://en.wikipedia.org/wiki/Internet_backbone">Internet backbone</a> using fiber optic cable
 and transmission protocols like SONET (Synchronous Optical Networking) and ATM (Asynchronous
-Transfer Mode) hits over 400 Gbs. This incredible speed improvement has made possible music and
-video on demand over the Internet as well as telephone and data that supports the financial and
+Transfer Mode) hits over 400 Gbs. This incredible speed improvement has made music and
+video on demand possible over the Internet as well as telephone and data that supports the financial and
 business communities around the world.</p>
 
 <p>This phenomenal growth is due to the development of the transistor, integrated circuits and the
 microcomputer. Without these technologies <b>packet switching networks</b>, which are at the heart of
-the Internet, would not be possible.  The development of packet-switching time domain multiplexing
+the Internet,it would not be possible.  The development of packet-switching-time-domain-multiplexing
 required the speed of the microcomputer. The old <b>circuit switching</b> technology of the
 telephone companies just was not viable for a worldwide data communication grid.</p>
 
@@ -85,24 +78,24 @@ century and a half.</p>
 <ul>
   <li><span class="important">1833</span> Telegraph: Carl Friedrich Gauss and Wilhelm Weber, G&#246;ttingen
     Germany.</li>
-  <li>1837 Morse Code and telegraph in the USA: Samuel Morse.</li>
-  <li>1867 First successful and modern typewriter: American, Sholes.</li>
+  <li>1837 Morse Code and Telegraph in the USA: Samuel Morse.</li>
+  <li>1867 First Successful and Modern Typewriter: American, Sholes.</li>
   <li><span class="important">1876</span> Telephons: Alexander Graham Bell.</li>
-  <li>1877 Ponograph: Thomas Edison - with a wax cylinder as recording medium.</li>
+  <li>1877 Phonograph: Thomas Edison - with a wax cylinder as recording medium.</li>
   <li>1887 Gramophone: Emile Berliner - a system of recording which could be used over and
     over. </li>
   <li>1888 Kodak Roll Film: George Eastman.</li>
-  <li>1894 Wireless telegaphy: Guglielmo Marconi.</li>
+  <li>1894 Wireless Telegaphy: Guglielmo Marconi.</li>
   <li><span class="important">1902</span> First Transatlanic Radio: Guglielmo Marconi - from Cornwall to
     Newfoundland.</li>
   <li><span class="important">1906</span>
     Electronic
     <a href="http://en.wikipedia.org/wiki/Vacuum_tube">Amplifying Tube</a> or Triode:
     <a href="http://en.wikipedia.org/wiki/Lee_De_Forest">Lee Deforest</a> -
-    this allowed all electronic signals to be amplified improving electronic communications </li>
-  <li>1923 The Telivision or Iconoscope (cathode-ray tube): Vladimir Kosma Zworykin -
+    this allowed all electronic signals to be amplified thus improving electronic communications </li>
+  <li>1923 The Television or Iconoscope (cathode-ray tube): Vladimir Kosma Zworykin -
     first television camera.</li>
-  <li>1939 Scheduled television broadcasts.</li>
+  <li>1939 Scheduled Television Broadcasts.</li>
   <li><span class="important">1944</span> Barton Phillips born April 11.<br>
     <span class="important"><a href="#tubecomputer">Computers</a>:
       put into public service - government owned - the age of Information Science
@@ -112,16 +105,16 @@ century and a half.</p>
   <li><span class="important">1948</span>
     <a href="http://en.wikipedia.org/wiki/Transistor">Transistor</a>: invented at Bell Labs -
       enabling the miniaturization of electronic devices.</li>
-  <li>1948-1950 Cable TV and subscription TV services.</li>
-  <li>1950-1961 Development of T-1 transmition lines: Bell Labs.</li>
-  <li><span class="important">1951</span> Computers are first sold commercially.</li>
+  <li>1948-1950 Cable TV and Subscription TV Services.</li>
+  <li>1950-1961 Development of T-1 Transmition Lines: Bell Labs.</li>
+  <li><span class="important">1951</span> Computers are First Sold Commercially.</li>
   <li>1952 CERN (&quot;Conseil Europ&#233;en pour la Recherche Nucl&#233;aire&quot; or 
     European Organization for Nuclear Research) founded in Switzerland.</li>
   <li><span class="important">1958</span> Integrated Circuits: enabling the further miniaturization
     of electronic devices and computers.</li>
   <li><span class="important">1960</span> Packet Switching: Paul Baran, Donald Davies and Leonard Kleinrock.</li>
-  <li>1961 Host based email CTTS systems (Compatible Time-Sharing System. Big Main Fraims)</li>
-  <li><span class="important">1964</span> Barton Phillips graduates from UCLA and enter
+  <li>1961 Host-based Email CTTS Systems (Compatible Time-Sharing System. Big Main Fraims)</li>
+  <li><span class="important">1964</span> Barton Phillips Graduates from UCLA and Enters
     the Air Force.</li>
   <li><span class="important">1965</span>
     <ul>
@@ -139,12 +132,12 @@ century and a half.</p>
         (RFC) started</li>
     </ul>
   </li>
-  <li>1970 Barton Phillips returns to US from the Air Force</li>
+  <li>1970 Barton Phillips Returns to US from the Air Force</li>
   <li>1971
     <ul>
-      <li>The computer <a href="http://en.wikipedia.org/wiki/Floppy_disk">floppy disk</a>
-        invented.</li>
-      <li>The <a href="http://en.wikipedia.org/wiki/Microprocessor">microprocessor</a> invented.
+      <li>The Computer <a href="http://en.wikipedia.org/wiki/Floppy_disk">floppy disk</a>
+        Invented.</li>
+      <li>The <a href="http://en.wikipedia.org/wiki/Microprocessor">Microprocessor</a> Invented.
         Three projects delivered a microprocessor at about the same time:
         Garrett AiResearch's Central Air Data Computer (CAD8),
         Texas Instruments' TMS 1000 (September),
@@ -152,19 +145,19 @@ century and a half.</p>
   </li>
     </ul>
   </li>
-  <li>1972 Ray Tomlinson invented network email and the '@' sign.</li>
+  <li>1972 Ray Tomlinson Invented Network Email and the '@' Sign.</li>
   <li><span class="important">1974</span> TCP/IP (Transmission Control Program/Internet Protical RFC 675.
     Vinton Cerf, Yogen Dalal and Carl Sunshine).</li>
   <li>1976
     <ul>
-      <li>Barton Phillips bought the <a href="#6502">KIM 1</a> 6502 Computer kit:
+      <li>Barton Phillips Bought the <a href="#6502">KIM 1</a> 6502 Computer kit:
         Hex keypad, 7 segment display, 1K RAM, 8K ROM.</li>
-      <li>The S100 bus Altair 8800 with the Intel 8080 processor became available 
+      <li>The S100 Bus Altair 8800 with the Intel 8080 processor became available 
         along with the <a href="#8080">IMSAI 8080</a>.</li>
       <li>March: X.25 Network standard approved.</li>
     </ul>
   </li>
-  <li>1977 April: Barton Phillips purchased the Apple I home computer also 6502 based.
+  <li>1977 April: Barton Phillips Purchased the Apple I Home Computer also 6502 based.
     The Apple I had 4 or 8 Kbytes of RAM and Integer Basic in ROM. It also had a casset tape interface
     for reading and writing data via a casset player.
   </li>
@@ -172,14 +165,14 @@ century and a half.</p>
     <ul>
       <li>October: Barton Phillips joins
         <a href="http://en.wikipedia.org/wiki/Micropolis_Corporation">Micropolis Corp.</a>
-        a floppy disk manufacture.
+        a floppy disk manufacturer.
         Between 1978 and 1983 Barton wrote disk OS, Basic Interpreter, Assembler/Linker and
         Editor for the Micropolis products. In 1983 Micropolis stopped marketing its OS.</li>
       <li>1978 X.25 provided the first international and commercial packet switching network, 
         the "International Packet Switched Service" (IPSS).</li>
     </ul>
   </li>
-  <li>1979 First cellular phone communication network started in Japan.</li>
+  <li>1979 First Cellular Phone Communication Network Started in Japan.</li>
   <li><span class="important">1980</span>
     <a href="http://en.wikipedia.org/wiki/Tim_Berners-Lee">Tim Berners-Lee</a> at CERN in Switzerland developed
     <a href="http://en.wikipedia.org/wiki/ENQUIRE">ENQUIRE</a> a hypertext program.
@@ -198,7 +191,7 @@ century and a half.</p>
       <li><a href="http://en.wikipedia.org/wiki/Ethernet">Ethernet</a>,
         which was introduced in 1980 was standardized IEEE 802.3.</li>
       <li>Time magazines names the computer as
-        <a href="http://content.time.com/time/covers/0,16641,19830103,00.html">
+        <a href="https://content.time.com/time/covers/0,16641,19830103,00.html">
           Machine of the Year.
         </a>
       </li>
@@ -210,7 +203,7 @@ century and a half.</p>
       <li>Apple <a href="http://en.wikipedia.org/wiki/Macintosh">Macintosh</a> released.</li>
       <li><a href="http://en.wikipedia.org/wiki/IBM_Personal_Computer/AT">IBM PC AT</a>
         released using <a href="http://en.wikipedia.org/wiki/Intel_80286">Intel 80286</a>
-        (integrated memory managment and floating point) </li>
+        (integrated memory management and floating point) </li>
       <li>ARPANET backbone via T-1 at 1.5 Mbits/sec.</li>
       <li>POP1 (Post Office Protical 1) RFC 918.</li>
     </ul>
@@ -246,7 +239,7 @@ century and a half.</p>
         <a href="http://en.wikipedia.org/wiki/NeXT">NeXT</a> computer.</li>
       <li>Nicola Pellow created a browser that could run on almost all computers called
         the "Line Mode Browser".</li>
-      <li>URL of first web site: <a href="http://info.cern.ch">http://info.cern.ch</a></li>
+      <li>URL of first website: <a href="http://info.cern.ch">http://info.cern.ch</a></li>
     </ul>
   </li>
   <li>1991
@@ -306,9 +299,9 @@ century and a half.</p>
       <li>HTML 4.0 published as a W3C Recommendation.</li>
     </ul>
   </li>
-  <li>1999-2001 "Dot Com" Boom, then bust.</li>
+  <li>1999-2001 "Dot-Com" Boom, then bust.</li>
   <li>2000 Apple Computer releases <a href="http://en.wikipedia.org/wiki/Mac_os_x">Mac OS X</a>
-    a Unix lookalike operating system.</li>
+    a Unix look-alike operating system.</li>
   <li>2001 January: Wikipedia launched.</li>
   <li>2004
     <ul>
@@ -329,10 +322,10 @@ century and a half.</p>
     <ul>
       <li>January: HTML5 was published as a Working Draft by the W3C.</li>
       <li>October 23: AT&T announced the completion of upgrades to OC-768 on
-        80,000 fiber-optic wavelength miles of their IP/MPLS (Multiprotocol Label Switching)
+        80,000 fiber-optic wave-length miles of their IP/MPLS (Multiprotocol Label Switching)
         backbone network.</li>
       <li>IPv6 deployment starts (Summer Olympic Games via IPv6). Work on IPv6 started in the
-        late 1990's when it became clear the IPv4's 4 billion addresses was not going to be
+        late 1990s when it became clear the IPv4's 4 billion addresses were not going to be
         enough.</li>
     </ul>
   </li>
@@ -340,16 +333,16 @@ century and a half.</p>
   <li>2012
     <ul>
       <li>December: W3C designated HTML5 as a Candidate Recommendation.</li>
-      <li>NEC Corp. broke an ultra-long haul Internet speed record when
+      <li>NEC Corp. broke an ultra long-haul Internet speed record when
         it successfully transmitted data at 1.15 terabits/sec over 6,213 miles.</li>
-      <li>IPv4 exhaustion immanent (4 billion addresses).</li>
+      <li>IPv4 exhaustion imminent (4 billion addresses).</li>
     </ul>
   </li>
   <li><span class="important">2013</span> <a href="http://en.wikipedia.org/wiki/Utah_Data_Center">
     The National Security Agency</a> (NSA) is revealed to have
     <a href="http://en.wikipedia.org/wiki/PRISM_(surveillance_program)">secretly</a>
     collected exabytes (1x10<sup>18</sup> or 100,000 terabyte disk drives) worth of US and
-    fourign citizens data.</li>
+    foreign citizens' data.</li>
   <li>2014 The W3C (World Wide Web Consortium) plans to finalize the HTML 5 standard by July.</li>
   <li>2016 It is
     <a href="http://www.pcmag.com/article2/0,2817,2405038,00.asp">estimated</a>
@@ -376,15 +369,15 @@ century and a half.</p>
   <li>201x: WAN (SONET-OC-768) 40 Gbits/sec.</li>
 </ul>
 
-<p>In 2000 there were just under 150 million dial-up subscriptions in the 34 OECD (Organisation for
+<p>In 2000 there were just under 150 million dial-up subscriptions in the 34 OECD (Organization for
 Economic Co-operation and Development) countries and fewer than 20 million broadband
 subscriptions.</p>
 
-<p>By 2004, broadband had grown and dial-up had declined so that the number of subscriptions were
+<p>By 2004, broadband had grown and dial-up had declined so the number of subscriptions were
 roughly equal at 130 million each.</p>
 
 <p>In 2010, in the OECD countries, over 90% of the Internet access subscriptions used broadband,
-  broadband had grown to more than 300 million subscriptions, and dial-up subscriptions had declined
+  which had grown to more than 300 million subscriptions, and dial-up subscriptions had declined
   to fewer than 30 million.</p>
 </section>
 
@@ -403,7 +396,7 @@ describing this work, explains:</p>
 <blockquote>
 &quot;Convinced that it was a worthwhile goal, we set up a test network to see where the problems
 would be. Since computer time-sharing experiments at MIT and Dartmouth had demonstrated that it was
-possible to link different computer users to a single computer, the cross country experiment built
+possible to link different computer users to a single computer, the cross-country experiment built
 on this advance.&quot;
 </blockquote>
 
@@ -417,16 +410,16 @@ and the Stanford Research Institute at 22:30 hours on October 29, 1969</p>
 
 <p><b>Packet switching</b> resolved many of the issues identified during the pre-ARPANET,
 time-sharing experiments. But higher-speed phone circuits also helped. The first wide area network
-(WAN) demonstrated in 1965 between computers at MIT's Lincoln Lab, ARPA's facilities, and the System
+(WAN) demonstrated in 1965 among computers at MIT's Lincoln Lab, ARPA's facilities, and the System
 Development Corporation in California utilized dedicated 1200 bps circuits. Four years later, when
 the ARPANET began operating, 50 Kbps circuits were used. But it wasn't until 1984 that ARPANET
-traffic levels were such that it became more cost-effective to lease T1 lines (1.5 Mbps) than to
+traffic levels were such that it became more cost effective to lease T1 lines (1.5 Mbps) than to
 continue using multiple 50 Kbps lines.</p>
 
-<p>In the late 1960's and early 1970's there were a number of separate nascent networks developed
-by States, Universities, and governments: NPL, Merit Network, CYCLADES, X.25. The problem with all
-these different networks was that they all &quot;spoke&quot; different languages/protocols thus
-internetworking was difficult if not impossible.</p>
+<p>In the late 1960s and early 1970s, there were a number of separate nascent networks developed
+by states, universities and governments: NPL, Merit Network, CYCLADES, X.25. The problem with all
+those different networks was that they all &quot;spoke&quot; different languages/protocols, thus
+internet-working was difficult if not impossible.</p>
 
 <p>In 1973 Vinton Cerf, the developer of the existing ARPANET Network Control Program (NCP) protocol,
 joined Robert E. Kahn to work on open-architecture interconnection models with the goal of designing
@@ -457,23 +450,23 @@ in the loss of the quality of service guarantees that are provided by circuit sw
 <p>Packet switching also imposes overhead burdens because each packet must have information that
 delimits the packet. In TCP/IP the IP header comes first and is used to direct the packets from the
 source to the destination and identify the type of service being provided. The IP header is like a
-letters envelope which contains an address and a return address. The TCP header comes after the IP
+letter's envelope which contains an address and a return address. The TCP header comes after the IP
 header and contains information about the transmission including endpoint ports, sequencing
-information and the data. The data may (an usually does) have other headers that describe the
+information and the data. The data may (and usually does) have other headers that describe the
 specific service, for example HTTP, IMAP, POP3, FTP etc.<p>
 
-<p>When a web page is transmitted from the server to the client there are usually many TCP/IP packets
-of data involved. These packets that represent the web page may take different routes to get to their
+<p>When a webpage is transmitted from the server to the client, there are usually many TCP/IP packets
+of data involved. Those packets that represent the webpage may take different routes to get to the
 final destination and may in fact arrive at the destination out of order. It is the information in the
-TCP header that allows the client (destination) to reassemble the web page from the many packets
+TCP header that allows the client (destination) to reassemble the webpage from the many packets
 correctly.</p>
 
 <p>A good analogy is the Post Office. If we were going to send a large manuscript in chapters as they
-were completed we would put the manuscript chapters into envelopes and address the envelopes with
+were completed, we would put the manuscript chapters into envelopes and address the envelopes with
 the destination address and the return address. We would also include information in the envelope
 describing the sequence of the chapters. The envelope is the IP header and the information inside
 the envelope is the TCP header and data. We need the TCP type of information in the envelope because
-as we all know letters can be received out of sequence and therefore we need some information to
+as we all know, letters can be received out of sequence and therefore we need some information to
 let us know how to reassemble the manuscript.</p>
 </section>
 
@@ -481,20 +474,20 @@ let us know how to reassemble the manuscript.</p>
 
 <p>Modern Digital Computers think in binary: ones and zeros. We have used the phrase
 &quot;bits per second&quot; or bps a lot in this history. In communication a bit is generally thought
-of as a one or a zero. Depending on the encoding scheme used in the communication stream eight bits
+of as a one or a zero. Depending on the encoding scheme used in the communication stream, eight bits
 may represent a character or byte. I say may because different encoding schemes can use more than
-eight bits in order to cope with transmission phenomenons. So when we say that a early teletype ran
-at a rate of 75 bits per second (bps) that means that they typed about nine characters a second.</p>
+eight bits in order to cope with transmission phenomenons. So when we say that an early teletype ran
+at a rate of 75 bits per second (bps) that means that it typed about nine characters a second.</p>
 
-<p>A byte is eight binary digits, for example the number seven decimal in binary is 0111. The decimal
-number Fifteen (15) is 1111 in binary. The decimal number sixteen is 0001,0000 in binary and takes up
-two bytes while fifteen takes only one byte. As I said in the previous paragraph we usually think of
+<p>A byte is eight binary digits. For example, the number seven decimal in binary is 0111. The decimal
+number fifteen (15) is 1111 in binary. The decimal number sixteen is 0001,0000 in binary and takes up
+two bytes while fifteen takes only one byte. As I said in the previous paragraph, we usually think of
 a byte as being eight bits.</p>
 
 <p>So what is HEX? HEX stands for hexadecimal which is a number system with a base of sixteen.
 The first sixteen hexadecimal numbers are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F. The
 number sixteen decimal is 10 HEX. Computer engineers use HEX because it works well with binary.
-For example the number 47 decimal is 0010,1111 binary and 2F HEX. Binary is powers of two so the
+For example, the number 47 decimal is 0010,1111 binary and 2F HEX. Binary is powers of two so the
 binary two bytes shown are (128)(64)(32)(16),(8)(4)(2)(1). 0010,1111 is then 32+8+4+2+1 or 47 decimal.
 Do you see the relation between binary and HEX? The HEX number 2F represents two bytes in
 binary 0010 (2) and 1111 (F). Each HEX digit is a byte. As you can see binary converts easily
@@ -556,6 +549,8 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 </article>
 EOF;
 
+// Print Page
+
 if($_GET['page'] == 'print') {
   echo <<<EOF
 <!DOCTYPE HTML>
@@ -596,19 +591,13 @@ EOF;
   exit();
 }
 
-/*
-$mpdf->WriteHTML($article);
-$mpdf->Output('/tmp/pdfpage.pdf', 'F');
-*/
+// Main Page
 
 echo <<<EOF
 $top
 $article
 <hr>
-<input type='image' id='printbtn' src='https://bartonphillips.net/images/print.gif'
-onclick="printit();"
-  style='width: 100px'/><br>
-<!--<a href="download.pdf">Download PDF version</a> of article-->
+<input type='image' id='printbtn' src='https://bartonphillips.net/images/print.gif' onclick="printit();" style='width: 100px'/><br>
 <hr>
 <script>
 function printit() {
@@ -624,8 +613,6 @@ function printit() {
     <li><a href="buildawebsite.php">So You Want to Build a Website</a></li>
   </ul>
 </div>
-
 <hr>
-  
 $footer
 EOF;
