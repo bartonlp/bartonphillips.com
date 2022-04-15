@@ -1,7 +1,9 @@
 <?php
 // Register yours name and email address
 // This is for bartonphillips.com/index.php
-// NOTE *** This is the only way to get an ip into the myip table!
+// NOTE *** There are only two places where the myip table is inserted or updated,
+// bonnieburch.com/addcookie.php and in bartonphillips.com/register.php.
+
 /*
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
@@ -26,7 +28,6 @@ CREATE TABLE `myip` (
 */
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 
 // If a post from the form
 
@@ -40,7 +41,17 @@ if($_POST) {
   
   if($email == "bartonphillips@gmail.com") {
     $name = "Barton Phillips"; // Force name
-    //error_log("email: $email");
+
+    if($S->nodb === true) {
+      throw new Exception(__LINE__ . ": register.php, nodb is set to true");
+    }
+    
+    $S->query("select count(*) from information_schema.tables ".
+              "where (table_schema = '$S->masterdb') and (table_name = 'myip')");
+
+    if(!$S->fetchrow('num')[0]) {
+      throw new Exception(__LINE__ .": register.php, myip table does not exist");
+    }
 
     // Update the myip tables.
     $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
@@ -50,6 +61,14 @@ if($_POST) {
   }
   // Do this for everyone.
   // For me the ip is for the last registration and really has no meaning!
+  // The members table is only for database bartonphillips.
+
+  $S->query("select count(*) from information_schema.tables ".
+            "where (table_schema = 'bartonphillips') and (table_name = 'members')");
+
+  if(!$S->fetchrow('num')[0]) {
+    throw new Exception(__LINE__ .": register.php, members table for database bartonphillips does not exist");
+  }
   
   $sql = "insert into members (name, email, ip, agent, created, lasttime) ".
          "values('$name', '$email', '$S->ip', '$S->agent', now(), now()) " .

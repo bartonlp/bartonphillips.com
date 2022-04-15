@@ -67,7 +67,7 @@ function dogit() {
 
 if($S->isBot) {
   $locstr = <<<EOF
-<ul calss="user-info">
+<ul class="user-info">
   <li>IP Address: <i class='green'>$S->ip</i></li>
 </ul>
 EOF;

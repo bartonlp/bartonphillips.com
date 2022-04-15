@@ -1,45 +1,20 @@
 /*
  * SPECIAL json for use by siteload.php. Normal json will not allow
  * comments.
- * BLP 2022-01-15 -- headFile, bannerFile and footerFile MUST be paths
- * not URLs! Also in this file the full path because some of the
- * directories below this do NOT have a mysitemap.json which means they
- * get their infor form this file.
- * BLP 2021-10-28 -- Removed 'password' from Database. Now we get the
- * password from a secure location at
- * /var/www/bartonphillipsnet/PASSWORDS/database-password
- * NOTE that any of these can be modified when the are in $_site before
- * calling the site class (either Database, SiteClass, or
- * $_site->className().
- * Any of the mysitemap.json variables can be used anywhere via $S.
- * The value $h->footer can be used to override calling
- * $this->getPageFooter($b); $h->footer should have html for the footer
- * in lue of using getPageFooter.
- * 
  */
 {
     "siteDomain": "bartonphillips.com", // only $this
     "siteName": "Bartonphillips", // only $this
     "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $h
     "path": "/var/www/bartonphillips.com", // only $this
-    // The ones below can be used by uncommenting them or putting them
-    // in another mysitemap.json.
-    //
-    // "base": "path to the base", // also via $h
-    // "preheadercomment": "<!--Commint wrapped in comment marks-->",
-    // "lang": "en",
-    // "htmlextra": "something extra",
-    // "doctype", "<!DOCTYPE html>",
-    // "defaultCss": false, // also via $h
-    // "titel": "goes in <title>",
-    // "desc": "some description",
-    // "keywords": "bunch of keywords",
-    //
     "className": "SiteClass", // only $this. Not all programs use this, some instantiate SiteClass directly
     "copyright": "Barton L. Phillips", // also via $h
     "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com", // also via $h
     "address": "New Bern, North Carolina", // This goes in the footer and can be set via $b->address also
     "favicon": "https://bartonphillips.net/images/favicon.ico",
+    "canonical": "https://www.bartonphillips.com",
+    // "defaultCss": true, // If this is set to true then NO default
+    // header at all.
     "masterdb": "barton", // only $this
     "dbinfo": { // only $this
       "host": "localhost",
@@ -59,20 +34,43 @@
     "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
     // BLP 2022-01-15 -- NOTE these are include via require() so these must be absolute
     // or relative paths not URLs
-    //"headFile": "/var/www/bartonphillips.com/includes/head.i.php",
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
     "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
-    "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php", // filled out via $b or mysitemap.json
+    "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
     "count": true, // only $this
     "countMe": true, // only $this
     "ctrmsg": "Counter Reset: Feb. 4, 2017", // also via $b. The counter reset message.
-    // "msg": "some message" // also via $b
-    // "msg2": "some message" // also via $b
-    // "msg2": "some message" // also via $b
-    // "noCounter": true, // true of false. also via $b
+    // The following can also be set via $h which has presidence
+    //
+    // "nodb": true, // if true then we do not load Database
+    // "noTrack": true, // if true we do not load tracker.js or tracker.php
+    // "base": "path to the base",
+    // "preheadercomment": "<!--Commint wrapped in comment marks-->",
+    // "lang": "en",
+    // "htmlextra": "something extra",
+    // "doctype", "<!DOCTYPE html>",
+    // "defaultCss": false, // also via $h
+    // "titel": "goes in <title>",
+    // "desc": "some description",
+    // "keywords": "bunch of keywords",
+    //
+    // The following can also be set via $b which has presidence
+    //
+    // "msg": "some message", 
+    // "msg2": "some message",
+    // "msg2": "some message",
+    // "noCounter": true,
+    // "nofooter": true,
+    // "noLastmod": true,
+    // "noCopyright": true,
+    // "copyright": "This is the copyright",
+    // "aboutwebsite": "<h2><a target='_blank' href='phpinfo.php'>Something Special</a></h2>",
+    // "noAddress": true,
+    // "address": "Here at Home",
+    // "noEmailAddress": true,
     "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
     "trackerImg2": "/images/146624.png", // only $this
-    "EMAILADDRESS": "bartonphillips@gmail.com", // only $this in footer
-    "EMAILRETURN": "bartonphillips@gmail.com", // only $this in footer
-    "EMAILFROM": "webmaster@bartonphillips.com" // only $this in footer
+    "EMAILADDRESS": "bartonphillips@gmail.com", // or $b->emailAddress
+    "EMAILRETURN": "bartonphillips@gmail.com", // only $this
+    "EMAILFROM": "webmaster@bartonphillips.com" // only $this
 }

@@ -277,18 +277,20 @@ $h->banner = "<h1>Stock Quotes</h1>";
 
 $b->script = "<script src='stock-price-update.js'></script>";
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom($h, $b);
 
 // Render page with the 'loading' icon. Once the worker get all of the data the
 // stock-price-update.js will rerender the page with all of the data.
 date_default_timezone_set('America/New_York');
 $date = date("r T", time());
+
 echo <<<EOF
 $top
 <hr>
 <h4>Today is: $date</h4>            
 
 <div id="selectstatus"></div>
+
 <div>The <i>Av Price</i> is a moving average over the last 200 days. <i>Av Vol</i> is the average over last 30 days.</div>
 <div id='dji'></div>
 <div id='stock-data'><img id="loading" src="https://bartonphillips.net/images/loading.gif"</img></div>
