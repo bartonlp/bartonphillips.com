@@ -4,35 +4,31 @@
 // Does a file_get_contents() POST
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
-
 $S = new $_site->className($_site);
 
 if($_POST['mutual']) {
-  //$iex_token = require_once('/var/www/bartonphillipsnet/PASSWORDS/iex-token');
-  $iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");  
-  //error_log("mutualiex.php AJAX: token=$iex_token");
-  
   $mutual = $_POST['mutual'];
+
+  // Ues alphavantage.co as iex no longer seems to support my mutual funds.
   
-  $url = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=". $mutual .
-              "&types=quote,stats&filter=latestPrice,change,changePercent,latestUpdate,".
-              "day200MovingAvg".
-              "&token=$iex_token";
+  $alphakey = require("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+  $url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$mutual&apikey=$alphakey";
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_HEADER, 0);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_URL, $url);
   $ret = curl_exec($ch);
-  echo $ret;
+  $ar = json_decode($ret, true);
+  
+  $date = $ar['Meta Data']['3. Last Refreshed'];
+  $close = $ar['Time Series (Daily)'][$date]['4. close'];
+  echo "$date:$close";
   exit;
-  // In lieu of AJAX. This does a GET from url.
 };
 
 $h->title = "Mutual Funds Prices";
 $h->css =<<<EOF
-<style>
 #mutual {
   border: 1px solid black;
 }
@@ -46,8 +42,8 @@ $h->css =<<<EOF
 #mutual td:first-child {
   text-align: left;
 }
-</style>
 EOF;
+
 $h->banner = "<h1>Mutual Funds Info</h1>";
 
 list($top, $footer) = $S->getPageTopBottom($h);
@@ -77,51 +73,45 @@ $mutual = rtrim($mutual, ',');
 $tbl = <<<EOF
 <table id='mutual'>
 <thead>
-<tr><th>Name</th><th>Price</th><th>Moving</th><th>Qty<br>Amount</th><th>Change<br>%</th><th>latest</th></tr>
+<tr><th>Name</th><th>Price</th><th>Qty<br>Amount</th><th>latest</th></tr>
 </thead>
 <tbody>
 EOF;
 
 $total = 0;
 
-$options = array('http' => array(
-                                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                                 'method'  => 'POST',
-                                 'content' => http_build_query(array('mutual'=>$mutual))
-                                )
-                );
+foreach($stocks as $stock=>$qty) {
+  $options = array('http' => array(
+                                   'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                                   'method'  => 'POST',
+                                   'content' => http_build_query(array('mutual'=>$stock))
+                                  )
+                  );
 
-$context  = stream_context_create($options);
+  $context  = stream_context_create($options);
 
-// Now this is going to do a POST!
+  // Now this is going to do a POST! This is in lieu of doing a Javascript function.
+  // This way it is all php.
 
-$info = file_get_contents("https://www.bartonphillips.com/stocks/mutualiex.php",
-                            false, $context);
+  $info = file_get_contents("https://www.bartonphillips.com/stocks/mutualiex.php", false, $context);
 
-$info = json_decode($info, true);
-
-foreach($info as $k=>$v) {
-  $qty = $stocks->$k;
-
-  $stats = $v['stats'];
-  $quote = $v['quote'];
-  
-  $price = $quote["latestPrice"];
-  $amount = number_format($price * $qty, 2);
-  $total += $price * $qty;
-  $price = number_format($price, 2);
+  preg_match("~(.*):(.*)~", $info, $m);
+  $date = $m[1];
+  $close = $m[2];
+  //echo "$stock: close=$close<br>";
+  $amount = number_format($close * $qty, 2);
+  $total += $close * $qty;
+  $price = number_format($close, 2);
   $qty = number_format($qty, 0);
-  $change = $quote["change"];
-  $changePer = number_format($quote["changePercent"] * 100, 2);
-  $latest = date("Y-m-d H:i", substr($quote["latestUpdate"],0,10));
-  $day200 = $stats["day200MovingAvg"];
+  $latest = $date;
 
   $tbl .= <<<EOF
-<tr><td>$k</td><td>$price</td><td>$day200</td><td>$qty<br>$amount</td><td>$change<br>$changePer</td><td>$latest</td></tr>
+<tr><td>$stock</td><td>$price</td><td>$qty<br>$amount</td><td>$latest</td></tr>
 EOF;
 }
 
 $total = number_format($total, 2);
+
 $tbl .=<<<EOF
 </tbody>
 </table>

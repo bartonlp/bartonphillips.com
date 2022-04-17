@@ -1,16 +1,30 @@
 // stock-price-update.js
 // This is used by stock-price-update.php
-// BLP 2021-11-04 -- Removed stock-price-update-worker.js. Now all of
-// the work is done here and in the AJAX in stock-price-update.php
-// which uses the IPX secret from a secure location.
-// BLP 2020-06-04 -- changed the php and worker files to use ipx to get
-// 200dayMovingAvg and avgTotalVolume. No changes were required to this
-// program
-// BLP 2020-10-21 -- include mutual funds in the active items.
 
 'use strict';
 
-var str;
+let str;
+
+let formatNumber = new Intl.NumberFormat(undefined, {
+  // These options are needed to round to whole numbers if that's what you want.
+  minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+});
+  
+let formatMoney = new Intl.NumberFormat(undefined, {
+  style: 'currency',
+  currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+});
+
+let formatPercent = new Intl.NumberFormat(undefined, {
+  style: 'percent',
+  minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+});
 
 // Put the select text into the 'selectstatus' div
 
@@ -67,17 +81,17 @@ function getInfo(start=false) {
 
   //console.log("start:", start, ", time:", time, " day: ", day, ", date:", date);
 
-  query().then(data => {
-    let r2 = data.r2;
-
+  query('web').then(data => {
     // Get Dow Joins data.
 
-    let djiAv = r2.dji,
-    djiChange = r2.change,
-    djiPercent = r2.per,
-    djiDate = r2.date;
+    //console.log("data:", data);
+    
+    let djiAv = data.dji,
+    djiChange = data.change,
+    djiPercent = data.per,
+    djiDate = data.date;
 
-    //console.log("DJI Date: " + djiDate);
+    console.log("DJI Date: " + djiDate);
 
     str = `
 <h2><span class='small'>Last Update: ${djiDate}<br></span>
@@ -105,10 +119,12 @@ ${djiPercent}</span>
 `;
 
     // I want orgStock to be a new variable that is not changed when I do
-    // the below map. This is the original data.r2.stocks.
+    // the below map. This is the original data.stocks.
 
-    let orgStock = r2.stocks; //Object.entries(r2.stocks);
+    let orgStock = data.stocks; 
 
+    //console.log("orgStock: ", orgStock);
+    
     // Send the data from sql stocks to iex
 
     let ar = [];
@@ -117,7 +133,8 @@ ${djiPercent}</span>
     for(const stocks in orgStock) {
       let st = stocks;
       let s = orgStock[stocks];
-
+      //console.log("stocks: " , s);
+      
       let orgPrice = s.price || 0, qty = s.qty || 0,
       status = s.status || 0, company = s.company; 
 
@@ -134,8 +151,8 @@ ${djiPercent}</span>
 
       //console.log("st: " + st + ", change: " + curChange + ", curPrice: " + curPrice + ", avPrice: " + avPrice);
 
-      if(status == 'active' || status == 'mutual') {
-        // We always show the total and diff for the active or mutual
+      if(status == 'active') {
+        // We always show the total and diff for the active
         // stocks. All the others (watch, sold) are not counted.
         
         accTotal += curPrice * qty;
@@ -143,15 +160,11 @@ ${djiPercent}</span>
       }
 
       // Create value from qty times price
-      let value = (qty * orgPrice).toLocaleString(undefined, {style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2, maximumFractionDigits: 2});
+      let value = formatMoney.format(qty * orgPrice);
 
       // Create orgPer from (price - orgPrice)/orgPrice
 
-      let orgPer = ((curPrice - orgPrice) / orgPrice)
-      .toLocaleString(undefined, {style: 'percent',
-      minimumFractionDights: 2, maximumFractionDigits: 2});
+      let orgPer = formatMoney.format((curPrice - orgPrice) / orgPrice);
 
       // If orgPer is neg make it red. 
 
@@ -162,29 +175,23 @@ ${djiPercent}</span>
       // Take data[0] appart into price, qty, avPrice, change, percent,
       // avgVolume, moving
   
-      let price = curPrice.toLocaleString(undefined, {style: 'currency',
-      currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
+      let price = formatMoney.format(curPrice);
 
-      let change = curChange.toLocaleString(undefined, {style: 'currency', currency: 'USD',
-      minimumFractionDigits: 2, maximumFractionDigits: 2});
+      let change = formatMoney.format(curChange);
 
-      let percent = (curPercent == null ? 0 : curPercent).toLocaleString(undefined, {style: 'percent',
-      minimumFractionDigits: 2, maximumFractionDigits: 2});
+      let percent = formatPercent.format(curPercent == null ? 0 : curPercent);
 
-      orgPrice = parseFloat((orgPrice == null ? 0 : orgPrice), 10).toLocaleString(undefined, {style: 'currency', currency: 'USD',
-      minimumFractionDigits: 2, maximumFractionDigits: 2});
+      orgPrice = formatMoney.format(parseFloat((orgPrice == null ? 0 : orgPrice), 10));
       
       qty = qty.toLocaleString();
 
-      company =company.toLowerCase();
+      company = company.toLowerCase();
       
       avVol = (avVol == null ? 0 : avVol).toLocaleString();
 
-      let movingPer = ((curPrice - avPrice) /avPrice).toLocaleString(undefined, {style: 'percent',
-      minimumFractionDigits: 2, maximumFractionDigits: 2});
+      let movingPer = formatPercent.format((curPrice - avPrice) /avPrice);
 
-      avPrice = avPrice.toLocaleString(undefined, {style: 'currency',
-      currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
+      avPrice = formatMoney.format(avPrice);
 
       // If Change/% Change is negitive make it red
 
@@ -206,16 +213,45 @@ ${djiPercent}</span>
 <td>${qty}<br>${value}</td><td>${avVol}</td><td>${change}<br>${percent}</td><td>${status}</td></tr>`;
     }
 
+    //console.log("mutuals: ", data.mutuals);
+    
+    str += `
+    </tbody
+    </table>
+    <table id='mutuals' border='1'>
+    <thead>
+    <tr><th>Name</th><th>Price</th><th>Value</th><th>Qty</th><th>Date</th></tr>
+    </thead>
+    <tbody>
+`;
+
+    let mutTotal = 0.0;
+
+    for(const k in data.mutuals) {
+      let mut = data.mutuals[k];
+      str += "<tr><td>" + k + "</td>";
+      mutTotal += mut[1];
+      let mprice = formatMoney.format(mut[0]);
+      let value = formatMoney.format(mut[1]);
+      let qty = formatNumber.format(mut[2]);
+      let date = mut[3];
+      str += "<td>" + mprice + "</td><td>" + value + "</td><td>" + qty + "</td><td>" + date + "</td><tr>\n";
+    }
+
+    str += "</tbody>\n</table>";
+
+    let grandTotal = mutTotal + accTotal;
+    
     // Now Make totals row
 
     str += `
     </tbody>
     </table>
     <table id='totals'>
-      <tr><th>Diff:</th><th>${accDiff.toLocaleString(undefined, {style: 'currency', currency: 'USD',
-  minimumFractionDigits: 2, maximumFractionDigits: 2})}</th></tr>
-      <tr><th>Total:</th><th>${accTotal.toLocaleString(undefined, {style: 'currency', currency: 'USD', 
-  minimumFractionDigits: 2, maximumFractionDigits: 2})}</th></tr>
+      <tr><th>Diff:</th><th>${formatMoney.format(accDiff)}</th></tr>
+      <tr><th>Stocks Total:</th><th>${formatMoney.format(accTotal)}</th></tr>
+      <tr><th>Mutual Total:</th><th>${formatMoney.format(mutTotal)}</th></tr>
+      <tr><th>Total:</th><th>${formatMoney.format(grandTotal)}</th></tr>        
     </table>
 `;
 
@@ -223,7 +259,8 @@ ${djiPercent}</span>
 
     $("#stock-data").html(str);
 
-    $("#attribution").html('<a href="https://iexcloud.io">Data provided by IEX Cloud</a>');
+    $("#attribution").html('Data provided by <a href="https://iexcloud.io">IEX Cloud</a> ' +
+                           'and <a href="https://alphavantage.co">Alpha Vantage</a>');
 
     // If we Click on the first field which is the stock name. This takes you
     // to marketwatch.com
@@ -316,18 +353,16 @@ ${djiPercent}</span>
   });
 };
 
-async function query() {
+async function query($page) {
   // Again this is like AJAX.
   // BLP 2021-11-04 -- stock-price-update.php does the IPX logic and
   // uses a secure secret token.
 
-  let r2 = await fetch("./stock-price-update.php", {
-    body: "page=web", // make this look like form data
+  return await fetch("./stock-price-update.php", {
+    body: "page=" + $page, // make this look like form data
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded' // We need the x-www-form-urlencoded type
     }
   }).then(data => data.json());
-
-  return {r2: r2};
 };

@@ -20,6 +20,13 @@ $_site = require_once(getenv("SITELOADNAME"));
 use PHPHtmlParser\Dom;
 
 function checkUser($S) {
+  // I could also look at the fingerprint for my know devices.
+  // There are two file at /var/www/bartonphillipsnet/
+  // 1) a json file
+  // 2) a php file.
+  // Each has the same information: a fingerprint and a label for the device.
+  // Right now the following is a simpler way to do this.
+  
   if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
     $sql = "select name from members where email='$userEmail'";
 
@@ -36,7 +43,8 @@ function checkUser($S) {
   }
 };
 
-// AJAX GET. EndOfDay is run by CRON at 1700.
+// AJAX GET. EndOfDay is run by CRON at 1700 via bartonphillips.com/scripts/updatestocktotals.sh
+// which does a wget of bartonphillips.com/stocks/stock-price-update.php?page=EndOfDay
 /*
 CREATE TABLE `stocktotals` (
   `total` varchar(50) NOT NULL,
@@ -52,8 +60,7 @@ if($_GET['page'] == "EndOfDay") {
 
   // Get our stocks
   
-  $sql = "select stock, qty from stocks where status in ('active','mutual')";
-  //"where status != 'mutual'";
+  $sql = "select stock, qty from stocks where status = 'active'";
   
   $S->query($sql);
 
@@ -67,48 +74,67 @@ if($_GET['page'] == "EndOfDay") {
          "&types=quote".
          "&token=$iex_token";
 
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $str);
-  curl_setopt($ch, CURLOPT_HEADER, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  $iex = json_decode(file_get_contents($str), true); // decode as an array
 
-  $iex = curl_exec($ch);
-  $iex = json_decode($iex, true); // decode as an array
-
-  $total = 0;
+  $total = $stocktotal = $mutual = 0;
   $value = 0;
   
   foreach($iex as $k=>$v) {
     $value = $v['quote']['latestPrice'] * $ar[$k];
     echo "$k: $value, $ar[$k]\n";
-    $total += $value;
+    $stocktotal += $value;
   }
 
+  // Now get the mutual funds via alpha
+
+  $alphakey = require("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+  
+  $sql = "select stock, qty from stocks where status = 'mutual'";
+  
+  $S->query($sql);
+
+  while([$stock, $qty] = $S->fetchrow('num')) {
+    $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
+
+    $alpha = json_decode(file_get_contents($url), true)['Global Quote'];
+  
+    $mdate = $alpha['07. latest trading day'];
+    $close = $alpha['05. price'];
+    $value = $close * $qty;
+    $mutual += $value;
+    echo "$stock: $value, $qty -- $mdate\n";
+  }
+  $total = $stocktotal + $mutual;
   $total = number_format(round($total, 2), 2);
+  $mutual = number_format(round($mutual, 2), 2);
+  $stocktotal = number_format(round($stocktotal, 2), 2);
   $date = date("Y-m-d H:i:s");
+  echo "\nMutuals $mdate: $mutual";
+  echo "\nStocks $date: $stocktotal";
   echo "\nTotal $date: $total\n";
 
-  $S->query("insert ignore into stocktotals (total, created) values('$total', current_date())");
+  $S->query("insert into stocktotals (total, created) values('$total', current_date()) " .
+           "on duplicate key update total='$total'");
   exit();
 }
 
-// AJAX
+// AJAX from stock-price-quote.js
 // Get info from stocks table and DJIA (Dow Jones Industrial Average) from WSJ
 // (quotes.wks.com/index.DJIA).
+// This now uses IEX for stocks and Alpha mutual funds.
 
 if($_POST['page'] == 'web') {
   $S = new Database($_site); // All we need here is the database.
 
-  // BLP 2021-11-03 -- get token from secure location
-  
-  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
-  //$iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
-  //error_log("stock-price-update.php AJAX: iex_token=$iex_token");
+  // Get token from secure location.
+  // There are two ways to do this via ../PASSWORDS.
+  // 1) require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  // 2) file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
+  // The second way reads a plain text via an echo.
 
-  // BLP 2020-10-21 -- include mutual funds
+  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
   
-  $sql = "select stock, price, qty, status, name from stocks";
-  //"where status != 'mutual'";
+  $sql = "select stock, price, qty, status, name from stocks where status='active'";
   
   $S->query($sql);
 
@@ -118,31 +144,27 @@ if($_POST['page'] == 'web') {
 
   $symboleList = implode(",", array_keys($ar));
 
-  //error_log("stock-price-update.php AJAX: symboleList=$symboleList");
-
+  // Get both 'quote' and 'status' and filter for latestPrice, change, changePercent, latestUpdate,
+  // avgTotalVolume and day200MovingAvg.
+  
   $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=$symboleList".
          "&types=quote,stats&filter=latestPrice,change,changePercent,latestUpdate,".
          "avgTotalVolume,day200MovingAvg".
          "&token=$iex_token";
 
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $str);
-  curl_setopt($ch, CURLOPT_HEADER, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-  $iex = curl_exec($ch);
-  //error_log("stock-price-update.php AJAX: iex string=$iex");
-  
-  $iex = json_decode($iex, true); // decode as an array
+  $iex = json_decode(file_get_contents($str), true); // decode as an array
 
   foreach($iex as $k=>$v) {
-    $ar[$k]['moving'] = $v['stats']['day200MovingAvg'];
+    $key = &$ar[$k]; // make $key a reference to $ar[$k].
+    $val = $v['quote']; // here we just need a seperate variable
+
+    $key['moving'] = $v['stats']['day200MovingAvg'];
     
-    $ar[$k]['latestPrice'] = $v['quote']['latestPrice'];
-    $ar[$k]['change'] = $v['quote']['change'];
-    $ar[$k]['changePercent'] = $v['quote']['changePercent'];
-    $ar[$k]['latestUpdate'] = $v['quote']['latestUpdate'];
-    $ar[$k]['avgTotalVolume'] = $v['quote']['avgTotalVolume'];
+    $key['latestPrice'] = $val['latestPrice'];
+    $key['change'] = $val['change'];
+    $key['changePercent'] = $val['changePercent'];
+    $key['latestUpdate'] = $val['latestUpdate'];
+    $key['avgTotalVolume'] = $val['avgTotalVolume'];
   }
 
   // Dom lets one use the dom to scape the website.
@@ -153,27 +175,37 @@ if($_POST['page'] == 'web') {
 
   $quoteDate = $dom->find(".timestamp__time bg-quote")->text();
 
-/*
-  $dji = $dom->find(".intraday__data .value")->text();
-  $change = $dom->find(".intraday__data .change--point--q")->text();
-  $changePercent = $dom->find(".intraday__data .change--percent--q")->text();
-*/
   $group = $dom->find(".markets__group");
 
   $dji = $group->find(".price bg-quote")->text;
   $change = $group->find(".change bg-quote")->text;
   $changePercent = $group->find(".percent bg-quote")->text;
 
-  // here 'stocks' is the $ar array which has
-  // $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
-  // to start and then gets the iex data added as 'moving', 'latestPrice',
-  // 'change', 'changePercent', 'latestUpdate' and 'avgTotalVolume'.
+  // Get Mutuals from alphavanage.co because iex stopped giving me mutuals
 
-  $ret = json_encode(array('stocks'=>$ar,
-                           'dji'=>$dji,
-                           'change'=>$change,
-                           'per'=>$changePercent,
-                           'date'=>$quoteDate
+  $sql = "select stock, qty from stocks where status = 'mutual'";
+  
+  $S->query($sql);
+
+  $alphakey = require("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+
+  while([$mutual, $qty] = $S->fetchrow('num')) {
+    $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$mutual&apikey=$alphakey";
+
+    $alpha = json_decode(file_get_contents($url), true)['Global Quote'];
+
+    $mdate = $alpha['07. latest trading day'];
+    $close = $alpha['05. price'];
+    $value = $close * $qty;
+    $myret[$mutual] = [$close, $value, $qty, $mdate];
+  }
+
+  $ret = json_encode(array('stocks'=>$ar, // price, qty, status, company, moving, latestPrice, change, changePercent, latestUpdate and avgTotalVolume.
+                           'mutuals'=>$myret, // close, value, qty, mdate (mutual date).
+                           'dji'=>$dji, // Current Dow value
+                           'change'=>$change, // Dow change during the day
+                           'per'=>$changePercent, // Dow percent change
+                           'date'=>$quoteDate // Dow quote date
                           )
                     );
   
@@ -188,7 +220,6 @@ checkUser($S);
 $h->title = "Updating Stock Quotes";
 
 $h->css =<<<EOF
-<style>
 /* Use Roboto font from DocRoot/fonts */
 @font-face {
   font-family: "Roboto";
@@ -210,6 +241,7 @@ $h->css =<<<EOF
 body {
   font-family: "Roboto";
 }
+#stocks { width: 100%; }  
 #stocks th {
   padding: .3rem;
 }
@@ -245,6 +277,10 @@ select {
 #stocks td:nth-child(4) {
   font-family: "Roboto bold";
 }
+#mutuals { width: 100%; }
+#mutuals td { padding: .3rem; }
+#mutuals td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4), td:nth-of-type(5) { text-align: right; }
+#totals { width: 500px; }
 /* Use Roboto Bold for the 'totals' table right below 'stocks' table */
 #totals th {
   font-family: "Roboto bold";
@@ -254,6 +290,7 @@ select {
 #totals th:last-child {
   text-align: right;
 }
+#attribution { margin-top: 10px; }
 /* A span to make negative values red */
 .neg {
   color: red;
@@ -268,7 +305,6 @@ select {
   height: 80px;
   margin-left: 50%;
 }
-</style>
 EOF;
 
 $h->banner = "<h1>Stock Quotes</h1>";

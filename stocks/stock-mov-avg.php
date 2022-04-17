@@ -16,7 +16,7 @@ $totalAmt = 0;
 $hi = 0;
 $low = 9999999999;
 
-$S->query("select * from stocktotals where created >= '2022-03-07' order by created");
+$S->query("select * from stocktotals order by created");
 
 for($cnt=0; ([$total, $created] = $S->fetchrow("num")); ++$cnt) {
   $stocks .=  "<tr><td>$total</td><td>$created</td></tr>";

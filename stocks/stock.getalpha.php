@@ -19,35 +19,20 @@ if($stock = $_POST['stock']) {
   // $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
   $iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
   
-  $str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
-
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $str);
-  curl_setopt($ch, CURLOPT_HEADER, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-  $alpha = curl_exec($ch);
-  $alpha = json_decode($alpha, true); // decode as an array
+  //$str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
+  $str = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
+  $alpha = json_decode(file_get_contents($str), true); // decode as an array
 
   $alpha = print_r($alpha, true);
 
   $str = "https://cloud.iexapis.com/stable/stock/$stock/batch?types=quote&token=$iex_token";
 
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $str);
-  curl_setopt($ch, CURLOPT_HEADER, 0);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-  // We get the stocks from the array above  
-  $ret = curl_exec($ch);
-  $ar = json_decode($ret);
+  $ar = json_decode(file_get_contents($str));
   $iex = print_r($ar, true);
   
   $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=$iex_token";
 
-  curl_setopt($ch, CURLOPT_URL, $str);
-  $ret = curl_exec($ch);
-  $ar = json_decode($ret, true);
+  $ar = json_decode(file_get_contents($str), true);
   
   $iexdiv = print_r($ar, true);
   
