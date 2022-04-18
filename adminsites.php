@@ -8,7 +8,6 @@ return <<<EOF
 <h2>Admin</h2>
 <ul>
 <li><a target="_blank" href="/webstats.php?blp=8653">Webstats</a></li>
-<li><a target="_blank" href="/gitstatus.php">GitStatus$GIT[0]$GIT[1]</a></li>
 <li><a target="_blank" href="/getcookie.php?blp=8653">Get/Reset Cookie</a></li>
 <li><a target="_blank" href="https://newbernrotary.org/wp-admin/">New Bern Rotary ADMIN</a></li>
 <li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">Bnai-sholem ADMIN</a></li>

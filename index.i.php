@@ -1,7 +1,8 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
-// BLP 2022-01-16 -- Reworked several areas.
+// BLP 2022-04-18 - Removed all git related stuff as gitstatus.php stopped working.
+// See commit ca68a04b268483d180ea8a160fc4e90c185c2050 un bartonphillipsnet.
 /*
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
@@ -29,39 +30,6 @@ CREATE TABLE `myip` (
 $BLP = $_GET['blp']; // Get the secret value if supplied.
 date_default_timezone_set("America/New_York");
 $date = date("l F j, Y H:i:s T");
-
-// Check if any of my sites have items that need to be added to the git repository
-// dogit() is called below to set the $GIT array. $GIT is used by adminsites.php
-// (bartonphillipsnet) to indicate 1) items to commit, 2) items that need to be pushed
-
-function dogit() {
-  array($any);
-  
-  foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
-           '/bartonphillipsnet', '/allnaturalcleaningcompany', '/tysonweb', '/newbernzig.com'] as $site) {
-
-    chdir("/var/www/$site");
-    exec("git status", $out); // put results into $out
-    $out = implode("\n", $out);
-
-    // If the phrase below is found then there is nothing to commit.
-    
-    if(preg_match('/nothing to commit, working tree clean/s', $out) === 0) {
-      // Needs to be commited
-      
-      $any[0] = ' *';
-    }
-
-    // If the phrase below is found then we need to 'push' to github.
-    
-    if(preg_match("~'origin/master' by (\d+) commit~s", $out, $m) === 1) {
-      // We need a push
-      
-      $any[1] = ' !';
-    }
-  }
-  return $any;
-}
 
 // if this is a bot don't bother with getting a location. And it will not have a SiteId.
 
@@ -140,8 +108,6 @@ if($S->isMe()) {
   // Is the email address in the cookie my email address?
   
   if($cookieEmail == "bartonphillips@gmail.com") {
-    $GIT = dogit(); // This is an array, $GIT[0] could be an '*' while $GIT[1] could be an '!'. It is used by adminsites.php
-
     // Get the admin sites.
     
     $adminStuff = require("adminsites.php");

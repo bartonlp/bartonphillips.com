@@ -1,14 +1,6 @@
 <?php
 // Main page for bartonphillips.com
-// BLP 2021-09-21 -- Update the registration process. See index.i.php and register.php
-// BLP 2021-03-26 -- set doGit in the bottom script to blank so we don't do the notify. We don't
-// want to force $GIT to blank because it is used in adminstuff.php to show that something has
-// changed.
-// BLP 2021-10-25 -- Move geo stuff to bartonphillips.net/js/geo.js
-// BLP 2021-03-24 -- remove 'target="_blank"' from all links
-// BLP 2018-03-06 -- Break this up into index.js, index.i.php and index.css
-// BLP 2018-02-10 -- use cookie to determin if we show adminStuff
-// BLP 2017-03-23 -- set up to work with https
+// BLP 2022-04-18 - Removed gitstatus.php 
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
@@ -21,12 +13,8 @@ $h->link = <<<EOF
 <link rel='stylesheet' href='/index.css'>
 EOF;
 
-// get phpdate.js, index.js and set the js doGit to $GIT
-// This goes at the bottom.
-
 $b->script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
-  <script>var doGit = ''; // MUST be before index.js. Don't do this</script>
   <script src='/index.js'></script>
 EOF;
 
