@@ -9,8 +9,6 @@
 // It has full documentation at that site.
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
-ErrorClass::setNoEmailErrs(true);
 $S = new $_site->className($_site); // $S gives access to my framework.
 
 // escapeltgt() is a little utility that change < and > to &lt; &gt;

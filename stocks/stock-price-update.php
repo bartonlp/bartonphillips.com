@@ -1,19 +1,17 @@
 <?php
 // stock-price-update.php (Stock Quotes)
 // uses stock-price-update.js
-// BLP 2022-02-19 -- Add EndOfDay GET used by ../scripts/updatestocktotals.sh. This is run by CRON
-// Mon-Fri.
-// BLP 2022-02-01 -- Had to update PHPHtmlParser\Dom Node/Collections.php to add 'mixed' as a
-// return type (or could have added #[\ReturnTypeWillChange] before the function offsetGet(). No
-// actual change in this file. 
-// BLP 2022-01-18 -- use $v foreach($iex as $k=>$v) and remove $a and $i. Add comments
-// BLP 2021-11-04 -- Remove stock-price-update-worker.js. Fixed secret.
-// BLP 2018-03-07 -- Uses Roboto from /var/www/bartonphillips.com/fonts
-// BLP 2020-06-04 -- Use iex to get the avgTotalVolume and day200MovingAvg instead of reading the
-// database.
-// BLP 2020-09-17 -- Removed the WSJ logic for Damiler as it is available from iex
-// BLP 2020-10-21 -- Include mutual funds in list returned by AJAX. Move qty and value together. In stock-price-update.js include mutual funds
-// along with 'active'.
+/*
+CREATE TABLE `stocks` (
+  `stock` varchar(10) NOT NULL,
+  `price` decimal(8,2) DEFAULT NULL,
+  `qty` int DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `lasttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` enum('active','watch','sold','mutual','IRA') DEFAULT NULL,
+  PRIMARY KEY (`stock`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 $_site = require_once(getenv("SITELOADNAME"));
 
@@ -134,7 +132,7 @@ if($_POST['page'] == 'web') {
 
   $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
   
-  $sql = "select stock, price, qty, status, name from stocks where status='active'";
+  $sql = "select stock, price, qty, status, name from stocks where status!='mutual'";
   
   $S->query($sql);
 
@@ -168,28 +166,49 @@ if($_POST['page'] == 'web') {
   }
 
   // Dom lets one use the dom to scape the website.
-  
+
   $dom = new Dom;
 
   $dom->loadFromUrl('https://www.marketwatch.com/investing/index/djia');
+    
+  $quoteDate = $dom->find(".timestamp__time bg-quote")->text;
+   
+  $group = $dom->find(".container .markets__group");
+  $tmp = $group->find("td")[2];
+  $dji = $tmp->find("bg-quote")->text;
 
-  $quoteDate = $dom->find(".timestamp__time bg-quote")->text();
+  $tmp = $group->find("td")[3];
+  $change = $tmp->find("bg-quote")->text;
 
-  $group = $dom->find(".markets__group");
+  $tmp = $group->find("td")[4];
+  $changePercent = $tmp->find("bg-quote")->text;
+  
+  $dom->loadFromUrl('https://www.marketwatch.com/investing/fund/AEPGX');
+  $group = $dom->find("#maincontent");
+  $tmp = $group->find(".element--list li")[1];
+  $mutPer['aepgx'] = $tmp->find('.primary')->text;
 
-  $dji = $group->find(".price bg-quote")->text;
-  $change = $group->find(".change bg-quote")->text;
-  $changePercent = $group->find(".percent bg-quote")->text;
+  $dom->loadFromUrl('https://www.marketwatch.com/investing/fund/CAIBX');
+  $group = $dom->find("#maincontent");
+  $tmp = $group->find(".element--list li")[1];
+  $mutPer['caibx'] = $tmp->find('.primary')->text;
 
+  $dom->loadFromUrl('https://www.marketwatch.com/investing/fund/SMCWX');
+  $group = $dom->find("#maincontent");
+  $tmp = $group->find(".element--list li")[1];
+  $mutPer['smcwx'] = $tmp->find('.primary')->text;
+
+  //error_log("mutPer: " . print_r($mutPer, true));
+  
   // Get Mutuals from alphavanage.co because iex stopped giving me mutuals
 
-  $sql = "select stock, qty from stocks where status = 'mutual'";
+  $sql = "select stock, price, qty, name from stocks where status = 'mutual'";
   
   $S->query($sql);
 
   $alphakey = require("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
 
-  while([$mutual, $qty] = $S->fetchrow('num')) {
+  while([$mutual, $mprice, $qty, $company] = $S->fetchrow('num')) {
     $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$mutual&apikey=$alphakey";
 
     $alpha = json_decode(file_get_contents($url), true)['Global Quote'];
@@ -197,7 +216,8 @@ if($_POST['page'] == 'web') {
     $mdate = $alpha['07. latest trading day'];
     $close = $alpha['05. price'];
     $value = $close * $qty;
-    $myret[$mutual] = [$close, $value, $qty, $mdate];
+   
+    $myret[$mutual] = [$close, $value, $qty, $company, $mprice, $mdate];
   }
 
   $ret = json_encode(array('stocks'=>$ar, // price, qty, status, company, moving, latestPrice, change, changePercent, latestUpdate and avgTotalVolume.
@@ -205,7 +225,8 @@ if($_POST['page'] == 'web') {
                            'dji'=>$dji, // Current Dow value
                            'change'=>$change, // Dow change during the day
                            'per'=>$changePercent, // Dow percent change
-                           'date'=>$quoteDate // Dow quote date
+                           'date'=>$quoteDate, // Dow quote date
+                           'mutPer'=>$mutPer  // Mutual Percents
                           )
                     );
   
@@ -241,24 +262,29 @@ $h->css =<<<EOF
 body {
   font-family: "Roboto";
 }
-#stocks { width: 100%; }  
-#stocks th {
+/*#stocks { width: 100%; }*/
+#stocks th, #mutuals th {
   padding: .3rem;
 }
-#stocks td {
+#stocks td, #mutuals td {
   padding: .3rem;
   text-align: right;
 }
-#stocks td:first-child {
+#stocks td:first-child, #mutuals td:first-child {
   background-color: lightblue;
   color: black;
-}
-#stocks td:first-child {
+  text-align: left;
+  width: 13rem;
+  font-family: "Roboto bold";
+  line-height: 60%;
   cursor: pointer;
+}
+#stocks td:nth-of-type(2), #mutuals td:nth-of-type(2) {
+  width: 6.5rem;
 }
 /* The first td has stock and company each in a span. This is the second span which is company */
 /* Use Roboto Bold for the company spans. */
-#stocks td:first-child span:last-child {
+#stocks td:first-child span:last-child, #mutuals td:first-child span:last-child {
   font-family: "Roboto bold";
   font-size: .5rem;
   line-height: 0;
@@ -267,28 +293,28 @@ body {
 select {
   font-size: 1rem;
 }
-/* Use Roboto Bold for stocks */
-#stocks td:first-child {
-  font-family: "Roboto bold";
-  text-align: left;
-  line-height: 60%;
-}
 /* Use Roboto Bold for 'Buy Price/% Diff' */
-#stocks td:nth-child(4) {
+#stocks td:nth-child(4), #mutuals td:nth-child(4) {
   font-family: "Roboto bold";
 }
-#mutuals { width: 100%; }
-#mutuals td { padding: .3rem; }
+/* make stocks and mutuals line up on the fist five */
+#stocks td:nth-of-type(3), #stocks td:nth-of-type(4), #stocks td:nth-of-type(5),
+#mutuals td:nth-of-type(3), #mutuals td:nth-of-type(4), #mutuals td:nth-of-type(5) {
+  width: 6.5rem;
+}
+/*#mutuals { width: 100%; }*/
 #mutuals td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4), td:nth-of-type(5) { text-align: right; }
-#totals { width: 500px; }
+/*#totals { width: 500px; }*/
 /* Use Roboto Bold for the 'totals' table right below 'stocks' table */
 #totals th {
   font-family: "Roboto bold";
   text-align: left;
-  width: 3rem;
+  width: 13rem;
+  padding: 0 .3rem 0 .3rem;
 }
 #totals th:last-child {
   text-align: right;
+  width: 6.5rem;
 }
 #attribution { margin-top: 10px; }
 /* A span to make negative values red */

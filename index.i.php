@@ -7,12 +7,13 @@
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
-  `ip` varchar(30) DEFAULT NULL,
+  `ip` varchar(30) NOT NULL,
   `agent` varchar(255) DEFAULT NULL,
+  `count` int DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
+  PRIMARY KEY (`email`,`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
   The myip table is in $S->masterdb (which should be 'bartonlp') database
   'myIp' will be all of the computers that I have used in the last THREE days.
@@ -34,6 +35,7 @@ $date = date("l F j, Y H:i:s T");
 // if this is a bot don't bother with getting a location. And it will not have a SiteId.
 
 if($S->isBot) {
+  echo "BOT<br>";
   $locstr = <<<EOF
 <ul class="user-info">
   <li>IP Address: <i class='green'>$S->ip</i></li>
@@ -122,11 +124,13 @@ if($S->isMe()) {
     // If memberIp is not our current ip  or $memberAgent is not the current agent then update the members table.
 
     if($memberIp !== $S->ip || $memberAgent !== $S->agent) {
-      $sql = "insert into members (name, email, ip, agent, created, lasttime) ". // The insert should fail with duplicate
-             "values('Barton Phillips', 'bartonphillips@gmail.com', '$S->ip', '$S->agent', now(), now()) ".
-             "on duplicate key update ip='$S->ip', agent='$S->agent', lasttime=now()"; // Update the ip, agent and lasttime
+      $sql = "insert into members (name, email, ip, agent, count, created, lasttime) ". // The insert should fail with duplicate
+             "values('Barton Phillips', 'bartonphillips@gmail.com', '$S->ip', '$S->agent', 1, now(), now()) ".
+             "on duplicate key update agent='$S->agent', count=count+1, lasttime=now()"; // Update the ip, agent and lasttime
 
       $S->query($sql);
+    } else {
+      $S->query("update members set count=count+1, lasttime=now() where email='$cookieEmail' and ip='$S->ip'");
     }
 
     // Check my cookie IP against the current ip 
@@ -145,7 +149,7 @@ if($S->isMe()) {
   // $cookieEmail is not 'bartonphillips@gmail.com'.
   // The 'SiteId' cookie ($ipEmail) might even be null.
   
-  $sql = "select name from members where email='$cookieEmail'";
+  $sql = "select name from members where email='$cookieEmail' and ip='$S->ip'";
 
   if($S->query($sql)) {
     // Found the record.
@@ -168,13 +172,42 @@ EOF;
     $adminStuff = require("adminsites.php");
   }
 } else {
-  // This $S->ip was not in $S->isMe() which means $S->ip is not in the myip table.
+  // is there an $ipEmail?
 
-  if($ipEmail) { // BLP 2022-01-15 -- only if something was set.
-    error_log("$S->siteName/index.i.php $S->ip: '\$S->myIp()' returned false. Removing cookie 'SiteId' for $ipEmail. ".__LINE__);
+  if($ipEmail) { 
+    [$cookieIp, $cookieEmail] = explode(':', $ipEmail);
+
+    // Check to see if the email is in the members table.
+    
+    $sql = "select ip, agent from members where email='$cookieEmail' and ip='$S->ip'";
+    if($S->query($sql)) {
+      // Yes we found it
+      
+      [$memberIp, $memberAgent] = $S->fetchrow('num');
+
+      // Is the ip and agent the same as in the table?
+      
+      if($S->ip != $memberIp || $S->agent != $memberAgent) {
+        $S->query("insert into members (name, email, ip, agent, count, created, lasttime) ". // The insert should fail with duplicate
+             "values('Barton Phillips', 'bartonphillips@gmail.com', '$S->ip', '$S->agent', 1, now(), now()) ".
+                  "on duplicate key update agent='$S->agent', count=count+1, lasttime=now()"); // Update the ip, agent and lasttime
+        $BLP = 8653;
+      } else {
+        // ip and agent remain the same so just update lasttime
+        
+        $S->query("update members set count=count+1, lasttime=now() where email='$cookieEmail' and ip='$S->ip'");
+        error_log("$S->siteName/index.i.php: member: $cookieEmail lasttime updated");
+        $BLP = 8653;
+      }
+    } else {
+      // Did not find a member. Remove the cookie
+      
+      error_log("$S->siteName/index.i.php $S->ip: '\$S->myIp()' returned false. Removing cookie 'SiteId' for $ipEmail. ".__LINE__);
   
-    if($S->setSiteCookie('SiteId', '', -1) === false) {
-      error_log("index.i.php $S->ip: remove cookie Error. " . __LINE__);
+      if($S->setSiteCookie('SiteId', '', -1) === false) {
+        error_log("index.i.php $S->ip: remove cookie Error. " . __LINE__);
+      }
+      $BLP = null;
     }
   }
 

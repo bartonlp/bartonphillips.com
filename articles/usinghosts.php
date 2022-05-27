@@ -3,13 +3,13 @@ $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
 $h->title = "Using your &quot;/etc/hosts&quot; file";
 $h->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
-list($top, $footer) = $S->getPageTopBottom($h, "<hr>");
+[$top, $footer] = $S->getPageTopBottom($h);
 
 echo <<<EOF
 $top
 <hr/>
 <p>Why can't I access my home-hosted website from my own computer? This is a common problem. You have a DNS name for your site,
-   say it is <i>http://www.mysite.com</i> but when you enter this name in your browser on your local network you get your router's
+   say it is <i>https://www.mysite.com</i> but when you enter this name in your browser on your local network you get your router's
    administration window. What's up?</p>
 <p>Well many (most) home routers and DSL modems direct your outside IP address to your router as a fail-safe measure. This way you
    will always be able to get to your router's administration page. So how do you access your home based web server from your home
@@ -21,8 +21,7 @@ $top
 <code>127.0.0.1 www.mysite.com</code>
 <p>you can now access your website using your DNS name from your local browser. You can also have absolute links in your web pages
    like:</p>
-<code>&lt;a href=&quot;http://www.mysite.com/mypage.html&quot;&gt;Link to mypage&lt;/a&gt;</code>
-<p>and the link will get to
-   your web server and not to your router's administration page.</p>
+<code>&lt;a href=&quot;https://www.mysite.com/mypage.html&quot;&gt;Link to mypage&lt;/a&gt;</code>
+<p>and the link will get to your web server and not to your router's administration page.</p>
 $footer
 EOF;

@@ -18,7 +18,7 @@ $b->script = <<<EOF
   <script src='/index.js'></script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom($h, $b);
 
 // ***************
 // Render the page
@@ -41,10 +41,9 @@ Today is: <span id="datetoday">$date</span>
 <p>
    This page is dynamically generated using PHP on our server at
    <a target="_blank" href="https://www.digitalocean.com/">DigitalOcean.com</a>.
-   Very little JavaScript is used in this page. We only collect &quot;Google Analitics&quot; COOKIES and
-   a COOKIE called 'mytime' which is used to tell how long some anonymous someone has stayed on our site.
-   We don't track you.
-   We do collect anonymous information for page counting and analysis only. <a target="_blank" href="privacy.php">Our privacy statement</a>.</p>
+   Very little JavaScript is used in this page. We collect &quot;Google Analitics&quot, &quot;Google Maps&quot; geo-positioning data, fingerprint data,
+   and a COOKIE called 'mytime' which is used to tell how long some anonymous-someone has stayed on our site.
+   <a target="_blank" href="privacy.php">Our privacy statement</a>.</p>
 <p>
    <span class='red'>However</span>, some of the pages we link to do collect tracking information
    and COOKIES and make extensive use of JavaScript.
@@ -73,10 +72,10 @@ Today is: <span id="datetoday">$date</span>
 <section id="github">
 <h2 class="center">GitHub Projects</h2>
 <ul>
-<li><a target="_blank" href="goto.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
-<li><a target="_blank" href="goto.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
-<li><a target="_blank" href="goto.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
-<li><a target="_blank" href="goto.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
+<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
+<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
+<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
+<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
 </ul>
 </section>
 

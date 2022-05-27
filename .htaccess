@@ -20,8 +20,6 @@ RewriteEngine on
 RewriteCond %{HTTP_USER_AGENT} "baiduspider" [NC]
 RewriteRule (.*) - [F,L]
 
-#RewriteRule ^(.*\.php).*$ $1 [L,NC]
-
 # direct robots.txt to robots.php
 RewriteRule ^robots\.txt$ robots.php [L,NC]
 RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]

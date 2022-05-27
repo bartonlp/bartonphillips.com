@@ -36,7 +36,8 @@ $prefix = "https://cloud.iexapis.com/stable";
 
 //$token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
 $token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
-$sql = "select stock, price, qty, status from stocks where status not in('watch','sold')";
+//$sql = "select stock, price, qty, status from stocks where status not in('watch','sold')";
+$sql = "select stock, price, qty, status from stocks where status = 'active'";
 $S->query($sql);
 
 $ar = [];
@@ -47,20 +48,13 @@ while([$stock, $price, $qty, $status] = $S->fetchrow('num')) {
   $ar[$stock] = ['price'=>$price, 'qty'=>$qty, 'status'=>$status];
 }
 
-
 $totalyield = 0;
 $total = 0;
-$totalReinvested = 0;
 $totalcnt = 0;
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_HEADER, 0);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $str = "$prefix/stock/market/batch?symbols=$stocks&types=quote,stats&filter=latestPrice,companyName,ttmDividendRate,dividendYield,exDividendDate&token=$token";
 
-curl_setopt($ch, CURLOPT_URL, $str);
-$ret = curl_exec($ch);
-$ret = json_decode($ret);
+$ret = json_decode(file_get_contents($str));
 
 foreach($ret as $k=>$v) {
   $price = $ar[$k]['price'];
@@ -79,20 +73,12 @@ foreach($ret as $k=>$v) {
 
   $orgyield = ($div / $price) * 100; // total $ per share dividend divided by my original price * 100 is percent.
 
-  // BLP 2022-01-21 -- My Mutual fund reinvest their monies each year so I don't earn that at the
-  // end of the year.
-
   $y = number_format($orgyield, 2). "%";
   $e = $div * $qty; // total $ per share dividend times the quantity is $ estimated-earning per YEAR.
   $ern = number_format($e, 2);
   $totalyield += $orgyield;
   
-  if($status != "mutual") {
-    $total += $e;
-  } else {
-    $totalReinvested += $e;
-    $ern = "<span style='color: red'>$ern</span>";
-  }
+  $total += $e;
 
   $orgyield = $y;
   
@@ -205,9 +191,9 @@ $quotes
 </tbody>
 <tfoot>
 <tr>
-<th>Average Buy Yield<br>Total End of Year Earnings<br>Total Earnings Reinvested</th>
+<th>Average Buy Yield<br>Total End of Year Earnings</th>
 <td colspan='3'><td>${avyield}%</td>
-<td colspan='3'></td><td>$total<br>$totalReinvested</td>
+<td colspan='3'></td><td>$total</td>
 </tr>
 </tfoot>
 </table>

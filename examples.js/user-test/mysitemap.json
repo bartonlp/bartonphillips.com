@@ -18,7 +18,6 @@
         "engine": "mysqli"
     },
     "count": false,
-    "countMe": false,
     "noTrack": true,
     "EMAILADDRESS": "bartonphillips@gmail.com",
     "EMAILRETURN": "bartonphillips@gmail.com",

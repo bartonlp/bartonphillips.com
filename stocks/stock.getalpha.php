@@ -19,7 +19,6 @@ if($stock = $_POST['stock']) {
   // $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
   $iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
   
-  //$str = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=$alphakey";
   $str = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
   $alpha = json_decode(file_get_contents($str), true); // decode as an array
 
@@ -27,36 +26,29 @@ if($stock = $_POST['stock']) {
 
   $str = "https://cloud.iexapis.com/stable/stock/$stock/batch?types=quote&token=$iex_token";
 
-  $ar = json_decode(file_get_contents($str));
-  $iex = print_r($ar, true);
-  
+  $iex = print_r(json_decode(file_get_contents($str)), true);
+
   $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=$iex_token";
 
-  $ar = json_decode(file_get_contents($str), true);
-  
-  $iexdiv = print_r($ar, true);
+  $iexstats = print_r(json_decode(file_get_contents($str), true), true);
   
   $h->title = "Raw Data";
   $h->banner = "<h1>Raw Results From alpha and iex</h1>";
   $h->css =<<<EOF
-  <style>
 #alpha {
   font-size: .7rem;
   border: 1px solid black;
   width: 100%;
-  height: 400px;
   padding: .5rem;
   overflow: auto;
 }
-#iex {
+#iexstats, #iexquote {
   font-size: .7rem;
   border: 1px solid black;
   width: 100%;
-  height: 400px;
   padding: .5rem;
   overflow: auto;
 }
-  </style>
 EOF;
   
   list($top, $footer) = $S->getPageTopBottom($h);
@@ -68,12 +60,12 @@ $top
 <div id="alpha">
 $alpha
 </div>
-<h3>IEX Div</h3>
-<div id="alpha">
-$iexdiv
+<h3>IEX STATS</h3>
+<div id="iexstats">
+$iexstats
 </div>
-<h3>Iex</h3>
-<div id="iex">
+<h3>IEX QUOTE</h3>
+<div id="iexquote">
 $iex
 </div>
 </pre>

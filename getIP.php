@@ -1,14 +1,14 @@
 <?php
-$ip = $_SERVER['REMOTE_ADDR'];
+$_site = require_once(getenv("SITELOADNAME"));
+$S = new SiteClass($_site);
+$h->banner = "<hr><h1 style='text-align: left'>Your IP Address is: $S->ip</h1>";
+
+$b->nofooter = true;
+
+[$top, $footer] = $S->getPageTopBottom($h, $b);
+
 echo <<<EOF
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<h1>Your IP Address is: $ip</h1>
-</body>
-</html>
+$top
+$footer
 EOF;
 

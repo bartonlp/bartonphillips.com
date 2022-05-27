@@ -1,5 +1,16 @@
 // stock-price-update.js
 // This is used by stock-price-update.php
+/*
+CREATE TABLE `stocks` (
+`stock` varchar(10) NOT NULL,
+`price` decimal(8,2) DEFAULT NULL,
+`qty` int DEFAULT NULL,
+`name` varchar(255) DEFAULT NULL,
+`lasttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`status` enum('active','watch','sold','mutual','IRA') DEFAULT NULL,
+PRIMARY KEY (`stock`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 'use strict';
 
@@ -89,9 +100,11 @@ function getInfo(start=false) {
     let djiAv = data.dji,
     djiChange = data.change,
     djiPercent = data.per,
-    djiDate = data.date;
+    djiDate = data.date,
+    mutPer = data.mutPer;
 
-    console.log("DJI Date: " + djiDate);
+    //console.log("mutPer: " , mutPer);
+    //console.log("DJI Date: " + djiDate);
 
     str = `
 <h2><span class='small'>Last Update: ${djiDate}<br></span>
@@ -160,11 +173,11 @@ ${djiPercent}</span>
       }
 
       // Create value from qty times price
-      let value = formatMoney.format(qty * orgPrice);
+      let value = formatMoney.format(qty * curPrice);
 
       // Create orgPer from (price - orgPrice)/orgPrice
 
-      let orgPer = formatMoney.format((curPrice - orgPrice) / orgPrice);
+      let orgPer = formatPercent.format((curPrice - orgPrice) / orgPrice);
 
       // If orgPer is neg make it red. 
 
@@ -220,7 +233,7 @@ ${djiPercent}</span>
     </table>
     <table id='mutuals' border='1'>
     <thead>
-    <tr><th>Name</th><th>Price</th><th>Value</th><th>Qty</th><th>Date</th></tr>
+    <tr><th>Mutual</th><th>Price</th><th>YTD %</th><th>Buy Price<br>%Diff</th><th>Qty<br>Value</th><th>Date</th></tr>
     </thead>
     <tbody>
 `;
@@ -229,13 +242,27 @@ ${djiPercent}</span>
 
     for(const k in data.mutuals) {
       let mut = data.mutuals[k];
-      str += "<tr><td>" + k + "</td>";
+      let mcompany = mut[3].toLowerCase();
+      str += `
+      <tr><td><span>${k}</span><br><span>${mcompany}</span></td>
+`;
       mutTotal += mut[1];
-      let mprice = formatMoney.format(mut[0]);
+      let mprice = mut[0];
+      let buyprice = mut[4];
+      let mbuyper = (mprice - buyprice) / mprice;
+      mprice = formatMoney.format(mprice);
+      buyprice = formatMoney.format(buyprice);
+      mbuyper = formatPercent.format(mbuyper);
+      if(mbuyper.indexOf('-') !== -1) {
+        mbuyper = `<span class='neg'>${mbuyper}</span>`;
+      }
       let value = formatMoney.format(mut[1]);
       let qty = formatNumber.format(mut[2]);
-      let date = mut[3];
-      str += "<td>" + mprice + "</td><td>" + value + "</td><td>" + qty + "</td><td>" + date + "</td><tr>\n";
+      let date = mut[5];
+      let kk = k.toLowerCase();
+      str += `
+      <td>${mprice}</td><td>${mutPer[kk]}</td><td>${buyprice}<br>${mbuyper}</td><td>${qty}<br>${value}</td><td>${date}</td><tr>
+`;
     }
 
     str += "</tbody>\n</table>";
@@ -265,7 +292,7 @@ ${djiPercent}</span>
     // If we Click on the first field which is the stock name. This takes you
     // to marketwatch.com
   
-    $("body").on("click", "#stocks td:first-child", function(e) {
+    $("body").on("click", "#stocks td:first-child, #mutuals td:first-child", function(e) {
       // the td is stock and company each in a span. The stock is the
       // first span.
       var stk = $('span:first-child', this).text();
