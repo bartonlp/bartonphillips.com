@@ -13,7 +13,6 @@
 
 // Instanciate the SiteClass
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 use PHPHtmlParser\Dom;
@@ -55,6 +54,7 @@ if($_POST['page'] == 'two') {
 }
 
 // This is the source code and we change all of the < and > to '&amp;lt;', '&amp;gt;'
+
 $sourceCode = escapeltgt(file_get_contents('scraper-await-fetch.php'));
 
 // $h is an object that has information to include in the output.
@@ -120,9 +120,6 @@ jQuery(document).ready(function($) {
 
     let r1 = d.r1.mysite;
     r1 = r1.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;").replaceAll(/&gt; /g, "&gt;&#10;");
-//    let r1 = d.r1.mysite.replaceAll(/</g, "&lt;");
-//    r1 = r1.replaceAll(/>/g, "&gt;");
-//    r1 = r1.replaceAll(/&gt; /g, "&gt;&#10;");
 
     //console.log("r1:", r1);
     
