@@ -1,6 +1,8 @@
 <?php
 // Register yours name and email address
 // This is for bartonphillips.com/index.php
+// BLP 2022-07-18 - There are now three places: bartonphillips.net/js/geo.js and the other two
+// below. 
 // NOTE *** There are only two places where the myip table is inserted or updated,
 // bonnieburch.com/addcookie.php and in bartonphillips.com/register.php.
 
@@ -45,6 +47,7 @@ if($_POST['page'] == 'finger') {
            "on duplicate key update lasttime=now()";
 
     $S->query($sql);
+    $BLP = "?blp=8653";
   }
 
   if(!$S->query("select TABLE_NAME from information_schema.tables ".
@@ -72,8 +75,8 @@ if($_POST['page'] == 'finger') {
     echo "Can't set cookie in register.php<br>";
     throw(new Exception("Can't set cookie register.php " . __LINE__));
   }
-  echo "<h1>Registration Complete</h1><a href='/'>Return to Home Page</a>";
-  
+  echo "Register OK";
+  //error_log("$S->ip, visitor: $visitor, email: $email, name: $name");
   exit();
 }
 

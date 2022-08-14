@@ -126,7 +126,7 @@ ${djiPercent}</span>
     str = `            
 <table border="1" id="stocks">
 <thead>
-<tr><th>Stock</th><th>Price</th><th>Av Price</th><th>Buy Price<br>% Diff</th><th>Qty<br>Value</th><th>Av Vol</th><th>Change<br>% Change</th><th>Status</th></tr>
+<tr><th>Stock</th><th>Price</th><th>Av Price</th><th>Buy Price<br>% Diff</th><th>Qty<br>Value</th><th>Av Vol<br>Cur Vol</th><th>Change<br>% Change</th><th>Status</th></tr>
 </thead>
 <tbody>
 `;
@@ -152,14 +152,16 @@ ${djiPercent}</span>
       status = s.status || 0, company = s.company; 
 
       let curPrice, curChange, curPercent, curUpdate;
-      let avPrice, avVol;
+      let avPrice, avVol, latestVolume;
 
       curPrice = s.latestPrice || 0;
       curChange = s.change || 0;
       curPercent = s.changePercent;
       curUpdate = s.latestUpdate;
 
-      avVol = s.avgTotalVolume;
+      avVol = s.avgTotalVolume || 0;
+      latestVolume = s.latestVolume || 0;
+      
       avPrice = s.moving || 0;
 
       //console.log("st: " + st + ", change: " + curChange + ", curPrice: " + curPrice + ", avPrice: " + avPrice);
@@ -199,9 +201,10 @@ ${djiPercent}</span>
       qty = qty.toLocaleString();
 
       company = company.toLowerCase();
-      
-      avVol = (avVol == null ? 0 : avVol).toLocaleString();
 
+      avVol = avVol.toLocaleString();
+      latestVolume = latestVolume.toLocaleString();
+      
       let movingPer = formatPercent.format((curPrice - avPrice) /avPrice);
 
       avPrice = formatMoney.format(avPrice);
@@ -223,7 +226,7 @@ ${djiPercent}</span>
     
       str += `<tr><td><span>${st}</span><br><span>${company}</span></td><td>${price}</td>
 <td>${avPrice}<br>${movingPer}</td><td>${orgPrice}<br>${orgPer}</td>
-<td>${qty}<br>${value}</td><td>${avVol}</td><td>${change}<br>${percent}</td><td>${status}</td></tr>`;
+<td>${qty}<br>${value}</td><td>${avVol}<br>${latestVolume}</td><td>${change}<br>${percent}</td><td>${status}</td></tr>`;
     }
 
     //console.log("mutuals: ", data.mutuals);

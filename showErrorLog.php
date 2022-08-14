@@ -9,27 +9,32 @@ if($_POST['delete']) {
     vardump("error", error_get_last());
     exit();
   }
-  header("refresh:2;url=showErrorLog.php");
+  header("location: showErrorLog.php");
   echo "<div style='text-align: center'><h1>File is now empty</h1><p>Returning to Show PHP_ERRORS.log</p></div>";
   exit();
 }
 
 $output = file_get_contents("/var/www/PHP_ERRORS.log");
+
 if(!$output) { 
   $output = "<h1>No Data in PHP_ERRORS.log</h1>";
 } else {
-  $output = preg_replace("~ America/New_York~", '', $output);
-  $output = preg_replace("~(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})( --)~", "<span>$1</span>$2", $output);
+  $output = preg_replace(["~ America/New_York~", "~-2022~"], '', $output);
+  $output = preg_replace("~(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~", "<span>$1</span>", $output);
   $output = "<pre>$output</pre>";
 }
 
+$h->title = "Show Error Log";
 $h->banner = "<h1>Show PHP_ERRORS.log</h1>";
+
 $h->css =<<<EOF
-#output { width: 100%; font-size: 20px; overflow-x: scroll; }
+#output { width: 100%; font-size: 11px; overflow-x: scroll; }
 #delete_button { border-radius: 5px; background: red; color: white; }
 span { cursor: pointer; };
 EOF;
+
 $b->noCounter = true;
+
 $b->inlineScript = <<<EOF
 $("span").on("click", function() {
   let thisIp = $(this).text();
@@ -39,7 +44,7 @@ EOF;
 
 [$top, $footer] = $S->getPageTopBottom($h, $b);
 
-header("refresh:300; url=showErrorLog.php");
+header("refresh:1800; url=showErrorLog.php"); // 30 min
 
 echo <<<EOF
 $top

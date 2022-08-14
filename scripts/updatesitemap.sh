@@ -1,6 +1,7 @@
 #!/bin/bash
 # backup the Sitemap.xml and then create a new one
 
+echo "bartonphillips.com: updatesitemap.sh Start";
 cd /var/www/bartonphillips.com
 dir=other
 bkupdate=`date +%B-%d-%y`
@@ -12,4 +13,4 @@ gzip $dir/$filename
 
 find $dir -ctime +30 -type f -exec rm '{}' \;
 
-#echo "updatesitemap.sh for bartonlp.com Done"
+echo "bartonphillips.com: updatesitemap.sh Done"

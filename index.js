@@ -7,6 +7,11 @@
 
 'use strict';
 
+// BLP 2022-07-19 - NOTE fingers is not used here it is used in geo.js
+// which is loaded by SiteClass::getPageHead();
+
+var fingers; // Set in index.php via index.i.php so it can be used in geo.js
+
 // If we have adminstuff we need another column.
 
 if(window.CSS) {

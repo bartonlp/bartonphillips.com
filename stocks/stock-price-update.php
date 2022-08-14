@@ -147,7 +147,7 @@ if($_POST['page'] == 'web') {
   
   $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=$symboleList".
          "&types=quote,stats&filter=latestPrice,change,changePercent,latestUpdate,".
-         "avgTotalVolume,day200MovingAvg".
+         "avgTotalVolume,latestVolume,day200MovingAvg".
          "&token=$iex_token";
 
   $iex = json_decode(file_get_contents($str), true); // decode as an array
@@ -163,6 +163,7 @@ if($_POST['page'] == 'web') {
     $key['changePercent'] = $val['changePercent'];
     $key['latestUpdate'] = $val['latestUpdate'];
     $key['avgTotalVolume'] = $val['avgTotalVolume'];
+    $key['latestVolume'] = $val['latestVolume'];
   }
 
   // Dom lets one use the dom to scape the website.

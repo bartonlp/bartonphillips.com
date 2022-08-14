@@ -2,7 +2,7 @@
 // index.i.php
 // This is the main php include file. It is included in index.php
 // BLP 2022-04-18 - Removed all git related stuff as gitstatus.php stopped working.
-// See commit ca68a04b268483d180ea8a160fc4e90c185c2050 un bartonphillipsnet.
+// See commit ca68a04b268483d180ea8a160fc4e90c185c2050 under bartonphillipsnet.
 /*
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
@@ -34,9 +34,10 @@ $date = date("l F j, Y H:i:s T");
 // if this is a bot don't bother with getting a location. And it will not have a SiteId.
 
 if($S->isBot) {
-  echo "BOT<br>";
+  //echo "BOT<br>";
   $locstr = <<<EOF
 <ul class="user-info">
+  <li style="color: red">You Are a Robot</li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
 </ul>
 EOF;
@@ -67,7 +68,7 @@ $locstr = <<<EOF
   <li>IP Address: <i class='green'>$S->ip</i></li>
   <li>Clientname: <i class='green'>$clientname</i></li>
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
-  <li>GPS Loc: <i class='green'>$loc->loc</i></li>
+  <li id="location">GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
   <li id="geo">Your Location: <i class='green'></i></li>
   <li id="finger">Your fingerprint: <i class='green'></i></li>
@@ -82,13 +83,15 @@ EOF;
 
 if(!($fingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
   $count = 0;
-  $S->query("select count from $S->masterdb.logagent where ip='$S->ip'");
+  $n = $S->query("select count from $S->masterdb.logagent where ip='$S->ip'");
+  if($n = 1) goto onlyOne; // kinda hate to use a goto but what the hell
+  
   while($cnt = $S->fetchrow('num')[0]) {
     $count += $cnt;
   }
 
   $hereMsg =<<<EOF
-<div class="hereMsg">You have been here $count time. Why not <a href="register.php">Register</a></div>
+<div class="hereMsg">You have been here $count time. Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
 EOF;
 } else { // There is a cookie
   [$cookieFinger, $cookieEmail] = explode(':', $fingerEmail); // The cookie is 'IP:Email'
@@ -99,14 +102,23 @@ EOF;
     // Found the record.
 
     [$memberName] = $S->fetchrow('num');
-
+    
     $hereMsg = "<div class='hereMsg'>Welcome $memberName</div>";
 
     if($cookieEmail == "bartonphillips@gmail.com") {
       $adminStuff = require("adminsites.php");
     }
+  } else { // Only been here one time so just show this message.
+onlyOne:
+
+    $hereMsg = <<<EOF
+<div class="hereMsg">Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
+EOF;
   }
 }
+
+$fingers = file_get_contents("https://bartonphillips.net/myfingerprints.json");
+//vardump("fingers", $fingers);
 
 if($BLP == "8653" && !$adminStuff) {
   // if we didn't load adminsites above then who is this? I guess I will still let them see the

@@ -24,6 +24,21 @@
 .subtitles { /* the h3's */
   line-height: 0;
 }
+#location i { cursor: pointer; }
+#geo i { cursor: pointer; }
+#removemsg {
+  color: white;
+  background: red;
+  border-radius: 5px;
+  padding: 2px;
+}
+/* a place for maps.js to put the geo table. */
+#outer {
+  display: none;
+  position: absolute;
+  z-index: 20;
+  padding-bottom: 30px;
+}
 #TrackerCount {
   display: inline;
   font-size: .4rem;

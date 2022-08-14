@@ -40,6 +40,7 @@ return <<<EOF
   $h->author
   $h->desc
   $h->keywords
+  $h->canonical
   $h->meta
   $h->favicon
   $h->defaultCss

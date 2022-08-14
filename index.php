@@ -1,5 +1,6 @@
 <?php
 // Main page for bartonphillips.com
+// BLP 2022-07-20 - add maps.js to do locstr.
 // BLP 2022-04-18 - Removed gitstatus.php 
 
 $_site = require_once(getenv("SITELOADNAME"));
@@ -13,9 +14,24 @@ $h->link = <<<EOF
 <link rel='stylesheet' href='/index.css'>
 EOF;
 
+// For drag and resize
+
+$h->script = <<<EOF
+<!-- mobile for taphold -->
+<script src="https://bartonphillips.net/js/jquery.mobile.custom.js"></script>
+<!-- UI for drag and drop and touch-punch for mobile drag -->
+<script src="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery-ui.js"></script>
+<script src="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery.ui.touch-punch.js"></script>
+<link rel="stylesheet" href="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery-ui.css">
+EOF;
+
 $b->script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
+  <!-- Add fingers here before index.js for use by geo.js and maps.js -->
+  <script>var fingers = `$fingers`;</script> 
   <script src='/index.js'></script>
+  <script src='https://bartonphillips.net/js/maps.js'></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&callback=initMap&v=weekly" async></script>
 EOF;
 
 [$top, $footer] = $S->getPageTopBottom($h, $b);
@@ -30,6 +46,7 @@ $top
 <section id='browser-info'>
 <!-- Either 'You have been here nn' or 'Welcome' with user name -->
 $hereMsg
+<p id="geomessage"></p>
 <div class="locstr">
    Our domain is <i>bartonphillips.com</i><br/>
 <!-- Location information if NOT a bot -->
@@ -37,6 +54,7 @@ $hereMsg
 Start: <span class='green'>$date in New Bern, NC</span><br>
 Today is: <span id="datetoday">$date</span>
 </div>
+
 <hr>
 <p>
    This page is dynamically generated using PHP on our server at
@@ -86,9 +104,8 @@ Today is: <span id="datetoday">$date</span>
 <ul>
 <li><a target="_blank" href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a target="_blank" href="https://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="goto.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
+<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a target="_blank" href="https://developers.google.com/web/">Google/Web</a></li>
-<li><a target="_blank" href="https://www.frontierinternet.com/gateway/data-storage-timeline/">Storage System Timeline</a></li>
 <li><a target="_blank" href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
 </ul>
 </section>
@@ -126,6 +143,7 @@ $adminStuff
 
 <h3 class='subtitles'>Useful Programs</h3>
 <ul>
+<li><a target="_blank" href="/articles/showCookies.php">Show the PHP and JavaScript Cookies</a></li>
 <li><a target="_blank" href="/showmarkdown.php">Display <b>Markdown</b> files</a></li> <!-- needs to be in DOCROOT -->
 <li><a target="_blank" href="/articles/base64.php">Decode Base 64</a></li>
 <li><a target="_blank" href="/articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
@@ -139,6 +157,12 @@ $adminStuff
 <section id='projects'>
 <a target="_blank" href='projects.php'>My GitHub and PHPClasses projects</a>
 </section>
+<!-- A place for the geo stuff -->
+<div id="outer">
+<div id="geocontainer"></div>
+<button id="removemsg">Click to remove map image</button>
+</div>
+
 <hr>
 $footer
 EOF;

@@ -1,10 +1,14 @@
 <?php
-// There is only one link to this file and it is in javascript.
+// There are only four links to this file and they are:
+// articles/javascript-siteclass.php
+// articles/javascript-only.php
+// articles/javascript-only-nojquery.php
+// articles/javascript-only.js
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-list($top, $footer) = $S->getPageTopBottom();
+[$top, $footer] = $S->getPageTopBottom();
 echo <<<EOF
 $top
 $footer

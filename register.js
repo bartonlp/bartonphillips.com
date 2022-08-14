@@ -14,6 +14,7 @@ console.log("lastId: "+lastId);
 // Get the visitor identifier (fingerprint) when you need it.
 
 $("#submit").on("click", function() {
+  //debugger;
   let email = $("#email").val();
   let name = $("#name").val();
   
@@ -31,7 +32,7 @@ $("#submit").on("click", function() {
       type: 'post',
       success: function(data) {
         console.log("return: " + data);
-        $("#container").html(data);
+        $("#container").html("<h1>Registration Complete</h1><a href='/$BLP'>Return to Home Page</a>");
       },
       error: function(err) {
         console.log(err);

@@ -19,6 +19,8 @@ return <<<EOF
 <li><a target="_blank" href="/stocks/stockvalue.php">Stock Value</a></li>
 <li><a target="_blank" href="/stocks/stock-mov-avg.php">Stock Info</a></li>
 <li><a target="_blank" href="/stocks/stock.getalpha.php">Raw Stock Info EIX & Alpha</a></li>
+<li><a target="_blank" href="/findip.php">Find in Tracker by IP</a></li>
+<li><a target="_blank" href="/showErrorLog.php">Show PHP_ERROR.log</a></li>
 <li><a target="_blank" href="/examples/">examples</a></li>
 <li><a target="_blank" href="/examples.js/">examples.js</a></li>
 <li><a target="_blank" href="/test_examples/">examples just for testing</a></li>

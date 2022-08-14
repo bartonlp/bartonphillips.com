@@ -15,7 +15,7 @@ $top
     This site uses <b>PHP</b> and the server can collect anonymous information even if you have JavaScript disables.</p>
   <p>If you have looked at our source code you have probably seen <b>tracker.js</b> and <b>geo.js</b> being loaded as
     well as <b>jquery</b>. <b>tracker.js</b> collects anonymous information and adds it to our
-    databases. <b>geo.js</b> colects geo-location information is you allow and also generates a fingerprint that identifies you
+    databases. <b>geo.js</b> colects geo-location information is you allow and also generates a fingerprint that identifies your
     computer and browser. Both uses <b>jquery</b>.</p>
   <p>If you really want to surf the web anonymously you should go to your local library and use one
     of their computers. Do not use your email address or any other information while surfing the
@@ -28,7 +28,7 @@ $top
   <p>We will never sell your information (as anonymous as it is) to any third party, mainly because no one has ever asked for it and
      it has almost no value.</p>
 
-  <p>If you want to see what information we collect visit our <a href="https://www.bartonphillips.com/webstats.php">WebStats</a> page.</p>
+  <p>If you want to see what information we collect visit our <a target="_blank" href="https://bartonphillips.net/webstats.php?blp=8653&site=$S->siteName">Webstats</a> page.</p>
   <p>Good luck and have fun.</p>
 $footer
 EOF;
