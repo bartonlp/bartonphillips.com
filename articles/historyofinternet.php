@@ -2,8 +2,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->extra =<<<EOF
-<style>
+$h->css =<<<EOF
 #images table, #images img {
   width: 90%;
 }
@@ -23,6 +22,7 @@ blockquote {
   border-left: 5px solid black; /*#ccc;*/
 }
 @media print {
+  footer, hr, #printbtn, #otherarticles { display: none; }
   #images {
     page-break-before: always;
   }
@@ -30,7 +30,6 @@ blockquote {
     page-break-before: always;
   }
 }  
-</style>
 EOF;
 
 $h->title = "History of the Internet";
@@ -549,61 +548,14 @@ servers for other data. Collaborators welcome!&quot;</blockquote>
 </article>
 EOF;
 
-// Print Page
-
-if($_GET['page'] == 'print') {
-  echo <<<EOF
-<!DOCTYPE HTML>
-<html>
-<head>
-<style>
-#images table, #images img {
-  width: 90%;
-}
-.important {
-  color: red;
-  font-weight: bold;
-  font-style: italic;
-}
-blockquote {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  padding-left: 15px;
-  border-left: 5px solid black; /*#ccc;*/
-}
-@media print {
-  #timeline, #speed, #connections, #images {
-    page-break-before: always;
-  }
-  #images hr {
-    page-break-before: always;
-  }
-}  
-</style>
-</head>
-<body>
-$h->banner
-$article
-</body>
-</html>
-EOF;
-  exit();
-}
-
 // Main Page
 
 echo <<<EOF
 $top
 $article
 <hr>
-<input type='image' id='printbtn' src='https://bartonphillips.net/images/print.gif' onclick="printit();" style='width: 100px'/><br>
+<input type='image' id='printbtn' src='https://bartonphillips.net/images/print.gif' onclick="window.print();" style='width: 100px'/><br>
 <hr>
-<script>
-function printit() {
-  window.location='historyofinternet.php?page=print';
-}
-</script>
 
 <div id="otherarticles">
   <p>Other articles in this series:</p>

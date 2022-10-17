@@ -1,6 +1,6 @@
 <?php
 /* BLP 2022-04-09 -
-   If nofooter then we don't do load this file or use the Default Footer instead just <footer></footer></body></html>.
+   If nofooter then we don't load this file or use the Default Footer instead just <footer></footer></body></html>.
 
    $b->ctrmsg = $b->ctrmsg ?? $this->ctrmsg;
    $b->msg = $b->msg ?? $this->msg;

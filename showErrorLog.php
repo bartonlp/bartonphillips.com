@@ -20,7 +20,9 @@ if(!$output) {
   $output = "<h1>No Data in PHP_ERRORS.log</h1>";
 } else {
   $output = preg_replace(["~ America/New_York~", "~-2022~"], '', $output);
-  $output = preg_replace("~(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~", "<span>$1</span>", $output);
+  $output = preg_replace("~(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~", "<span class='ip'>$1</span>", $output);
+  $output = preg_replace("~(tracker: |beacon:  )(\d+),~", "$1<span class='id'>$2</span>", $output);
+  $output = preg_replace("~(id\(value\)=)(\d+)~", "$1<span class='id'>$2</span>", $output);
   $output = "<pre>$output</pre>";
 }
 
@@ -30,15 +32,20 @@ $h->banner = "<h1>Show PHP_ERRORS.log</h1>";
 $h->css =<<<EOF
 #output { width: 100%; font-size: 11px; overflow-x: scroll; }
 #delete_button { border-radius: 5px; background: red; color: white; }
-span { cursor: pointer; };
+.ip, .id { cursor: pointer; };
 EOF;
 
 $b->noCounter = true;
 
 $b->inlineScript = <<<EOF
-$("span").on("click", function() {
+$(".ip").on("click", function() {
   let thisIp = $(this).text();
   window.open("findip.php?ip="+thisIp, "_blank");
+});
+$(".id").on("click", function() {
+  console.log("id clicked");
+  let thisId = $(this).text();
+  window.open("findip.php?id="+thisId, "_blank");
 });
 EOF;
 

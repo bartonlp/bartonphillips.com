@@ -7,7 +7,7 @@ return <<<EOF
 <section id='adminstuff'>
 <h2>Admin</h2>
 <ul>
-<li><a target="_blank" href="https://bartonphillips.net/webstats.php?blp=8653&site=$S->siteName">Webstats</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/webstats.php?blp=8653&site=$S->siteName">Webstats</a></li>
 <li><a target="_blank" href="https://bartonphillips.com/getcookie.php?blp=8653">Get/Reset Cookie</a></li>
 <li><a target="_blank" href="https://newbernrotary.org/wp-admin/">New Bern Rotary ADMIN</a></li>
 <li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">Bnai-sholem ADMIN</a></li>
@@ -24,7 +24,6 @@ return <<<EOF
 <li><a target="_blank" href="/examples/">examples</a></li>
 <li><a target="_blank" href="/examples.js/">examples.js</a></li>
 <li><a target="_blank" href="/test_examples/">examples just for testing</a></li>
-<li><a target="_blank" href="/memberstable.php">Bartonphillips members</a></li>
 </ul>
 </section>
 EOF;

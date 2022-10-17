@@ -53,8 +53,18 @@ CREATE TABLE `stocktotals` (
 
 if($_GET['page'] == "EndOfDay") {
   $S = new Database($_site);
-  
-  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+
+  $dom = new Dom;
+
+  $dom->loadFromUrl('https://www.marketwatch.com/investing/index/djia');
+    
+  $quoteDate = $dom->find(".timestamp__time bg-quote")->text;
+   
+  $group = $dom->find(".container .markets__group");
+  $tmp = $group->find("td")[2];
+  $dji = $tmp->find("bg-quote")->text;
+
+  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
 
   // Get our stocks
   
@@ -85,7 +95,7 @@ if($_GET['page'] == "EndOfDay") {
 
   // Now get the mutual funds via alpha
 
-  $alphakey = require("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+  $alphakey = require("/var/www/PASSWORDS/alpha-token");
   
   $sql = "select stock, qty from stocks where status = 'mutual'";
   
@@ -111,8 +121,8 @@ if($_GET['page'] == "EndOfDay") {
   echo "\nStocks $date: $stocktotal";
   echo "\nTotal $date: $total\n";
 
-  $S->query("insert into stocktotals (total, created) values('$total', current_date()) " .
-           "on duplicate key update total='$total'");
+  $S->query("insert into stocktotals (dji, total, created) values('$dji', '$total', current_date()) " .
+           "on duplicate key update dji='$dji', total='$total'");
   exit();
 }
 
@@ -130,7 +140,7 @@ if($_POST['page'] == 'web') {
   // 2) file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
   // The second way reads a plain text via an echo.
 
-  $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
   
   $sql = "select stock, price, qty, status, name from stocks where status!='mutual'";
   
@@ -207,7 +217,7 @@ if($_POST['page'] == 'web') {
   
   $S->query($sql);
 
-  $alphakey = require("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+  $alphakey = require("/var/www/PASSWORDS/alpha-token");
 
   while([$mutual, $mprice, $qty, $company] = $S->fetchrow('num')) {
     $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$mutual&apikey=$alphakey";

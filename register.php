@@ -75,7 +75,7 @@ if($_POST['page'] == 'finger') {
     echo "Can't set cookie in register.php<br>";
     throw(new Exception("Can't set cookie register.php " . __LINE__));
   }
-  echo "Register OK";
+  echo "$BLP";
   //error_log("$S->ip, visitor: $visitor, email: $email, name: $name");
   exit();
 }
@@ -99,6 +99,7 @@ EOF;
 // The javascript to get the finger etc.
 
 $b->script = "<script src='/register.js'></script>";
+$b->inlineScript = "var blp ='$BLP';";
 
 list($top, $footer) = $S->getPageTopBottom($h, $b);
 

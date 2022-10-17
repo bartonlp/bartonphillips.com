@@ -64,7 +64,7 @@ if (isSet($_REQUEST["year"])) {
       $jewishMonthName = getJewishMonthName($jewishMonth, $jewishYear);
       $holidays = getJewishHoliday($jdCurrent, $isDiaspora, $postponeShushanPurimOnSaturday);
       if (count($holidays) > 0) {
-        echo "<tr><td>$weekdayName</td><td>$gday/$gmonth/$gyear</td><td>$jewishDay $jewishMonthName $jewishYear</td><td>";
+        echo "<tr><td>$weekdayName</td><td>$gmonth/$gday/$gyear</td><td>$jewishDay $jewishMonthName $jewishYear</td><td>";
         for ($i = 0; $i < count($holidays); $i++) {
           if ($i > 0) echo "/";
           $holiday = $holidays[$i];

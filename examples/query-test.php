@@ -49,7 +49,7 @@ async function sql(sql) {
   }
 }
 
-// Everything is displayed via console.log so there is NO browser output.
+// Select all of the stocks from the bartonphillips.stocks table.
 
 var test = sql("select * from stocks");
 

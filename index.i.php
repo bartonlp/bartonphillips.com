@@ -86,7 +86,7 @@ if(!($fingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
   $n = $S->query("select count from $S->masterdb.logagent where ip='$S->ip'");
   if($n = 1) goto onlyOne; // kinda hate to use a goto but what the hell
   
-  while($cnt = $S->fetchrow('num')[0]) {
+  while([$cnt] = $S->fetchrow('num')) {
     $count += $cnt;
   }
 

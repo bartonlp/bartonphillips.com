@@ -28,9 +28,9 @@ $b->script =<<<EOF
 </script>
 <script>  
 jQuery(document).ready(function($) {
-  var mymap = L.map('mapid').setView([35.110966, -77.092889], 13);
-  var marker = L.marker([35.110966, -77.092889]).addTo(mymap);
-  marker.bindPopup("<b>Barton's Villa</b><br>Or is it a prison?").openPopup();
+  var mymap = L.map('mapid').setView([35.110852, -77.117462], 13);
+  var marker = L.marker([35.110852, -77.117462]).addTo(mymap);
+  marker.bindPopup("<b>Barton and Bonnie's Home</b>").openPopup();
 
   var popup = L.popup();
 
@@ -54,6 +54,9 @@ jQuery(document).ready(function($) {
 });
 </script>
 EOF;
+
+$h->title = "Barton&Bonnie's Home";
+$h->banner = "<h1>$h->title</h1>";
 
 list($top, $footer) = $S->getPageTopBottom($h, $b);
 

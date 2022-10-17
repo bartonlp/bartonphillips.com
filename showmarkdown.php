@@ -1,15 +1,13 @@
 <?php
-// BLP 2021-03-29 -- NON-PUG version
+// Show the markdown file
   
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 $h->css =<<<EOF
-<style>
 input, select { font-size: 1rem; padding-left: .3rem; margin-bottom: 1rem;}
 input[type='text'] { width: 20rem; }
-</style>
 EOF;
 
 [$top, $footer] = $S->getPageTopBottom($h);

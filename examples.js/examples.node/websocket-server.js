@@ -87,7 +87,7 @@ fs.chmodSync("/var/www/bartonphillips.com/examples.js/examples.node/websocket.lo
 
 // Log information to websocket.log, If mode === true then don't add the date
 
-const DEBUG = true;
+const DEBUG = false;
 
 function logit(msg) {
   let date = new Date;
@@ -102,7 +102,7 @@ function logit(msg) {
 
 // Create an http server. If someone actually tries to connect send a
 
-const server = http.createServer({ cert: fs.readFileSync('./fullchain9.pem'), key: fs.readFileSync('./privkey9.pem')});
+const server = http.createServer({ cert: fs.readFileSync('./fullchain7.pem'), key: fs.readFileSync('./privkey7.pem')});
 
 server.on('request', function(request, response) {
   logit('Received request for ' + request.url + " from: " + request.connection.remoteAddress);
@@ -135,7 +135,8 @@ wsServer = new WebSocketServer({
 // Check the origin of the connection
 
 function originIsAllowed(origin, r) {
-  //console.log("r:" , r , "origin: " + origin);
+  console.log("r:" , r);
+  logit("originIsAllowed: " + origin);
   if(r.BLP == '8653') return true;
   return false;
 }
@@ -245,7 +246,8 @@ wsServer.on('request', function(request) {
         case 'startup': // on startup
         case 'startup-update': // after slideshow.ajax::getItem:photo
           var id = jmsg.siteId; // id of starting program
-
+          console.log("startup/startup-update: jmsg.siteId=" + jmsg.siteId);
+                                                                
           // Send this info to programs that have registered as ALL
 
           for(var i=0; i < c.length; ++i) {

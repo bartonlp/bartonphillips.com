@@ -49,7 +49,11 @@
     // "htmlextra": "something extra",
     // "doctype", "<!DOCTYPE html>",
     // "defaultCss": false, // also via $h
-    // "titel": "goes in <title>",
+    // "defaultImage": "This is the image that is used by tracker
+    // instead of https://bartonphillips.net/images/plank.png
+    // "imageLocation": "This is the location of images instead of the
+    // default of https://bartonphillips.net.
+    // "title": "goes in <title>",
     // "desc": "some description",
     // "keywords": "bunch of keywords",
     //
@@ -67,6 +71,21 @@
     // "noAddress": true,
     // "address": "Here at Home",
     // "noEmailAddress": true,
+    //
+    // The ***Location entries let me put the elements of SiteClass in
+    // other locations. This would be required of someone downloaded
+    // SiteClass etc. and using the examples.
+    //"trackerLocation": "the location of tracker.php",
+    //"trackerLocationJs": "the location of tracker.js",
+    //"beaconLocation": "the location of beacon.php",
+    //"geoLocation": "Your location", // you can find geo.js and
+    // geoAjax.php at github.com/bartonlp/bartonphillips.net
+    //"imagesLocation": "https://bartonphillips.org/vendor/bartonlp/site-class/examples",
+    //"defaultImage": "./images/146624.png",
+    //"trackerLocation": "../includes/tracker.php",
+    //"trackerLocationJs": "../includes/tracker.js",
+    //"beaconLocation": "../includes/beacon.php",
+    //
     "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
     "trackerImg2": "/images/146624.png", // only $this
     "EMAILADDRESS": "bartonphillips@gmail.com", // or $b->emailAddress

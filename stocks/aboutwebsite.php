@@ -1,1 +1,1 @@
-../../bartonphillipsnet/aboutwebsite.php
+../../bartonlp.com/otherpages/aboutwebsite.php

@@ -8,21 +8,13 @@ $S = new $_site->className($_site);
 
 require_once("./index.i.php"); // Get the majority of the php
 
+$b->msg = "PhpVersion: " . PHP_VERSION;
+$b->msg1 = "<br>SiteClass Version: " . SITE_CLASS_VERSION;
+
 $h->title = "Barton Phillips";
 $h->desc = "Interesting Things, About the Internet, Tips and Tutorials";
 $h->link = <<<EOF
 <link rel='stylesheet' href='/index.css'>
-EOF;
-
-// For drag and resize
-
-$h->script = <<<EOF
-<!-- mobile for taphold -->
-<script src="https://bartonphillips.net/js/jquery.mobile.custom.js"></script>
-<!-- UI for drag and drop and touch-punch for mobile drag -->
-<script src="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery-ui.js"></script>
-<script src="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery.ui.touch-punch.js"></script>
-<link rel="stylesheet" href="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery-ui.css">
 EOF;
 
 $b->script = <<<EOF
@@ -79,10 +71,11 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
 <a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
+<a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
 <a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="http://www.bartonphillips.dyndns.org:8080"><button>RPI</button></a>
+<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>
 </div>
 </section>
 
@@ -90,10 +83,10 @@ Today is: <span id="datetoday">$date</span>
 <section id="github">
 <h2 class="center">GitHub Projects</h2>
 <ul>
-<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
-<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
-<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
-<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://bartonlp.github.io/bartonphillips.com">My GitHub sites</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://bartonlp.github.io/site-class/">SiteClass</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://bartonlp.github.io/updatesite/">UpdateSite Class</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://bartonlp.github.io/rssfeed/">RssFeed Class</a></li>
 </ul>
 </section>
 
@@ -104,7 +97,6 @@ Today is: <span id="datetoday">$date</span>
 <ul>
 <li><a target="_blank" href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a target="_blank" href="https://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="https://bartonphillips.net/goto.php?blp=ingrid&http://www.swam.us">Southwest Aquatic Master</a></li>
 <li><a target="_blank" href="https://developers.google.com/web/">Google/Web</a></li>
 <li><a target="_blank" href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
 </ul>

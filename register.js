@@ -6,6 +6,7 @@
 'use strict';
 
 const ajaxFile = "register.php";
+var blp;
 
 console.log(ajaxFile);
 console.log("lastId: "+lastId);
@@ -32,7 +33,7 @@ $("#submit").on("click", function() {
       type: 'post',
       success: function(data) {
         console.log("return: " + data);
-        $("#container").html("<h1>Registration Complete</h1><a href='/$BLP'>Return to Home Page</a>");
+        $("#container").html("<h1>Registration Complete</h1><a href='/" + data + "'>Return to Home Page</a>");
       },
       error: function(err) {
         console.log(err);

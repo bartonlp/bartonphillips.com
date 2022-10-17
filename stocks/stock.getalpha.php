@@ -15,9 +15,9 @@ if($stock = $_POST['stock']) {
   $stock = strtoupper($stock);
   // BLP 2022-01-21 -- Get the keys form my secure location
   
-  $alphakey = require_once("/var/www/bartonphillipsnet/PASSWORDS/alpha-token");
+  $alphakey = require_once("/var/www/PASSWORDS/alpha-token");
   // $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
-  $iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
+  $iex_token = require_once("/var/www/PASSWORDS/iex-token.php");
   
   $str = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
   $alpha = json_decode(file_get_contents($str), true); // decode as an array

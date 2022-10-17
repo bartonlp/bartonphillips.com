@@ -1,4 +1,5 @@
 <?php
+// Given the ip find the records in tracker, geo, bots.
 /*
 CREATE TABLE `tracker` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -41,32 +42,59 @@ CREATE TABLE `geo` (
   `ip` varchar(20) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `badplayer` (
+  `ip` varchar(20) NOT NULL,
+  `botAs` varchar(50) DEFAULT NULL,
+  `type` varchar(50) NOT NULL,
+  `count` int DEFAULT NULL,
+  `errno` int DEFAULT NULL,
+  `errmsg` varchar(255) DEFAULT NULL,
+  `agent` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT NULL,
+  PRIMARY KEY (`ip`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 */
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 $T = new dbTables($S);
 
-$val = "select id,site,page,botAs,finger,nogeo,agent,referer,hex(isjavascript) as java,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
+$val = "select id,ip,site,page,botAs,finger,nogeo,agent,referer,hex(isjavascript) as java,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
 
+// These MUST BE TRUE globals!!
 $fingers = [];
+$ip = null;
 
-function getinfo($ip, $sql=null) {
-  global $S, $T, $fingers, $where, $by, $and, $sqlval;
+function getinfo($value, $sql=null) {
+  global $S, $T, $fingers, $ip, $where, $by, $and, $sqlval;
 
-  $where = $_POST['where'] ?? "where $ip";
+  // Here $where is either the id or ip value or the full phrase 'where id/ip=...'
+  // So if $value then we make it 'where $value' and if it is a POST that calls this we use the
+  // $_POST['where'] which is the full phrase 'where id/ip=...'
+
+  $where = $_POST['where'] ?? "where $value";
   $by = $_POST['by'] ?? " order by starttime";
-  $and = $_POST['and'] ?? " and starttime>=current_date() - interval 10 day";
-  
+  if(!str_contains($value, 'id=')) {
+    $and = $_POST['and'] ?? " and starttime>=current_date() - interval 10 day";
+  }
   $sql = "$sql {$where}{$and}{$by}";
   $sqlval = $sql;
   $val = $sql;
 
   //echo "$sql<br>";
+
+  $ip = null;
   
   function trackerCallback(&$row, &$desc) {
-    global $fingers;
+    global $fingers, $ip; // these are true globals, outside of getinfo().
+
+    if(is_null($ip)) {
+      $ip = $row['ip']; // Do this once. Get ip from tracker table
+    }
+    
     if($row['finger'] != '') {
       $fingers[$row['finger']]++;
     }
@@ -79,16 +107,27 @@ function getinfo($ip, $sql=null) {
 
   $trackerTbl = $T->maketable($sql, ['callback'=>'trackerCallback', 'attr'=>['id'=>'trackertbl', 'border'=>'1']])[0];
   $trackerTbl = $trackerTbl ?? "<h1>Not in tracker table</h1>";
-
+  
   foreach(array_keys($fingers) as $key) {
     $keys .= "'$key',";
   }
   $keys = rtrim($keys, ',');
 
-  if(preg_match("~ip=~", $where)) {
-    $sql = "select ip, agent, count, hex(robots) as robots, site, creation_time, lasttime from $S->masterdb.bots $where order by lasttime";
+  // If we are using ip use it if we are doing id set the $bitsWhere to the ip we got in the
+  // callback.
+  
+  if(preg_match("~ip=['\"](.*)['\"]~", $where, $m)) {
+    $ip = $m[1];
+    $botsWhere = $where; // This is the full phrase.
+  } else {
+    $botsWhere = "where ip='$ip'"; // $ip from callback
   }
+
+  // At this point $ip is either the ip form the $where or the ip from the callback.
+  
+  $sql = "select ip, agent, count, hex(robots) as robots, site, creation_time, lasttime from $S->masterdb.bots $botsWhere order by lasttime";
   $botsTbl = $T->maketable($sql, ['attr'=>['id'=>'botstbl', 'border'=>'1']])[0];
+  
   if($botsTbl) {
     $botsTbl = "<p>From bots table</p>$botsTbl";
   } else {
@@ -106,26 +145,25 @@ function getinfo($ip, $sql=null) {
     $geoTbl = "<h1>Not in geo table</h1>";
   }
 
-  // Get the ip value.
+  // Again, $ip is either the original ip form $where or the ip from the callback, which could be
+  // null if there was no tracker record.
   
-  if(preg_match("~ip=['\"](\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~", $where, $m)) {
-    $ip = $m[1];
+  if(!empty($ip)) {
+    $sql = "select fid, ip, site, page, jsin, jsout, dayreal, daybots, dayvisits, visits, lasttime from $S->masterdb.dayrecords where ip='$ip' order by lasttime";
+    $dayrecords = $T->maketable($sql, ['attr'=>['id'=>'dayrecords', 'border'=>'1']])[0];
   }
-
-  $sql = "select fid, ip, site, page, jsin, jsout, dayreal, daybots, dayvisits, visits, lasttime from $S->masterdb.dayrecords where ip='$ip' order by lasttime";
-  $dayrecords = $T->maketable($sql, ['attr'=>['id'=>'dayrecords', 'border'=>'1']])[0];
-
+  
   if($dayrecords) {
     $dayrecords = "<p>From dayrecords table</p>$dayrecords";
   } else {
-    $dayrecords = "No dayrecords";
+    $dayrecords = "<h1>Not in dayrecords table</h1>";
   }
 
-  $loc = json_decode(file_get_contents("http://ipinfo.io/$ip")); // I could also use the class link in webstats.js
-  $gpsloc = $loc->loc;
-
-  $locstr = <<<EOF
-<p>User Information from 'http://ipinfo.io/$ip'</p>
+  if($ip) {
+    $loc = json_decode(file_get_contents("http://ipinfo.io/$ip")); // I could also use the class link in webstats.js
+    $gpsloc = $loc->loc;
+    $locstr = <<<EOF
+<p>User Information from "http://ipinfo.io/$ip"</p>
 
 <ul class="user-info">
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
@@ -133,34 +171,54 @@ function getinfo($ip, $sql=null) {
   <li>ISP: <i class='green'>$loc->org</i></li>
 </ul>
 EOF;
+  } else {
+    $locstr = "<h1>No Location Data Available from <i>http://ipinfo.io</i></h1>";
+  }
 
-  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords];
+  if(!empty($ip)) {
+    $sql = "select ip, botAs, type, count, errno, errmsg, agent, lasttime from $S->masterdb.badplayer where ip='$ip'";
+    $badTbl = $T->maketable($sql, ['attr'=>['id'=>'badplayer', 'border'=>'1']])[0];
+  }
+  if($badTbl) {
+    $badTbl = "<p>From badplayer table</p>$badTbl";
+  } else {
+    $badTbl = "<h1>Not in badplayer table</h1>";
+  }
+  
+  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl];
 }
 
 // Start Here
 
 if($_POST['page'] == 'find') {
-  $ip = $_POST['ip'];
+  // Here value will be the full phrase "where id/ip=..."
+  $value = $_POST['where'];
   $sql = $_POST['sql'];
-
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords] = getinfo($ip, $sql);
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($value, $sql);
 } elseif($_GET['ip']) {
   $ip = "ip='{$_GET['ip']}'";
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords] = getinfo($ip, $val);
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($ip, $val);
+} elseif($_GET['id']) {
+  $id = "id={$_GET['id']}";
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($id, $val);
 }
 
 $h->banner = "<h1>Find in Tracker</h1>";
 $h->title = "Find in Tracker";
 
 $h->css =<<<EOF
+/* 10 is javascript */
+#trackertbl td:nth-of-type(10) { cursor: pointer; } 
 #trackerContainer, #botsContainer, #geo {
   width: 100%;
-  font-size: 16px;
 }
 #trackertbl { position: relative; font-size: 10px; }
 #trackerContainer td { padding-left: 10px; padding-right: 10px; }
 #botsContainer td { padding-left: 10px; padding-right: 10px; }
+/* agent filed */
+#botsContainer td:nth-of-type(2) { word-break: break-all; width: 900px; }
 #geo td { padding-left: 10px; padding-right: 10px; }
+#badplayer td { padding-left: 10px; padding-right: 10px; }
 #form th { text-align: left; padding-right: 10px; font-size: 18px; }
 #location { font-size: 18px; }
 input { width: 1000px; font-size: 18px; padding-right: 10px; padding-left: 10px; }
@@ -251,9 +309,9 @@ EOF;
 $b->noCounter = true; // No counter.
 
 $b->inlineScript =<<<EOF
-  // 9 is the java script value.
+  // 10 is the java script value.
 
-  $("body").on("click", "#trackertbl td:nth-child(9)", function(e) {
+  $("body").on("click", "#trackertbl td:nth-child(10)", function(e) {
     let js = parseInt($(this).text(), 16),
     h = '', ypos, xpos;
     let pos = $(this).position(); // get the top and left
@@ -304,6 +362,7 @@ $top
 <div id='botsContainer'>$botsTbl</div>
 <div id='geo'>$geoTbl</div>
 <div id='dayrecord'>$dayrecords</div>
+<div id='badContainer'>$badTbl</div>
 <div id="outer">
 <div id="geocontainer"></div>
 <button id="removemsg">Click to remove map image</button>
