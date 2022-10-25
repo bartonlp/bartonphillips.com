@@ -135,10 +135,6 @@ if($_POST['page'] == 'web') {
   $S = new Database($_site); // All we need here is the database.
 
   // Get token from secure location.
-  // There are two ways to do this via ../PASSWORDS.
-  // 1) require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
-  // 2) file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
-  // The second way reads a plain text via an echo.
 
   $iex_token = require_once("/var/www/PASSWORDS/iex-token");
   

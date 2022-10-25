@@ -11,7 +11,6 @@ ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
-//$iex_token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
 
 $h->title = "Stock Values";
 $h->banner = "<h1>Stock Values</h1>";

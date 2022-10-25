@@ -35,8 +35,7 @@ $prefix = "https://cloud.iexapis.com/stable";
 //BLP 2022-01-21 -- Get iex-token form my secure location
 
 $token = require_once("/var/www/PASSWORDS/iex-token");
-//$token = file_get_contents("https://bartonphillips.net/PASSWORDS/iex-token.php");
-//$sql = "select stock, price, qty, status from stocks where status not in('watch','sold')";
+
 $sql = "select stock, price, qty, status from stocks where status = 'active'";
 $S->query($sql);
 
