@@ -7,12 +7,6 @@
 
 require(getenv("SITELOADNAME"));
 $data = file_get_contents("php://input");
-//vardumpNoEscape("data", $data);
-//echo PHP_EOL;
-//vardumpNoEscape("POST", $_POST);
-
-//error_log("testpost.php: " . print_r($data, true) . ", POST: " . print_r($_POST, true));
-
 $post = json_decode($data);
 
 if($_POST['test'] || $post->test) {

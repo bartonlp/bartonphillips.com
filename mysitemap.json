@@ -19,7 +19,9 @@
     "dbinfo": { // only $this
       "host": "localhost",
       "user": "barton", 
-      "database": "bartonphillips", 
+      "database": "bartonphillips",
+      // "port": "", // if we need to change the port from the default.
+      // "socket": "", // as above.
       "engine": "mysqli" 
     },
     "errorMode": { // only $this. 

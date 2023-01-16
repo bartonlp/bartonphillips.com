@@ -17,7 +17,7 @@ let webSocket;
 
 function connectWsChat() {
   try {
-    const host = 'wss://bartonlp.org:8089/';
+    const host = 'wss://bartonphillips.com:8089/';
 
     webSocket = new WebSocket(host);
 
@@ -59,7 +59,7 @@ function sendWsChat() {
     chatText = $('#chatText').val();
     
     if(chatUser=='' || chatText == '') {
-      logWsChatMessage('<p class="warning">You must till in both items</p>');
+      logWsChatMessage('<p class="warning">You must fill in both items</p>');
       return;
     }
 

@@ -33,23 +33,24 @@ wss.on('connection', function connection(ws) {
   ws.inx = inx;
   c[inx++] = ws;
   
-  ws.on('message', function message(msg) {
-    let x = msg.toString();
+  ws.on('message', function message(x) {
+    let msg = JSON.parse(x.toString());
     let reply;
     
-    console.log("ws.inx: " + ws.inx + ", msg: " + x);
-
-    switch(x) {
+    console.log("ws.inx: " + ws.inx + ", msg", msg);
+    
+    switch(msg.msg) {
       case 'reg':
         ws.cmd= 'reg';
         reply = "Registered for ALL";
         ws.send(reply);
         return;
       case 'imgstart':
-        let pattern = "/var/www/bartonphillipsnet/images/Bonnie/*.png";
+        let pattern = "/var/www/html/photos/*.JPG";
         let m = glob.sync(pattern);
+        console.log("m:", m);
         matches = []; // init it
-        m.forEach(function(p) { matches.push(path.basename(p))});
+        m.forEach((p)=> { matches.push(path.basename(p))});
         console.log("matches: ", matches);
         var matches_iterator = matches.entries();
         console.log("iter: " , matches_iterator);
@@ -60,7 +61,7 @@ wss.on('connection', function connection(ws) {
         if(minx >= matches.length) minx = 0;
         let file = matches[minx++];
         console.log("file: ", file);
-        reply = "<img style='width: 200px' src='https://bartonphillips.net/images/Bonnie/"+file+"'>";
+        reply = "<img style='width: 200px' src='https://bartonlp.org/photos/"+file+"'>";
         ws.send(reply);
         break
       case 'start':
@@ -73,6 +74,9 @@ wss.on('connection', function connection(ws) {
         reply = "Stopping numbers="+ws.num;
         ws.send(reply);
         clearInterval(ws.num);
+        break;
+      default:
+        console.log("didn't find a match: msg=", msg.msg);
         break;
     }
 

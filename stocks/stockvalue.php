@@ -42,12 +42,16 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=" . implode(',', array_keys($stocks)) .
        "&types=quote,stats&filter=day200MovingAvg,latestPrice&token=$iex_token";
 
+$ar = json_decode(file_get_contents($url), true);
+/*
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $str);
 curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $ret = curl_exec($ch);
 $ar = json_decode($ret);
+*/
+
 //vardump("ar", $ar);
 $av = 0.0;
 $curval = 0.0;

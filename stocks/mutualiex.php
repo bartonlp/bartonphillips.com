@@ -21,10 +21,16 @@ function getmutualdata($mutual) {
   // Ues alphavantage.co as iex no longer seems to support my mutual funds.
   
   $alphakey = require("/var/www/PASSWORDS/alpha-token");
-  $url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$mutual&apikey=$alphakey";
+  // BLP 2022-11-19 - on Nov 4 they made the following an extra charge item. So I will use
+  // GLOBAL_QUOTE instead.
+  //$url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$mutual&apikey=$alphakey";
+  //$date = $ar['Meta Data']['3. Last Refreshed'];
+  //$close = $ar['Time Series (Daily)'][$date]['4. close'];
+
+  $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$mutual&apikey=$alphakey";
   $ar = json_decode(file_get_contents($url), true);
-  $date = $ar['Meta Data']['3. Last Refreshed'];
-  $close = $ar['Time Series (Daily)'][$date]['4. close'];
+  $close = $ar['Global Quote']['05. price'];
+  $date = $ar['Global Quote']['07. latest trading day'];
   return [$date, $close];
 }
 
@@ -33,7 +39,7 @@ if($_GET['page'] == "EndOfDay") {
 
   while([$stock, $qty] = $S->fetchrow("num")) {
     [$date, $close] = getmutualdata($stock);
-    
+        
     $S->query("insert into mutuals (date, stock, price, qty, created, lasttime) values('$date', '$stock', '$close', '$qty', now(), now()) ".
               "on duplicate key update price='$close', qty='$qty', lasttime=now()");
   }

@@ -1,0 +1,15 @@
+Header set Access-Control-Allow-Origin *
+# Apache2 2.4 uses Require
+Require all granted
+
+Options +Includes
+
+SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
+SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
+
+RewriteEngine on
+RewriteRule ^test$ test.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . altorouter.php [L]

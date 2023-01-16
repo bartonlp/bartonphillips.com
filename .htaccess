@@ -3,6 +3,8 @@ Require all granted
 
 Options +Includes
 # include .shtml files or files with the execution bit set
+Header set Access-Control-Allow-Origin "*"
+
 AddType text/html .shtml .php
 AddOutputFilter INCLUDES .shtml
 XBitHack on

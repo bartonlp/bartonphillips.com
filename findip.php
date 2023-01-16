@@ -56,6 +56,22 @@ CREATE TABLE `badplayer` (
   `lasttime` datetime DEFAULT NULL,
   PRIMARY KEY (`ip`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `dayrecords` (
+  `fid` int DEFAULT NULL,
+  `ip` varchar(20) DEFAULT NULL,
+  `site` varchar(20) DEFAULT NULL,
+  `page` varchar(255) DEFAULT NULL,
+  `finger` varchar(20) DEFAULT NULL,
+  `jsin` varchar(10) DEFAULT NULL,
+  `jsout` varchar(20) DEFAULT NULL,
+  `dayreal` int DEFAULT NULL,
+  `rcount` int DEFAULT '0',
+  `daybots` int DEFAULT NULL,
+  `dayvisits` int DEFAULT NULL,
+  `visits` smallint DEFAULT '0',
+  `lasttime` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 */
 
 $_site = require_once(getenv("SITELOADNAME"));
@@ -149,7 +165,8 @@ function getinfo($value, $sql=null) {
   // null if there was no tracker record.
   
   if(!empty($ip)) {
-    $sql = "select fid, ip, site, page, jsin, jsout, dayreal, daybots, dayvisits, visits, lasttime from $S->masterdb.dayrecords where ip='$ip' order by lasttime";
+    $sql = "select fid, ip, site, page, jsin, jsout, dayreal, rcount, daybots, dayvisits, visits, lasttime ".
+           "from $S->masterdb.dayrecords where ip='$ip' order by lasttime";
     $dayrecords = $T->maketable($sql, ['attr'=>['id'=>'dayrecords', 'border'=>'1']])[0];
   }
   

@@ -5,8 +5,11 @@ const https = require('https');
 const WebSocket = require('ws');
 
 const server = https.createServer({
-  cert: fs.readFileSync('./fullchain9.pem'),
-  key: fs.readFileSync('./privkey9.pem')
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.bartonphillips.com/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/www.bartonphillips.com/privkey.pem')
+
+//  cert: fs.readFileSync('./fullchain9.pem'),
+//  key: fs.readFileSync('./privkey9.pem')
 });
 
 const wss = new WebSocket.Server({ server });
