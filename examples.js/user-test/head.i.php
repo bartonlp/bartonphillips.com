@@ -17,7 +17,7 @@ return <<<EOF
   <link rel="stylesheet" href="https://bartonphillips.net/css/blp.css">
   {$h->link}
   <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>-->
   <!-- Custom Scripts -->
 {$h->extra}
 {$h->script}

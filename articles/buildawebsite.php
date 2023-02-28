@@ -1,10 +1,12 @@
 <?php
+// BLP 2023-02-25 - use new approach
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site); // takes an array if you want to change defaults
 
-$h->title = "So You Want to Build a Website";
-$h->banner = "<h1 class='center'>So You Want to Build a Website</h1><hr>";
-$h->script = <<<EOF
+$S->title = "So You Want to Build a Website";
+$S->banner = "<h1 class='center'>So You Want to Build a Website</h1><hr>";
+$S->h_script = <<<EOF
 <!-- From: http://updates.html5rocks.com/2011/08/Saving-generated-files-on-the-client-side
 https://github.com/eligrey/FileSaver.js -->
 <script src="https://bartonphillips.net/js/FileSaver.js"></script>
@@ -29,8 +31,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 EOF;
-$h->css = <<<EOF
-<style>
+$S->css = <<<EOF
 #editarea { /* textarea */
   width: 100%;
   height: 300px;
@@ -50,12 +51,11 @@ $h->css = <<<EOF
 #tbl td:first-child {
   border-left: 5px solid #ccc;
 }
-</style>
 EOF;
 
-$h->meta = "<meta name='Editor' content='Bonnie Burch'>";
+$S->meta = "<meta name='Editor' content='Bonnie Burch'>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

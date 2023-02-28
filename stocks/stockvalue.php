@@ -6,16 +6,13 @@
 // use iex stats to get a 200 day moving average. Remove the info from the stocks.`values` table.
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
-
 $S = new $_site->className($_site);
 
 $iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
 
-$h->title = "Stock Values";
-$h->banner = "<h1>Stock Values</h1>";
-$h->css =<<<EOF
-<style>
+$S->title = "Stock Values";
+$S->banner = "<h1>Stock Values</h1>";
+$S->css =<<<EOF
 .per {
   color: red;
 }
@@ -26,10 +23,9 @@ $h->css =<<<EOF
   border: 5px solid black;
   margin: auto;
 }
-</style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 $sql = "select stock, price, qty from stocks where status in('active','mutual')";
 $S->query($sql);
 

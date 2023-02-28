@@ -2,17 +2,15 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
 
-$h->banner = "<h1>Stock Info</h1>";
-$h->css = <<<EOF
-<style>
+$S->banner = "<h1>Stock Info</h1>";
+$S->css = <<<EOF
 td { padding: 5px; text-align: right; }
-</style>
 EOF;
 
-$h->title = "Stock Info";
-$h->banner = "<h1>$h->title</h1>";
+$S->title = "Stock Info";
+$S->banner = "<h1>$S->title</h1>";
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 $totalAmt = 0;
 

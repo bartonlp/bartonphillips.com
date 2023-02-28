@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Verify email address
 
 $_site = require_once(getenv("SITELOADNAME"));
@@ -62,15 +63,13 @@ switch(strtoupper($_SERVER['REQUEST_METHOD'])) {
 // Ask for a file with contactName, contactEmail
 
 function start($S, $DEBUG) {
-  global $h;
-  
-  $h->title = "Test Smtp Reciept";  
-  $h->banner = <<<EOF
+  $S->title = "Test Smtp Reciept";  
+  $S->banner = <<<EOF
 <h1>Test Email Addresses With MX Server</h1>
 <hr>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h);
+  [$top, $footer] = $S->getPageTopBottom();
 
   echo <<<EOF
 $top
@@ -155,8 +154,7 @@ EOF;
     exit();
   }
 
-  $h->css = <<<EOF
-<style>
+  $S->css = <<<EOF
 :root {
   --bad: red;
   --ok: green;
@@ -172,16 +170,15 @@ EOF;
 .ok { color: var(--ok); }
 .bad { color: var(--bad); }
 .anything { color: var(--anything); background: var(--anythingbg); }
-</style>
 EOF;
 
-  $h->title = "Test Smtp Reciept";  
-  $h->banner = <<<EOF
+  $S->title = "Test Smtp Reciept";  
+  $S->banner = <<<EOF
 <h1>Test Email Addresses With MX Server</h1>
 <hr>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h);
+  [$top, $footer] = $S->getPageTopBottom();
 
   echo $top;
 
@@ -375,8 +372,6 @@ EOF;
 // Verfily One address
 
 function verifyone($S, $DEBUG) {
-  global $h;
-  
   if($DEBUG) {
     $echo_command = $echo_response = 1;
   } else {
@@ -387,13 +382,13 @@ function verifyone($S, $DEBUG) {
 
   $nl2br = $S->nl2br;
   
-  $h->title = "Test Smtp Reciept";  
-  $h->banner = <<<EOF
+  $S->title = "Test Smtp Reciept";  
+  $S->banner = <<<EOF
 <h1>Test Email Addresses With MX Server</h1>
 <hr>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h);
+  [$top, $footer] = $S->getPageTopBottom();
 
   echo $top;
 

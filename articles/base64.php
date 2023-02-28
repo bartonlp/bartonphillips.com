@@ -1,7 +1,7 @@
 <?php
+// BLP 2023-02-25 - use new approach
+
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
-ErrorClass::setNoEmailErrs(true);
 $S = new $_site->className($_site);
 
 if($_POST) {
@@ -22,8 +22,7 @@ if($_POST) {
   exit();
 }
 
-$h->css =<<<EOF
-<style>
+$S->css =<<<EOF
 input[type='text'] {
   width: 100%;
 }
@@ -32,10 +31,9 @@ code {
   background-color: lightgray;
   padding: 0 4px;
 }
-</style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

@@ -13,44 +13,59 @@
 // This file DOES NOT DO a require_onece(getenv("SITELOADNAME") or set $S.
 // The $router->map() functions can do it to set up $_site.
 
-error_log("altorouter START: ".print_r($_GET, true));
-error_log("altorouter START: ".print_r($_POST, true));
-
 require_once("/var/www/vendor/autoload.php");
-//$_site = require_once(getenv("SITELOADNAME"));
 
 $router = new AltoRouter();
 
 // Do Routing
 
-$router->setBasePath('/examples/node-programs');
+$router->setBasePath('examples/node-programs/'); // This needs the trailing /
 
-error_log("altorouter.php router: ".print_r($router, true));
+$router->map('GET', '/', function() {
+  require('index.php');
+});
 
-$router->map('GET', '/get/', 'test1.php', 'home');
+$router->map('GET', '/get', function() {
+  require('test1.php');
+});
 
-$router->map('GET', '/get/[*:name]/[*:test]', 'test2.php');
+$router->map('GET', '/get/[*:name]/[*:test]', function($x) {
+  $name = $x['name'];
+  $test = $x['test'];
+  require('test1.php');
+});
 
-$router->map('GET', '/fast/[i:a]/', 'test.php', 'fast');
+$router->map('GET', '/fast/[i:a]', function($x) {
+  $name = $x['a'];
+  require('test1.php');
+});
 
-$router->map('POST', '/gotoit/', function() {
-  error_log("altorouter.php in post");
-  exit();
-}, "Bog");
-error_log("altorouter.php router: ".print_r($router, true));
+$router->map('POST', '/gotoit', function() {
+  $name = $_POST['name'];
+  $test = $_POST['test'];
+  echo "gotoit POST: name=$name, test=$test";
+});
+
+$router->map('POST', '/gotoit/[*:name]/[*:test]', function($x) {
+  $one = $_POST['one'];
+  $two = $_POST['two'];
+  $name = $x["name"];
+  $test = $x["test"];
+  echo "gotoit POST: name=$name, test=$test, one=$one, two=$two<br>";
+});
 
 $match = $router->match();
 
 if(is_array($match) && is_callable($match['target'])) {
-  call_user_func_array( $match['target'], $match['params'] );
+  call_user_func( $match['target'], $match['params'] );
   exit();
 } elseif($match) {
   header("location: {$match['target']}");
   exit();
 } else {
-  header("HTTP/1.0 404 Not Found");
+  //header("HTTP/1.0 404 Not Found");
+  //echo "<h1>Sorry, what you were looking for we could not find: 404 Not Found</h1>";
+  // or
   require("404.php");
-  exit();
 }
 
-echo "AT THE END";

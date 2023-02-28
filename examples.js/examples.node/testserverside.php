@@ -1,13 +1,15 @@
 <?php
+// BLP 2023-02-26 - use new approach
+
 $start = hrtime(true);
 
 $_site = require_once(getenv("SITELOADNAME"));
 $t1 = hrtime(true);
 $S = new SiteClass($_site);
 $t2 = hrtime(true);
-$h->banner = "<h1>Here We Go</h1>";
+$S->banner = "<h1>Here We Go</h1>";
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 $t3 = hrtime(true);
 $msg =  <<<EOF
 $top

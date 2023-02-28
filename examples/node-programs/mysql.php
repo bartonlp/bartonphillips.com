@@ -4,9 +4,9 @@ $S = new SiteClass($_site);
 $__FILENAME = __FILE__;
 require_once("addpage.php");
 
-$h->title = "Demo Program mysql.php";
-$h->banner = "<h1>$h->title</h1>";
-[$top, $footer] = $S->getPageTopBottom($h);
+$S->title = "Demo Program mysql.php";
+$S->banner = "<h1>$S->title</h1>";
+[$top, $footer] = $S->getPageTopBottom();
 
 $res = print_r($results, true);
 

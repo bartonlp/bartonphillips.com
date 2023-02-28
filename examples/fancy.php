@@ -5,8 +5,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->css =<<<EOF
-<style>
+$S->css =<<<EOF
 /* We can set global values in the :root section.
  * These values can then be used in other sections.
  * --height: 350px;
@@ -25,11 +24,9 @@ $h->css =<<<EOF
   background: white;
   overflow: auto;
 }
-</style>
 EOF;
 
-$h->script =<<<EOF
-<script>
+$S->inlineScript =<<<EOF
 function DoIt(e, link) {
   console.log("the file fancy-tabs.html is loaded with a 'rel=\"import\"");
   console.log("e:", e, " link:", link);
@@ -92,10 +89,9 @@ jQuery(document).ready(function($) {
     return false;
   });  
 });
-</script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

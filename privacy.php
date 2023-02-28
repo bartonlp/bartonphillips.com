@@ -1,10 +1,12 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Privacy Statement for bartonphillips.com
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
-$h->title = "Bartonphillips.com Privacy Statement";
+$S->title = "Bartonphillips.com Privacy Statement";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

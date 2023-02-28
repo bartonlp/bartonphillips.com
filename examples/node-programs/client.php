@@ -11,8 +11,8 @@ echo <<<EOF
   <script>jQuery.migrateMute = false; jQuery.migrateTrace = false;</script>
 </head>
 <body>
-  <a href="/get/Something/Special">Something Different</a><br>
-  <a href="/get/">More</a><br>
+  <a href="./get/Something/Special">Something Different</a><br>
+  <a href="./get">More</a><br>
 
   <a href="server.php?name=Big Test&test=How big">Big</a><br>
 
@@ -24,17 +24,19 @@ echo <<<EOF
 $("input[type='submit']").on("click", function() {
   let name = $("input[name='name']").val();
   let test = $("input[name='test']").val();
-  console.log(`values: \${name}, \${test}`);
+  let one = "One";
+  let two = "Two";
   $.ajax({
-    url: "/examples/node-programs/gotoit/",
+    url: `./gotoit/\${name}/\${test}`,
+    //url: './gotoit',
     method: "POST",
-    data: {name: name, test: test},
+    data: {name: name, test: test, one: one, two: two},
     success: function(data) {
       console.log(`data: \${data}`);
       $("#results").html(`<h2>\${data}</h2>`);
     },
     error: function(err) {
-      console.log(`Error: \${err}`);
+      console.log('Error: ', err);
     }
   });
 });

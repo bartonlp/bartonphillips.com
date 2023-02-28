@@ -1,18 +1,22 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // JavaScript Only with jQuery and SiteClass
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
+
 // Get the original php file
+
 $file = file_get_contents("javascript-siteclass.php");
+
 // Clean up left and right arrows, $, \n and quotes. Make them all displayable.
 // * Note that when viewing the file the $ sign has a double back slash before it and \\n will
 // * show as a line break so you will not see it.
 
 $file = preg_replace(array("/</", "/>/", "/\\$/", "/\n/", '/"/'), array("&lt;","&gt;", "\$", "<br>", "'"), $file);
 
-$h->title = "JavaScript+jQuery+SiteClass";
-$h->css =<<<EOF
-  <style>
+$S->title = "JavaScript+jQuery+SiteClass";
+$S->css =<<<EOF
 pre {
   font-size: .7em;
   overflow: auto;
@@ -20,11 +24,9 @@ pre {
   border-left: .5em solid gray;
   background-color: #E5E5E5;
 }
-  </style>
 EOF;
 
-$h->script=<<<EOF
-  <script>
+$S->h_inlineScript=<<<EOF
 jQuery(document).ready(function($) {
   $("head").after("<body>");
   $("<hr><h1><i>javaScript</i> with <i>jQuery</i> and <i>SiteClass</i></h1>"+
@@ -38,10 +40,9 @@ jQuery(document).ready(function($) {
   ).insertBefore('footer');
   $("script").remove(); // REMOVE ALL script tags
 });
-  </script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

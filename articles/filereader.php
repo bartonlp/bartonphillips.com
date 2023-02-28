@@ -1,9 +1,11 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // BLP 2014-05-12 -- FireReader example: http://www.html5rocks.com/en/tutorials/file/dndfiles/
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->extra = <<<EOF
+$S->extra = <<<EOF
 <script>
 jQuery(document).ready(function($) {
   // Check for the various File API support.
@@ -30,9 +32,9 @@ jQuery(document).ready(function($) {
 </script>
 EOF;
 
-$h->title = "Filereader Interface";
+$S->title = "Filereader Interface";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Show the PHP_ERRORS.log and allow it the be emptied.
 
 $_site = require_once(getenv("SITELOADNAME"));
@@ -26,18 +27,18 @@ if(!$output) {
   $output = "<pre>$output</pre>";
 }
 
-$h->title = "Show Error Log";
-$h->banner = "<h1>Show PHP_ERRORS.log</h1>";
+$S->title = "Show Error Log";
+$S->banner = "<h1>Show PHP_ERRORS.log</h1>";
 
-$h->css =<<<EOF
+$S->css =<<<EOF
 #output { width: 100%; font-size: 11px; overflow-x: scroll; }
 #delete_button { border-radius: 5px; background: red; color: white; }
 .ip, .id { cursor: pointer; };
 EOF;
 
-$b->noCounter = true;
+$S->noCounter = true;
 
-$b->inlineScript = <<<EOF
+$S->b_inlineScript = <<<EOF
 $(".ip").on("click", function() {
   let thisIp = $(this).text();
   window.open("findip.php?ip="+thisIp, "_blank");
@@ -49,7 +50,7 @@ $(".id").on("click", function() {
 });
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 header("refresh:1800; url=showErrorLog.php"); // 30 min
 

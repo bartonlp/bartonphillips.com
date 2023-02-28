@@ -31,6 +31,11 @@ app.get("/:name/:test", (req, res)=> {
   res.sendFile(__dirname + "/index.html");
 });
 
+apt.get("test/:id", (req, res)=> {
+  let name = req.params.id;
+  res.sendFile(__dirname + "/test1.php");
+});
+
 // This get wants two query items like
 // "https://bartonphillips.com:3000/?name=<some value>&test=<some other value">
 // Again these are put into the query object as name and test.

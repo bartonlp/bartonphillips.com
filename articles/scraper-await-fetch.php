@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // scraper-await-fetch.php
 // BLP 2021-09-26 -- remove hard r1, r2 and get it from bartonphillips.com/index.php
 // Demo shows how to use PHPHtmlParser to scrape a webpage.
@@ -12,6 +13,7 @@
 // https://github.com/bartonlp/site-class
 
 // Instanciate the SiteClass
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
@@ -57,15 +59,12 @@ if($_POST['page'] == 'two') {
 
 $sourceCode = escapeltgt(file_get_contents('scraper-await-fetch.php'));
 
-// $h is an object that has information to include in the output.
-
-$h->title = "Scraper Demo";
-$h->banner = "<h1>Scraper, Async, Fetch</h1>";
+$S->title = "Scraper Demo";
+$S->banner = "<h1>Scraper, Async, Fetch</h1>";
 
 // The css is for the two sections scraped from my webpage.
 
-$h->css = <<<EOF
-<style>
+$S->css = <<<EOF
 #r1, #r2 {
   border: 1px solid black;
   padding: .5rem;
@@ -85,10 +84,9 @@ pre {
   margin: auto;
   border-spacing: .5rem;
 }
-</style>
 EOF;
 
-$h->script = <<<EOF
+$S->h_script = <<<EOF
 <!-- We use syntaxhighliter and the theme.css to show the sourcecode. -->
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
@@ -164,9 +162,7 @@ r2:
 </script>
 EOF;
 
-// Get the $top and $footer using the $h object above.
-
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 // Now render the page.
 // Note that the <pre> is turned into <div>'s by 'syntaxhightlighter' so we need to use the new

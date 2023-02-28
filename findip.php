@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Given the ip find the records in tracker, geo, bots.
 /*
 CREATE TABLE `tracker` (
@@ -220,10 +221,10 @@ if($_POST['page'] == 'find') {
   [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($id, $val);
 }
 
-$h->banner = "<h1>Find in Tracker</h1>";
-$h->title = "Find in Tracker";
+$S->banner = "<h1>Find in Tracker</h1>";
+$S->title = "Find in Tracker";
 
-$h->css =<<<EOF
+$S->css =<<<EOF
 /* 10 is javascript */
 #trackertbl td:nth-of-type(10) { cursor: pointer; } 
 #trackerContainer, #botsContainer, #geo {
@@ -276,9 +277,7 @@ button { border-radius: 5px; background: green; color: white; font-size: 18px; }
 .botas { color: green; }
 EOF;
 
-function setupjava($h) {
-  // To get a geo do either $h or $b->inlineScript = "var doGeo = true;";
-  //$h->inlineScript = "var doGeo = true;";
+function setupjava($S) {
   $start = TRACKER_START;
   $load = TRACKER_LOAD;
   $script = TRACKER_SCRIPT;
@@ -299,7 +298,7 @@ function setupjava($h) {
   $goto = TRACKER_GOTO; // Proxy
   $goaway = TRACKER_GOAWAY; // unusal tracker.
 
-  $h->inlineScript = <<<EOF
+  $S->h_inlineScript = <<<EOF
     const tracker = {
   "$start": "Start", "$load": "Load", "$script": "Script", "$normal": "Normal",
   "$noscript": "NoScript", "$bvisibilitychange": "B-VisChange", "$bpagehide": "B-PageHide", "$bunload": "B-Unload", "$bbeforeunload": "B-BeforeUnload",
@@ -309,9 +308,9 @@ function setupjava($h) {
   EOF;
 }
 
-setupjava($h);
+setupjava($S);
 
-$b->script =<<<EOF
+$S->b_script =<<<EOF
 <script src="https://bartonphillips.net/js/jquery.mobile.custom.js"></script>
 <!-- UI for drag and drop and touch-punch for mobile drag -->
 <script src="https://bartonphillips.net/js/jquery-ui-1.13.0.custom/jquery-ui.js"></script>
@@ -323,9 +322,9 @@ $b->script =<<<EOF
 </script>
 EOF;
 
-$b->noCounter = true; // No counter.
+$S->noCounter = true; // No counter.
 
-$b->inlineScript =<<<EOF
+$S->b_inlineScript =<<<EOF
   // 10 is the java script value.
 
   $("body").on("click", "#trackertbl td:nth-child(10)", function(e) {
@@ -357,7 +356,7 @@ $b->inlineScript =<<<EOF
   });
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top
@@ -386,4 +385,3 @@ $top
 </div>
 $footer
 EOF;
-

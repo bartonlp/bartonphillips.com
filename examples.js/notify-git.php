@@ -1,15 +1,17 @@
 <?php
 // This is an example of sending a notification. It uses the Notification object.
 // When  the notification is clicked on we got to my home page.
-// This is attempt to do a git st and if it has any file send a notify.
+// This is an attempt to do a git st and if it has any file send a notify.
+
+// This is from the xhr.send below. This is called via AJAX.
 
 if($_GET['page']) {
   $ret = '';
 
   $any = false;
   
-  foreach(['/vendor/bartonlp/site-class', '/applitec', '/bartonlp', '/bartonphillips.com', 
-           '/bartonphillipsnet', '/bartonphillips.org', '/granbyrotary.org', '/messiah'] as $site) {
+  foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
+           '/bartonphillipsnet', '/bartonphillips.org'] as $site) {
     chdir("/var/www/$site");
     exec("git status", $out);
     $out = implode("\n", $out);
@@ -22,9 +24,7 @@ if($_GET['page']) {
   exit();
 }
 
-$_site = require_once(getenv('SITELOADNAME'));
-ErrorClass::setDevelopment(true);
-//$S = $_site->className($_site);
+// Render page.
 
 echo <<<EOF
 <!DOCTYPE html>
@@ -63,12 +63,14 @@ function notifyMe(msg) {
   }
 }
 
+// Use low level XMLHttpRequest() instead of any jQuery stuff.
+
 function sendText() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'notify-git.php?page=true', true);
-  //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-  // Send the text to the worker.ajax.php
+  xhr.open('GET', 'notify-git.php?page=true', true);
+
+  //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
   xhr.send();
 

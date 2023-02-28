@@ -4,7 +4,6 @@
 // BLP 2020-10-21 -- removed pricedata. Added back try for duplicate key.
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 
 function checkUser($S) {
   //echo "cookie: ". $_COOKIE['SiteId']."<br>";
@@ -89,11 +88,10 @@ if($_GET['stock']) {
   $readonly = "style='background-color: gray; color: white' readonly";
 }
 
-$h->title = "Stock Register";
-$h->banner = "<h1>Stock Register</h1>";
+$S->title = "Stock Register";
+$S->banner = "<h1>Stock Register</h1>";
 
-$h->css =<<<EOF
-  <style>
+$S->css =<<<EOF
 input[name='stock'] {
   text-transform: uppercase;
 }
@@ -109,10 +107,9 @@ input[name='remove'] {
 #stocks td:nth-child(5) {
   width: 6rem;
 }
-  </style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 date_default_timezone_set("America/New_York");
 

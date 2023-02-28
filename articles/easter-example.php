@@ -1,10 +1,11 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // This file show the date of easter given a year. It uses the class easterdatecalculator.php on
 // github.
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
+
 $day = new easterdatecalculator;
 
 if (empty($_POST['year'])) {
@@ -44,11 +45,10 @@ for($i=1944; $i < 2070; ++$i) {
   }
 }
 
-$h->title = "Easter Date Calculator";
-$h->extra = '<script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>';
+$S->title = "Easter Date Calculator";
+$S->extra = '<script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>';
 
-$h->script = <<<EOF
-  <script>
+$S->h_inlineScript = <<<EOF
 function re_calc() {
   document.forms['thisform'].submit();
 }
@@ -58,13 +58,11 @@ jQuery(document).ready(function($) {
     $(this).hide();
   });
 });
-  </script>
 EOF;
 
-$h->link = '<link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">';
+$S->link = '<link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">';
 
-$h->css = <<<EOF
-  <style>
+$S->css = <<<EOF
 .syntaxhighlighter {
   height: 10rem;
   font-size: .8rem !important;
@@ -82,10 +80,10 @@ code {
   width: 4rem;
   padding: .5em;
 }
-  </style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
+
 $path = __DIR__;
 
 echo <<<EOF

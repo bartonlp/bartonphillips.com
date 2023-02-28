@@ -1,20 +1,19 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Project info
 // Links to my GitHub and PHPClasses Projects
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
-$h->css =<<<EOF
-  <style>
+$S->css =<<<EOF
 #octocat { /* GitHub Image */
   width: 80px;
   vertical-align: bottom;
 }
-  </style>
 EOF;
-$h->banner = "<h1>My Projects</h1><hr>";
+$S->banner = "<h1>My Projects</h1><hr>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

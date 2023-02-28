@@ -1,9 +1,9 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // create a data-url for <script> tag.
 // dynamically create a <script> tag with a data url for the src= item
+
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
-ErrorClass::setNoEmailErrs(true);
 $S = new $_site->className($_site);
         
 $data =<<<EOF
@@ -55,7 +55,7 @@ $('#plugger').remove();
 </script>
 EOF;
 
-$h->extra = <<<EOF
+$S->extra = <<<EOF
   <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
   <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
   <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
@@ -150,10 +150,10 @@ body > pre {
   </style>
 EOF;
 
-$h->title = "Dynamically Load Scripts and Iframs";
-$h->banner = "<h1 class='center'>Dynamic Load &lt;script&gt; and &lt;iframe&gt; via PHP and JavaScript</h1>";
+$S->title = "Dynamically Load Scripts and Iframs";
+$S->banner = "<h1 class='center'>Dynamic Load &lt;script&gt; and &lt;iframe&gt; via PHP and JavaScript</h1>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

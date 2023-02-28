@@ -1,10 +1,11 @@
 <?php
 // Example of how to use 'file_get_contents() to do a POST instead of a GET.
-// This uses exampl1.php
+// This uses exampleAjax.php
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$t->test = "test from example2";
+$t->test = "test from post_file_get_contents.php";
 $t->siteName = "bartonphillips.com";
 
 $json = [test1=>"test one", test2=>"test two"];

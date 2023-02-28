@@ -5,7 +5,8 @@
 //
 // This is ALSO used by testfetch.php!
 
-require(getenv("SITELOADNAME"));
+//require(getenv("SITELOADNAME"));
+
 $data = file_get_contents("php://input");
 $post = json_decode($data);
 

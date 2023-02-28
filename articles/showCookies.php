@@ -1,13 +1,14 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Compare PHP to JavaScript Cookies.
 // Cookies with option 'httponly' set to true will not show in the JavaScript section.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->banner = "<h1>PHP vs JavaScript Cookies</h1>";
+$S->banner = "<h1>PHP vs JavaScript Cookies</h1>";
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 // Get the PHP cookies
 

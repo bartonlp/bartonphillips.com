@@ -6,18 +6,14 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site); // $S gives access to my framework.
 
-$h->banner = "<h1>async-await.php</h1>";
-$h->css =<<<EOF
-<style>
+$S->banner = "<h1>async-await.php</h1>";
+$S->css =<<<EOF
 #div {
   font-size: 1.5rem;
 }
-</style>
 EOF;
 
-$b->script =<<<EOF
-<script>
-  
+$S->b_inlineScript =<<<EOF
 function delayIt(x) {
   return new Promise(res => {
     setTimeout(() => {
@@ -51,10 +47,9 @@ function doDiv(ret) {
   div.appendChild(document.createTextNode(ret));
   div.appendChild(document.createElement('br'));
 };
-</script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

@@ -245,9 +245,9 @@ $S = new $_site->className($_site);
 
 checkUser($S);
 
-$h->title = "Updating Stock Quotes";
+$S->title = "Updating Stock Quotes";
 
-$h->css =<<<EOF
+$S->css =<<<EOF
 /* Use Roboto font from DocRoot/fonts */
 @font-face {
   font-family: "Roboto";
@@ -340,13 +340,13 @@ select {
 }
 EOF;
 
-$h->banner = "<h1>Stock Quotes</h1>";
+$S->banner = "<h1>Stock Quotes</h1>";
 
 // Put the js at the end just befor the closing </body>
 
-$b->script = "<script src='stock-price-update.js'></script>";
+$S->b_script = "<script src='stock-price-update.js'></script>";
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 // Render page with the 'loading' icon. Once the worker get all of the data the
 // stock-price-update.js will rerender the page with all of the data.

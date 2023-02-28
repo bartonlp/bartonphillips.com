@@ -1,16 +1,17 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Show the markdown file
   
 $_site = require_once(getenv("SITELOADNAME"));
 ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
-$h->css =<<<EOF
+$S->css =<<<EOF
 input, select { font-size: 1rem; padding-left: .3rem; margin-bottom: 1rem;}
 input[type='text'] { width: 20rem; }
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 if($_POST || ($get = $_GET['filename'])) {
   if($get) {

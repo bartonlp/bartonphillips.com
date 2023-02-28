@@ -1,9 +1,11 @@
 <?php
+// BLP 2023-02-25 - use new approach
+
 $_site = require_once(getenv("SITELOAD")."/siteload.php");
 $S = new $_site->className($_site);
-$h->title = "Using your &quot;/etc/hosts&quot; file";
-$h->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
-[$top, $footer] = $S->getPageTopBottom($h);
+$S->title = "Using your &quot;/etc/hosts&quot; file";
+$S->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

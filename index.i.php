@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - no $h/$b
 // index.i.php
 // This is the main php include file. It is included in index.php
 // BLP 2022-04-18 - Removed all git related stuff as gitstatus.php stopped working.

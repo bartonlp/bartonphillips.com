@@ -1,6 +1,4 @@
 <?php
-error_log("test.php GET: ". print_r($_GET, true));
-
 if($_GET['name']) {
   echo "<h1>OH BOY</h1>";
 }

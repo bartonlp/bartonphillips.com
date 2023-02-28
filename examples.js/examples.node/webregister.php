@@ -1,11 +1,11 @@
 <?php
+// BLP 2023-02-26 - use new approach
 // Register with the websocket server (server3.php) running under node.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
 
-$b->script = <<<EOF
-<script>
+$S->b_inlineScript = <<<EOF
 'use strict';
   
 let firstTime = true;
@@ -55,12 +55,11 @@ $(window).on("unload", function(e) {
     webSocket.close();
   }
 });
-</script>
 EOF;
 
-$h->banner = "<h1>Websocket Registered</h1>";
+$S->banner = "<h1>Websocket Registered</h1>";
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top   

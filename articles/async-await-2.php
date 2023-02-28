@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // async-await-2.php
 // Demo showing how to use an async function and await.
 // Use my mini framework to make thing easier. Documentation is avaliable at:
@@ -35,7 +36,7 @@ $file = escapeltgt(file_get_contents("async-await-2.php"));
 
 // This is the JavaScript
 
-$h->script = <<<EOF
+$S->h_script = <<<EOF
 <!-- Get the syntaxhightlighter code and the theme.css -->
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
@@ -114,8 +115,7 @@ $(function() {
 </script>
 EOF;
 
-$h->css = <<<EOF
-<style>
+$S->css = <<<EOF
 #fileinfo {
   display: none;
 }
@@ -130,14 +130,13 @@ button {
   padding: .5rem;
   display: table-cell;
 }
-</style>
 EOF;
 
-$h->banner = "<h1>async-await-2</h1>";
+$S->banner = "<h1>async-await-2</h1>";
 
 // Get the top and bottom part of the display.
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

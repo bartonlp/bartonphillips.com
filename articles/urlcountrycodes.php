@@ -1,22 +1,20 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Show the ip and counter tables
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 $self = $S->self;
 
-$h->css = <<<EOF
-  <style>
+$S->css = <<<EOF
 input {
   font-size: 1rem;
   padding: .2rem;
   width: 5rem;
 }
-  </style>
 EOF;
 
-$h->script = <<<EOF
-  <script>
+$S->h_inlineScript = <<<EOF
 jQuery(document).ready(function($) {
   $("input[type='submit']").click(function() {
     var code = $("input[type='text']").val();
@@ -41,11 +39,11 @@ jQuery(document).ready(function($) {
     return false;
   });
 });
-  </script>
 EOF;
 
-$h->banner = "<h1>Country from URL sufix</h1>";
-list($top, $footer) = $S->getPageTopBottom($h);
+$S->banner = "<h1>Country from URL sufix</h1>";
+
+[$top, $footer] = $S->getPageTopBottom();
 
 if($code = $_POST['code']) {
   $n = $S->query("select description from urlcountrycodes where code='$code'");

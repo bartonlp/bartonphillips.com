@@ -1,12 +1,13 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // How to load LinuxMint 17 from iso
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->title = "Load Linux from ISO";
-$h->banner = "<h1 class='center'>How to Load Linux via ISO from your hard drive</h1>";
-$h->css =<<<EOF
-  <style>
+$S->title = "Load Linux from ISO";
+$S->banner = "<h1 class='center'>How to Load Linux via ISO from your hard drive</h1>";
+$S->css =<<<EOF
 #update {
   border: 1px solid black;
   color: black;
@@ -30,10 +31,9 @@ code {
 b {
   color: #4d4d4d;
 }
-  </style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 echo <<<EOF
 $top
 <div id="update">

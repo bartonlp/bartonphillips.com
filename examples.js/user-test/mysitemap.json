@@ -1,4 +1,3 @@
-// Special for the 'test' database
 {
     "siteDomain": "www.bartonphillips.com",
     "siteName": "User-Test",
@@ -7,18 +6,28 @@
     "copyright": "Barton L. Phillips",
     "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com",
     "address": "New Bern, North Carolina 28562",
-    "headFile": "./head.i.php",
-    "bannerFile": "./banner.i.php",
+    "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
+    "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
     "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
-    "masterdb": "barton", // can't do anything with the barton database because user 'test' has no prvilages.
+    "masterdb": "barton", 
     "dbinfo": {
         "host": "localhost",
-        "user": "test", // can't do anything with the barton masterdb because the user is not authorized in any other database
-        "database": "test", // This is the ONLY database and it has only one file 'test'
+        "user": "barton",
+        "database": "barton", 
         "engine": "mysqli"
     },
+    "errorMode": { // only $this. 
+      "development": true, // development automatically sets email to true.
+                         // If development is true then noEmail will be
+                         // set to true unless noEmail is set to false!
+                         // Only false not null or just missing.
+      "noEmail": null,   // Set it to null will not affect the true above which sets it to true also.
+      "noHtml": false,
+      "noOutput": false
+    },
     "count": false,
-    "noTrack": true,
+    "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
+    "trackerImg2": "/images/146624.png", // only $this
     "EMAILADDRESS": "bartonphillips@gmail.com",
     "EMAILRETURN": "bartonphillips@gmail.com",
     "EMAILFROM": "bartonphillips@gmail.com"

@@ -8,7 +8,6 @@
 // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&apikey=demo
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 if($stock = $_POST['stock']) {
@@ -31,9 +30,9 @@ if($stock = $_POST['stock']) {
 
   $iexstats = print_r(json_decode(file_get_contents($str), true), true);
   
-  $h->title = "Raw Data";
-  $h->banner = "<h1>Raw Results From alpha and iex</h1>";
-  $h->css =<<<EOF
+  $S->title = "Raw Data";
+  $S->banner = "<h1>Raw Results From alpha and iex</h1>";
+  $S->css =<<<EOF
 #alpha {
   font-size: .7rem;
   border: 1px solid black;
@@ -50,7 +49,7 @@ if($stock = $_POST['stock']) {
 }
 EOF;
   
-  list($top, $footer) = $S->getPageTopBottom($h);
+  [$top, $footer] = $S->getPageTopBottom();
 
   echo <<<EOF
 $top
@@ -73,10 +72,10 @@ EOF;
   exit();
 }
 
-$h->title = "Raw Data";
-$h->banner = "<h1>Raw Data From alpha and iex</h1>";
+$S->title = "Raw Data";
+$S->banner = "<h1>Raw Data From alpha and iex</h1>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

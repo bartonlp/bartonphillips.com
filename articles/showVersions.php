@@ -1,13 +1,16 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Show Versions
 
 $_site = require_once(getenv("SITELOADNAME"));
-//vardump("site", $_site);
-$S = new SiteClass($_site);
-//$S = new Database($_site);
-$T = new dbTables($S);
 
-//vardump("\$S", $S);
+if(strpos($_SERVER['QUERY_STRING'], "Database") === 0) {
+  $S = new Database($_site);
+} else {
+  $S = new SiteClass($_site);
+}
+
+$T = new dbTables($S);
 
 if($T) {
   $dbTables = $T->getVersion();
@@ -18,23 +21,37 @@ if($T) {
 // has already been loaded the programs just return the version numbers. I really do not need to
 // have the programs return the version as the defines are in effect just by requiring the programs.
 
-/*$trackerVersion = */ require(SITECLASS_DIR . "/tracker.php");
-$trackerVersion = TRACKER_VERSION;
-$beaconVersion = require(SITECLASS_DIR . "/beacon.php");
+$trackerVersion = require(SITECLASS_DIR . "/tracker.php"); // Get tracker version
+$beaconVersion = require(SITECLASS_DIR . "/beacon.php"); // Get beacon
 $helperVersion = HELPER_FUNCTION_VERSION;
 
-$h->title = "Display SiteClass Versions";
-$h->banner = "<h1>$h->title</h1>";
-$h->css = <<<EOF
+$S->title = "Display SiteClass Versions";
+$S->banner = "<h1>$S->title</h1>";
+$S->css = <<<EOF
 td { padding: 5px }
+pre { display: none; background: lightgray; padding: 5px 10px; overflow-x: scroll }
+button { border-radius: 6px; margin-bottom: 20px; background: green; color: white; font-size: var(--blpFoneSize); }
 EOF;
 
-$b->inlineScript = <<<EOF
+$S->b_inlineScript = <<<EOF
   $("#siteclass tbody").append("<tr><td>Trackerjs version</td><td>" + TRACKERJS_VERSION + "</td></tr>");
+  $("button").on("click", function() {
+    if(this.flag) {
+      $("pre").hide();
+      $(this).html("Show \$_site object");
+    } else {
+      $("pre").show();
+      $(this).html("Hide \$_site object");
+    }
+    this.flag = !this.flag;
+  });
 EOF;
 
-if(method_exists($S, "getPageTopBottom")) {
-  [$top, $footer] = $S->getPageTopBottom($h, $b);
+if(method_exists($S, "getPageTopBottom")) { // If we instantiated Database instead this will not exist
+  [$top, $footer] = $S->getPageTopBottom();
+  $siteClassMsg = "\$S = new SiteClass(\$_site)";
+} else {
+  $siteClassMsg = "\$S = new Database(\S_site)";
 }
 
 // This is a little trick. We get the static getVersion for the $class.
@@ -43,16 +60,19 @@ $getVersion = function($class) {
   return $class::getVersion();
 };
 
-//$site = "<pre>" . print_r($_site, true) . "</pre>";
+$site = "<pre>The <b>\$_site</b> object:\n" . escapeltgt(print_r($_site, true)) . "</pre>";
+
+// Normally if we are using Database we would not be printing anything or at leas not much.
+// $top and $footer are null if we are using Database.
 
 echo <<<EOF
 $top
 <hr>
-$site
 <p>This program displays all of the version numbers for the various classes used by the SiteClass framework.</p>
-<p>Instantiate \$S = new SiteClass(\$_site)<br>
+<p>Instantiate $siteClassMsg<br>
 $dbTablesMsg</p>
-
+<button>Show \$_site object</button>
+$site<br>
 <table id="siteclass" border="1">
 <tbody>
 <tr><td>\$S version</td><td>{$S->getVersion()}</td></tr>

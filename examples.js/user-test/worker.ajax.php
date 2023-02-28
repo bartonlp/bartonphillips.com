@@ -10,74 +10,68 @@ CREATE TABLE `test` (
   PRIMARY KEY (`id`)
   ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-This table is in database "test" on bartonlp.com.
+This table is in database "test" on bartonphillips.com.
 The database allows only 'select, update, insert and delete' and the code below maintains a max of 20 entries.
+The standard mysitemap.json has my normal database stuff. We change it here to ues the 'test'
+user and the 'test' database which has the 'test' table.
 */
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
+
+$_site->dbinfo->user = "test"; // use test user
+$_site->dbinfo->database = "test"; // and test database
+
 $S = new Database($_site);
 
-// allow both POST and GET
-// If $_REQUEST['sql'] is '' it will look like zero
-// so we will fail and fall through to GO AWAY.
-// So check to see if $_REQUEST['sql'] is set which
-// it will be and then get $sql once we know that
-// the request has sql set (even if it is '').
+// We are using fetch() in worker.worker.js so we need to get the data from 'php://input'
 
-if(isset($_REQUEST['sql'])) {
-  $sql = $_REQUEST['sql'];
-  
-  if(!$sql) {
-    echo "ERROR: No sql statment<br>";
+$sql = file_get_contents("php://input");
+
+if(empty($sql)) {
+  echo json_encode(["ERROR"=>"No sql statment"]);
+  exit();
+}
+
+// We could be passed something is will not work
+
+try {
+  if(preg_match("/insert/i", $sql)) {
+    // We want to restrict the size of this table so check the TABLE_ROWS
+
+    $S->query("select count(*) from test");
+
+    $cnt = $S->fetchrow('num')[0];
+    $nn = $cnt - 19; // This is the number to delete
+
+    if($cnt > 20) {
+      $n = $S->query("delete from test order by id asc limit $nn"); // leave most resent 20
+      $del = "Deleted $n items";
+    }
+  }
+
+  $n = $S->query($sql);
+
+  if(preg_match("/update|insert|delete/", $sql)) {
+    echo json_encode(["DONE"=>"$del Rows Affected: $n"]);
     exit();
   }
 
-  // We could be passed something is will not work
+  $rows = array();
 
-  try {
-    $S->query($sql);
+  while($row = $S->fetchrow('assoc')) {
+    $rows[] = $row;
+  }
 
-    if(preg_match("/insert/i", $sql)) {
-      // We want to restrict the size of this table so check the TABLE_ROWS
-      
-      $S->query("select TABLE_ROWS from information_schema.TABLES where TABLE_NAME='test'");
-
-      list($cnt) = $S->fetchrow('num');
-
-      $nn = $cnt - 20; // This is the number to delete
-
-      //error_log("worker.ajax.php, cnt: $cnt nn: $nn");
-
-      if($cnt > 20) {
-        $n = $S->query("delete from test order by id asc limit $nn"); // leave most resent 20
-        echo "DONE $n<br>";
-        exit();
-      }
-    }
-    if(preg_match("/update|insert|delete/", $sql)) {
-      echo "DONE<br>";
-      exit();
-    }
-    
-    $rows = array();
-
-    while($row = $S->fetchrow('assoc')) {
-      $rows[] = $row;
-    }
-    
-    if(!count($rows)) {
-      echo "ERROR: NO DATA<br>";
-      exit();
-    }
-    //error_log("worker.ajax.php, rows:" . print_r($rows, true));
-    
-    echo json_encode($rows);
-    exit();
-  } catch(Exception $e) {
-    echo "ERROR: " . $e->getMessage() . "<br>";
+  if(!count($rows)) {
+    echo json_encode(["ERROR"=>"NO DATA"]);
     exit();
   }
+
+  echo json_encode($rows); // encode the data and send it.
+  exit();
+} catch(Exception $e) {
+  echo json_encode(["ERROR"=> $e->getMessage()]);
+  exit();
 }
 
 echo "ERROR: GO AWAY<br>";

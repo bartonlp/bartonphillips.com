@@ -1,14 +1,13 @@
 <?php
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
-$h = new stdClass;
 
 $__FILENAME = __FILE__;
 require_once("addpage.php");
 
-$h->title = "Test for Server</title>";
-$h->banner = "<h1>$h->title</h1>";
-[$top, $footer] = $S->getPageTopBottom($h);
+$S->title = "Test for Server</title>";
+$S->banner = "<h1>$S->title</h1>";
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

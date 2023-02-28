@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // BLP 2018-03-31 -- convert localstorage.htm to a php file.
 
 if($_GET['page'] == 'source') {
@@ -10,25 +11,23 @@ if($_GET['page'] == 'source') {
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->title = "LocalStorage Example";
-$h->desc = "LocalStorage Example. Resize a big image using JavaScript";
-$h->keywords = "LocalStorage, Resize IMAGE with JavaScript";
-$h->script =<<<EOF
+$S->title = "LocalStorage Example";
+$S->desc = "LocalStorage Example. Resize a big image using JavaScript";
+$S->keywords = "LocalStorage, Resize IMAGE with JavaScript";
+$S->h_script =<<<EOF
 <script src="https://bartonphillips.net/js/localstorage.js"></script>
 EOF;
-$h->link =<<<EOF
+$S->link =<<<EOF
 <link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">
 EOF;
-$h->banner = "<h1 class='center'>LocalStorage Example: Resize a big image in JavaScript</h1>";
-$h->css =<<<EOF
-<style>
+$S->banner = "<h1 class='center'>LocalStorage Example: Resize a big image in JavaScript</h1>";
+$S->css =<<<EOF
 .syntaxhighlighter {
   overflow: initial !important;
 }
-</style>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

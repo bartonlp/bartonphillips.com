@@ -5,8 +5,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->script =<<<EOF
-<script>
+$S->h_inlineScript =<<<EOF
 // pure javascript ajax POST
 
 function ajax(url, params, cb) {
@@ -89,11 +88,9 @@ test.then(function(row) {
 }).catch(function(err) {
   console.log("error", err);
 });
-
-</script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

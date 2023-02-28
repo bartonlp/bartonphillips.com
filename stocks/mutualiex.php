@@ -56,8 +56,8 @@ if($_POST['mutual']) {
   exit;
 };
 
-$h->title = "Mutual Funds Prices";
-$h->css =<<<EOF
+$S>title = "Mutual Funds Prices";
+$S->css =<<<EOF
 #mutual {
   border: 1px solid black;
 }
@@ -73,9 +73,9 @@ $h->css =<<<EOF
 }
 EOF;
 
-$h->banner = "<h1>Mutual Funds Info</h1>";
+$S->banner = "<h1>Mutual Funds Info</h1>";
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 $mutual = "";
 $stocks = new stdClass;

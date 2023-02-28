@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // BLP 2021-10-03 -- remove the GET and do it all in POST
 
 $_site = require_once(getenv("SITELOADNAME"));
@@ -34,10 +35,9 @@ function Dot2LongIP($IPaddr) {
   }
 }
 
-$h->title = "get country from ip";
-$h->banner = "<h1>Get Country From IP</h1>";
-$h->css = <<<EOF
-  <style>
+$S->title = "get country from ip";
+$S->banner = "<h1>Get Country From IP</h1>";
+$S->css = <<<EOF
 input {
   font-size: 1rem;
   padding: .2rem;
@@ -69,18 +69,15 @@ span {
   margin-right: auto;
   width: 50px;
 }
-</style>
 EOF;
 
-$b->script =<<<EOF
-<script>
+$S->b_inlineScript =<<<EOF
 $("button").on("click", function() {
-  $("#name").html("<img class='spinner' src='https://bartonphillips.net/images/spinner.svg'>");
+  $("#name").html("<img class='spinner' src='../test_examples/SvgSpinner.svg'>");
 });
-</script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 // BLP 2021-10-03 -- This now does both the ipcountry and the ipinfo.io lookup
 

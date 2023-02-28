@@ -1,9 +1,10 @@
 <?php
+// BLP 2023-02-26 - use new approach
 // BLP 2021-10-31 -- This files uses exampleAjax.php for AJAX.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
-$h->script = <<<EOF
+$S->h_script = <<<EOF
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 <script>
 jQuery(document).ready(function($) {
@@ -26,16 +27,15 @@ jQuery(document).ready(function($) {
 });
 </script>
 EOF;
-$h->css = <<<EOF
-<style>
+$S->css = <<<EOF
 #form {
   border: 1px solid black;
   padding: 5px;
 }
-</style>
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
+
 echo <<<EOF
 $top
 <h1>Example useing a 'form' and a 'button'</h1>

@@ -1,25 +1,27 @@
 <?php
+// BLP 2023-02-26 - use new approach
 // Demonstrates the use of a worker using AJAX calls.
 // This is the main program for worker.main.php it uses
 // worker.worker.js and worker.ajax.php
 // See worker.ajax.php for a description of the 'test' table in the database 'test'.
-
 // Load info from mysitemap.json for use by my framework SiteClass.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
 // It has full documentation at that site.
+// The worker.ajax.php uses the 'test' user and database.
 
 $_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site); // $S gives access to my framework.
+$S = new SiteClass($_site); // $S gives access to my framework.
 
 // escapeltgt() is a little utility that change < and > to &lt; &gt;
+
 $main = escapeltgt(file_get_contents("worker.main.php"));
 $worker = escapeltgt(file_get_contents("worker.worker.js"));
 $ajax = escapeltgt(file_get_contents("worker.ajax.php"));
 
-$h->title = "Workers";
-$h->banner = "<h1>Worker Demo</h1>";
-$h->extra =<<<EOF
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+$S->title = "Workers";
+$S->banner = "<h1>Worker Demo</h1>";
+$S->extra =<<<EOF
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>-->
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 
@@ -28,10 +30,15 @@ jQuery(document).ready(function($) {
   var w1 = new Worker("worker.worker.js");
 
   w1.addEventListener("message", function(evt) {
-    var string = String.fromCharCode.apply(null, evt.data)
-    //var string = new TextDecoder("utf-8").decode(evt.data);
-    console.log("Main string: ", string);
-    $("pre").html(string);
+    console.log("data: ", evt.data);
+    if(Object.keys(evt.data)[0] == "ERROR" || Object.keys(evt.data)[0] == "DONE") {
+      $("pre").html(Object.values(evt.data)[0]);
+    } else {
+      var string = String.fromCharCode.apply(null, evt.data)
+      //var string = new TextDecoder("utf-8").decode(evt.data);
+      console.log("Main string: ", string);
+      $("pre").html(string);
+    }
   });
 
   // now transfer array buffer
@@ -60,8 +67,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 EOF;
-$h->css =<<<EOF
-<style>
+$S->css =<<<EOF
 input {
   width: 100%;
   font-size: 1rem;
@@ -73,12 +79,12 @@ button {
 #files {
   display: none;
 }
-</style>
 EOF;
 
 // Use my framework to get the $top of the page which includes the <head> section
 // the <body> tag and my banner which is in <header>.
-list($top, $footer) = $S->getPageTopBottom($h);
+
+[$top, $footer] = $S->getPageTopBottom();
 
 // Render the page
 

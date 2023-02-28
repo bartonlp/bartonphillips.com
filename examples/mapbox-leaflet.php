@@ -6,21 +6,19 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->link =<<<EOF
+$S->link =<<<EOF
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
    crossorigin=""/>
 EOF;
 
-$h->css =<<<EOF
-  <style>
+$S->css =<<<EOF
 #mapid {
   height: 700px;
 }
-  </style>
 EOF;
 
-$b->script =<<<EOF
+$S->b_script =<<<EOF
 <!-- Make sure you put this AFTER Leaflet's CSS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -55,10 +53,10 @@ jQuery(document).ready(function($) {
 </script>
 EOF;
 
-$h->title = "Barton&Bonnie's Home";
-$h->banner = "<h1>$h->title</h1>";
+$S->title = "Barton&Bonnie's Home";
+$S->banner = "<h1>$S->title</h1>";
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

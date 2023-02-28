@@ -50,7 +50,7 @@ EOF;
 $newwidth = $imgwidth;
 $newheight = $imgheight;
 
-list($width, $height) = getimagesize($filename);
+[$width, $height] = getimagesize($filename);
 
 if(!empty($imgpercent)) {
   $imgpercent /= 100;

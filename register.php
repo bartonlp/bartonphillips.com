@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Register yours name and email address
 // This is for bartonphillips.com/index.php
 // BLP 2022-07-18 - There are now three places: bartonphillips.net/js/geo.js and the other two
@@ -82,9 +83,8 @@ if($_POST['page'] == 'finger') {
 
 $S = new $_site->className($_site);
 
-$h->title = "Register";
-$h->css = <<<EOF
-  <style>
+$S->title = "Register";
+$S->css = <<<EOF
 input {
   font-size: 1rem;
   padding-left: .5rem;
@@ -93,15 +93,14 @@ input[type="submit"] {
   border-radius: .5rem;
   background-color: green;
 }
-  </style>
 EOF;
 
 // The javascript to get the finger etc.
 
-$b->script = "<script src='/register.js'></script>";
-$b->inlineScript = "var blp ='$BLP';";
+$S->b_script = "<script src='/register.js'></script>";
+$S->b_inlineScript = "var blp ='$BLP';";
 
-list($top, $footer) = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 // Render Page
 

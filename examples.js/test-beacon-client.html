@@ -8,21 +8,22 @@ and Firefox 31+ -->
 <body>
 <h1>Test Beacon</h1>
 <p>When you leave this page a beacon should be sent to test-beacon.php.</p>
-<a href="https://www.bartonphillips.com">HOME</a>
+<button onclick="logData()">Click Me</button>
+<a href="https://www.bartonphillips.com") >HOME</a>
 <script>
+  window.addEventListener('unload', logData, false);
+
   var d = new Date;
-  (function() {
+ 
+  function logData() {
     if(navigator.sendBeacon) {
-      function logData() {
-        navigator.sendBeacon(
-                             'https://www.bartonphillips.com/bartonlp/examples.js/test-beacon-server.php',
-                             'Beacon: '+d+ ' from test-beacon-client.html');
-      }
-      window.addEventListener('pagehide', logData, false);
+      navigator.sendBeacon(
+                           'https://www.bartonphillips.com/examples.js/test-beacon-server.php',
+                           'Beacon: '+d+ ' from test-beacon-client.html');
     } else {
       alert("Beacon NOT SUPPORTED. On Chrome 37 enable 'expermental-web-platform-features'");
     }
-  })();
+  }
 </script>
 </body>
 </html>

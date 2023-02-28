@@ -1,9 +1,12 @@
 <?php
+// BLP 2023-02-26 - use new approach
 // BLP 2021-10-31 -- This files uses example1.php for AJAX.
+
+if(!empty($_POST)) echo "HERE: " . print_r($_POST, true);
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
-$h->script = <<<EOF
+$S->h_script = <<<EOF
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 <script>
 jQuery(document).ready(function($) {
@@ -11,7 +14,7 @@ jQuery(document).ready(function($) {
     let json = { test1: "test one", test2: "test two" };
   
     $.ajax({
-      url: 'example1.php',
+      url: 'exampleAjax.php',
       data: {page: 'beacon', test: 'This is beacon speaking!', json: json},
       type: 'post',
       success: function(data) {
@@ -26,27 +29,28 @@ jQuery(document).ready(function($) {
 });
 </script>
 EOF;
-$h->css = <<<EOF
-<style>
+$S->css = <<<EOF
 #form {
   border: 1px solid black;
   padding: 5px;
 }
-</style>
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 echo <<<EOF
 $top
 <h1>Example useing a 'form' and a 'button'</h1>
 <p>This file uses a 'form' and a JS 'button'.</p>
 
 <div id="form">
-<p>The form below will do a regular <form method="post" ...></p>
-<form method="post" action="example1.php">
+<p>The form below will do a regular &lt;form method="post" ...></p>
+
+<form action="exampleAjax.php" method="post">
 <h2>Form</h2>
 Text to forward: <input type="text" name="test"><br>
 siteName: <input type="text" name="siteName"><br>
+json: <input type="hidden" name="json" value="{\"ONE\":\"A test\",\"TWO\":\"Somthing\"}">
+test: <input type="hidden" name="test" value="This is a test">
 <input id='submit' type="submit">
 </form>
 </div>

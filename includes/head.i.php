@@ -7,19 +7,8 @@
    $h->keywords
    $h->favicon
    $h->defaultCss
-   $h->preheadcomment
-   $h->lang
-   $h->htmlextra
-   $h->headFile
-   $h->bannerFile
-   $h->footerFile
    $h->copyright (date added in constructor)
    $h->author
-   $h->nojquery
-   $h->noTrack
-   $h->nodb
-   $h->bodytag
-   $h->banner
    $h->charset
    $h->viewport
    $h->defaultCss // if this is true then NO CSS otherwise if null then default blp.css, else vaue of defaultCss.

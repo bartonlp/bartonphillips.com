@@ -4,9 +4,9 @@ $S = new SiteClass($_site);
 $__FILENAME = __FILE__;
 require_once("addpage.php");
 
-$h->title = "test";
+$S->title = "test";
 
-[$top, $footer] = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

@@ -5,6 +5,3 @@
 // The beacon logic is in chrome 39+ only.
 
 $request_body = file_get_contents('php://input');
-
-file_put_contents("debugblp.txt", "got beacon:\n$request_body\n",
-                  FILE_APPEND);

@@ -1,11 +1,11 @@
 <?php
+// BLP 2023-02-26 - use new approach
 // Register with the websocket server (server3.php) running under node.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
 
-$b->script =<<<EOF
-<script>
+$S->b_inlineScript =<<<EOF
 'use strict';
 
 var webSocket;
@@ -103,12 +103,11 @@ $(document).ready( function() {
     }
   });
 });
-</script>
 EOF;
 
-$h->banner = "<h1>Test of Websockets</h1>";
+$S->banner = "<h1>Test of Websockets</h1>";
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

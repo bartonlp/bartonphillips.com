@@ -15,8 +15,7 @@ if($_POST['page'] == 'form') {
   exit();
 }
 
-$h->script =<<<EOF
-  <script>
+$S->h_inlineScript =<<<EOF
 let ret = fetch("testpost.php", {
   body: "test=MY DATA&something=more data",
   method: "POST",
@@ -48,7 +47,6 @@ ret.then(data => {console.log("data", data); $("#test1").html(data['type'] + ", 
 ret2.then(data => {console.log("data2", data); $("#test2").html(data['type'] + ", " + data['test'] +
 ", " + data['something']);} );
 ret3.then(data => {console.log("data3", data); $("#test3").html("Local: " + data['name'] + ", " +  data['value']);} );
-  </script>
 EOF;
 
 $options = ['http' => [
@@ -67,10 +65,10 @@ $ret4 = file_get_contents("https://www.bartonphillips.com/examples/testfetch.php
 
 $ret4 = json_decode($ret4);
 
-$h->title = "js-fetch";
-$h->banner = "<h1>$h->title Test</h1>";
+$S->title = "js-fetch";
+$S->banner = "<h1>$S->title Test</h1>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

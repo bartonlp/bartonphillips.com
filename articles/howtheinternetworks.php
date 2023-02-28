@@ -1,21 +1,21 @@
 <?php
+// BLP 2023-02-25 - use new approach
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->title = "How the Internet Works";
-$h->banner = "<h1 class='center'>How the Internet Works</h1><hr>";
-$h->css = <<<EOF
-<style>
+$S->title = "How the Internet Works";
+$S->banner = "<h1 class='center'>How the Internet Works</h1><hr>";
+$S->css = <<<EOF
 pre {
   border-left: 5px solid #ccc;
   margin-left: 4px;
   padding-left: 10px;
 }
-</style>
 EOF;
-$h->meta = "<meta name='Editor' content='Bonnie Burch'>";
+$S->meta = "<meta name='Editor' content='Bonnie Burch'>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

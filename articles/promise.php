@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Test various AJAX and Promise calls.
 // This uses ../examples/uptime.php and
 // ..examples/query.ajax.php for Ajax calls.
@@ -6,6 +7,7 @@
 // Load info from mysitemap.json for use by my framework SiteClass.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
 // It has full documentation at that site.
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site); // $S gives access to my framework.
 
@@ -34,7 +36,7 @@ $query = escapeltgt(file_get_contents("../examples/query.ajax.php"));
 
 // Set up the scripts for my framework
 
-$h->extra = <<<EOF
+$S->extra = <<<EOF
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 
@@ -191,17 +193,15 @@ req.send();
 EOF;
 
 // Setup the css for my framework
-$h->css =<<<EOF
-  <style>
+$S->css =<<<EOF
 #promise {
   display: none;
 }
-  </style>
 EOF;
 
 // Get the $top and $footer using my framework
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

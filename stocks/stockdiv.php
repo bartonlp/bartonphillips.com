@@ -4,7 +4,6 @@
 // BLP 2021-11-04 -- get ipx token from secure location.
 
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 $S = new $_site->className($_site);
 
 function checkUser($S) {
@@ -92,11 +91,10 @@ foreach($ret as $k=>$v) {
              "<td>$divyield</td><td>$divxdiv</td><td>$ern</tr>";
 }
 
-$h->title = "Stock Dividends";
-$h->banner = "<h1>Stock Dividends</h1>";
+$S->title = "Stock Dividends";
+$S->banner = "<h1>Stock Dividends</h1>";
 
-$h->css =<<<EOF
-  <style>
+$S->css =<<<EOF
 #stocktable {
   width: 100%;
   background: lightblue;
@@ -146,11 +144,9 @@ $h->css =<<<EOF
   cursor: pointer;
   background-color: lightblue;
 }
-  </style>
 EOF;
 
-$h->script =<<<EOF
-  <script>
+$S->h_inlineScript =<<<EOF
 jQuery(document).ready(function($) {
   // Remove message. If it isn't there no problem.
 
@@ -165,10 +161,9 @@ jQuery(document).ready(function($) {
     return false;
   });
 });
-  </script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 $total = number_format($total, 2);
 $totalReinvested = "<span style='color: red'>" . number_format($totalReinvested, 2) . "</span>";

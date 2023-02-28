@@ -1,8 +1,10 @@
 <?php
+// BLP 2023-02-25 - use new approach
+
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->css =<<<EOF
+$S->css =<<<EOF
 #images table, #images img {
   width: 90%;
 }
@@ -32,11 +34,11 @@ blockquote {
 }  
 EOF;
 
-$h->title = "History of the Internet";
-$h->banner = "<h1 class='center'>History of the Internet</h1><hr>";
-$h->meta = "<meta name='Editor' content='Bonnie Burch'>";
+$S->title = "History of the Internet";
+$S->banner = "<h1 class='center'>History of the Internet</h1><hr>";
+$S->meta = "<meta name='Editor' content='Bonnie Burch'>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 $article =<<<EOF
 <article>

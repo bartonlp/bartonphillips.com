@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Test various 'fetch' instead of AJAX calls.
 // Load info from mysitemap.json for use by my framework SiteClass.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
@@ -34,7 +35,7 @@ $query = escapeltgt(file_get_contents("../examples/query.ajax.php"));
 
 // Set up the scripts for my framework
 
-$h->extra = <<<EOF
+$S->extra = <<<EOF
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 
@@ -170,19 +171,17 @@ EOF;
 
 // Setup the css for my framework
 
-$h->css =<<<EOF
-  <style>
+$S->css =<<<EOF
 #promise {
   display: none;
 }
-  </style>
 EOF;
 
-$h->banner = "<h1>Fetch/Promise</h1>";
+$S->banner = "<h1>Fetch/Promise</h1>";
 
 // Get the $top and $footer using my framework
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

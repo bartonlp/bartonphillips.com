@@ -1,12 +1,12 @@
 <?php
+// BLP 2023-02-25 - use new approach
+
 $_site = require_once(getenv("SITELOADNAME"));
-ErrorClass::setDevelopment(true);
 //$_site->noTrack = true;
 $S = new $_site->className($_site);
 
-$h->banner = "<h1>How to Use CSS Variables</h1>";
-$h->css =<<<EOF
-<style>
+$S->banner = "<h1>How to Use CSS Variables</h1>";
+$S->css =<<<EOF
 body {
   padding: 1rem;
   font-family: sans-serif;
@@ -41,23 +41,20 @@ h2 {
   left: 0px;
   background: lightblue;
 }
-</style>
 EOF;
 
-$b->script =<<<EOF
-<script>
+$S->b_inlineScript =<<<EOF
   $(".my-element").on("click", function() {
     $(this).css('--testit', '"hello world"');
   });
-</script>
 EOF;
 
-$h->script =<<<EOF
+$S->h_script =<<<EOF
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h,$b);
+[$top, $footer] = $S->getPageTopBottom();
 
 $my_element1 =<<<EOF
 <style>

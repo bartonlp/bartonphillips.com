@@ -9,8 +9,6 @@ AddType text/html .shtml .php
 AddOutputFilter INCLUDES .shtml
 XBitHack on
 
-Header set Access-Control-Allow-Origin "*"
-
 SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
 SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
 

@@ -102,9 +102,8 @@ while(list($ip, $agent, $filename, $lasttime, $isJava, $diff) = $S->fetchrow($r,
 
 $tbl .= "</table>";
 
-$h->banner = "<h1>Show Non Bots from 'tracker'</h1>";
-$h->css =<<<EOF
-  <style>
+$S->banner = "<h1>Show Non Bots from 'tracker'</h1>";
+$S->css =<<<EOF
 td {
   padding: .2rem;
 }
@@ -121,11 +120,9 @@ td:first-child {
   padding: .2rem;
   display: none;
 }
-  </style>
 EOF;
 
-$h->script =<<<EOF
-  <script>
+$S->h_inlineScript =<<<EOF
 jQuery(document).ready(function($) {
   var ipspan = $(".ip");
   ipspan.each(function(i) {
@@ -185,10 +182,9 @@ jQuery(document).ready(function($) {
     mouseflag = !mouseflag;
   });
 });
-  </script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

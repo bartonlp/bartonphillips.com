@@ -2,8 +2,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$h->script =<<<EOF
-  <script>
+$S->h_inlineScript =<<<EOF
 jQuery(document).ready(function($) {
   var image = new Image;
   image.crossOrigin = "Anonymous";
@@ -23,10 +22,9 @@ jQuery(document).ready(function($) {
     $("#top").append(myimg);
   });
 });
-  </script>
 EOF;
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

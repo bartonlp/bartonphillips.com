@@ -1,23 +1,13 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // How to write HTML
-// This can be used in two ways:
-// First as a standalone page. If $S is null then get $_site and create the page.
-// Second in a page that already has a $S. This is the case in www.granbyrotary.org/
-// where the file hoowtowritehtml.php instantiates $S and then loads this file via
-// file_get_contents().
-// ***************** READ THIS ****************************************
-// Include this in a page that has the siteclass already instantiated.
-// Also NOTE!!! WE NEED jQuery!
-// IF the site that is including this file has NOT included jQuery this will NOT WORK!
 
-if(!$S) {
-  //No site class
-  $_site = require_once(getenv("SITELOADNAME"));
-  $S = new $_site->className($_site);
-  $h->title = "How to write html";
-  $h->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
-  $h->extra = <<<EOF
-  <style>
+$_site = require_once(getenv("SITELOADNAME"));
+$S = new $_site->className($_site);
+
+$S->title = "How to write html";
+$S->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
+$S->css = <<<EOF
 textarea, input {
   font-size: 1rem;
 }
@@ -33,43 +23,82 @@ code {
   background-color: hsla(360, 25%, 5%, 0.1);
   padding: .1rem .3rem;
 }
-  </style>
 EOF;
 
-  list($top, $footer) = $S->getPageTopBottom($h);
-  $dofooter = true;
+$S->b_inlineScript =<<<EOF
+jQuery(document).ready(function($) {
+  var auto = 1, text;
 
-  echo <<<EOF
-$top
-EOF;
-} else {
-  // !!! This file is 'included' by another site. That site MUST already have loaded jQuery!!!
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  $("#inputs").append("<input id='clearit' type='button' value='Clear Text Area' style='color: red; font-size: 20pt;'/>");
+
+  $("#clearit").click(function() {
+    $("#inputtextarea").val("");
+    $("#preview").empty();
+  });
   
-  echo <<<EOF
-  <style>
-textarea, input {
-  font-size: 1rem;
-}
-.example {
-  border: 1px solid red;
-  padding: 5px;
-  background-color: yellow;
-  color: black;
-}
-code {
-  font-size: .8rem;
-  color: gray;
-  background-color: hsla(360, 25%, 5%, 0.1);
-  padding: .1rem .3rem;
-}
-  </style>
-EOF;
-}
+  $("#preview").html($("#previewform textarea").val());
 
-// Render the rest of the page.
+  $("#autopreview").click(function() {
+    if(auto) {
+      $(this).val("Start Auto Preview").css({color: 'green', 'font-size': '20pt'});
+      $("#render").show();
+      auto = 0;
+    } else {
+      $(this).val("Stop Auto Preview").css({color: 'red', 'font-size': '20pt'});
+      $("#render").hide();
+      $("#render").click();
+      auto = 1;
+    }
+  });
+
+  $("#render").click(function() {
+    // Don't allow any <script> tags!
+    text = $("#previewform textarea").val();
+    text = text.replace(/<\/?script.*?>/ig, "&lt;script NOT ALLOWED&gt;");
+    $("#preview").html(text);
+  });
+
+  $("#previewform textarea").keyup(function() {
+    if(!auto) return false;
+
+    // Don't allow any <script> tags!
+    text = $("#previewform textarea").val();
+    text = text.replace(/<\/?script.*?>/ig, "&lt;script NOT ALLOWED&gt;");
+    $("#preview").html(text);
+  });
+
+  // Show Source Code
+  $("#showsource").click(function() {
+    if(this.flag) {
+      $(this).html("Show source code of this file");
+      $("#showresults").hide();
+    } else {
+      $(this).html("Hide source code");
+      if($("#showresults").html()) {
+         $("#showresults").show();
+      } else {
+        var html = $("html").html();
+        html = html.replace(/</g, '&lt;');
+        html = html.replace(/>/g, '&gt;');
+        html = html.replace(/\\n/g, '<br>');
+        html = "&lt;!DOCTYPE html&gt;<br>&lt;html&gt<br>" + html + "<br>&lt;/html&gt;<br>";
+        $("#showresults").html(html).css({border: '1px solid black',
+          padding: '.5rem',
+          overflow: 'auto',
+          height: '20rem',
+          backgroundColor: 'hsla(1, 65%, 85%, .5)'});
+      }
+    }
+    this.flag = !this.flag;
+    return false;
+  });
+});
+EOF;
+
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
+$top
 <div id="top-of-page2">This is the top of Page</div>
 <a name="top-of-page"></a>
 <div id="main" style="background-color: white; padding: 5px;">
@@ -421,79 +450,6 @@ breaks that will be removed as well as these extra spaces   .</p>
   </ul>
 </div>
 <hr>
-
-<script>
-jQuery(document).ready(function($) {
-  var auto = 1, text;
-
-  $("#inputs").append("<input id='clearit' type='button' value='Clear Text Area' style='color: red; font-size: 20pt;'/>");
-
-  $("#clearit").click(function() {
-    $("#inputtextarea").val("");
-    $("#preview").empty();
-  });
-  
-  $("#preview").html($("#previewform textarea").val());
-
-  $("#autopreview").click(function() {
-    if(auto) {
-      $(this).val("Start Auto Preview").css({color: 'green', 'font-size': '20pt'});
-      $("#render").show();
-      auto = 0;
-    } else {
-      $(this).val("Stop Auto Preview").css({color: 'red', 'font-size': '20pt'});
-      $("#render").hide();
-      $("#render").click();
-      auto = 1;
-    }
-  });
-
-  $("#render").click(function() {
-    // Don't allow any <script> tags!
-    text = $("#previewform textarea").val();
-    text = text.replace(/<\/?script.*?>/ig, "&lt;script NOT ALLOWED&gt;");
-    $("#preview").html(text);
-  });
-
-  $("#previewform textarea").keyup(function() {
-    if(!auto) return false;
-
-    // Don't allow any <script> tags!
-    text = $("#previewform textarea").val();
-    text = text.replace(/<\/?script.*?>/ig, "&lt;script NOT ALLOWED&gt;");
-    $("#preview").html(text);
-  });
-
-  // Show Source Code
-  $("#showsource").click(function() {
-    if(this.flag) {
-      $(this).html("Show source code of this file");
-      $("#showresults").hide();
-    } else {
-      $(this).html("Hide source code");
-      if($("#showresults").html()) {
-         $("#showresults").show();
-      } else {
-        var html = $("html").html();
-        html = html.replace(/</g, '&lt;');
-        html = html.replace(/>/g, '&gt;');
-        html = html.replace(/\\n/g, '<br>');
-        html = "&lt;!DOCTYPE html&gt;<br>&lt;html&gt<br>" + html + "<br>&lt;/html&gt;<br>";
-        $("#showresults").html(html).css({border: '1px solid black',
-          padding: '.5rem',
-          overflow: 'auto',
-          height: '20rem',
-          backgroundColor: 'hsla(1, 65%, 85%, .5)'});
-      }
-    }
-    this.flag = !this.flag;
-    return false;
-  });
-});
-</script>
+$footer;
 EOF;
 
-if($dofooter) {
-  // This is for a standalone page not included in another page.
-  echo $footer;
-}

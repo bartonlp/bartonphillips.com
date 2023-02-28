@@ -1,4 +1,5 @@
 <?php
+// BLP 2023-02-25 - use new approach
 // Main page for bartonphillips.com
 // BLP 2022-07-20 - add maps.js to do locstr.
 // BLP 2022-04-18 - Removed gitstatus.php 
@@ -8,16 +9,16 @@ $S = new $_site->className($_site);
 
 require_once("./index.i.php"); // Get the majority of the php
 
-$b->msg = "PhpVersion: " . PHP_VERSION;
-$b->msg1 = "<br>SiteClass Version: " . SITE_CLASS_VERSION;
+$S->msg = "PhpVersion: " . PHP_VERSION;
+$S->msg1 = "<br>SiteClass Version: " . SITE_CLASS_VERSION;
 
-$h->title = "Barton Phillips";
-$h->desc = "Interesting Things, About the Internet, Tips and Tutorials";
-$h->link = <<<EOF
+$S->title = "Barton Phillips";
+$S->desc = "Interesting Things, About the Internet, Tips and Tutorials";
+$S->link = <<<EOF
 <link rel='stylesheet' href='/index.css'>
 EOF;
 
-$b->script = <<<EOF
+$S->b_script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
   <!-- Add fingers here before index.js for use by geo.js and maps.js -->
   <script>var fingers = `$fingers`;</script> 
@@ -26,7 +27,7 @@ $b->script = <<<EOF
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&callback=initMap&v=weekly" async></script>
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 // ***************
 // Render the page
