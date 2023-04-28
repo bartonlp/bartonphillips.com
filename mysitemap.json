@@ -1,16 +1,21 @@
 /*
  * SPECIAL json for use by siteload.php. Normal json will not allow
  * comments.
+ * Note that the entries marked 'only $this' could be changed after
+ * SiteClass or Database class are instantiated but it would have
+ * little to to affect. Some items make sense to be placed into the
+ * class properties because they will be used in the 'getPage...()'
+ * functions which are methods of the class.
  */
 {
     "siteDomain": "bartonphillips.com", // only $this
     "siteName": "Bartonphillips", // only $this
-    "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $h
+    "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $S
     "path": "/var/www/bartonphillips.com", // only $this
     "className": "SiteClass", // only $this. Not all programs use this, some instantiate SiteClass directly
-    "copyright": "Barton L. Phillips", // also via $h
-    "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com", // also via $h
-    "address": "New Bern, North Carolina", // This goes in the footer and can be set via $b->address also
+    "copyright": "Barton L. Phillips", // also via $S
+    "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com", // also via $S
+    "address": "New Bern, North Carolina", // This goes in the footer and can be set via $S->address also
     "favicon": "https://bartonphillips.net/images/favicon.ico",
     "canonical": "https://www.bartonphillips.com",
     // "defaultCss": true, // If this is set to true then NO default
@@ -22,8 +27,13 @@
       "database": "bartonphillips",
       // "port": "", // if we need to change the port from the default.
       // "socket": "", // as above.
-      "engine": "mysqli" 
+      "engine": "mysqli" // Currently the only engine.
     },
+    /* NOTE the errorMode entries are all controlled by statics so they can be set or unset at any time.
+     * They are all available via the ErrorClass.
+     * ErrorClass::set{item name capitalized}() or
+     * ErrorClass::get{item name capitalized}()
+     */ 
     "errorMode": { // only $this. 
       "development": true, // development automatically sets email to true.
                          // If development is true then noEmail will be
@@ -40,8 +50,8 @@
     "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
     "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
     "count": true, // only $this
-    "ctrmsg": "Counter Reset: Feb. 4, 2017", // also via $b. The counter reset message.
-    // The following can also be set via $h which has presidence
+    "ctrmsg": "Counter Reset: Feb. 4, 2017", // also via $S for footer. The counter reset message.
+    // The following can also be set via $S which has presidence
     //
     // "nodb": true, // if true then we do not load Database
     // "noTrack": true, // if true we do not load tracker.js or tracker.php
@@ -50,7 +60,7 @@
     // "lang": "en",
     // "htmlextra": "something extra",
     // "doctype", "<!DOCTYPE html>",
-    // "defaultCss": false, // also via $h
+    // "defaultCss": false, // also via $S
     // "defaultImage": "This is the image that is used by tracker
     // instead of https://bartonphillips.net/images/plank.png
     // "imageLocation": "This is the location of images instead of the
@@ -59,7 +69,7 @@
     // "desc": "some description",
     // "keywords": "bunch of keywords",
     //
-    // The following can also be set via $b which has presidence
+    // The following can also be set via $S for the footer 
     //
     // "msg": "some message", 
     // "msg2": "some message",
@@ -90,7 +100,7 @@
     //
     "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
     "trackerImg2": "/images/146624.png", // only $this
-    "EMAILADDRESS": "bartonphillips@gmail.com", // or $b->emailAddress
+    "EMAILADDRESS": "bartonphillips@gmail.com", // or $S->emailAddress
     "EMAILRETURN": "bartonphillips@gmail.com", // only $this
     "EMAILFROM": "webmaster@bartonphillips.com" // only $this
 }

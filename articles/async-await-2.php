@@ -84,7 +84,7 @@ $(function() {
 
   // call 'getSql' with three sql statements
 
-  getSql(["select 45", "select curtime() as data", "select * from barton.tracker limit 3"])
+  getSql(["select 4*5", "select curtime() as data", "select * from barton.tracker limit 3"])
   .then((data) => Promise.all(data))  // What we get is an array of promises
   .then(data => {
     // Display each in the div
@@ -148,7 +148,8 @@ $file
 </pre>
 </div>
 <p>This is the results from three <i>sql</i> calls via <i>fetch</i> in an <i>async function</i>
-with <i>await</i>. The three <i>sql</i> statements are returned in an array. As a result
+with <i>await</i> (select 4*4; select currentime() as date; select * from barton.tracker limit 2).
+The three <i>sql</i> statements are returned in an array. As a result
 the first <i>then</i> needs to do a <i>Promise.all(data)</i> and send it to the second <i>then</i>.
 You can review the code by clicking on the button above.</p>
 <div id="sql"></div>

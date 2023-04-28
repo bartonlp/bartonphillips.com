@@ -29,6 +29,15 @@ EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
 
+// Check if we have a static ip.
+
+if($_SERVER['REMOTE_ADDR'] == '195.252.232.86') {
+  $staticIp = <<<EOF
+<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
+<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>
+EOF;
+}
+                 
 // ***************
 // Render the page
 // BLP 2021-09-22 -- $hereMsg is set in index.i.php along with $locstr, $adminstuff and $date
@@ -75,8 +84,9 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
-<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>
+$staticIp
+<!--<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
+<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>-->
 </div>
 </section>
 

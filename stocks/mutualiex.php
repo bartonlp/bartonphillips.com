@@ -56,7 +56,7 @@ if($_POST['mutual']) {
   exit;
 };
 
-$S>title = "Mutual Funds Prices";
+$S->title = "Mutual Funds Prices";
 $S->css =<<<EOF
 #mutual {
   border: 1px solid black;

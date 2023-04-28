@@ -1,0 +1,1283 @@
+articles/async-await-2.php:// BLP 2023-02-25 - use new approach
+articles/async-await-2.php:// async-await-2.php
+articles/async-await-2.php:// https://github.com/bartonlp/site-class
+articles/async-await-2.php:$S = new $_site->className($_site); // $S gives access to my framework.
+articles/async-await-2.php:  $S->query($sql);
+articles/async-await-2.php:  while($row = $S->fetchrow('assoc')) {
+articles/async-await-2.php:$file = escapeltgt(file_get_contents("async-await-2.php"));
+articles/async-await-2.php:$S->h_script = <<<EOF
+articles/async-await-2.php:<!-- Get the syntaxhightlighter code and the theme.css -->
+articles/async-await-2.php:        'content-type': 'application/x-www-form-urlencoded'
+articles/async-await-2.php:    let url = 'async-await-2.php';
+articles/async-await-2.php:$S->css = <<<EOF
+articles/async-await-2.php:  font-size: 1rem;
+articles/async-await-2.php:  border-radius: .2rem;
+articles/async-await-2.php:  margin-bottom: 20px;
+articles/async-await-2.php:  display: table-cell;
+articles/async-await-2.php:$S->banner = "<h1>async-await-2</h1>";
+articles/async-await-2.php:[$top, $footer] = $S->getPageTopBottom();
+articles/async-await-2.php:<p><b>async-await-2.php</b></p>
+articles/base64.php:// BLP 2023-02-25 - use new approach
+articles/base64.php:$S = new $_site->className($_site);
+articles/base64.php:    echo "<h1 style='text-align: center'>" . escapeltgt($result). "</h1>";
+articles/base64.php:    echo "<h1 style='text-align: center'>$result</h1>\n";
+articles/base64.php:$S->css =<<<EOF
+articles/base64.php:  font-size: .8rem;
+articles/base64.php:  background-color: lightgray;
+articles/base64.php:[$top, $footer] = $S->getPageTopBottom();
+articles/buildawebsite.php:// BLP 2023-02-25 - use new approach
+articles/buildawebsite.php:$S = new $_site->className($_site); // takes an array if you want to change defaults
+articles/buildawebsite.php:$S->title = "So You Want to Build a Website";
+articles/buildawebsite.php:$S->banner = "<h1 class='center'>So You Want to Build a Website</h1><hr>";
+articles/buildawebsite.php:$S->h_script = <<<EOF
+articles/buildawebsite.php:<!-- From: http://updates.html5rocks.com/2011/08/Saving-generated-files-on-the-client-side
+articles/buildawebsite.php:https://github.com/eligrey/FileSaver.js -->
+articles/buildawebsite.php:    var blob = new Blob([txt], {type: "text/plain;charset=utf-8"});
+articles/buildawebsite.php:      $("#submit-results").html("<h3 style='color: green'>Submit OK</h3>");
+articles/buildawebsite.php:      $("#submit-results").html("<h3 style='color: red'>Submit Railed</h3>");
+articles/buildawebsite.php:$S->css = <<<EOF
+articles/buildawebsite.php:  font-size: 1rem;
+articles/buildawebsite.php:  font-size: 1rem;
+articles/buildawebsite.php:  border-radius: .3rem;
+articles/buildawebsite.php:  padding-left: 20px;
+articles/buildawebsite.php:#tbl td:first-child {
+articles/buildawebsite.php:  border-left: 5px solid #ccc;
+articles/buildawebsite.php:$S->meta = "<meta name='Editor' content='Bonnie Burch'>";
+articles/buildawebsite.php:[$top, $footer] = $S->getPageTopBottom();
+articles/buildawebsite.php:  &lt;meta charset='utf-8'/&gt;
+articles/buildawebsite.php:  &lt;meta charset='utf-8'&gt;
+articles/buildawebsite.php:<div id="submit-results"></div>
+articles/buildawebsite.php:  finger-pointing. I have had very good results with the following ISPs:</p>
+articles/buildawebsite.php:    www.allnaturalcleaningcompany.com and www.newbern-nc.info at DigitalOcean.
+articles/buildawebsite.php:    very little hand-holding. The hosting costs between $5 and $10/month.<br>
+articles/buildawebsite.php:  account by simply entering &quot;ftp://your-domain-name.extension&quot;. After a second there will
+articles/buildawebsite.php:<a href="http://en.wikipedia.org/wiki/JavaScript">Javascript</a> and probably some server back-end
+articles/buildawebsite.php:you want -- the sky is the limit. Good luck and have fun.</p>
+articles/cssvariables.php:// BLP 2023-02-25 - use new approach
+articles/cssvariables.php://$_site->noTrack = true;
+articles/cssvariables.php:$S = new $_site->className($_site);
+articles/cssvariables.php:$S->banner = "<h1>How to Use CSS Variables</h1>";
+articles/cssvariables.php:$S->css =<<<EOF
+articles/cssvariables.php:  font-family: sans-serif;
+articles/cssvariables.php:  margin-bottom: 1rem;
+articles/cssvariables.php:  background: var(--custome_color);
+articles/cssvariables.php:  color: var(--color);
+articles/cssvariables.php:  font-size: 1.8rem;
+articles/cssvariables.php:  margin-bottom: .5rem;
+articles/cssvariables.php:.my-element {
+articles/cssvariables.php:.my-element::after {
+articles/cssvariables.php:  content: var(--testit, none);
+articles/cssvariables.php:  padding-left: 100px;
+articles/cssvariables.php:  margin-left: 5px;
+articles/cssvariables.php:$S->b_inlineScript =<<<EOF
+articles/cssvariables.php:  $(".my-element").on("click", function() {
+articles/cssvariables.php:    $(this).css('--testit', '"hello world"');
+articles/cssvariables.php:$S->h_script =<<<EOF
+articles/cssvariables.php:[$top, $footer] = $S->getPageTopBottom();
+articles/cssvariables.php:.my-element {
+articles/cssvariables.php:.my-element::after {
+articles/cssvariables.php:  content: var(--testit, none);
+articles/cssvariables.php:  padding-left: 100px;
+articles/cssvariables.php:  margin-left: 5px;
+articles/cssvariables.php:  $(".my-element").on("click", function() {
+articles/cssvariables.php:    $(this).css('--testit', '"hello world"');
+articles/cssvariables.php:  margin-bottom: 1rem;
+articles/cssvariables.php:  background: var(--custome_color);
+articles/cssvariables.php:  color: var(--color);
+articles/cssvariables.php:  font-size: 1.8rem;
+articles/cssvariables.php:  margin-bottom: .5rem;
+articles/cssvariables.php:<h2 style='--custome_color: red;'>This is a test</h2>
+articles/cssvariables.php:<h2 style='--custome_color: blue; --color: white;'>More test</h2>
+articles/cssvariables.php:<div class='my-element'>This is without</div>
+articles/cssvariables.php:This has a 'div' with a class of 'my-element', and 'my-element' has a '::after'  with 'content' of 'none'.
+articles/cssvariables.php:<h2 style='--custome_color: red;'>This is a test</h2>
+articles/cssvariables.php:<h2 style='--custome_color: blue; --color: white;'>More test</h2>
+articles/cssvariables.php:<div class='my-element'>This is without</div>
+articles/dummy.php:// articles/javascript-siteclass.php
+articles/dummy.php:// articles/javascript-only.php
+articles/dummy.php:// articles/javascript-only-nojquery.php
+articles/dummy.php:// articles/javascript-only.js
+articles/dummy.php:$S = new $_site->className($_site);
+articles/dummy.php:[$top, $footer] = $S->getPageTopBottom();
+articles/dynamicscript.php:// BLP 2023-02-25 - use new approach
+articles/dynamicscript.php:// create a data-url for <script> tag.
+articles/dynamicscript.php:$S = new $_site->className($_site);
+articles/dynamicscript.php:    plug.setAttribute("src", "data:application/x-javascript;base64,$thescript");
+articles/dynamicscript.php:$S->extra = <<<EOF
+articles/dynamicscript.php:  <!-- Text highliting logic: http://alexgorbatchev.com/SyntaxHighlighter -->
+articles/dynamicscript.php:  <!-- dynamic script -->
+articles/dynamicscript.php:  <!-- regualar script -->
+articles/dynamicscript.php:    $(errdiv).css({color: 'red', 'text-align': 'center', width: '100%'});
+articles/dynamicscript.php:  <!-- Default style if Highlighter is no working -->
+articles/dynamicscript.php:        border-left: 11px solid #ccc;
+articles/dynamicscript.php:$S->title = "Dynamically Load Scripts and Iframs";
+articles/dynamicscript.php:$S->banner = "<h1 class='center'>Dynamic Load &lt;script&gt; and &lt;iframe&gt; via PHP and JavaScript</h1>";
+articles/dynamicscript.php:[$top, $footer] = $S->getPageTopBottom();
+articles/dynamicscript.php:<li>&lt;script src='some-script-file.js'&gt;&lt;/script&gt;</li>
+articles/dynamicscript.php:<p>I am sure there are many more ways. I will discuss using PHP and a 'data-uri' and using JavaScript
+articles/dynamicscript.php:a script tag via a base64 'data-uri'.</p>
+articles/dynamicscript.php:    plug.setAttribute("src", "data:application/x-javascript;base64,\$thescript");
+articles/dynamicscript.php:&lt;!-- jQuery --&gt;
+articles/dynamicscript.php:&lt;!-- dynamic script --&gt;
+articles/dynamicscript.php:&lt;!-- More stuff goes here --&gt;
+articles/dynamicscript.php:look at the code in IE -- maybe). You can also look at the code by typing CTRL-u on most browsers.
+articles/dynamicscript.php:<p>By using blobs and data-uri's you can create a dynamic script in JavaScript alone.</p>
+articles/dynamicscript.php:and data-uri's are
+articles/dynamicscript.php:<p>We then create a script element. We turn the blob into a data-uri and assign the uri to the 'src'
+articles/dynamicscript.php:to base64 and then add 'data:application/x-javascript;base64,' to the start.</p>
+articles/dynamicscript.php:<p>Blobs and data-uri's are great fun. Another use for these is dynamically creating &lt;iframe&gt;
+articles/dynamicscript.php:past I have resorted to temporary files or trickie 'eval' code. This blob-data-uri way is much
+articles/easter-example.php:// BLP 2023-02-25 - use new approach
+articles/easter-example.php:$S = new $_site->className($_site);
+articles/easter-example.php:$easterExample = escapeltgt(file_get_contents("easter-example.php"));
+articles/easter-example.php:<p>Here is this file (easter-example.php). It uses 'SiteClass' (the require_once at the top)
+articles/easter-example.php:which you can get from <a href="https://github.com/bartonlp/site-class">GitHub</a></p>
+articles/easter-example.php:    $t -= 30;
+articles/easter-example.php:    $easter = "04-$t";
+articles/easter-example.php:    $easter = "03-$t";
+articles/easter-example.php://  echo "$days, $t, $i-$easter<br>";
+articles/easter-example.php:  if($easter == "04-11") {
+articles/easter-example.php:    $mybday[] = "$i-$easter";
+articles/easter-example.php:$S->title = "Easter Date Calculator";
+articles/easter-example.php:$S->extra = '<script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>';
+articles/easter-example.php:$S->h_inlineScript = <<<EOF
+articles/easter-example.php:$S->link = '<link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">';
+articles/easter-example.php:$S->css = <<<EOF
+articles/easter-example.php:  font-size: .8rem !important;
+articles/easter-example.php:  background-color: lightgray;
+articles/easter-example.php:  font-size: 1em;
+articles/easter-example.php:[$top, $footer] = $S->getPageTopBottom();
+articles/easter-example.php:<li>Fashing/Karnaval (Mardi Grass)   -49 days from Easter
+articles/easter-example.php:<li>Ash Wednesday -46 days from Easter
+articles/easter-example.php:<li>Good Friday    -2 days from Easter
+articles/easter-example.php:Easter is on {$day->easter($year)}, day of year=$day->dayofyear<br/>
+articles/easter-example.php:Mardi Gras on {$day->mardi_grass($year)}, day of year=$day->dayofyear<br>
+articles/easter-example.php:Assention on {$day->assention($year)}, day of year=$day->dayofyear<br>
+articles/easter-example.php:Pentacost on {$day->pentecost($year)}, day of year=$day->dayofyear<br>
+articles/fetch-promise.php:// BLP 2023-02-25 - use new approach
+articles/fetch-promise.php:// Check SiteClass out at https://github.com/bartonlp/site-class.
+articles/fetch-promise.php:$S = new $_site->className($_site); // $S gives access to my framework.
+articles/fetch-promise.php:$promiseText = escapeltgt(file_get_contents("fetch-promise.php"));
+articles/fetch-promise.php:$S->extra = <<<EOF
+articles/fetch-promise.php:        'content-type': 'application/x-www-form-urlencoded'
+articles/fetch-promise.php:      'content-type': 'application/json' // use json to send this
+articles/fetch-promise.php:  getIt('post', 'fetch-promise.php', "page=ajax&data=this is a test") 
+articles/fetch-promise.php:$S->css =<<<EOF
+articles/fetch-promise.php:$S->banner = "<h1>Fetch/Promise</h1>";
+articles/fetch-promise.php:[$top, $footer] = $S->getPageTopBottom();
+articles/fetch-promise.php:    'content-type': 'application/x-www-form-urlencoded'
+articles/fetch-promise.php:    // 'content-type': 'applicatin/json' // if you pass json data
+articles/fetch-promise.php:<form id="myform" name="myform" action="fetch-promise.php">
+articles/fetch-promise.php:<b>fetch-promise.php</b>, <b>query.ajax.php</b> and <b>uptest.php</b></button>
+articles/fetch-promise.php:<p>fetch-promise.php</p>
+articles/filereader.php:// BLP 2023-02-25 - use new approach
+articles/filereader.php:// BLP 2014-05-12 -- FireReader example: http://www.html5rocks.com/en/tutorials/file/dndfiles/
+articles/filereader.php:$S = new $_site->className($_site);
+articles/filereader.php:$S->extra = <<<EOF
+articles/filereader.php:      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+articles/filereader.php:$S->title = "Filereader Interface";
+articles/filereader.php:[$top, $footer] = $S->getPageTopBottom();
+articles/filereader.php:    max-height: 300px;
+articles/filereader.php:    overflow-y: auto;
+articles/filereader.php:    overflow-x: hidden;
+articles/filereader.php:  #byte_range { margin-top: 5px; }
+articles/filereader.php:  <button data-startbyte="0" data-endbyte="4">1-5</button>
+articles/filereader.php:  <button data-startbyte="5" data-endbyte="14">6-15</button>
+articles/filereader.php:  <button data-startbyte="6" data-endbyte="7">7-8</button>
+articles/filereader.php:    var stop = parseInt(opt_stopByte) || file.size - 1;
+articles/filereader.php:            ['Read bytes: ', start + 1, ' - ', stop + 1,
+articles/filereader.php:      var startByte = evt.target.getAttribute('data-startbyte');
+articles/filereader.php:      var endByte = evt.target.getAttribute('data-endbyte');
+articles/getcountryfromip.php:// BLP 2023-02-25 - use new approach
+articles/getcountryfromip.php:// BLP 2021-10-03 -- remove the GET and do it all in POST
+articles/getcountryfromip.php:$S = new $_site->className($_site);
+articles/getcountryfromip.php:      $bits--;
+articles/getcountryfromip.php:$S->title = "get country from ip";
+articles/getcountryfromip.php:$S->banner = "<h1>Get Country From IP</h1>";
+articles/getcountryfromip.php:$S->css = <<<EOF
+articles/getcountryfromip.php:  font-size: 1rem;
+articles/getcountryfromip.php:  font-size: 1rem;
+articles/getcountryfromip.php:  border-radius: .5rem;
+articles/getcountryfromip.php:  font-style: italic;
+articles/getcountryfromip.php:  font-family: "Times New Roman", Times, serif;
+articles/getcountryfromip.php:  animation-timing-function: linear;
+articles/getcountryfromip.php:  animation-iteration-count: infinite;
+articles/getcountryfromip.php:  margin-left: auto;
+articles/getcountryfromip.php:  margin-right: auto;
+articles/getcountryfromip.php:$S->b_inlineScript =<<<EOF
+articles/getcountryfromip.php:[$top, $footer] = $S->getPageTopBottom();
+articles/getcountryfromip.php:// BLP 2021-10-03 -- This now does both the ipcountry and the ipinfo.io lookup
+articles/getcountryfromip.php:  $sql = "select countryLONG from $S->masterdb.$table ".
+articles/getcountryfromip.php:  $S->query($sql);
+articles/getcountryfromip.php:  [$name] = $S->fetchrow('num');
+articles/getcountryfromip.php:<ul class="user-info">
+articles/getcountryfromip.php:  <li>Hostname: <i class='green'>$loc->hostname</i></li>
+articles/getcountryfromip.php:  <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
+articles/getcountryfromip.php:  <li>GPS Loc: <i class='green'>$loc->loc</i></li>
+articles/getcountryfromip.php:  <li>ISP: <i class='green'>$loc->org</i></li>
+articles/historyofinternet.php:// BLP 2023-02-25 - use new approach
+articles/historyofinternet.php:$S = new $_site->className($_site);
+articles/historyofinternet.php:$S->css =<<<EOF
+articles/historyofinternet.php:  font-weight: bold;
+articles/historyofinternet.php:  font-style: italic;
+articles/historyofinternet.php:  margin-top: 10px;
+articles/historyofinternet.php:  margin-bottom: 10px;
+articles/historyofinternet.php:  margin-left: 10px;
+articles/historyofinternet.php:  padding-left: 15px;
+articles/historyofinternet.php:  border-left: 5px solid black; /*#ccc;*/
+articles/historyofinternet.php:    page-break-before: always;
+articles/historyofinternet.php:    page-break-before: always;
+articles/historyofinternet.php:$S->title = "History of the Internet";
+articles/historyofinternet.php:$S->banner = "<h1 class='center'>History of the Internet</h1><hr>";
+articles/historyofinternet.php:$S->meta = "<meta name='Editor' content='Bonnie Burch'>";
+articles/historyofinternet.php:[$top, $footer] = $S->getPageTopBottom();
+articles/historyofinternet.php:nascent technology, vinyl records were still 78 RPM, long-distance travel was via train,
+articles/historyofinternet.php:<p>The <b>record</b>, a vinyl one, had a 100-year run while the CD, first pressed in 1982, has
+articles/historyofinternet.php:already been replaced, mostly by solid-state devices and smartphones via the Internet.
+articles/historyofinternet.php:And the Internet has gone from a glimmer in a few scientists' eyes to a trillion-dollar business
+articles/historyofinternet.php:the Internet,it would not be possible.  The development of packet-switching-time-domain-multiplexing
+articles/historyofinternet.php:  <li>1877 Phonograph: Thomas Edison - with a wax cylinder as recording medium.</li>
+articles/historyofinternet.php:  <li>1887 Gramophone: Emile Berliner - a system of recording which could be used over and
+articles/historyofinternet.php:  <li><span class="important">1902</span> First Transatlanic Radio: Guglielmo Marconi - from Cornwall to
+articles/historyofinternet.php:    <a href="http://en.wikipedia.org/wiki/Lee_De_Forest">Lee Deforest</a> -
+articles/historyofinternet.php:  <li>1923 The Television or Iconoscope (cathode-ray tube): Vladimir Kosma Zworykin -
+articles/historyofinternet.php:      put into public service - government owned - the age of Information Science
+articles/historyofinternet.php:    <a href="http://en.wikipedia.org/wiki/Transistor">Transistor</a>: invented at Bell Labs -
+articles/historyofinternet.php:  <li>1948-1950 Cable TV and Subscription TV Services.</li>
+articles/historyofinternet.php:  <li>1950-1961 Development of T-1 Transmition Lines: Bell Labs.</li>
+articles/historyofinternet.php:  <li>1961 Host-based Email CTTS Systems (Compatible Time-Sharing System. Big Main Fraims)</li>
+articles/historyofinternet.php:    <a href="http://en.wikipedia.org/wiki/Tim_Berners-Lee">Tim Berners-Lee</a> at CERN in Switzerland developed
+articles/historyofinternet.php:      <li>ARPANET backbone via T-1 at 1.5 Mbits/sec.</li>
+articles/historyofinternet.php:      <li>Tim Berners-Lee coined
+articles/historyofinternet.php:        all created by Tim Berners-Lee and Robert Cailliau all running on a
+articles/historyofinternet.php:          ANSNet</a> Backbone via T-3 at 45 Mbits/sec.</li>
+articles/historyofinternet.php:        at the University of Illinois at Urbana-Champaign (UIUC), led by Marc Andreessen.
+articles/historyofinternet.php:        Funding for Mosaic came from the "High-Performance Computing and Communications Initiative",
+articles/historyofinternet.php:      <li><a href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a>
+articles/historyofinternet.php:        (Classless Inter-Domain Routing) blocks introduced to replace Classful network (A, B, C)
+articles/historyofinternet.php:  <li>1999-2001 "Dot-Com" Boom, then bust.</li>
+articles/historyofinternet.php:    a Unix look-alike operating system.</li>
+articles/historyofinternet.php:      <li>October 23: AT&T announced the completion of upgrades to OC-768 on
+articles/historyofinternet.php:        80,000 fiber-optic wave-length miles of their IP/MPLS (Multiprotocol Label Switching)
+articles/historyofinternet.php:      <li>NEC Corp. broke an ultra long-haul Internet speed record when
+articles/historyofinternet.php:  <li><span class="future">2017</span> <a href="http://www.cisco.com/c/en/us/solutions/collateral/service-provider/visual-networking-index-vni/vni-hyperconnectivity-wp.html">
+articles/historyofinternet.php:  <li>Mid-1960: Early ARPANET 1200-2400 bits/sec</li>
+articles/historyofinternet.php:  <li>Mid-1980's: LAN (Local Area Network: Ethernet, Token Ring) 10 Mbits/sec.<br>
+articles/historyofinternet.php:    WAN (Wide Area Network: modems, T-1) 300-2400 bits/sec to 1.5 Mbits/sec.</li>
+articles/historyofinternet.php:  <li>1990's: WAN (T-1, ADSL, T-3, ATM) 1.5 Mbits/sec to 145 Mbits/sec.
+articles/historyofinternet.php:    ADSL: downstream: 200-400 Mbits/sec, upstream: 384 Kbits/sec to 20 Mbits/sec.</li>
+articles/historyofinternet.php:  <li>2000's: WAN (SONET-OC-192) 10 Gbits/sec.</li>
+articles/historyofinternet.php:  <li>201x: WAN (SONET-OC-768) 40 Gbits/sec.</li>
+articles/historyofinternet.php:<p>In 2000 there were just under 150 million dial-up subscriptions in the 34 OECD (Organization for
+articles/historyofinternet.php:Economic Co-operation and Development) countries and fewer than 20 million broadband
+articles/historyofinternet.php:<p>By 2004, broadband had grown and dial-up had declined so the number of subscriptions were
+articles/historyofinternet.php:  which had grown to more than 300 million subscriptions, and dial-up subscriptions had declined
+articles/historyofinternet.php:<p>In 1966-67 Lincoln Labs in Lexington, Massachusetts, and SDR in Santa Monica, California, got a
+articles/historyofinternet.php:would be. Since computer time-sharing experiments at MIT and Dartmouth had demonstrated that it was
+articles/historyofinternet.php:possible to link different computer users to a single computer, the cross-country experiment built
+articles/historyofinternet.php:<p><b>Packet switching</b> resolved many of the issues identified during the pre-ARPANET,
+articles/historyofinternet.php:time-sharing experiments. But higher-speed phone circuits also helped. The first wide area network
+articles/historyofinternet.php:internet-working was difficult if not impossible.</p>
+articles/historyofinternet.php:joined Robert E. Kahn to work on open-architecture interconnection models with the goal of designing
+articles/historyofinternet.php:<h2>From Tim Berners-Lee's first message (web page):</h2>
+articles/historyofinternet.php:<a href="http://en.wikipedia.org/wiki/KIM-1"><img src="https://bartonphillips.net/images/kim1.jpg"></a>
+articles/historyofinternet.php:<img src="https://bartonphillips.net/images/D8080A-1.jpg">
+articles/howtheinternetworks.php:// BLP 2023-02-25 - use new approach
+articles/howtheinternetworks.php:$S = new $_site->className($_site);
+articles/howtheinternetworks.php:$S->title = "How the Internet Works";
+articles/howtheinternetworks.php:$S->banner = "<h1 class='center'>How the Internet Works</h1><hr>";
+articles/howtheinternetworks.php:$S->css = <<<EOF
+articles/howtheinternetworks.php:  border-left: 5px solid #ccc;
+articles/howtheinternetworks.php:  margin-left: 4px;
+articles/howtheinternetworks.php:  padding-left: 10px;
+articles/howtheinternetworks.php:$S->meta = "<meta name='Editor' content='Bonnie Burch'>";
+articles/howtheinternetworks.php:[$top, $footer] = $S->getPageTopBottom();
+articles/howtheinternetworks.php:optical fiber or radio transport mechanisms, like Ethernet local area networks, T-1 local ISP, OC-3
+articles/howtheinternetworks.php:-- UDP or TCP. This handles the sequencing and end point assignments (<a
+articles/howtheinternetworks.php:handshake that guarantees that the message has been received (connectionless). TCP is a point-to-
+articles/howtheinternetworks.php:point connection-based protocol. When a TCP message is transmitted, a connection between the sender
+articles/howtheinternetworks.php:  voice-over IP or on-demand video, where real time is the key concern, use UDP or UDP-type
+articles/howtheinternetworks.php:The original Internet was based on IPv4 (IP version 4) which provides a 32-bit address
+articles/howtheinternetworks.php:1980s. IPv6 uses a 64-bit IP address which yields 1.844674407x10<sup>19</sup> addresses, somewhat
+articles/howtheinternetworks.php:  recently that IPv6 has been deployed by more than a few ISP and upper-tier providers. However, with
+articles/howtheinternetworks.php:electronic or optical signals by the low-level hardware like Ethernet, SONET, etc. Even at this
+articles/howtheinternetworks.php:Control) address which is a <i>physical</i> layer-unique address. Every piece of network hardware
+articles/howtheinternetworks.php:from optical end-point to end-point through repeaters before being unbundled and turned back into
+articles/howtheinternetworks.php:usually used port 80 for inbound connections to the HTTP server like Apache on Unix-like computers.
+articles/howtheinternetworks.php:href="http://en.wikipedia.org/wiki/Well_known_ports#Well-known_ports">Well known ports</a> reside
+articles/howtheinternetworks.php:between 0 and 1,023. The inbound port is well-known to clients and is specified via <a
+articles/howtheinternetworks.php:<p>There are many well-known ports that are used by standard TCP/IP protocals. For example, here are a
+articles/howtheinternetworks.php:few very well-known ports: FTP: 20, SSH: 22, Telnet: 23, SMTP: 25, DNS: 53, HTTP: 80, POP3: 110, NTP:
+articles/howtheinternetworks.php:  client browser creates a <b>Request</b> and sends it to an HTTP host that is listening on well-known
+articles/howtheinternetworks.php:Connection: keep-alive
+articles/howtheinternetworks.php:Cache-Control: no-cache
+articles/howtheinternetworks.php:Pragma: no-cache
+articles/howtheinternetworks.php:User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36
+articles/howtheinternetworks.php:Accept-Encoding: gzip,deflate,sdch
+articles/howtheinternetworks.php:Accept-Language: en-US,en;q=0.8,de-DE;q=0.6,de;q=0.4
+articles/howtheinternetworks.php:<p>The Apache web server listening on the well-known port 80 at IP address 192.249.115.106 looks at
+articles/howtheinternetworks.php:Vary: Accept-Encoding,User-Agent
+articles/howtheinternetworks.php:Content-Encoding: gzip
+articles/howtheinternetworks.php:Content-Length: 5631
+articles/howtheinternetworks.php:Keep-Alive: timeout=3, max=100
+articles/howtheinternetworks.php:Connection: Keep-Alive
+articles/howtheinternetworks.php:Content-Type: text/html; charset=utf-8
+articles/howtheinternetworks.php:  &lt;meta charset='utf-8'&gt;
+articles/howtowritehtml.php:// BLP 2023-02-25 - use new approach
+articles/howtowritehtml.php:$S = new $_site->className($_site);
+articles/howtowritehtml.php:$S->title = "How to write html";
+articles/howtowritehtml.php:$S->banner = "<h1 class='center'>How To Write HTML</h1><hr>";
+articles/howtowritehtml.php:$S->css = <<<EOF
+articles/howtowritehtml.php:  font-size: 1rem;
+articles/howtowritehtml.php:  background-color: yellow;
+articles/howtowritehtml.php:  font-size: .8rem;
+articles/howtowritehtml.php:  background-color: hsla(360, 25%, 5%, 0.1);
+articles/howtowritehtml.php:$S->b_inlineScript =<<<EOF
+articles/howtowritehtml.php:  $("#inputs").append("<input id='clearit' type='button' value='Clear Text Area' style='color: red; font-size: 20pt;'/>");
+articles/howtowritehtml.php:      $(this).val("Start Auto Preview").css({color: 'green', 'font-size': '20pt'});
+articles/howtowritehtml.php:      $(this).val("Stop Auto Preview").css({color: 'red', 'font-size': '20pt'});
+articles/howtowritehtml.php:[$top, $footer] = $S->getPageTopBottom();
+articles/howtowritehtml.php:<div id="top-of-page2">This is the top of Page</div>
+articles/howtowritehtml.php:<a name="top-of-page"></a>
+articles/howtowritehtml.php:<div id="main" style="background-color: white; padding: 5px;">
+articles/howtowritehtml.php:<code>&lt;a name=&quot;top-of-page&gt;&lt;/a&gt;</code></pre>
+articles/howtowritehtml.php:<code>&lt;div id=&quot;top-of-page2&gt;This is the top of the page&lt;/div&gt;</code></pre>
+articles/howtowritehtml.php:<code>&lt;a href=&quot;#top-of-page&quot;&gt;Go To The Top Of This Page&lt;/a&gt;</code></pre>
+articles/howtowritehtml.php:<code>&lt;a href=&quot;#top-of-page2&quot;&gt;Go To The Top Of Page DIV&lt;/a&gt;</code></pre>
+articles/howtowritehtml.php:      <a href="#top-of-page">Go To The Top Of This Page</a>
+articles/howtowritehtml.php:      <a href="#top-of-page2">Go To The Top Of Page DIV</a>
+articles/howtowritehtml.php:   <div id="inputs" style="text-align: center; margin-top: 10px;">
+articles/howtowritehtml.php:      <input type="button" value="Render" id="render" style="display: none;color: green; font-size: 20pt;"/>
+articles/howtowritehtml.php:      <input type="button" value="Stop Auto Preview" id="autopreview" style="color: red; font-size: 20pt;"/>
+articles/howtowritehtml.php:<div id="preview" style="background-color: white; border: 1px solid black; padding: 5px; overflow: auto; height: 200px;"></div>
+articles/javascript-only-show.php:// This is only used by javascript-only-nojquery.html to show the source code.
+articles/javascript-only-show.php:  $file = file_get_contents("javascript-only-nojquery.html");
+articles/javascript-only-show.php:  $file = file_get_contents("javascript-only.js");
+articles/javascript-only-show.php:  font-size: 1.5em;
+articles/javascript-only-show.php:  border-left: .5em solid gray;
+articles/javascript-only-show.php:  background-color: #E5E5E5;
+articles/javascript-only.php:$file = file_get_contents("javascript-only.php");
+articles/javascript-only.php:    "<meta name=viewport content='width=device-width, initial-scale=1'>"+
+articles/javascript-only.php:    "<meta charset='utf-8'>"+
+articles/javascript-only.php:    "  font-size: .7em;"+
+articles/javascript-only.php:    "  border-left: .5em solid gray;"+
+articles/javascript-only.php:    "  background-color: #E5E5E5;"+
+articles/javascript-only.php:  "<a href='javascript-siteclass.php'>JavaScript only plus jQuery and SiteClass</a><br>"+
+articles/javascript-only.php:  "<a href='javascript-only-nojquery.html'>JavaScript only no jQuery or SiteClass</a><br>"+
+articles/javascript-siteclass.php:// BLP 2023-02-25 - use new approach
+articles/javascript-siteclass.php:$S = new $_site->className($_site);
+articles/javascript-siteclass.php:$file = file_get_contents("javascript-siteclass.php");
+articles/javascript-siteclass.php:$S->title = "JavaScript+jQuery+SiteClass";
+articles/javascript-siteclass.php:$S->css =<<<EOF
+articles/javascript-siteclass.php:  font-size: .7em;
+articles/javascript-siteclass.php:  border-left: .5em solid gray;
+articles/javascript-siteclass.php:  background-color: #E5E5E5;
+articles/javascript-siteclass.php:$S->h_inlineScript=<<<EOF
+articles/javascript-siteclass.php:    "<a href='javascript-only-nojquery.html'>JavaScript only no jQuery or SiteClass</a><br>"+
+articles/javascript-siteclass.php:    "<a href='javascript-only.php'>JavaScript only with jQuery and no SiteClass</a><br>"+
+articles/javascript-siteclass.php:[$top, $footer] = $S->getPageTopBottom();
+articles/linuxmint-from-iso.php:// BLP 2023-02-25 - use new approach
+articles/linuxmint-from-iso.php:$S = new $_site->className($_site);
+articles/linuxmint-from-iso.php:$S->title = "Load Linux from ISO";
+articles/linuxmint-from-iso.php:$S->banner = "<h1 class='center'>How to Load Linux via ISO from your hard drive</h1>";
+articles/linuxmint-from-iso.php:$S->css =<<<EOF
+articles/linuxmint-from-iso.php:  font-size: .5em;
+articles/linuxmint-from-iso.php:  font-size: .7em;
+articles/linuxmint-from-iso.php:  border-left: .5em solid gray;
+articles/linuxmint-from-iso.php:  background-color: #E5E5E5;
+articles/linuxmint-from-iso.php:  font-size: .7em;
+articles/linuxmint-from-iso.php:[$top, $footer] = $S->getPageTopBottom();
+articles/linuxmint-from-iso.php:exec tail -n +3 \$0
+articles/linuxmint-from-iso.php: linux (loop)/casper/vmlinuz file=/cdrom/preseed/mint.seed boot=casper initrd=/casper/initrd.lz iso-scan/filename={location of the iso file and fill name of the file} noeject noprompt splash --
+articles/linuxmint-from-iso.php:instead. If you run '<code>sudo parted -l</code>' you will see either
+articles/linuxmint-from-iso.php:(<code>sudo apt-get install parted</code>) or some other utility to create a
+articles/linuxmint-from-iso.php:<i>iso-scan/filename=/barton/Downloads/{distribution name}.iso</i><br>
+articles/linuxmint-from-iso.php:'<code>sudo grub-mkconfig --output=filename</code>' or you can just do
+articles/linuxmint-from-iso.php:'<code>sudo grub-mkconfig >filename</code>'
+articles/localstorage.php:// BLP 2023-02-25 - use new approach.
+articles/localstorage.php:$S = new $_site->className($_site);
+articles/localstorage.php:$S->title = "LocalStorage Example TEST";
+articles/localstorage.php:$S->desc = "LocalStorage Example. Resize a big image using JavaScript";
+articles/localstorage.php:$S->keywords = "LocalStorage, Resize IMAGE with JavaScript";
+articles/localstorage.php:$S->h_script =<<<EOF
+articles/localstorage.php:$S->link =<<<EOF
+articles/localstorage.php:$S->banner = "<h1>LocalStorage Example: Resize a big image in JavaScript</h1>";
+articles/localstorage.php:$S->css =<<<EOF
+articles/localstorage.php:[$top, $footer] = $S->getPageTopBottom();
+articles/localstorage.php:   may be problems with various versions of Internet Explorer on MS-Windows as there always are. I
+articles/promise.php:// BLP 2023-02-25 - use new approach
+articles/promise.php:// Check SiteClass out at https://github.com/bartonlp/site-class.
+articles/promise.php:$S = new $_site->className($_site); // $S gives access to my framework.
+articles/promise.php:$S->extra = <<<EOF
+articles/promise.php:    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+articles/promise.php:  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+articles/promise.php:req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+articles/promise.php:$S->css =<<<EOF
+articles/promise.php:[$top, $footer] = $S->getPageTopBottom();
+articles/scraper-await-fetch.php:// BLP 2023-02-25 - use new approach
+articles/scraper-await-fetch.php:// scraper-await-fetch.php
+articles/scraper-await-fetch.php:// BLP 2021-09-26 -- remove hard r1, r2 and get it from bartonphillips.com/index.php
+articles/scraper-await-fetch.php:// https://github.com/paquettg/php-html-parser
+articles/scraper-await-fetch.php:// This demo uses my SiteClass mini-framework. Full documentation can be found at
+articles/scraper-await-fetch.php:// https://github.com/bartonlp/site-class
+articles/scraper-await-fetch.php:$S = new $_site->className($_site);
+articles/scraper-await-fetch.php:  $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
+articles/scraper-await-fetch.php:  $mysite = $x->find("#others");
+articles/scraper-await-fetch.php:  $ret = ['mysite'=>trim($mysite->innerHTML)]; //BLP 2021-09-26 -- remove leading and trailing spaces
+articles/scraper-await-fetch.php:  $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
+articles/scraper-await-fetch.php:  $interesting = $x->find("#interesting")->innerHTML;
+articles/scraper-await-fetch.php:  $ret = ['interesting'=>trim($interesting)]; // BLP 2021-09-26 -- remove leading and trailing spaces
+articles/scraper-await-fetch.php:$sourceCode = escapeltgt(file_get_contents('scraper-await-fetch.php'));
+articles/scraper-await-fetch.php:$S->title = "Scraper Demo";
+articles/scraper-await-fetch.php:$S->banner = "<h1>Scraper, Async, Fetch</h1>";
+articles/scraper-await-fetch.php:$S->css = <<<EOF
+articles/scraper-await-fetch.php:  overflow-x: auto;
+articles/scraper-await-fetch.php:  text-align: center;
+articles/scraper-await-fetch.php:  border-spacing: .5rem;
+articles/scraper-await-fetch.php:$S->h_script = <<<EOF
+articles/scraper-await-fetch.php:<!-- We use syntaxhighliter and the theme.css to show the sourcecode. -->
+articles/scraper-await-fetch.php:    let r1 = await fetch("scraper-await-fetch.php?page=one").then(data => data.json());
+articles/scraper-await-fetch.php:    let r2 = await fetch("scraper-await-fetch.php", {
+articles/scraper-await-fetch.php:        'content-type': 'application/x-www-form-urlencoded' // We need the x-www-form-urlencoded type
+articles/scraper-await-fetch.php:[$top, $footer] = $S->getPageTopBottom();
+articles/showCookies.php:// BLP 2023-02-25 - use new approach
+articles/showCookies.php:$S = new $_site->className($_site);
+articles/showCookies.php:$S->banner = "<h1>PHP vs JavaScript Cookies</h1>";
+articles/showCookies.php:[$top, $footer] = $S->getPageTopBottom();
+articles/showVersions.php:// BLP 2023-02-25 - use new approach
+articles/showVersions.php:$S->title = "Display SiteClass Versions";
+articles/showVersions.php:$S->banner = "<h1>$S->title</h1>";
+articles/showVersions.php:$S->css = <<<EOF
+articles/showVersions.php:pre { display: none; background: lightgray; padding: 5px 10px; overflow-x: scroll }
+articles/showVersions.php:button { border-radius: 6px; margin-bottom: 20px; background: green; color: white; font-size: var(--blpFoneSize); }
+articles/showVersions.php:$S->b_inlineScript = <<<EOF
+articles/showVersions.php:[$top, $footer] = $S->getPageTopBottom();
+articles/urlcountrycodes.php:// BLP 2023-02-25 - use new approach
+articles/urlcountrycodes.php:$S = new $_site->className($_site);
+articles/urlcountrycodes.php:$self = $S->self;
+articles/urlcountrycodes.php:$S->css = <<<EOF
+articles/urlcountrycodes.php:  font-size: 1rem;
+articles/urlcountrycodes.php:$S->h_inlineScript = <<<EOF
+articles/urlcountrycodes.php:$S->banner = "<h1>Country from URL sufix</h1>";
+articles/urlcountrycodes.php:[$top, $footer] = $S->getPageTopBottom();
+articles/urlcountrycodes.php:  $n = $S->query("select description from urlcountrycodes where code='$code'");
+articles/urlcountrycodes.php:    $row = $S->fetchrow('num');
+articles/usinghosts.php:// BLP 2023-02-25 - use new approach
+articles/usinghosts.php:$S = new $_site->className($_site);
+articles/usinghosts.php:$S->title = "Using your &quot;/etc/hosts&quot; file";
+articles/usinghosts.php:$S->banner = "<h1>Using your &quot;/etc/hosts&quot; file</h1>";
+articles/usinghosts.php:[$top, $footer] = $S->getPageTopBottom();
+articles/usinghosts.php:<p>Why can't I access my home-hosted website from my own computer? This is a common problem. You have a DNS name for your site,
+articles/usinghosts.php:<p>Well many (most) home routers and DSL modems direct your outside IP address to your router as a fail-safe measure. This way you
+articles/verifyemailaddress.php:// BLP 2023-02-25 - use new approach
+articles/verifyemailaddress.php:$S = new $_site->className($_site);
+articles/verifyemailaddress.php:$S->nl2br = 1;
+articles/verifyemailaddress.php:if(!$S->isMe()) {
+articles/verifyemailaddress.php:  $S->title = "Test Smtp Reciept";  
+articles/verifyemailaddress.php:  $S->banner = <<<EOF
+articles/verifyemailaddress.php:  [$top, $footer] = $S->getPageTopBottom();
+articles/verifyemailaddress.php:<form action="$S->self" method="post" enctype="multipart/form-data">
+articles/verifyemailaddress.php:<form action="$S->self" method="post">
+articles/verifyemailaddress.php:  $nl2br = $S->nl2br;
+articles/verifyemailaddress.php:  $S->query("drop table if exists verifyemail");
+articles/verifyemailaddress.php:  $S->query($query);
+articles/verifyemailaddress.php:        $ar[$i] = $S->escape($ar[$i]);
+articles/verifyemailaddress.php:      $S->query("insert into verifyemail (contactName, contactEmail, teststatus) values('$ar[0]', '$ar[1]', 'nottested')");
+articles/verifyemailaddress.php:  $S->css = <<<EOF
+articles/verifyemailaddress.php:  --bad: red;
+articles/verifyemailaddress.php:  --ok: green;
+articles/verifyemailaddress.php:  --anything: yellow;
+articles/verifyemailaddress.php:  --anythingbg: black;
+articles/verifyemailaddress.php:  --over: inherit;
+articles/verifyemailaddress.php:  --under: 600px;
+articles/verifyemailaddress.php:.over { margin-left: 0; width: var(--over); }
+articles/verifyemailaddress.php:.underok { margin-left: 0; width: var(--under); border: 5px solid var(--ok); }
+articles/verifyemailaddress.php:.underbad { margin-left: 0; width: var(--under); border: 5px solid var(--bad); }
+articles/verifyemailaddress.php:.underanything { margin-left: 0; width: var(--under); border: 5px solid var(--anything); }           
+articles/verifyemailaddress.php:.ok { color: var(--ok); }
+articles/verifyemailaddress.php:.bad { color: var(--bad); }
+articles/verifyemailaddress.php:.anything { color: var(--anything); background: var(--anythingbg); }
+articles/verifyemailaddress.php:  $S->title = "Test Smtp Reciept";  
+articles/verifyemailaddress.php:  $S->banner = <<<EOF
+articles/verifyemailaddress.php:  [$top, $footer] = $S->getPageTopBottom();
+articles/verifyemailaddress.php:  $n = $S->query("select listId, contactName, contactEmail from verifyemail where teststatus='nottested'");
+articles/verifyemailaddress.php:  while($row = $S->fetchrow('assoc')) {
+articles/verifyemailaddress.php:    exec("ping -c 1 -W 1 $host", $out, $ret);
+articles/verifyemailaddress.php:        $S->query("update verifyemail set teststatus='ok' where listId='$listId'");
+articles/verifyemailaddress.php:        $S->query("update verifyemail set teststatus='bad' where listId='$id'");
+articles/verifyemailaddress.php:        $S->query("update verifyemail set teststatus='cantsay' where listId='$id'");
+articles/verifyemailaddress.php:// ---------------------------------------------------------------------------
+articles/verifyemailaddress.php:  $nl2br = $S->nl2br;
+articles/verifyemailaddress.php:  $S->title = "Test Smtp Reciept";  
+articles/verifyemailaddress.php:  $S->banner = <<<EOF
+articles/verifyemailaddress.php:  [$top, $footer] = $S->getPageTopBottom();
+articles/verifyemailaddress.php:  exec("ping -c 1 -W 1 $host", $out, $ret);
+articles/verifyemailaddress.php:      meaning to "transient" when two different sites (receiver- and
+articles/verifyemailaddress.php:      sender-SMTP agents) must agree on the interpretation.  Each reply
+articles/verifyemailaddress.php:      mail system vis-a-vis the requested transfer or other mail system
+articles/verifyemailaddress.php:   non-site-specific action.  A refinement of that is the 504 reply for
+articles/verifyemailaddress.php:   "-" (also known as minus), followed by text.  The last line will
+articles/verifyemailaddress.php:      123-First line
+articles/verifyemailaddress.php:      123-Second line
+articles/verifyemailaddress.php:      123-234 text beginning with numbers
+articles/verifyemailaddress.php:         particular non-standard command; this reply is useful only
+articles/verifyemailaddress.php:      251 User not local; will forward to <forward-path>
+articles/verifyemailaddress.php:      551 User not local; please try <forward-path>
+articles/verifyemailaddress.php:      554 Transaction failed (Or, in the case of a connection-opening
+articles/verifyemailaddress.php:         particular non-standard command; this reply is useful only
+articles/verifyemailaddress.php:      251 User not local; will forward to <forward-path>
+articles/verifyemailaddress.php:      551 User not local; please try <forward-path>
+articles/verifyemailaddress.php:      554 Transaction failed  (Or, in the case of a connection-opening
+examples.js/exampleAjax.php:// Example goes with test-php-input.php. Shows getting a input via php://input and via $_POST.
+examples.js/exampleAjax.php:// The test-php-input.php file sends two values: 'test' and 'siteName'.
+examples.js/exampleFormJs.php:// BLP 2023-02-26 - use new approach
+examples.js/exampleFormJs.php:// BLP 2021-10-31 -- This files uses exampleAjax.php for AJAX.
+examples.js/exampleFormJs.php:$S = new $_site->className($_site);
+examples.js/exampleFormJs.php:$S->h_script = <<<EOF
+examples.js/exampleFormJs.php:$S->css = <<<EOF
+examples.js/exampleFormJs.php:[$top, $footer] = $S->getPageTopBottom();
+examples.js/fetch.ajax.php:// BLP 2023-02-26 - uses Database no $h/$b
+examples.js/fetch.ajax.php:    $S->query($sql);
+examples.js/fetch.ajax.php:      $S->query("select TABLE_ROWS from information_schema.TABLES where TABLE_NAME='test'");
+examples.js/fetch.ajax.php:      list($cnt) = $S->fetchrow('num');
+examples.js/fetch.ajax.php:      $nn = $cnt - 20;
+examples.js/fetch.ajax.php:        $n = $S->query("delete from test order by id asc limit $nn");
+examples.js/fetch.ajax.php:    while($row = $S->fetchrow('assoc')) {
+examples.js/fetch.ajax.php:    echo json_encode("ERROR: " . $e->getMessage());
+examples.js/notify-git.php:  foreach(['/vendor/bartonlp/site-class', '/bartonlp', '/bartonphillips.com', 
+examples.js/notify-git.php:  xhr.open('GET', 'notify-git.php?page=true', true);
+examples.js/notify-git.php:  //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+examples.js/phpdate-js-test.php:$date = date("Y-m-d H:i:s T");  
+examples.js/phpdate-js-test.php:<h1>Example using phpdate-js.js</h1>
+examples.js/phpdate-js-test.php:<p>From https://github.com/andrasq/phpdate-js. This is in 'phpdate-js.js' in this directory.
+examples.js/phpdate-js-test.php:<script src="phpdate-js.js"></script>
+examples.js/phpdate-js-test.php:2005-10-20 10:20:30 PST = \${gmdate("Y-m-d H:i:s T", '2005-10-20 10:20:30 PST')}<br>
+examples.js/phpdate-js-test.php:\${gmdate("Y-m-d H:i:s T")}<br>
+examples.js/test-beacon-server.php:// BLP 2014-10-25 -- 
+examples.js/test-php-input.php:// BLP 2023-02-26 - use new approach
+examples.js/test-php-input.php:// BLP 2021-10-31 -- This files uses example1.php for AJAX.
+examples.js/test-php-input.php:$S = new $_site->className($_site);
+examples.js/test-php-input.php:$S->h_script = <<<EOF
+examples.js/test-php-input.php:$S->css = <<<EOF
+examples.js/test-php-input.php:[$top, $footer] = $S->getPageTopBottom();
+examples/CIDR.php: * @license     BSD-3 License https://opensource.org/licenses/BSD-3-Clause
+examples/CIDR.php:			$ip = preg_replace( '/^(.*\.|.*:)?0+([1-9])/','$1$2',$ip );
+examples/CIDR.php:			$subnet = preg_replace( '/^(.*\.|.*:)?0+([1-9])/','$1$2',$subnet );
+examples/CIDR.php:				if(substr($subnet, -1) == ':') {
+examples/CIDR.php:					$j--;
+examples/CIDR.php:			$ip4parts = explode('.', $v6bits[count($v6bits)-1]);
+examples/CIDR.php:			$v6bits[count($v6bits)-1] = $ip6trans;
+examples/CIDR.php:    // thanks to MW on http://stackoverflow.com/questions/7951061/matching-ipv6-address-to-a-cidr-subnet
+examples/CIDR.php:    // http://stackoverflow.com/questions/594112/matching-an-ip-to-a-cidr-mask-in-php5
+examples/CIDR.php:    $val = (ip2long($address)) & ~((1 << (32 - $mask)) - 1);
+examples/CIDR.php:    if(self::$DEBUG) echo "mask: " . dechex(~((1 << (32 - $mask)) - 1)) . "<br>";
+examples/CIDR.php:		// want to expand and re-compress in case we have "::" in different spots.
+examples/CIDR.php:			for($i = 0; $i < (8 - (count($part[0]) + count($part[1]))); $i++) {
+examples/async-await-class.php:// async-await.php
+examples/async-await-class.php:$S = new $_site->className($_site); // $S gives access to my framework.
+examples/async-await-class.php:$S->banner = "<h1>async-await-class.php</h1>";
+examples/async-await-class.php:$S->css =<<<EOF
+examples/async-await-class.php:  font-size: 1.5rem;
+examples/async-await-class.php:$S->b_inlineScript =<<<EOF
+examples/async-await-class.php:[$top, $footer] = $S->getPageTopBottom();
+examples/async-await.php:// async-await.php
+examples/async-await.php:$S = new $_site->className($_site); // $S gives access to my framework.
+examples/async-await.php:$S->banner = "<h1>async-await.php</h1>";
+examples/async-await.php:$S->css =<<<EOF
+examples/async-await.php:  font-size: 1.5rem;
+examples/async-await.php:$S->b_inlineScript =<<<EOF
+examples/async-await.php:[$top, $footer] = $S->getPageTopBottom();
+examples/canvas.php:$S = new $_site->className($_site);
+examples/canvas.php:$S->h_inlineScript =<<<EOF
+examples/canvas.php:[$top, $footer] = $S->getPageTopBottom();
+examples/cidr.php:  echo "---------------------------------------<br>";
+examples/fancy-tabs.ajax.php:// input.ajax.php used with fancy-tab.html
+examples/fancy.php:// fancy.php. This uses fancy-tab.html as an 'import' 'link'
+examples/fancy.php:// it uses 'fancy-tabs.html'.
+examples/fancy.php:$S = new $_site->className($_site);
+examples/fancy.php:$S->css =<<<EOF
+examples/fancy.php: * --height: 350px;
+examples/fancy.php: * can be used in another as height: var(--height); or as height: var(--height, 500px); which
+examples/fancy.php: * means, if --height is defined use --height otherwise use 500px.
+examples/fancy.php:  /*--background: pink;*/
+examples/fancy.php:  --height: 350px;
+examples/fancy.php:#panel-1 {
+examples/fancy.php:$S->inlineScript =<<<EOF
+examples/fancy.php:  console.log("the file fancy-tabs.html is loaded with a 'rel=\"import\"");
+examples/fancy.php:    // we will use 'fancy-tabs.html' as the 'module' we want to 'import'
+examples/fancy.php:    link.href = 'fancy-tabs.html'; // start the load.
+examples/fancy.php:    var div = $("#panel-1").text();
+examples/fancy.php:      url: "fancy-tabs.ajax.php",
+examples/fancy.php:        $("#panel-1").append(data);
+examples/fancy.php:[$top, $footer] = $S->getPageTopBottom();
+examples/fancy.php:<p>This is a demo of an 'import' of a templet file 'fancy-tabs.html'. We use the 'customElement'
+examples/fancy.php:&lt;fancy-tabs&gt; to make the nice tabbed display.</p>
+examples/fancy.php:<fancy-tabs background>
+examples/fancy.php:      <div id='panel-1' contenteditable>Test it out</div>
+examples/fancy.php:</fancy-tabs>
+examples/file_get_contents_as_post.php:  if(!$S->query("select finger, count, created, lasttime from members where name='$name' and email='$email' order by lasttime")) {
+examples/file_get_contents_as_post.php:  while([$finger, $count, $created, $lasttime] = $S->fetchrow('num')) {
+examples/file_get_contents_as_post.php:$S = new $_site->className($_site); // $S gives access to my framework.
+examples/file_get_contents_as_post.php:// We make an options array with application/x-www-form-urlencoded.
+examples/file_get_contents_as_post.php:  'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+examples/file_get_contents_as_post.php:$h->title = "file_get_contents to do a Post";
+examples/file_get_contents_as_post.php:$h->banner = "<h1>$h->title</h1>";
+examples/file_get_contents_as_post.php:list($top, $footer) = $S->getPageTopBottom($h);
+examples/holidays.php:  $prevYear = $_REQUEST["year"]-1;
+examples/jewishholidays.php:// BLP 2021-10-31 -- This is 'include'ed in holidays.php. This file does NOT run by it self.
+examples/jewishholidays.php:    return $jewishMonthNamesLeap[$jewishMonth-1];
+examples/jewishholidays.php:    return $jewishMonthNamesNonLeap[$jewishMonth-1];
+examples/jewishholidays.php:  $hanukkahNo = (int) ($jdCurrent-$hanukkahStart+1);
+examples/jewishholidays.php:    $jd--;
+examples/jewishholidays.php:    $shabbatHagadolDay--;
+examples/mapbox-leaflet.php:// BLP 2021-10-31 -- goto: https://leafletjs.com/examples/quick-start/
+examples/mapbox-leaflet.php:// You will need an up to date accessToken from https://account.mapbox.com/access-tokens/
+examples/mapbox-leaflet.php:$S = new $_site->className($_site);
+examples/mapbox-leaflet.php:$S->link =<<<EOF
+examples/mapbox-leaflet.php:   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+examples/mapbox-leaflet.php:$S->css =<<<EOF
+examples/mapbox-leaflet.php:$S->b_script =<<<EOF
+examples/mapbox-leaflet.php:<!-- Make sure you put this AFTER Leaflet's CSS -->
+examples/mapbox-leaflet.php:  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+examples/mapbox-leaflet.php:  var mymap = L.map('mapid').setView([35.110852, -77.117462], 13);
+examples/mapbox-leaflet.php:  var marker = L.marker([35.110852, -77.117462]).addTo(mymap);
+examples/mapbox-leaflet.php:    id: 'mapbox/streets-v11',
+examples/mapbox-leaflet.php:    zoomOffset: -1,
+examples/mapbox-leaflet.php:$S->title = "Barton&Bonnie's Home";
+examples/mapbox-leaflet.php:$S->banner = "<h1>$S->title</h1>";
+examples/mapbox-leaflet.php:[$top, $footer] = $S->getPageTopBottom();
+examples/post_file_get_contents.php:$S = new $_site->className($_site);
+examples/post_file_get_contents.php:$t->test = "test from post_file_get_contents.php";
+examples/post_file_get_contents.php:$t->siteName = "bartonphillips.com";
+examples/post_file_get_contents.php:$t->json = json_encode($json);
+examples/post_file_get_contents.php:                       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+examples/post_file_get_contents.php:                // [headerd] => Content-type: application/x-www-form-urlencoded
+examples/query-test.php:$S = new $_site->className($_site);
+examples/query-test.php:$S->h_inlineScript =<<<EOF
+examples/query-test.php:  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+examples/query-test.php:[$top, $footer] = $S->getPageTopBottom();
+examples/query.ajax.php:// It is used by query-test.php which does the new 'async' 'await' in javascript.
+examples/query.ajax.php:  $S->query($sql);
+examples/query.ajax.php:  while($row = $S->fetchrow('assoc')) {
+examples/resizeimg.php:header("Content-type: $mime");
+examples/serialize-unserialize.php:      return "Test1 protected: $this->protected<br>";
+examples/serialize-unserialize.php:      $this->protected = $x;
+examples/serialize-unserialize.php:    echo "In Testx protected: $this->protected<br>";
+examples/serialize-unserialize.php:    $this->protected = $x;
+examples/serialize-unserialize.php:    echo "In Textx protected: $this->protected<br>";
+examples/serialize-unserialize.php:    $this->setP(88);
+examples/serialize-unserialize.php:    return $this->protected . "<br>";
+examples/serialize-unserialize.php:      return "Test1 protected: \$this->protected<br>";
+examples/serialize-unserialize.php:      \$this->protected = \$x;
+examples/serialize-unserialize.php:    echo "In Testx protected: \$this->protected<br>";
+examples/serialize-unserialize.php:    \$this->protected = \$x;
+examples/serialize-unserialize.php:    echo "In Textx protected: \$this->protected<br>";
+examples/serialize-unserialize.php:    \$this->setP(88);
+examples/serialize-unserialize.php:    return \$this->protected . "<br>";
+examples/serialize-unserialize.php:echo "showP: " .$t1->showP();
+examples/serialize-unserialize.php:echo "t1->setP(9)<br>";
+examples/serialize-unserialize.php:$t1->setP(9);
+examples/serialize-unserialize.php:echo "t1->showP: " . $t1->showP();
+examples/serialize-unserialize.php:echo "tx->set(17)<br>";
+examples/serialize-unserialize.php:$tx->set(17);
+examples/serialize-unserialize.php:echo "t1->showP: " . $t1->showP();
+examples/serialize-unserialize.php:echo "tx->showOurP: " . $tx->showOurP();
+examples/shownobots.php:// Show only non-robots and non 0 isJavaScript from 'tracker'
+examples/shownobots.php:$S = new $_site->className($_site);
+examples/shownobots.php:        $bits--;
+examples/shownobots.php:  $sql = "select countryLONG from $S->masterdb.$table ".
+examples/shownobots.php:  $S->query($sql);
+examples/shownobots.php:  list($name) = $S->fetchrow('num');
+examples/shownobots.php:  list($top, $footer) = $S->getPageTopBottom();
+examples/shownobots.php:$S->query($sql);
+examples/shownobots.php:$r = $S->getResult();
+examples/shownobots.php:while(list($ip, $agent, $filename, $lasttime, $isJava, $diff) = $S->fetchrow($r, 'num')) { // $r is result
+examples/shownobots.php:$S->banner = "<h1>Show Non Bots from 'tracker'</h1>";
+examples/shownobots.php:$S->css =<<<EOF
+examples/shownobots.php:td:first-child {
+examples/shownobots.php:  word-wrap: break-word;
+examples/shownobots.php:  background-color: lightgreen;
+examples/shownobots.php:  background-color: pink;
+examples/shownobots.php:$S->h_inlineScript =<<<EOF
+examples/shownobots.php:  $("body").on("click","table td:nth-child(3)", function(e) {
+examples/shownobots.php:        0x10: "NoScript", 0x20: "B-PageHide", 0x40: "B-Unload", 0x80: "B-BeforeUnload",
+examples/shownobots.php:        0x100: "T-BeforeUnload", 0x200: "T-Unload", 0x400: "T-PageHide",
+examples/shownobots.php:      xpos = e.pageX - 200;
+examples/shownobots.php:                       "background-color: white; border: 5px solid black; "+
+examples/shownobots.php:[$top, $footer] = $S->getPageTopBottom();
+examples/testfetch.php:$S = new $_site->className($_site); // $S gives access to my framework.
+examples/testfetch.php:$S->h_inlineScript =<<<EOF
+examples/testfetch.php:    'content-type': 'application/x-www-form-urlencoded'
+examples/testfetch.php:    'content-type': 'application/json'
+examples/testfetch.php:  headers: { 'content-type': 'application/x-www-form-urlencoded' }
+examples/testfetch.php:  'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+examples/testfetch.php:$S->title = "js-fetch";
+examples/testfetch.php:$S->banner = "<h1>$S->title Test</h1>";
+examples/testfetch.php:[$top, $footer] = $S->getPageTopBottom();
+examples/testfetch.php:<div>$ret4->name, $ret4->value</div>
+examples/testipcountry.php:      $bits--;
+examples/testipcountry.php:                                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+examples/testipcountry.php:$ipc = file_get_contents("https://www.bartonphillips.com/webstats-ajax.php", false, $context);
+examples/testpost.php:// curl -X POST "http://www.bartonphillips.com/examples/testpost.php" -d "test=something&something=test"
+examples/testpost.php:if($_POST['test'] || $post->test) {
+examples/testpost.php:  $test = $_POST['test'] ?? $post->test;
+examples/testpost.php:  $some = $_POST['something'] ?? $post->something;
+includes/banner.i.php:/* BLP 2022-04-09 -
+includes/banner.i.php:   There is no $h->siteDomain currenlty.
+includes/banner.i.php:  <!-- bartonphillips.com/includes/banner.i.php -->
+includes/banner.i.php:  <a href="https://www.$this->siteDomain">
+includes/banner.i.php:    <!-- The logo line is changes by tracker.js -->
+includes/banner.i.php:    <p style='color: red; background-color: #FFE4E1; padding: 10px'>
+includes/footer.i.php:/* BLP 2022-04-09 -
+includes/footer.i.php:   $b->ctrmsg = $b->ctrmsg ?? $this->ctrmsg;
+includes/footer.i.php:   $b->msg = $b->msg ?? $this->msg;
+includes/footer.i.php:   $b->msg1 = $b->msg1 ?? $this->msg1;
+includes/footer.i.php:   $b->msg2 = $b->msg2 ?? $this->msg2;
+includes/footer.i.php:   $b->address = ($b->noAddress ?? $this->noAddress) ? null : $b->address ?? $this->address; // BLP 2022-04-09 - new
+includes/footer.i.php:   $b->copyright = $b->copyright ?? $this->copyright; // BLP 2022-04-09 - new
+includes/footer.i.php:   if(preg_match("~^\d{4}~", $b->copyright) === 1) {
+includes/footer.i.php:     $b->copyright = "Copyright &copy; $b->copyright";
+includes/footer.i.php:   $b->aboutwebsite = $b->aboutwebsite ?? (file_exists('aboutwebsite.php') ? "<h2><a target='_blank' href='aboutwebsite.php'>About This Site</a></h2>" : null);
+includes/footer.i.php:   $b->emailAddress = ($b->noEmailAddress ?? $this->noEmailAddress) ? (($b->emailAddress ?? $this->EMAILADDRESS) ? "<a href='mailto:$this->EMAILADDRESS'>$this->EMAILADDRESS</a>" : null);
+includes/footer.i.php:   if(($b->noCounter ?? $this->noCounter) !== true) {
+includes/footer.i.php:     $counterWigget = $this->getCounterWigget($b->ctrmsg); // ctrmsg may be null which is OK
+includes/footer.i.php:   if(($b->noLastmod ?? $this->noLastmod) !== true) {
+includes/footer.i.php:   if(($b->noGeo ?? $this->noGeo) !== true) {
+includes/footer.i.php:   Currently $b->script has no $this value associated.
+includes/footer.i.php:  <!-- bartonphillips.com/includes/footer.i.php -->
+includes/footer.i.php:  $b->aboutwebsite
+includes/footer.i.php:      $b->copyright
+includes/footer.i.php:      $b->address
+includes/footer.i.php:      $b->emailAddress
+includes/footer.i.php:  $b->msg
+includes/footer.i.php:  $b->msg1
+includes/footer.i.php:  $b->msg2
+includes/footer.i.php:$b->script
+includes/footer.i.php:$b->inlineScript
+includes/head.i.php:/* BLP 2022-04-09 - These are all set via $h or $this ($this is either from the constructor or
+includes/head.i.php:   mysitemap.json. These are all made into full tags ie <title>$h->title</title>
+includes/head.i.php:   $h->base
+includes/head.i.php:   $h->title
+includes/head.i.php:   $h->desc
+includes/head.i.php:   $h->keywords
+includes/head.i.php:   $h->favicon
+includes/head.i.php:   $h->defaultCss
+includes/head.i.php:   $h->copyright (date added in constructor)
+includes/head.i.php:   $h->author
+includes/head.i.php:   $h->charset
+includes/head.i.php:   $h->viewport
+includes/head.i.php:   $h->defaultCss // if this is true then NO CSS otherwise if null then default blp.css, else vaue of defaultCss.
+includes/head.i.php:   $h->css // the <style>...</style> are added if it does not start with <style>
+includes/head.i.php:   $h->inlineScript // the <script>...</script> is added and not test is done as above.
+includes/head.i.php:   Currently $h->meta, $h->link, $h->extra, $h->script $h->inlineScript and $h->css have no $this value.
+includes/head.i.php:  <!-- bartonphillips.com/includes/head.i.php -->
+includes/head.i.php:  $h->title
+includes/head.i.php:  $h->base
+includes/head.i.php:  $h->viewport
+includes/head.i.php:  $h->charset
+includes/head.i.php:  $h->copyright
+includes/head.i.php:  $h->author
+includes/head.i.php:  $h->desc
+includes/head.i.php:  $h->keywords
+includes/head.i.php:  $h->canonical
+includes/head.i.php:  $h->meta
+includes/head.i.php:  $h->favicon
+includes/head.i.php:  $h->defaultCss
+includes/head.i.php:  $h->link
+includes/head.i.php:  $h->extra
+includes/head.i.php:  $h->script
+includes/head.i.php:  $h->inlineScript
+includes/head.i.php:  $h->css
+scripts/updatesitemap.php:$path = $_site->path; //getcwd();
+scripts/updatesitemap.php:$date = date("Y-m-d");
+scripts/updatesitemap.php:$file = file_get_contents($path ."/sitemap-new.txt");
+scripts/updatesitemap.php:<?xml version="1.0" encoding="UTF-8"?>
+scripts/updatesitemap.php:  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+scripts/updatesitemap.php:  $sitemap .= "\t<url>\n\t\t<loc>https://www.{$_site->siteDomain}/{$file->item}</loc>\n";
+scripts/updatesitemap.php:  if($file->lastmod != "no") {
+scripts/updatesitemap.php:    $thisfile = $file->item;
+scripts/updatesitemap.php:    $time = gmdate("Y-m-d\TH:i:s\Z", filemtime($path ."/$thisfile"));
+scripts/updatesitemap.php:  $sitemap .= "\t\t<changefreq>$file->frequency</changefreq>\n";
+scripts/updatesitemap.php:  $sitemap .= "\t\t<priority>$file->priority</priority>\n";
+scripts/updatesitemap.php:exec("find $other -mtime +3 -exec rm '{}' \;");
+stocks/aboutwebsite.php:// BLP 2023-02-25 - use new approach
+stocks/aboutwebsite.php:$S = new $_site->className($_site);
+stocks/aboutwebsite.php:  $S->query("insert into $S->masterdb.badplayer (ip, site, botAs, type, count, errno, errmsg, agent, created, lasttime) ".
+stocks/aboutwebsite.php:            "values('$S->ip', '$S->siteName', 'counted', 'ABOUTWEBSITE', 1, '-202', 'No site or domain provided', '$S->agent', now(), now()) ".
+stocks/aboutwebsite.php:  error_log("aboutwebsite.php NO SITE: ip=$S->ip, '$S->siteName', agent=$S->agent");
+stocks/aboutwebsite.php:$S->title = "About This Web Site and Server";
+stocks/aboutwebsite.php:$S->banner = "<h2 class='center'>About This Web Site and Server<br>($webdomain)</h2>";
+stocks/aboutwebsite.php:$S->css = <<<EOF
+stocks/aboutwebsite.php:        margin-left: auto;
+stocks/aboutwebsite.php:        margin-right: auto;
+stocks/aboutwebsite.php:        margin-bottom: 2em;
+stocks/aboutwebsite.php:        text-align: center;
+stocks/aboutwebsite.php:        background-color: white;
+stocks/aboutwebsite.php:        background-color: black;
+stocks/aboutwebsite.php:        vertical-align: middle;
+stocks/aboutwebsite.php:@media (max-width: 800px) {
+stocks/aboutwebsite.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/aboutwebsite.php:     Copyright &copy; $S->copyright<br>
+stocks/aboutwebsite.php:     Your IP Address: $S->ip
+stocks/aboutwebsite.php:    <img src="https://bartonphillips.net/images/aboutsite/linux-powered.gif"
+stocks/aboutwebsite.php:      <img src="https://bartonphillips.net/images/aboutsite/php-small-white.png"
+stocks/mutualiex.php:$S = new $_site->className($_site);
+stocks/mutualiex.php:  $alphakey = require("/var/www/PASSWORDS/alpha-token");
+stocks/mutualiex.php:  // BLP 2022-11-19 - on Nov 4 they made the following an extra charge item. So I will use
+stocks/mutualiex.php:  $S->query("select stock, qty from stocks where status = 'mutual'");
+stocks/mutualiex.php:  while([$stock, $qty] = $S->fetchrow("num")) {
+stocks/mutualiex.php:    $S->query("insert into mutuals (date, stock, price, qty, created, lasttime) values('$date', '$stock', '$close', '$qty', now(), now()) ".
+stocks/mutualiex.php:$S->title = "Mutual Funds Prices";
+stocks/mutualiex.php:$S->css =<<<EOF
+stocks/mutualiex.php:  text-align: right;
+stocks/mutualiex.php:#mutual td:first-child {
+stocks/mutualiex.php:  text-align: left;
+stocks/mutualiex.php:$S->banner = "<h1>Mutual Funds Info</h1>";
+stocks/mutualiex.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/mutualiex.php:// BLP 2021-09-08 -- remove stocks from stocks.stocks. There is no stocks database.
+stocks/mutualiex.php:$S->query($sql);
+stocks/mutualiex.php:while([$stock, $qty] = $S->fetchrow("num")) {
+stocks/mutualiex.php:  $stocks->$stock = $qty;
+stocks/mutualiex.php:                                   'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+stocks/stock-mov-avg.php:$S->banner = "<h1>Stock Info</h1>";
+stocks/stock-mov-avg.php:$S->css = <<<EOF
+stocks/stock-mov-avg.php:td { padding: 5px; text-align: right; }
+stocks/stock-mov-avg.php:$S->title = "Stock Info";
+stocks/stock-mov-avg.php:$S->banner = "<h1>$S->title</h1>";
+stocks/stock-mov-avg.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/stock-mov-avg.php:$S->query("select * from stocktotals order by created");
+stocks/stock-mov-avg.php:for($cnt=0; ([$total, $dji, $created] = $S->fetchrow("num")); ++$cnt) {
+stocks/stock-mov-avg.php:for($i = $cnt -1; $i > $cnt - 201; --$i) {
+stocks/stock-mov-avg.php:$end = number_format($ar[$cnt -1], 2); // Current formated amount
+stocks/stock-mov-avg.php:$diffTmp = $ar[$cnt -1] - $ar[0]; // DiffTmp unformated
+stocks/stock-mov-avg.php:$sign = ($dowCur < $dowHigh) ? '-' : '';
+stocks/stock-mov-avg.php:$upDown = ($sign == '-') ? "down " : "up ";
+stocks/stock-mov-avg.php:$dowDiff = $upDown . number_format(($dowTmpDiff = $dowHigh - $dowCur), 2);
+stocks/stock-mov-avg.php:<!-- totalAmt=$amt<br> -->
+stocks/stock-mov-avg.php:Last all-time high on Jan 4, 2022 of $36,799.65. Current Dji is $lastdji, Dji Moving Average for $djicnt days: $djimoving<br>
+stocks/stock-price-update.php:// stock-price-update.php (Stock Quotes)
+stocks/stock-price-update.php:// uses stock-price-update.js
+stocks/stock-price-update.php:    if($n = $S->query($sql)) {
+stocks/stock-price-update.php:      list($memberName) = $S->fetchrow('num');
+stocks/stock-price-update.php:// which does a wget of bartonphillips.com/stocks/stock-price-update.php?page=EndOfDay
+stocks/stock-price-update.php:  $dom->loadFromUrl('https://www.marketwatch.com/investing/index/djia');
+stocks/stock-price-update.php:  $quoteDate = $dom->find(".timestamp__time bg-quote")->text;
+stocks/stock-price-update.php:  $group = $dom->find(".container .markets__group");
+stocks/stock-price-update.php:  $tmp = $group->find("td")[2];
+stocks/stock-price-update.php:  $dji = $tmp->find("bg-quote")->text;
+stocks/stock-price-update.php:  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
+stocks/stock-price-update.php:  $S->query($sql);
+stocks/stock-price-update.php:  while([$stock, $qty] = $S->fetchrow('num')) {
+stocks/stock-price-update.php:  $alphakey = require("/var/www/PASSWORDS/alpha-token");
+stocks/stock-price-update.php:  $S->query($sql);
+stocks/stock-price-update.php:  while([$stock, $qty] = $S->fetchrow('num')) {
+stocks/stock-price-update.php:    echo "$stock: $value, $qty -- $mdate\n";
+stocks/stock-price-update.php:  $date = date("Y-m-d H:i:s");
+stocks/stock-price-update.php:  $S->query("insert into stocktotals (dji, total, created) values('$dji', '$total', current_date()) " .
+stocks/stock-price-update.php:// AJAX from stock-price-quote.js
+stocks/stock-price-update.php:  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
+stocks/stock-price-update.php:  $S->query($sql);
+stocks/stock-price-update.php:  while(list($stock, $price, $qty, $status, $company) = $S->fetchrow('num')) {
+stocks/stock-price-update.php:  $dom->loadFromUrl('https://www.marketwatch.com/investing/index/djia');
+stocks/stock-price-update.php:  $quoteDate = $dom->find(".timestamp__time bg-quote")->text;
+stocks/stock-price-update.php:  $group = $dom->find(".container .markets__group");
+stocks/stock-price-update.php:  $tmp = $group->find("td")[2];
+stocks/stock-price-update.php:  $dji = $tmp->find("bg-quote")->text;
+stocks/stock-price-update.php:  $tmp = $group->find("td")[3];
+stocks/stock-price-update.php:  $change = $tmp->find("bg-quote")->text;
+stocks/stock-price-update.php:  $tmp = $group->find("td")[4];
+stocks/stock-price-update.php:  $changePercent = $tmp->find("bg-quote")->text;
+stocks/stock-price-update.php:  $dom->loadFromUrl('https://www.marketwatch.com/investing/fund/AEPGX');
+stocks/stock-price-update.php:  $group = $dom->find("#maincontent");
+stocks/stock-price-update.php:  $tmp = $group->find(".element--list li")[1];
+stocks/stock-price-update.php:  $mutPer['aepgx'] = $tmp->find('.primary')->text;
+stocks/stock-price-update.php:  $dom->loadFromUrl('https://www.marketwatch.com/investing/fund/CAIBX');
+stocks/stock-price-update.php:  $group = $dom->find("#maincontent");
+stocks/stock-price-update.php:  $tmp = $group->find(".element--list li")[1];
+stocks/stock-price-update.php:  $mutPer['caibx'] = $tmp->find('.primary')->text;
+stocks/stock-price-update.php:  $dom->loadFromUrl('https://www.marketwatch.com/investing/fund/SMCWX');
+stocks/stock-price-update.php:  $group = $dom->find("#maincontent");
+stocks/stock-price-update.php:  $tmp = $group->find(".element--list li")[1];
+stocks/stock-price-update.php:  $mutPer['smcwx'] = $tmp->find('.primary')->text;
+stocks/stock-price-update.php:  $S->query($sql);
+stocks/stock-price-update.php:  $alphakey = require("/var/www/PASSWORDS/alpha-token");
+stocks/stock-price-update.php:  while([$mutual, $mprice, $qty, $company] = $S->fetchrow('num')) {
+stocks/stock-price-update.php:$S = new $_site->className($_site);
+stocks/stock-price-update.php:$S->title = "Updating Stock Quotes";
+stocks/stock-price-update.php:$S->css =<<<EOF
+stocks/stock-price-update.php:@font-face {
+stocks/stock-price-update.php:  font-family: "Roboto";
+stocks/stock-price-update.php:  src: url("/fonts/Roboto/Roboto-Regular.ttf");
+stocks/stock-price-update.php:@font-face {
+stocks/stock-price-update.php:  font-family: "Roboto black";
+stocks/stock-price-update.php:  src: url("/fonts/Roboto/Roboto-Black.ttf");
+stocks/stock-price-update.php:@font-face {
+stocks/stock-price-update.php:  font-family: "Roboto black italic";
+stocks/stock-price-update.php:  src: url("/fonts/Roboto/Roboto-BlackItalic.ttf");
+stocks/stock-price-update.php:@font-face {
+stocks/stock-price-update.php:  font-family: "Roboto bold";
+stocks/stock-price-update.php:  src: url("/fonts/Roboto/Roboto-Bold.ttf");
+stocks/stock-price-update.php:  font-family: "Roboto";
+stocks/stock-price-update.php:  text-align: right;
+stocks/stock-price-update.php:#stocks td:first-child, #mutuals td:first-child {
+stocks/stock-price-update.php:  background-color: lightblue;
+stocks/stock-price-update.php:  text-align: left;
+stocks/stock-price-update.php:  font-family: "Roboto bold";
+stocks/stock-price-update.php:  line-height: 60%;
+stocks/stock-price-update.php:#stocks td:nth-of-type(2), #mutuals td:nth-of-type(2) {
+stocks/stock-price-update.php:#stocks td:first-child span:last-child, #mutuals td:first-child span:last-child {
+stocks/stock-price-update.php:  font-family: "Roboto bold";
+stocks/stock-price-update.php:  font-size: .5rem;
+stocks/stock-price-update.php:  line-height: 0;
+stocks/stock-price-update.php:  text-transform: capitalize;
+stocks/stock-price-update.php:  font-size: 1rem;
+stocks/stock-price-update.php:#stocks td:nth-child(4), #mutuals td:nth-child(4) {
+stocks/stock-price-update.php:  font-family: "Roboto bold";
+stocks/stock-price-update.php:#stocks td:nth-of-type(3), #stocks td:nth-of-type(4), #stocks td:nth-of-type(5),
+stocks/stock-price-update.php:#mutuals td:nth-of-type(3), #mutuals td:nth-of-type(4), #mutuals td:nth-of-type(5) {
+stocks/stock-price-update.php:#mutuals td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4), td:nth-of-type(5) { text-align: right; }
+stocks/stock-price-update.php:  font-family: "Roboto bold";
+stocks/stock-price-update.php:  text-align: left;
+stocks/stock-price-update.php:#totals th:last-child {
+stocks/stock-price-update.php:  text-align: right;
+stocks/stock-price-update.php:#attribution { margin-top: 10px; }
+stocks/stock-price-update.php:  font-size: .8rem;
+stocks/stock-price-update.php:  margin-left: 50%;
+stocks/stock-price-update.php:$S->banner = "<h1>Stock Quotes</h1>";
+stocks/stock-price-update.php:$S->b_script = "<script src='stock-price-update.js'></script>";
+stocks/stock-price-update.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/stock-price-update.php:// stock-price-update.js will rerender the page with all of the data.
+stocks/stock-price-update.php:<div id='stock-data'><img id="loading" src="https://bartonphillips.net/images/loading.gif"</img></div>
+stocks/stock.getalpha.php:$S = new $_site->className($_site);
+stocks/stock.getalpha.php:  // BLP 2022-01-21 -- Get the keys form my secure location
+stocks/stock.getalpha.php:  $alphakey = require_once("/var/www/PASSWORDS/alpha-token");
+stocks/stock.getalpha.php:  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
+stocks/stock.getalpha.php:  $S->title = "Raw Data";
+stocks/stock.getalpha.php:  $S->banner = "<h1>Raw Results From alpha and iex</h1>";
+stocks/stock.getalpha.php:  $S->css =<<<EOF
+stocks/stock.getalpha.php:  font-size: .7rem;
+stocks/stock.getalpha.php:  font-size: .7rem;
+stocks/stock.getalpha.php:  [$top, $footer] = $S->getPageTopBottom();
+stocks/stock.getalpha.php:$S->title = "Raw Data";
+stocks/stock.getalpha.php:$S->banner = "<h1>Raw Data From alpha and iex</h1>";
+stocks/stock.getalpha.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/stockaddedit.php:// BLP 2020-10-21 -- removed pricedata. Added back try for duplicate key.
+stocks/stockaddedit.php:    if($n = $S->query($sql)) {
+stocks/stockaddedit.php:      list($memberName) = $S->fetchrow('num');
+stocks/stockaddedit.php:    if(!$S->query("delete from stocks where stock='$remove'")) {
+stocks/stockaddedit.php:      @$S->query("insert into stocks (stock, qty, price, name, status) ".
+stocks/stockaddedit.php:      if($e->getCode() == 1062) { // duplicate key
+stocks/stockaddedit.php:        $S->query("update stocks set qty='$qty', ".
+stocks/stockaddedit.php:$S = new $_site->className($_site);
+stocks/stockaddedit.php:  $S->query("select * from stocks where stock='$stock'");
+stocks/stockaddedit.php:  $editrow = $S->fetchrow('assoc');
+stocks/stockaddedit.php:  $readonly = "style='background-color: gray; color: white' readonly";
+stocks/stockaddedit.php:$S->title = "Stock Register";
+stocks/stockaddedit.php:$S->banner = "<h1>Stock Register</h1>";
+stocks/stockaddedit.php:$S->css =<<<EOF
+stocks/stockaddedit.php:  text-transform: uppercase;
+stocks/stockaddedit.php:  text-transform: capitalize;
+stocks/stockaddedit.php:  text-transform: uppercase;
+stocks/stockaddedit.php:#stocks td:nth-child(5) {
+stocks/stockaddedit.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/stockaddedit.php:      $desc = preg_replace("/<tr>/", "<tr style='background-color: pink'>", $desc);
+stocks/stockaddedit.php:list($tbl) = $T->maketable($sql, ['callback'=>'callback', 'attr'=>['border'=>1, 'id'=>'stocks']]);
+stocks/stockdiv.php:// BLP 2021-11-04 -- get ipx token from secure location.
+stocks/stockdiv.php:$S = new $_site->className($_site);
+stocks/stockdiv.php:    if($n = $S->query($sql)) {
+stocks/stockdiv.php:      list($memberName) = $S->fetchrow('num');
+stocks/stockdiv.php://BLP 2022-01-21 -- Get iex-token form my secure location
+stocks/stockdiv.php:$token = require_once("/var/www/PASSWORDS/iex-token");
+stocks/stockdiv.php:$S->query($sql);
+stocks/stockdiv.php:while([$stock, $price, $qty, $status] = $S->fetchrow('num')) {
+stocks/stockdiv.php:  $close = number_format($v->quote->latestPrice, 2);
+stocks/stockdiv.php:  $v = $v->stats;
+stocks/stockdiv.php:  $company = $v->companyName;
+stocks/stockdiv.php:  $divyield = number_format($v->dividendYield,2) * 100 . "%";
+stocks/stockdiv.php:  $divxdiv = substr($v->exDividendDate, 0, 10);
+stocks/stockdiv.php:  $div = $v->ttmDividendRate; // Total $ per year per one share.
+stocks/stockdiv.php:  $e = $div * $qty; // total $ per share dividend times the quantity is $ estimated-earning per YEAR.
+stocks/stockdiv.php:  $div = number_format($v->ttmDividendRate, 2);
+stocks/stockdiv.php:$S->title = "Stock Dividends";
+stocks/stockdiv.php:$S->banner = "<h1>Stock Dividends</h1>";
+stocks/stockdiv.php:$S->css =<<<EOF
+stocks/stockdiv.php:  border-collapse: collapse; /* to allow a border on the tfoot tr */
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(2) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(3) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(4) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(5) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(6) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:  background-color: lightgreen;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(7) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:  background-color: lightgreen;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(8) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:#stocktable tbody td:nth-of-type(9) {
+stocks/stockdiv.php:  text-align: right;
+stocks/stockdiv.php:#stocktable tfoot tr { border: 5px solid black; } /* only if border-collapse: collapse; */
+stocks/stockdiv.php:#stocktable tfoot th { text-align: left; }
+stocks/stockdiv.php:#stocktable tfoot td { text-align: right; }
+stocks/stockdiv.php:#stocktable tfoot td:nth-of-type(1) { border: none; background: lightblue; }
+stocks/stockdiv.php:#stocktable tfoot td:nth-of-type(2) { vertical-align: top; }
+stocks/stockdiv.php:#stocktable tfoot td:nth-of-type(3) { border: none; background: lightblue; }
+stocks/stockdiv.php:#stocktable tfoot td:nth-of-type(4) { vertical-align: bottom; }
+stocks/stockdiv.php:  background-color: lightblue;
+stocks/stockdiv.php:$S->h_inlineScript =<<<EOF
+stocks/stockdiv.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/stockvalue.php:// BLP 2020-08-28 -- fixed for cloud.iexapis.com and changed printout to reflect current values and
+stocks/stockvalue.php:$S = new $_site->className($_site);
+stocks/stockvalue.php:$iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+stocks/stockvalue.php:$S->title = "Stock Values";
+stocks/stockvalue.php:$S->banner = "<h1>Stock Values</h1>";
+stocks/stockvalue.php:$S->css =<<<EOF
+stocks/stockvalue.php:  text-align: center;
+stocks/stockvalue.php:[$top, $footer] = $S->getPageTopBottom();
+stocks/stockvalue.php:$S->query($sql);
+stocks/stockvalue.php:while(list($stock, $price, $qty) = $S->fetchrow('num')) {
+stocks/stockvalue.php:  $curval += $ar->$stk->quote->latestPrice * $val[1];
+stocks/stockvalue.php:  $av += $ar->$stk->stats->day200MovingAvg * $val[1];
+stocks/stockvalue.php:$percent = number_format(($curval - $av) / $av * 100, 2);
+stocks/stockvalue.php:if($percent[0] == '-') {
+test_examples/SiteClassTest.php:$n = $S->query("select 3+3");
+test_examples/SiteClassTest.php:$str = "n=$n, 3+3=" . $S->fetchrow('num')[0] . "<br>";
+test_examples/SiteClassTest.php:$str .= $T->maketable("select id,site,ip,agent,lasttime from $S->masterdb.tracker order by lasttime desc limit 3", ['attr'=>['border'=>'1', 'width'=>'100%']])[0];
+test_examples/SiteClassTest.php:$S->banner = "<h1>SiteClass Test</h1>";
+test_examples/SiteClassTest.php:[$top, $footer] = $S->getPageTopBottom();
+test_examples/SvgSpinner.php:    animation-timing-function: linear;
+test_examples/SvgSpinner.php:    animation-iteration-count: infinite;
+test_examples/SvgSpinner.php:<!-- This is just the svg file without any css -->
+test_examples/SvgSpinner.php:<!-- This is the same svg file with css to animate it -->
+test_examples/autoformatcurrency.php:$S = new $_site->className($_site);
+test_examples/autoformatcurrency.php:  $field0 = $_POST['currency-field'][0];
+test_examples/autoformatcurrency.php:  $field1 = $_POST['currency-field'][1];
+test_examples/autoformatcurrency.php:  foreach($_POST['currency-field'] as $v) {
+test_examples/autoformatcurrency.php:$b->inlineScript = <<<EOF
+test_examples/autoformatcurrency.php:$("input[data-type='currency']").on({
+test_examples/autoformatcurrency.php:    // remove all non-digits
+test_examples/autoformatcurrency.php:  caret_pos = updated_len - original_len + caret_pos;
+test_examples/autoformatcurrency.php:$h->css = <<<EOF
+test_examples/autoformatcurrency.php:  box-sizing: border-box;
+test_examples/autoformatcurrency.php:  box-sizing: inherit;
+test_examples/autoformatcurrency.php:  font-family: arial, helvetica, sans-serif;
+test_examples/autoformatcurrency.php:  font-size: 32px;
+test_examples/autoformatcurrency.php:  font-size: 32px;
+test_examples/autoformatcurrency.php:  text-align: center;
+test_examples/autoformatcurrency.php:  font-size: 20px;
+test_examples/autoformatcurrency.php:  line-height: 1.5;
+test_examples/autoformatcurrency.php:  max-width: 640px;
+test_examples/autoformatcurrency.php:  font-size: 16px;
+test_examples/autoformatcurrency.php:  font-size: 24px;
+test_examples/autoformatcurrency.php:  font-weight: bold;
+test_examples/autoformatcurrency.php:  margin-bottom: 10px;
+test_examples/autoformatcurrency.php:  border-radius: 5px;
+test_examples/autoformatcurrency.php:  font-size: 32px;
+test_examples/autoformatcurrency.php:  border-radius: 5px;
+test_examples/autoformatcurrency.php:  font-size: 16px;
+test_examples/autoformatcurrency.php:  font-weight: bold;
+test_examples/autoformatcurrency.php:  border-radius: 10px;
+test_examples/autoformatcurrency.php:  max-width: 700px;
+test_examples/autoformatcurrency.php:[$top, $footer] = $S->getPageTopBottom($h, $b);
+test_examples/autoformatcurrency.php:  <label for="currency-field">Enter Amount</label>
+test_examples/autoformatcurrency.php:  <input type="text" name="currency-field[0]" id="currency-field" value="" data-type="currency" placeholder="enter value">
+test_examples/autoformatcurrency.php:  <input type="text" name="currency-field[1]" id="currency-field" value="" data-type="currency" placeholder="enter value">
+test_examples/autoformatcurrency.php: <pre>data-type="currency"</pre>
+test_examples/autoformatcurrency.php:</div><!-- /main -->
+test_examples/bootstrap.php:<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+test_examples/bootstrap.php:  integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+test_examples/cdcatalog.php:$xml->load('cdcatalog.xml');
+test_examples/cdcatalog.php:$xsl->load('cdcatalog.xsl');
+test_examples/cdcatalog.php:$proc->importStyleSheet($xsl);
+test_examples/cdcatalog.php:echo $proc->transformToXML($xml);
+test_examples/checklinks.php://$host = "https://$_site->siteDomain/";
+test_examples/checklinks.php:  $x = $dom->loadStr($data);
+test_examples/checklinks.php:  $a = $x->find("a");
+test_examples/checklinks.php:    $href = $f->getAttribute("href");
+test_examples/checklinks.php:        $x = $dom->loadStr($data);
+test_examples/checklinks.php:        $a = $x->find("a");
+test_examples/error-test.php:          "of a multi-line text");
+test_examples/forceBot.php:  $S->query("select * from $S->masterdb.bots where ip='74.192.14.176'");
+test_examples/forceBot.php:  while($row = $S->fetchrow('num')) {
+test_examples/forceBot.php:  $S->query("select * from $S->masterdb.bots2 where ip='74.192.14.176'");
+test_examples/forceBot.php:  while($row = $S->fetchrow('num')) {
+test_examples/forceBot.php:  $S->query("delete from $S->masterdb.bots where ip='74.192.14.176'");
+test_examples/forceBot.php:  $S->query("delete from $S->masterdb.bots2 where ip='74.192.14.176'");
+test_examples/forceBot.php:  $S->query("delete from $S->masterdb.tracker where id=$id");
+test_examples/forceBot.php:$_site->isMeFalse = true; // Force Not Me to true
+test_examples/forceBot.php:$i = $_site->dbinfo;
+test_examples/forceBot.php:$p = require("/home/barton/database-password");
+test_examples/forceBot.php:$mysqli = new mysqli($i->host, $i->user, $p, 'barton');
+test_examples/forceBot.php:$mysqli->query("insert ignore into barton.bots (ip, agent, count, robots, site, creation_time, lasttime) ".
+test_examples/forceBot.php:$S = new $_site->className($_site);
+test_examples/forceBot.php:$h->banner = "<h1>Force Bot Test</h1>";
+test_examples/forceBot.php:$b->inlineScript =<<<EOF
+test_examples/forceBot.php:[$top, $footer] = $S->getPageTopBottom($h, $b);
+test_examples/forceBot.php:<p>This program forces 'isMeFalse' to true and forces a bots table record for my ip ($S->ip). Beforce you press the
+test_examples/forceBot.php:removed. The tracker record with the id=$S->LAST_ID is also removed.</p>
+test_examples/forceBot.php:<button onclick="deleteIt('$S->LAST_ID')">Delete from bots</button>
+test_examples/getrepo.php:if($id = $json->id) {
+test_examples/getrepo.php:  echo "DATA: The id is $id and '$json->test'";
+test_examples/getrepo.php:    myHeaders.set("Content-Type", "application/x-www-form-urlencoded");
+test_examples/getrepo.php:    myHeaders.set("Content-Type", "application/json");
+test_examples/header.php:  'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+test_examples/htmx.php:htmx is small (~12k min.gz'd), dependency-free, extendable, IE11 compatible & has reduced code base sizes by 67% when compared with react
+test_examples/insert-test.php://$_site->dbinfo->password = "junk";
+test_examples/insert-test.php:$S->query("create temporary table testtemp (id int auto_increment primary key, name varchar(100), unique key(name))");
+test_examples/insert-test.php:$created = $S->query("show create table testtemp");
+test_examples/insert-test.php:echo "First Insert Count name=Barton: " . $S->query("insert into testtemp (name) value('Barton')") . "<br>";
+test_examples/insert-test.php:echo "Select Count: " . $S->query("select * from testtemp") . "<br>";
+test_examples/insert-test.php:while([$id, $name] = $S->fetchrow('num')) {
+test_examples/insert-test.php:echo "First InsertId: " . $S->getLastInsertId() . "<br>";
+test_examples/insert-test.php:echo "Second Insert: Barton/Update: Sam, Count: " . $S->query("insert into testtemp (name) value('Barton') ".
+test_examples/insert-test.php:echo "Second InsertId: " . $S->getLastInsertId() . "<br>";
+test_examples/insert-test.php:echo "Select After Insert/Update, Count: " . $S->query("select * from testtemp") . "<br>";
+test_examples/insert-test.php:while([$id, $name] = $S->fetchrow('num')) {
+test_examples/insert-test.php:echo "Third Insert name=Bill, Count: " . $S->query("insert into testtemp (name) value('Bill')") . "<br>";
+test_examples/insert-test.php:echo "Third InsertId: " . $S->getLastInsertId() . "<br>";
+test_examples/insert-test.php:echo "Select Count: " . $S->query("select * from testtemp") . "<br>";
+test_examples/insert-test.php:while([$id, $name] = $S->fetchrow('num')) {
+test_examples/insert-test.php:echo "Select Count for id=2: " . $S->query("select * from testtemp where id=2") . "<br>";
+test_examples/insert-test.php:echo "The next statement will cause an error: '\$S->query(\"babal\");'<br>";
+test_examples/insert-test.php:$S->query("babal");
+test_examples/memberstable.php:$S = new $_site->className($_site);
+test_examples/memberstable.php:$h->banner = "<h1>Member's table display</h1>";
+test_examples/memberstable.php:$h->css = "<style>table { width: 100%; font-size: 10px; }</style>";
+test_examples/memberstable.php:[$top, $footer] = $S->getPageTopBottom($h, $b);
+test_examples/memberstable.php:[$members] = $T->maketable($sql, array('attr'=>array('border'=>'1', 'id'=>'members')));
+test_examples/phpmail.php:    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+test_examples/phpmail.php:    $mail->isSMTP();                                            //Send using SMTP
+test_examples/phpmail.php:    $mail->Host       = 'smtp.gmail'; //'smtp.example.com';                     //Set the SMTP server to send through
+test_examples/phpmail.php:    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+test_examples/phpmail.php:    $mail->Username   = 'barton@bartonlp.org'; //'user@example.com';                     //SMTP username
+test_examples/phpmail.php:    $mail->Password   = 'secret';                               //SMTP password
+test_examples/phpmail.php:    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+test_examples/phpmail.php:    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+test_examples/phpmail.php:    $mail->setFrom('barton@bartonlp.org', 'Mailer');
+test_examples/phpmail.php:    $mail->addAddress('bartonphillips@gmail.com', 'Barton'); //joe@example.net', 'Joe User');     //Add a recipient
+test_examples/phpmail.php:    $mail->addAddress('bonnieburch2015@gmail.com'); //'ellen@example.com');               //Name is optional
+test_examples/phpmail.php:    $mail->addReplyTo('barton@bartonlp.com', 'MailMaster'); //'info@example.com', 'Information');
+test_examples/phpmail.php:    $mail->addCC('barton@bartonphillips.com'); //'cc@example.com');
+test_examples/phpmail.php:    $mail->addBCC('tom@bartonlp.org'); //'bcc@example.com');
+test_examples/phpmail.php:    $mail->addAttachment('/var/www/bartonphillipsnet/images/146624.png');         //Add attachments
+test_examples/phpmail.php:    $mail->addAttachment('/var/www/bartonphillipsnet/images/146624.png', '146624.png');    //Optional name
+test_examples/phpmail.php:    $mail->isHTML(true);                                  //Set email format to HTML
+test_examples/phpmail.php:    $mail->Subject = 'Here is the subject';
+test_examples/phpmail.php:    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+test_examples/phpmail.php:    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+test_examples/phpmail.php:    $mail->send();
+test_examples/phpmail.php:    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+test_examples/popen.php:// Example using popen. This opens a process. In this case it is '/bin/ps -waux' for reading.
+test_examples/popen.php:$h->title = "Popen demo";
+test_examples/popen.php:$h->banner = "<h1>$h->title</h1>";
+test_examples/popen.php:[$top, $footer] = $S->getPageTopBottom($h);
+test_examples/popen.php:$fp = popen("/bin/ps -waux", "r");
+test_examples/popen.php:exec("/bin/ps -waux", $out);
+test_examples/popen.php:<p>This opens a process. In this case it is '/bin/ps -waux' for reading.
+test_examples/promises.php:<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+test_examples/rawmysql.php:$i = $_site->dbinfo;
+test_examples/rawmysql.php:$p = require("/home/barton/database-password");
+test_examples/rawmysql.php:$mysqli = new mysqli($i->host, $i->user, $p, 'barton');
+test_examples/rawmysql.php:$result = $mysqli->query("SELECT DATABASE()");
+test_examples/rawmysql.php:$row = $result->fetch_row();
+test_examples/rawmysql.php:$result = $mysqli->query("select * from badplayer");
+test_examples/rawmysql.php:while($row = $result->fetch_assoc()) {
+test_examples/realconnect.php:// BLP 2021-12-11 -- Demo using mysqli_real_connect() and prepare() with extra logic to fetch() "*".
+test_examples/realconnect.php:$S = new $_site->className($_site);
+test_examples/realconnect.php:if (!$mysqli->options(MYSQLI_INIT_COMMAND, 'SET AUTOCOMMIT = 1')) {
+test_examples/realconnect.php:if (!$mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5)) {
+test_examples/realconnect.php:if (!$mysqli->real_connect('localhost', 'barton', '6706424', 'barton')) {
+test_examples/realconnect.php:echo 'Success... ' . $mysqli->host_info . "<br>";
+test_examples/realconnect.php:if(!$mysqli->select_db("barton")) {
+test_examples/realconnect.php:if(!$mysqli->query("create table test ( `name` varchar(100))")) {
+test_examples/realconnect.php:$mysqli->query("insert into test (name) value('barton')");
+test_examples/realconnect.php:$rows = $mysqli->query("select * from test limit 2");
+test_examples/realconnect.php:while($row = $rows->fetch_object()) {
+test_examples/realconnect.php:  echo "{$row->name}<br>";
+test_examples/realconnect.php:$rows = $mysqli->query("select * from counter limit 2");
+test_examples/realconnect.php:while($row = $rows->fetch_assoc()) {
+test_examples/realconnect.php:$S->query("select * from $S->masterdb.test limit 2");
+test_examples/realconnect.php:while($d = $S->fetchrow('obj')) {
+test_examples/realconnect.php:  echo "Name: $d->name<br>";
+test_examples/realconnect.php:$S->query("select count(*) from $S->masterdb.test");
+test_examples/realconnect.php:$n = $S->fetchrow("num")[0];
+test_examples/realconnect.php:  $S->query("drop table $S->masterdb.test");
+test_examples/realconnect.php:$stm = $S->prepare("select * from $S->masterdb.counter where site=? limit 10");
+test_examples/realconnect.php:$stm->bind_param("s", $site);
+test_examples/realconnect.php:$stm->execute();
+test_examples/realconnect.php:    $stmt->store_result();
+test_examples/realconnect.php:  $fields = $stmt->result_metadata()->fetch_fields();
+test_examples/realconnect.php:    $key = str_replace(' ', '_', $field->name); // space may be valid SQL, but not PHP
+test_examples/realconnect.php:    $args[$key] = &$field->name; // this way the array key is also preserved
+test_examples/realconnect.php:  while($stmt->fetch()) {
+test_examples/realconnect.php:    $stmt->free_result();
+test_examples/showmapforfinger.php:$S = new $_site->className($_site);
+test_examples/showmapforfinger.php:$h->title = "Show Map for Finger";
+test_examples/showmapforfinger.php:$h->banner = "<h1>$h->title</h1>";
+test_examples/showmapforfinger.php:  $b->script = <<<EOF
+test_examples/showmapforfinger.php:  $b->inlineScript = <<<EOF
+test_examples/showmapforfinger.php:  const lat = $("td:first-of-type", this).text();
+test_examples/showmapforfinger.php:  const lon = $("td:nth-of-type(2)", this).text();
+test_examples/showmapforfinger.php:  const site = $("td:nth-of-type(3)", this).text();
+test_examples/showmapforfinger.php:  const ip = $("td:nth-of-type(4)", this).text();
+test_examples/showmapforfinger.php:  $h->css =<<<EOF
+test_examples/showmapforfinger.php:  z-index: 99;
+test_examples/showmapforfinger.php:  padding-bottom: 30px;
+test_examples/showmapforfinger.php:  z-index: 100;
+test_examples/showmapforfinger.php:  $S->query("select lat, lon, site, ip, lasttime from $S->masterdb.geo where finger='$finger' order by lasttime");
+test_examples/showmapforfinger.php:  while([$lat, $lon, $site, $ip, $lasttime] = $S->fetchrow('num')) {
+test_examples/showmapforfinger.php:    if($cords["$slat,$slon"] || $intlatlon == '35,-77') continue;
+test_examples/showmapforfinger.php:    [$top, $footer] = $S->getPageTopBottom($h, $b);
+test_examples/showmapforfinger.php:[$top, $footer] = $S->getPageTopBottom($h, $b);
+test_examples/smptemail.php:$S = new $_site->className($_site);
+test_examples/smptemail.php:  $message = "Content-Transfer-Encoding: quoted-printable\r\nContent-Type: text/html; charset=\"utf-8\"\r\n\r\n";
+test_examples/smptemail.php:  $h->title = "Send";
+test_examples/smptemail.php:  $h->banner = "<h1>$h->title</h1>";
+test_examples/smptemail.php:  list($top, $footer) = $S->getPageTopBottom($h);
+test_examples/smptemail.php:    $content = 'Content-Type: multipart/alternative; boundary="testitem"';
+test_examples/smptemail.php:                        "--testitem\r\n$message\r\n.\r\n");
+test_examples/smptemail.php:$h->title = "Send via Smtp";  
+test_examples/smptemail.php:$h->banner = "<h1>Send Via SMTP</h1>";
+test_examples/smptemail.php:[$top, $footer] = $S->getPageTopBottom($h);
+test_examples/testDatabase.php:// BLP 2022-07-31 - Test new changes to Database.
+test_examples/testDatabase.php://$_site->isMeFalse = true; // force isMe() true
+test_examples/testDatabase.php:$tbl = $T->maketable("select id, site from $S->masterdb.tracker limit 1",["attr"=>["id"=>"test", "border"=>"1"]])[0];
+test_examples/testDatabase.php://error_log("testDatabase.php: " . get_class($S->db) . " version: " . $S->db->getVersion());
+test_examples/testDatabase.php:echo get_class($S->db)." Class: " . $S->db->getVersion() . "<br>";
+test_examples/testDatabase.php:vardump("myIp", $S->myIp);
+test_examples/testDatabase.php://error_log("testDatabase.php: " . get_class($S) . " version: " . $S->getVersion());
+test_examples/testDatabase.php:echo get_class($S)." Class: ".$S->getVersion() . "<br>";
+test_examples/testDatabase.php:echo "isMe=".($S->isMe() ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo $S->getIp()."<br>";
+test_examples/testDatabase.php:echo "\$S->isBot(): ".($S->isBot("testitbotasathing") ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo "isBot: ".($S->isBot ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo "\$S->__toString(): " . $S->__toString(). "<br>";
+test_examples/testDatabase.php:$ips = implode(",", preg_replace("~(\S+)~", "'$1'", $S->myIp));
+test_examples/testDatabase.php:echo "isMyIp('123.12.12.1'): ".($S->isMyIp('123.12.12.1') ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo "isMyIp('74.192.14.176'): ".($S->isMyIp('74.192.14.176') ? "true" : "false")."<br>";
+test_examples/testDatabase.php://error_log("testDatabase.php: ". get_class($S->errorClass) . " version: " . $S->errorClass->getVersion());
+test_examples/testDatabase.php:echo get_class($S->errorClass)." Class: ". $S->errorClass->getVersion()."<br>";
+test_examples/testDatabase.php://error_log("testDatabase.php: " . get_class($T) . " version: " . $T->getVersion());
+test_examples/testDatabase.php:echo get_class($T)." Class: ". $T->getVersion()."<br>";
+test_examples/testDatabase.php:vardump("myIp", $S->myIp);
+test_examples/testDatabase.php://error_log("testDatabase.php: " . get_class($S->db) . " version: " . $S->getVersion());
+test_examples/testDatabase.php:echo get_class($S)." Class: ".$S->getVersion() . "<br>";
+test_examples/testDatabase.php:echo "isMe=".($S->isMe() ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo $S->getIp()."<br>";
+test_examples/testDatabase.php:echo "\$S->isBot(): ".($S->isBot("testitbotasathing") ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo "isBot: ".($S->isBot ? "true" : "false")."<br>";
+test_examples/testDatabase.php:echo $S->__toString(). "<br>";
+test_examples/testDatabase.php://error_log("testDatabase.php: ". dbAbstract::getAbstractName() . " version: " . $S->getAbstractVersion());
+test_examples/testDatabase.php:echo "DB Name: " .$S->getDbName()."<br>";
+test_examples/testDatabase.php:  echo $e->getCode() . "<br>";
+test_examples/testDatabase.php:  echo $e->getMessage() ."<br>";
+test_examples/testDatabase.php:  echo get_class($e)." Class: ".$e->getVersion()."<br>";
+test_examples/testDatabase.php:  $S->query("select * from b");
+test_examples/testDatabase.php:  echo "Error: ".$e->getCode().", ".$e->getMessage()."<br>";
+test_examples/testDatabase.php:  $S->query("select * from bartonphillips.members limit 2");
+test_examples/testDatabase.php:  while($row = $S->fetchrow('num')) {
+test_examples/testDatabase.php:  echo "Error: ".$e->getCode(). ", ".$e->getMessage()."<br>";

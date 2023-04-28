@@ -16,6 +16,7 @@ CREATE TABLE `tracker` (
   `endtime` datetime DEFAULT NULL,
   `difftime` varchar(20) DEFAULT NULL,
   `isJavaScript` int DEFAULT '0',
+  `error` varchar(256) DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `site` (`site`),
@@ -79,7 +80,7 @@ $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 $T = new dbTables($S);
 
-$val = "select id,ip,site,page,botAs,finger,nogeo,agent,referer,hex(isjavascript) as java,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
+$val = "select id,ip,site,page,botAs,finger,nogeo,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
 
 // These MUST BE TRUE globals!!
 $fingers = [];
@@ -111,6 +112,8 @@ function getinfo($value, $sql=null) {
     if(is_null($ip)) {
       $ip = $row['ip']; // Do this once. Get ip from tracker table
     }
+
+    $row['referer'] = basename($row['referer']);
     
     if($row['finger'] != '') {
       $fingers[$row['finger']]++;
@@ -225,17 +228,23 @@ $S->banner = "<h1>Find in Tracker</h1>";
 $S->title = "Find in Tracker";
 
 $S->css =<<<EOF
+/* 4 is page*/
+#trackertbl td:nth-of-type(4) { overflow-x: auto; max-width: 150px; white-space: pre;}
+/* 8 is agent */
+#trackertbl td:nth-of-type(8) { overflow-x: auto; max-width: 200px; white-space: pre;}
+/* 9 is referer */
+#trackertbl td:nth-of-type(9) { overflow-x: auto; max-width: 200px; white-space: pre;}
 /* 10 is javascript */
-#trackertbl td:nth-of-type(10) { cursor: pointer; } 
-#trackerContainer, #botsContainer, #geo {
+#trackertbl td:nth-of-type(10) { cursor: pointer;} 
+#trackerContainer, #botsContainer, #mygeo, #badplayer, #daycounts {
   width: 100%;
 }
-#trackertbl { position: relative; font-size: 10px; }
+#trackertbl { position: relative; font-size: 16px; width: 100%; }
 #trackerContainer td { padding-left: 10px; padding-right: 10px; }
 #botsContainer td { padding-left: 10px; padding-right: 10px; }
-/* agent filed */
+/* agent field */
 #botsContainer td:nth-of-type(2) { word-break: break-all; width: 900px; }
-#geo td { padding-left: 10px; padding-right: 10px; }
+#botstbl, #mygeo, #dayrecords, #badplayer { width: 100%; }
 #badplayer td { padding-left: 10px; padding-right: 10px; }
 #form th { text-align: left; padding-right: 10px; font-size: 18px; }
 #location { font-size: 18px; }
@@ -248,6 +257,7 @@ button { border-radius: 5px; background: green; color: white; font-size: 18px; }
 #mygeo th {
   width: 220px;
 }
+#mygeo td { padding-left: 10px; padding-right: 10px; }
 /* geo is the div for the google maps image */
 #geocontainer {
   width: 100%;

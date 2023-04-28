@@ -1,3 +1,8 @@
+<RequireAll>
+ Require all granted
+ Require not ip 193.42.33.5
+</RequireAll>
+
 Options +Includes +Indexes
 Header set Access-Control-Allow-Origin "*"
 

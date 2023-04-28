@@ -11,7 +11,7 @@ if($_POST['page'] == 'form') {
   $value = $_POST['id'];
   $ret = ['name'=>$name, 'value'=>$value];
   echo json_encode($ret);
-  error_log("ret: " . print_r($ret, true));
+  error_log("examples/testfetch.php, ret: " . print_r($ret, true));
   exit();
 }
 

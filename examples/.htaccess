@@ -1,4 +1,9 @@
 Options +Includes +Indexes
+<RequireAll>
+ Require all granted
+ Require not ip 193.42.33.5
+</RequireAll>
+
 Header set Access-Control-Allow-Origin "*"
 
 SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes

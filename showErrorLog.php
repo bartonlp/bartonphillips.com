@@ -1,6 +1,7 @@
 <?php
 // BLP 2023-02-25 - use new approach
 // Show the PHP_ERRORS.log and allow it the be emptied.
+// This also shows how to set 'localstorage' via PHP.
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
@@ -10,8 +11,16 @@ if($_POST['delete']) {
     vardump("error", error_get_last());
     exit();
   }
-  header("location: showErrorLog.php");
-  echo "<div style='text-align: center'><h1>File is now empty</h1><p>Returning to Show PHP_ERRORS.log</p></div>";
+
+  // Here I want to set the localstorage for this computer.
+  // I can echo a <script>
+  // Then I must wait a little while before reloading the program.
+  // If I just do 'header("location: showErrorLog.php");'
+  // it does not work. Even a small delay is sufficent as long as we get to the exit().
+  
+  $del = date("Y-m-d H:i:s");
+  echo "<script>localStorage.setItem('ShowPhpErrorLog', '$del');</script>";
+  header("refresh:0.02;url=showErrorLog.php");
   exit();
 }
 
@@ -31,14 +40,18 @@ $S->title = "Show Error Log";
 $S->banner = "<h1>Show PHP_ERRORS.log</h1>";
 
 $S->css =<<<EOF
-#output { width: 100%; font-size: 11px; overflow-x: scroll; }
-#delete_button { border-radius: 5px; background: red; color: white; }
+#output { width: 100%; font-size: 18px; overflow-x: scroll; }
+#delete_button { border-radius: 5px; font-size: var(--blpFontSize); background: red; color: white; }
 .ip, .id { cursor: pointer; };
 EOF;
 
 $S->noCounter = true;
 
 $S->b_inlineScript = <<<EOF
+let del = localStorage.getItem("ShowPhpErrorLog");
+console.log("DEL: ", del);
+$("#del-time").html("<p>Last Delete Time: " + del + "</p>");
+
 $(".ip").on("click", function() {
   let thisIp = $(this).text();
   window.open("findip.php?ip="+thisIp, "_blank");
@@ -59,6 +72,7 @@ $top
 <hr>
 <form method='post'>
 <button id="delete_button" type='submit' name='delete' value="delete">Delete</button>
+<div id="del-time"></div>
 </form>
 <hr>
 <div id='output'>$output</div>

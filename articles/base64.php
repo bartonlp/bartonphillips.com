@@ -50,7 +50,7 @@ $top
 <code>{image type}</code> should be replaced with <code><i>jpg, gif, png</i></code>.<br>
 and <code>{base 64 data}</code> should be replaced with the actual base 64 data.</p>
 <form method='post'>
-<input type='text' name='image' placeholder='Enter base 64 image url'>
+<textarea name='image' rows="10" cols="100"></textarea>
 <br>
 <input type='submit' value="Submit">
 </form>

@@ -5,10 +5,11 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
+$t = new StdClass;
 $t->test = "test from post_file_get_contents.php";
 $t->siteName = "bartonphillips.com";
 
-$json = [test1=>"test one", test2=>"test two"];
+$json = ['test1'=>"test one", 'test2'=>"test two"];
 
 $t->json = json_encode($json);
 

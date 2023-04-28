@@ -220,7 +220,7 @@ const opt = {
   <input type="number" name="id" value="123456">
   <input type="submit");">
 </form>
-<button id="send">Send</button>
+<button id="send">Get The Time</button>
 <div id="startup"></div>
 <div id="response"></div>
 <hr>

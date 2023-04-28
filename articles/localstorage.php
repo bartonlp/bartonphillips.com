@@ -1,6 +1,10 @@
 <?php
-// BLP 2023-02-25 - use new approach
-// BLP 2018-03-31 -- convert localstorage.htm to a php file.
+// BLP 2023-02-25 - use new approach.
+
+$_site = require_once(getenv("SITELOADNAME"));
+$S = new $_site->className($_site);
+
+// Ajax call to get the page source the first time.
 
 if($_GET['page'] == 'source') {
   $file = file_get_contents("localstorage.php");
@@ -8,10 +12,7 @@ if($_GET['page'] == 'source') {
   exit();
 }
 
-$_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site);
-
-$S->title = "LocalStorage Example";
+$S->title = "LocalStorage Example TEST";
 $S->desc = "LocalStorage Example. Resize a big image using JavaScript";
 $S->keywords = "LocalStorage, Resize IMAGE with JavaScript";
 $S->h_script =<<<EOF
@@ -20,7 +21,8 @@ EOF;
 $S->link =<<<EOF
 <link rel="stylesheet" href="https://bartonphillips.net/css/theme.css">
 EOF;
-$S->banner = "<h1 class='center'>LocalStorage Example: Resize a big image in JavaScript</h1>";
+
+$S->banner = "<h1>LocalStorage Example: Resize a big image in JavaScript</h1>";
 $S->css =<<<EOF
 .syntaxhighlighter {
   overflow: initial !important;

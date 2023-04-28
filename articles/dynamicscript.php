@@ -198,7 +198,6 @@ We create this JavaScript and place it in the \$script variable.<br>
 </p>
 <pre class='brush: js'>
 \$script = &lt;&lt;&lt;EOF
-
 &lt;script id="plugger"&gt;
 (function(){
     var plug=document.createElement('script');
@@ -276,10 +275,20 @@ jQuery(document).ready(function($) {
 </section>
 <section id='iframe'>
 <h3>What Else?</h3>
-<p>Iframes have always been a pain. Having to load the iframe from a site rather than being able to
-dynamically create them was always a drawback. Now with data uri's you can dynamically create
-the source for the iframe either with PHP on the server or via JavaScript on the client.</p>
+<p><i>iframe</i>s have always been a pain. Having to load the iframe from a site rather than being able to
+dynamically create them was always a drawback.</p>
+<p>If your browser supports <i>srcdoc</i>, you can create an <i>ifrom</i> like this:<br>
+<pre class='brush: php'>
+&lt;iframe srcdoc='&lt;h1&gt;This way uses srcdoc>&lt/h1&gt;&lt;p&gt;Cool do you not think.&lt;/p&gt;'&lt/iframe&gt;
+</pre>
+And Here it is. Very simple if your browser supports <i>srcdoc</i>:</p>
+<iframe srcdoc='<h1>This way uses srcdoc</h1><p>Cool do you not think.</p>'></iframe>
+<p>Otherwise you and use the PHP or JavaScript approach.
+</p>
+
 <h3>Using PHP</h3>
+<p>Now with data uri's you can dynamically create the source for the <i>iframe</i> either with PHP on the server or via JavaScript on the client.</p>
+
 <p>With PHP on the server all you have to do is convert the HTML you want to have in the iframe
 to base64 and then add 'data:application/x-javascript;base64,' to the start.</p>
 
@@ -299,13 +308,12 @@ to base64 and then add 'data:application/x-javascript;base64,' to the start.</p>
 &shy;EOF;
 // Turn it into a data uri
 \$data = "data:text/html;base64," . base64_encode(\$data);
-
 </pre>
 
 <p>Then in your HTML source just add the iframe as usual with the 'src' tag.</p>
-<script type="syntaxhighlighter" class="brush: xml"><![CDATA[
-<iframe id="frame" style="width: 50%;" src="\$data"></iframe>
-]]></script>
+&lt;script type="syntaxhighlighter" class="brush: xml"&gt;&lt;![CDATA[
+&lt;iframe id="frame" style="width: 50%;" src="\$data"&gl;&gl;/iframe&gt;
+]]&gt;&lt;/script&gt;
 
 <p>That is all there is to it.</p>
 
