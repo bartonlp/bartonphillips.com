@@ -26,7 +26,8 @@ $S->css =<<<EOF
 }
 EOF;
 
-$S->inlineScript =<<<EOF
+$S->h_script =<<<EOF
+<script type="module">
 function DoIt(e, link) {
   console.log("the file fancy-tabs.html is loaded with a 'rel=\"import\"");
   console.log("e:", e, " link:", link);
@@ -36,6 +37,9 @@ jQuery(document).ready(function($) {
   function supportsImports() {
     // is 'import' in document.createElement('link') if yes then 'import' is supported.
 
+    if (typeof impor "function") {
+      console.log("imports is typeof 'function'");
+    }
     return 'import' in document.createElement('link');
   }
 
@@ -89,6 +93,7 @@ jQuery(document).ready(function($) {
     return false;
   });  
 });
+</script>  
 EOF;
 
 [$top, $footer] = $S->getPageTopBottom();

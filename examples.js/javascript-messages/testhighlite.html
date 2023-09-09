@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://bartonphillips.net/js/jquery-3.6.3.js"></script>
+  <link href="https://bartonphillips.net/css/prism.css" rel="stylesheet" />
+  <style>
+  html { font-size: 30px; }
+  </style>
+</head>
+<body">
+<pre class="line-numbers"><code class="language-css">
+p { color: red }
+#test p { color: red; border: 1px solid black; }
+</code></pre>
+<p>
+  This is code <code class="language-css">p { color: red }</code>
+</p>
+
+<p id="dynamic"></p>
+<script>
+//const d = document.getElementById("dynamic");
+//d.innerHTML = "This is some inline text<pre class='line-numbers'><code
+//class='language-php'>&lt;?php\nfunction test() { echo 'test' }</code></pre>";
+$("#dynamic").html("This is some inline text<pre class='line-numbers'><code class='language-php'>&lt;?php\nfunction test() { echo 'test' }</code></pre>");
+</script>
+<script src="https://bartonphillips.net/js/prism.js"></script>
+</body>
+</html>

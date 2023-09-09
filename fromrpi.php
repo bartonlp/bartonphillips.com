@@ -12,10 +12,10 @@ require("../vendor/autoload.php"); // get the autoloader
 
 // Function to strip comments from our json file.
 
-function stripComments($x) {
-  $pat = '~".*?"(*SKIP)(*FAIL)|(?://[^\n]*)|(?:#[^\n]*)|(?:/\*.*?\*/)~s';
-  return preg_replace($pat, "", $x);
-}
+//function stripComments($x) {
+//  $pat = '~".*?"(*SKIP)(*FAIL)|(?://[^\n]*)|(?:#[^\n]*)|(?:/\*.*?\*/)~s';
+//  return preg_replace($pat, "", $x);
+//}
 
 // Get the page from Rpi.
 

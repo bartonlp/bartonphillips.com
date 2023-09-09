@@ -17,7 +17,7 @@ $totalAmt = 0;
 $hi = 0;
 $low = 9999999999;
 
-$S->query("select * from stocktotals order by created");
+$S->query("select total, dji, created from stocktotals order by created");
 
 $djicnt = 0;
 $djitotal = 0;
@@ -54,7 +54,8 @@ $diffTmp = $ar[$cnt -1] - $ar[0]; // DiffTmp unformated
 $per = number_format(($diffTmp / $ar[0] * 100), 2); // Percent formated
 $start = number_format($ar[0], 2); // Start formated
 $diff = number_format($diffTmp, 2); // Diff formated
-$moving = number_format($totalAmt / $cnt, 2);
+$tcnt = $cnt < 200 ? $cnt : 200; 
+$moving = number_format($totalAmt / $tcnt, 2);
 $djimoving = number_format($djitotal / $djicnt, 2);
 $lastdji = number_format($lastdji, 2);
 if($per < 0) {
@@ -84,8 +85,7 @@ $stocks
 Number of days: $cnt<br>
 Heighest value: $hi<br>
 Lowest value: $low<br>
-<!-- totalAmt=$amt<br> -->
-Moving Avg for $cnt days: $moving<br>
+Moving Avg for $tcnt days: $moving<br>
 From start on Feb 2, 2022 ($start) to today ($end) difference is: $diff ($per%)<br>
 Last all-time high on Jan 4, 2022 of $36,799.65. Current Dji is $lastdji, Dji Moving Average for $djicnt days: $djimoving<br>
 From the last high in Jan 4, 2022 to the current price for the DOW is $dowDiff or $dowDiffPer.

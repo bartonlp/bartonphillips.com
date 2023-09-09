@@ -14,7 +14,8 @@
         "host": "localhost",
         "user": "barton",
         "database": "barton", 
-        "engine": "mysqli"
+        "engine": "mysqli",
+        "DUMMY": null // Dummy at the end with no comma.
     },
     "errorMode": { // only $this. 
       "development": true, // development automatically sets email to true.
@@ -22,8 +23,13 @@
                          // set to true unless noEmail is set to false!
                          // Only false not null or just missing.
       "noEmail": null,   // Set it to null will not affect the true above which sets it to true also.
-      "noHtml": false,
-      "noOutput": false
+      //"noHtml": false,
+      //"noOutput": false,
+      //"noBacktrace": true,
+      //"errLast": true,
+      //"exitonError": true, // this is the default. If false then we
+                             // return to the caller.
+      "DUMMY": null // Dummy with no comma at end.
     },
     "count": false,
     "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.

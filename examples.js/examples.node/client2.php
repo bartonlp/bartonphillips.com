@@ -1,5 +1,5 @@
 <?php
-// BLP 2023-02-26 - use new approach
+// NOTE TO RUN THESE you must allow port 8089. sudo ufw allow 8089.
 // Register with the websocket server (server3.php) running under node.
 
 $_site = require_once(getenv("SITELOADNAME"));
@@ -55,7 +55,8 @@ function sendWs() {
     }
 
     try {
-      webSocket.send(cmd);
+      //webSocket.send(cmd);
+      webSocket.send(JSON.stringify({msg: cmd}));
     } catch(exception){
       logWsMessage('<p class="warning">Error: ' + exception + '</p>');
     }

@@ -1,8 +1,7 @@
 <?php
-// BLP 2023-02-25 - use new approach
 // Main page for bartonphillips.com
-// BLP 2022-07-20 - add maps.js to do locstr.
-// BLP 2022-04-18 - Removed gitstatus.php 
+// recapcha site key: 6LefxlMnAAAAALcjQAYEBYCOhBXpLDGEL0Q8NzMt
+// recapcha secret key: 6LefxlMnAAAAAHWF6S3iofqztaqqiTFAwHfteHD6
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
@@ -20,8 +19,6 @@ EOF;
 
 $S->b_script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
-  <!-- Add fingers here before index.js for use by geo.js and maps.js -->
-  <script>var fingers = `$fingers`;</script> 
   <script src='/index.js'></script>
   <script src='https://bartonphillips.net/js/maps.js'></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&callback=initMap&v=weekly" async></script>
@@ -29,15 +26,6 @@ EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
 
-// Check if we have a static ip.
-
-if($_SERVER['REMOTE_ADDR'] == '195.252.232.86') {
-  $staticIp = <<<EOF
-<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>
-EOF;
-}
-                 
 // ***************
 // Render the page
 // BLP 2021-09-22 -- $hereMsg is set in index.i.php along with $locstr, $adminstuff and $date
@@ -81,12 +69,13 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
 <a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
+<a target="_blank" href="https://www.jt-lawnservice.com"><button>JT Lawn Service</button></a>
 <a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
-$staticIp
-<!--<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>-->
+<!-- BLP 2023-08-11 - not doing this (add a \) \$staticIp -->
+<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
+<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>
 </div>
 </section>
 
@@ -142,6 +131,7 @@ $adminStuff
 <li><a target="_blank" href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a></li>
 <li><a target="_blank" href="articles/easter-example.php">When is Easter and other holidays related to Easter?</a></li>
 <li><a target="_blank" href="articles/cssvariables.php">Use CSS var(--variable) to do 'hover' etc.</a></li>
+<li><a target="_blank" href="/examples.js/javascript-messages">Here are some interesting files that use popups</a></li>
 </ul>
 
 <h3 class='subtitles'>Useful Programs</h3>

@@ -20,15 +20,21 @@ function sendText(txt) {
   // Use fetch() to send and receive the data.
   
   let ret = fetch("worker.ajax.php", {
-    body: txt, // This is just plain sql
+    body: "sql=" +txt, // This is just plain sql
     method: "POST",
     headers: {
       'content-type': 'application/x-www-form-urlencoded'
     }
-  }).then(res => res.json()); // Get the json data
-  ret.then(newtxt => {
-    console.log("Worker response", newtxt);
+  }).then(res => res.text());
 
+  ret.then(newtxt => {
+    newtxt = newtxt.toString();
+    $reg = /(\[?{.*}\]?).*/ms;
+    newtxt = newtxt.replace($reg, '$1');
+    console.log("Worker response" + newtxt);
+
+    newtxt = JSON.parse(newtxt);
+    
     if(Object.keys(newtxt) == "ERROR" || Object.keys(newtxt) == "DONE") {
       postMessage(newtxt);
     } else {

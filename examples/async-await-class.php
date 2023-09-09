@@ -38,7 +38,7 @@ class GetInfo {
     return new Promise(res => {
       setTimeout(() => {
         res(x);
-      }, 10000);
+      }, 5000);
     });
   };
 
@@ -68,7 +68,7 @@ EOF;
 
 echo <<<EOF
 $top
-<p>After a couple of seconds you will see a numbers appear. There will be three in all.</p>
+<p>After a couple of seconds you will see a numbers appear. There will be four in all.</p>
 <div id="div"></div>
 $footer
 EOF;

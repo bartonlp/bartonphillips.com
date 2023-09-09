@@ -1,12 +1,9 @@
-// BLP 2022-01-16 -- This is used by bonnieburch.com/addcookie.php
-// It can be used by other files if needed. We pass page=finger and
-// visitor=visitorId via AJAX to the ajaxFile (which is the php file
-// that called this).
+// BLP 2023-08-13 - not used -- I think.
+// This code is inline in register.php
 
 'use strict';
 
 const ajaxFile = "register.php";
-var blp;
 
 console.log(ajaxFile);
 console.log("lastId: "+lastId);

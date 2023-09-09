@@ -7,14 +7,21 @@ $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
 function checkUser($S) {
-  //echo "cookie: ". $_COOKIE['SiteId']."<br>";
+  // I could also look at the fingerprint for my know devices.
+  // There are two file at /var/www/bartonphillipsnet/
+  // 1) a json file
+  // 2) a php file.
+  // Each has the same information: a fingerprint and a label for the device.
+  // Right now the following is a simpler way to do this.
   
   if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
-    $sql = "select name from members where email='$userEmail'";
+    $sql = "select email from members where email='$userEmail'";
 
-    if($n = $S->query($sql)) {
-      list($memberName) = $S->fetchrow('num');
-      if($memberName != "Barton Phillips") {
+    if(!$S->query($sql)) {
+      echo "<h1>Go Away</h1>";
+      exit();
+    } else {
+      if($S->fetchrow('num')[0] != 'bartonphillips@gmail.com') {
         echo "<h1>Go Away</h1>";
         exit();
       }

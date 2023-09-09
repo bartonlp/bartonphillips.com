@@ -18,6 +18,15 @@
    Currently $h->meta, $h->link, $h->extra, $h->script $h->inlineScript and $h->css have no $this value.
 */
 
+// BLP 2023-09-07 - added to let me know if someone calls this directly.
+ 
+if(!class_exists("SiteClass")) {
+  $ip = $_SERVER['REMOTE_ADDR'];
+  error_log("bartonphillips.com/head.i.php: Called directly: $ip");
+  echo "<h1>Not Authorized</h1><p>This file is not to be run directly, rather it is used by another file</p>";
+  exit();
+}
+
 return <<<EOF
 <head>
   <!-- bartonphillips.com/includes/head.i.php -->

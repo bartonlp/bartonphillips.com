@@ -290,17 +290,12 @@ EOF;
 function setupjava($S) {
   $start = TRACKER_START;
   $load = TRACKER_LOAD;
-  $script = TRACKER_SCRIPT;
   $normal = TRACKER_NORMAL;
   $noscript = TRACKER_NOSCRIPT;
   $bvisibilitychange = BEACON_VISIBILITYCHANGE;
   $bpagehide = BEACON_PAGEHIDE;
   $bunload = BEACON_UNLOAD;
   $bbeforeunload = BEACON_BEFOREUNLOAD;
-  $tbeforeunload = TRACKER_BEFOREUNLOAD;
-  $tunload = TRACKER_UNLOAD;
-  $tpagehide = TRACKER_PAGEHIDE;
-  $tvisibilitychange = TRACKER_VISIBILITYCHANGE;
   $timer = TRACKER_TIMER;
   $bot = TRACKER_BOT;
   $css = TRACKER_CSS;
@@ -310,9 +305,8 @@ function setupjava($S) {
 
   $S->h_inlineScript = <<<EOF
     const tracker = {
-  "$start": "Start", "$load": "Load", "$script": "Script", "$normal": "Normal",
-  "$noscript": "NoScript", "$bvisibilitychange": "B-VisChange", "$bpagehide": "B-PageHide", "$bunload": "B-Unload", "$bbeforeunload": "B-BeforeUnload",
-  "$tbeforeunload": "T-BeforeUnload", "$tunload": "T-Unload", "$tpagehide": "T-PageHide", "$tvisibilitychange": "T-VisChange",
+  "$start": "Start", "$load": "Load", "$normal": "Normal", "$noscript": "NoScript",
+  "$bvisibilitychange": "B-VisChange", "$bpagehide": "B-PageHide", "$bunload": "B-Unload", "$bbeforeunload": "B-BeforeUnload",
   "$timer": "Timer", "$bot": "BOT", "$css": "Csstest", "$me": "isMe", "$goto": "Proxy", "$goaway": "GoAway"
   };
   EOF;
@@ -335,7 +329,25 @@ EOF;
 $S->noCounter = true; // No counter.
 
 $S->b_inlineScript =<<<EOF
+  // 8 is the agent
+  // When clicked show the whole agent string.
+
+  $("body").on("click", "#trackertbl td:nth-child(8)", function(e) {
+    let ypos, xpos;
+    let pos = $(this).position();
+    xpos = pos.left - 300;
+    ypos = pos.top;
+
+    $("#Human").remove();
+    $("#Agent").remove();
+    $("#trackertbl").append("<div id='Agent' style='position: absolute; top: "+ypos+"px; left: "+xpos+"px; "+
+        "background-color: white; border: 5px solid black; "+
+        "padding: 10px;'>"+$(this).text()+"</div>");
+    e.stopPropagation();
+  });
+
   // 10 is the java script value.
+  // Show the human readable values.
 
   $("body").on("click", "#trackertbl td:nth-child(10)", function(e) {
     let js = parseInt($(this).text(), 16),
@@ -351,6 +363,7 @@ $S->b_inlineScript =<<<EOF
     }
     
     $("#Human").remove();
+    $("#Agent").remove();
 
     $("#trackertbl").append("<div id='Human' style='position: absolute; top: "+ypos+"px; left: "+xpos+"px; "+
                  "background-color: white; border: 5px solid black; "+
@@ -363,6 +376,7 @@ $S->b_inlineScript =<<<EOF
   });
   $("body").on("click", function(e) {
     $("#Human").remove();
+    $("#Agent").remove();
   });
 EOF;
 

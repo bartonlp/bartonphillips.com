@@ -56,7 +56,7 @@ EOF;
   
 // Use ipinfo.io to get the country for the ip
 
-$cmd = "http://ipinfo.io/$S->ip";
+$cmd = "https://ipinfo.io/$S->ip";
 $loc = json_decode(file_get_contents($cmd));
 
 $clientname = gethostbyaddr($S->ip);
@@ -118,7 +118,9 @@ EOF;
   }
 }
 
-$fingers = file_get_contents("https://bartonphillips.net/myfingerprints.json");
+// BLP 2023-07-24 - fingers no longer used.
+//$fingers = file_get_contents("https://bartonphillips.net/myfingerprints.json");
+//$fingers = require_once("/var/www/bartonphillipsnet/myfingerprints.php");  
 //vardump("fingers", $fingers);
 
 if($BLP == "8653" && !$adminStuff) {

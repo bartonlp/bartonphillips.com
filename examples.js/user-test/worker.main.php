@@ -1,18 +1,19 @@
 <?php
 // BLP 2023-02-26 - use new approach
-// Demonstrates the use of a worker using AJAX calls.
-// This is the main program for worker.main.php it uses
-// worker.worker.js and worker.ajax.php
+// Demonstrates the use of a worker using AJAX calls (worker.ajax.php).
+// This is the main program it uses worker.worker.js and worker.ajax.php
 // See worker.ajax.php for a description of the 'test' table in the database 'test'.
-// Load info from mysitemap.json for use by my framework SiteClass.
+// Load info from mysitemap.json for my framework SiteClass into $_site.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
-// It has full documentation at that site.
-// The worker.ajax.php uses the 'test' user and database.
+// It has some documentation at that site.
+// The worker.ajax.php uses the 'test' user and database while this program uses what is in
+// mysitemap.json (which is usualy user=barton, database=barton).
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site); // $S gives access to my framework.
 
-// escapeltgt() is a little utility that change < and > to &lt; &gt;
+// escapeltgt() is a little utility that change < and > to &lt; &gt; from helper-functions.php.
+// These three, $main, $worker, $ajax are displayed when id 'showfiles' is clicked.
 
 $main = escapeltgt(file_get_contents("worker.main.php"));
 $worker = escapeltgt(file_get_contents("worker.worker.js"));
@@ -20,8 +21,8 @@ $ajax = escapeltgt(file_get_contents("worker.ajax.php"));
 
 $S->title = "Workers";
 $S->banner = "<h1>Worker Demo</h1>";
-$S->extra =<<<EOF
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>-->
+
+$S->h_script =<<<EOF
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 
@@ -29,13 +30,15 @@ $S->extra =<<<EOF
 jQuery(document).ready(function($) {
   var w1 = new Worker("worker.worker.js");
 
+  // Listen from messages frrom worker.worker.js
+  
   w1.addEventListener("message", function(evt) {
     console.log("data: ", evt.data);
     if(Object.keys(evt.data)[0] == "ERROR" || Object.keys(evt.data)[0] == "DONE") {
       $("pre").html(Object.values(evt.data)[0]);
     } else {
-      var string = String.fromCharCode.apply(null, evt.data)
-      //var string = new TextDecoder("utf-8").decode(evt.data);
+      //let string = String.fromCharCode.apply(null, evt.data)
+      let string = new TextDecoder("utf-8").decode(evt.data);
       console.log("Main string: ", string);
       $("pre").html(string);
     }
@@ -45,21 +48,22 @@ jQuery(document).ready(function($) {
 
   const send = function(txt) {
     // use a map to create ascii to int.
-    bufView = Uint8Array.from(txt, x => x.charCodeAt());
+    //bufView = Uint8Array.from(txt, x => x.charCodeAt());
+    let bufView = new TextEncoder("utf-8").encode(txt);
     console.log("Main bufView: ", bufView);
     w1.postMessage(bufView, [bufView.buffer]);
   }
 
-  $("#click").click(function() {
+  $("#click").on("click", function() {
     var sql = $("input").val();
     send(sql);
     return false;
   });
-  $("#clear").click(function() {
+  $("#clear").on("click", function() {
     $("pre").html("");
     return false;
   });
-  $("#showfiles").click(function() {
+  $("#showfiles").on("click", function() {
     $("#files").show();
     $(this).hide();
     return false;

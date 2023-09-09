@@ -1,5 +1,4 @@
 <?php
-// BLP 2023-02-26 - use new approach
 // BLP 2021-10-31 -- This files uses example1.php for AJAX.
 
 if(!empty($_POST)) echo "HERE: " . print_r($_POST, true);

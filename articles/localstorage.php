@@ -29,6 +29,23 @@ $S->css =<<<EOF
 }
 EOF;
 
+$S->b_inlineScript =<<<EOF
+try {
+  const observer = new PerformanceObserver((list) => {
+    list.getEntries().forEach((entry) => {
+      if (entry.id === "image") {
+        let rtime = entry.renderTime;
+        console.log(rtime);
+        rtime = rtime.toLocaleString('en-US');
+        $("#howlong").html("The image took " + rtime + " ms to load.");
+      }
+    });
+  });
+  observer.observe({ type: "element", buffered: true });
+} catch(e) {};
+
+EOF;
+
 [$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
@@ -39,8 +56,9 @@ $top
 <p id="size">Size of the picture</p>
 <p>To remove the localStorage and start over <button id="reload">Click Here</button> and
    notice the difference in load time.</p>
+<p id="howlong"></p>
 <div>
-<img id="image" src=""></div>
+<img id="image" elementtiming="big-image" src=""></div>
 <p>The first time this page is viewed the image is loaded from the web. The image is 1.6 Meg and takes
    a while to load. We then resize the image via a &lt;canvas&gt; to a 320 pixel wide image. We get the
    image URI which is the image data encoded as a base64 string. The URI is saved in

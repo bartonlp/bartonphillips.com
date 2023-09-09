@@ -87,7 +87,7 @@ fs.chmodSync("/var/www/bartonphillips.com/examples.js/examples.node/websocket.lo
 
 // Log information to websocket.log, If mode === true then don't add the date
 
-const DEBUG = false;
+const DEBUG = true;
 
 function logit(msg) {
   let date = new Date;
@@ -102,7 +102,7 @@ function logit(msg) {
 
 // Create an http server. If someone actually tries to connect send a
 
-const server = http.createServer({ cert: fs.readFileSync('./fullchain7.pem'), key: fs.readFileSync('./privkey7.pem')});
+const server = http.createServer({ cert: fs.readFileSync('/etc/letsencrypt/live/www.bartonphillips.com/fullchain.pem'), key: fs.readFileSync('/etc/letsencrypt/live/www.bartonphillips.com/privkey.pem')});
 
 server.on('request', function(request, response) {
   logit('Received request for ' + request.url + " from: " + request.connection.remoteAddress);

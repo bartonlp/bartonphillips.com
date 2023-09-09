@@ -23,17 +23,17 @@ app.use(cors({
 // "https://bartonphillips.com:3000/<some value>/<some other value>"
 // These will be put in the name and test params object.
 
-app.get("/:name/:test", (req, res)=> {
+app.get("/hi/:name/:test", (req, res)=> {
   let name = req.params.name;
   let test = req.params.test;
-  //let test = req.body.test;
-  console.log(`GET: ${name}, ${test}`); // ${name}, ${test}`);
-  res.sendFile(__dirname + "/index.html");
+  console.log(`GET 1: name=${name}, test=${test}, dir: ${__dirname}`);
+  res.render(`${__dirname}/test1.php`, {name: name, test: test}); //?name=${name}&test=${test}`);
 });
 
-apt.get("test/:id", (req, res)=> {
+app.get("/hi/:id", (req, res)=> {
   let name = req.params.id;
-  res.sendFile(__dirname + "/test1.php");
+  console.log(`GET 2: id=${name}, dir: ${__dirname}`);
+  res.render(`${__dirname}/test1.php`, {name: name});
 });
 
 // This get wants two query items like
@@ -43,8 +43,8 @@ apt.get("test/:id", (req, res)=> {
 app.get("/", (req, res)=> {
   let name = req.query.name;
   let test = req.query.test;
-  console.log(`GET query: ${name}, ${test}`);
-  res.send(`<h1>This is GET data: ${name}, ${test}</h1>`);
+  console.log(`GET 3 query: name=${name}, test=${test}, dir: ${__dirname}`);
+  res.render(`${__dirname}/test2.php`, {name: name, test: test});
 });
 
 // This is a POST to
@@ -52,6 +52,7 @@ app.get("/", (req, res)=> {
 // The body object has the name and test.
 
 app.post("/getit", (req, res)=> {
+  console.log("dir: " + __dirname);
   let name = req.body.name;
   let test = req.body.test;
   console.log(`Sent from client: ${name}, ${test}`);

@@ -8,7 +8,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$iex_token = require_once("/var/www/bartonphillipsnet/PASSWORDS/iex-token");
+$iex_token = require_once("/var/www/PASSWORDS/iex-token");
 
 $S->title = "Stock Values";
 $S->banner = "<h1>Stock Values</h1>";
@@ -38,7 +38,8 @@ while(list($stock, $price, $qty) = $S->fetchrow('num')) {
 $str = "https://cloud.iexapis.com/stable/stock/market/batch?symbols=" . implode(',', array_keys($stocks)) .
        "&types=quote,stats&filter=day200MovingAvg,latestPrice&token=$iex_token";
 
-$ar = json_decode(file_get_contents($url), true);
+$ar = json_decode(file_get_contents($str), true);
+
 /*
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $str);
@@ -48,19 +49,20 @@ $ret = curl_exec($ch);
 $ar = json_decode($ret);
 */
 
-//vardump("ar", $ar);
 $av = 0.0;
 $curval = 0.0;
+//vardump("ar", $ar);
 
 foreach($stocks as $stk=>$val) {
   // val[1] is qty.
-  
-  $curval += $ar->$stk->quote->latestPrice * $val[1];
-  $av += $ar->$stk->stats->day200MovingAvg * $val[1];
+
+  $curval += $ar[$stk]["quote"]["latestPrice"] * $val[1];
+  $av += $ar[$stk]["stats"]["day200MovingAvg"] * $val[1];
 }
 $percent = number_format(($curval - $av) / $av * 100, 2);
 $curval = number_format($curval, 2);
 $av = number_format($av, 2);
+
 if($percent[0] == '-') {
   $percent = "<span class='per'>$percent</span>";
 }

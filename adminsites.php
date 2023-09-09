@@ -8,7 +8,7 @@ return <<<EOF
 <h2>Admin</h2>
 <ul>
 <li><a target="_blank" href="https://bartonlp.com/otherpages/webstats.php?blp=8653&site=$S->siteName">Webstats</a></li>
-<li><a target="_blank" href="https://bartonphillips.com/getcookie.php?blp=8653">Get/Reset Cookie</a></li>
+<li><a target="_blank" href="getcookie.php?blp=8653">Get/Reset Cookie</a></li>
 <li><a target="_blank" href="https://newbernrotary.org/wp-admin/">New Bern Rotary ADMIN</a></li>
 <li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">Bnai-sholem ADMIN</a></li>
 <li><a target="_blank" href="https://rivertownerentals.info/wp-admin">Rivertown Rental ADMIN</a></li>

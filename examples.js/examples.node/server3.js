@@ -1,3 +1,7 @@
+/* NOTE to use this you must allow port 8089. sudo ufw allow 8089
+ * This responds to client2.php
+ */
+
 'use strict';
 
 const fs = require('fs');

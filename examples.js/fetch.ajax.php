@@ -1,5 +1,4 @@
 <?php
-// BLP 2023-02-26 - uses Database no $h/$b
 // This is part of the worker group.
 // This is the AJAX that is called from worker.worker.js
 // The trio is worker.main.php, worker.worker.js and worker.ajax.php

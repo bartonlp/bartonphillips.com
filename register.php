@@ -32,7 +32,8 @@ CREATE TABLE `myip` (
 
 $_site = require_once(getenv("SITELOADNAME"));
 
-// AJAX from getFingerprint.js
+//vardump("response", apache_response_headers());
+//vardump("request", apache_request_headers());
 
 if($_POST['page'] == 'finger') {
   $S = new Database($_site);
@@ -41,6 +42,8 @@ if($_POST['page'] == 'finger') {
   $email = $_POST['email'];
   $name = $_POST['name'];
 
+  if($S->isBot($S->agent)) header("location: https://www.bartonphillips.com");
+  
   if($email == "bartonphillips@gmail.com") {
     // Update the myip tables.
 
@@ -53,16 +56,15 @@ if($_POST['page'] == 'finger') {
 
   if(!$S->query("select TABLE_NAME from information_schema.tables ".
             "where (table_schema = 'bartonphillips') and (table_name = 'members')")) {
-    throw new Exception(__LINE__ .": register.php, members table for database bartonphillips does not exist");
+    throw new Exception("register.php: members table for database bartonphillips does not exist");
   }
 
+  $visitor = $visitor ?? "NO SCRIPT";
+  
   $S->query("insert into members (name, email, finger, count, created, lasttime) ".
                  "values('$name', '$email', '$visitor', 1, now(), now()) ".
                  "on duplicate key update count=count+1, lasttime=now()");
     
-  // Always set the cookie. We use the sql id from the members table.
-  // BLP 2021-09-21 -- Add email with ip.
-
   $options =  array(
                     'expires' => date('U') + 31536000,
                     'path' => '/',
@@ -74,14 +76,37 @@ if($_POST['page'] == 'finger') {
 
   if(setcookie('SiteId', "$visitor:$email", $options) === false) {
     echo "Can't set cookie in register.php<br>";
-    throw(new Exception("Can't set cookie register.php " . __LINE__));
+    throw(new Exception("register.php: Can't set cookie"));
   }
+  
   echo "$BLP";
-  //error_log("$S->ip, visitor: $visitor, email: $email, name: $name");
+  error_log("register.php post: vistior=$visitor, email=$email, name=$name, test=". $_POST['test']);
+  if($visitor == "NO SCRIPT") {
+    header("Location: https://www.bartonphillips.com/register.php?page=complete");
+  }
   exit();
 }
 
 $S = new $_site->className($_site);
+
+// Return Page
+
+if($_GET['page'] == 'complete') {
+  $S->title = "Regesteration Complete";
+  $S->banner = "<h1>$S->title</h1>";
+  [$top, $footer] = $S->getPageTopBottom();
+  
+  echo <<<EOF
+$top
+<hr>
+<a href='/'>Return to Home Page</a>
+<hr>
+$footer
+EOF;
+  exit();
+}
+
+// Main Register Page
 
 $S->title = "Register";
 $S->css = <<<EOF
@@ -97,8 +122,75 @@ EOF;
 
 // The javascript to get the finger etc.
 
-$S->b_script = "<script src='/register.js'></script>";
-$S->b_inlineScript = "var blp ='$BLP';";
+$S->b_inlineScript =<<<EOF
+'use strict';
+
+const ajaxFile = "register.php";
+
+console.log(ajaxFile);
+console.log("lastId: "+lastId);
+//debugger; // BLP 2021-12-29 -- Force a breakpoint here
+
+let src = `
+<hr>
+<h1>Register</h1>
+<p id="msg" style="color: red"></p>
+<table>
+<tbody>
+<tr>
+<td>Enter Name</td><td><input id="name" type="text" name="name" placeholder="Enter Name"></td>
+</tr>
+<tr>
+<td>Enter Email Address</td><td><input id="email" type="text" name="email" autofocus placeholder="Enter Email Address"></td>
+</tr>
+</tbody>
+</table>
+<input id="submit" type="submit" value="Submit">
+<input type="hidden" name="page" value="finger">
+<hr>
+`;
+
+$("#container").html(src);
+
+$("#submit").on("click", function(e) {
+  //debugger;
+  let email = $("#email").val();
+  let name = $("#name").val();
+  let msg = '';
+
+  if(!name) { msg = "Name required<br>"; }
+  if(!email) { msg += "Email required"; }
+
+  if(msg) {
+    $("#msg").html(msg);
+    e.stopPropagation();
+    return;
+  }
+  // BLP 2023-08-19 - fpPromise instantiated in goe.js
+
+  fpPromise
+  .then(fp => fp.get())
+  .then(result => {
+    // This is the visitor identifier:
+    const visitorId = result.visitorId;
+
+    console.log("visitor: " + visitorId);
+
+    $.ajax({
+      url: ajaxFile,
+      data: { page: 'finger', visitor: visitorId, email: email, name: name, test: 'test' },
+      type: 'post',
+      success: function(data) {
+        console.log("return: " + data);
+        $("#container").html("<hr><h1>Registration Complete</h1><a href='/" + data + "'>Return to Home Page</a><hr>");
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });
+});
+EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
 
@@ -107,18 +199,23 @@ $S->b_inlineScript = "var blp ='$BLP';";
 echo <<<EOF
 $top
 <div id="container">
+<hr>
+<form action='register.php' method='post'> <!-- If no javascript -->
 <h1>Register</h1>
 <table>
 <tbody>
 <tr>
-<td><span class="lynx">Enter Name </span><input id="name" type="text" name="name" placeholder="Enter Name"></td>
+<td>Enter Name</td><td><input id="name" type="text" name="name" required placeholder="Enter Name"></td>
 </tr>
 <tr>
-<td><span class="lynx">Enter Email Address </span><input id="email" type="text" name="email" autofocus required placeholder="Enter Email Address"></td>
+<td>Enter Email Address</td><td><input id="email" type="text" name="email" autofocus required placeholder="Enter Email Address"></td>
 </tr>
 </tbody>
 </table>
 <input id="submit" type="submit" value="Submit">
+<input type="hidden" name="page" value="finger">
+</form>
+<hr>
 </div>
 $footer
 EOF;

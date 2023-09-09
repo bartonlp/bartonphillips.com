@@ -3,7 +3,9 @@
 // Register with the websocket server (server3.php) running under node.
 
 $_site = require_once(getenv("SITELOADNAME"));
+
 $S = new SiteClass($_site);
+$S->noCssLastId = true;
 
 $S->b_inlineScript = <<<EOF
 'use strict';

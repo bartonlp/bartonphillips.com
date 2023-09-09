@@ -3,9 +3,9 @@
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
-$h->title = "PHP Client for Node Server";
-$h->banner = "<h1>$h->title</h1>";
-$h->preheadcomment =<<<EOF
+$S->title = "PHP Client for Node Server";
+$S->banner = "<h1>$h->title</h1>";
+$S->preheadcomment =<<<EOF
 <!--
 This is the Client side of the node server.js.
 To run this you must be on the server (bartonlp.com) in the the
@@ -16,7 +16,7 @@ to use your certificates.
 You can run the client-for-node-server.php from any browser on any computer anywhere.
 -->
 EOF;
-$b->inlineScript =<<<EOF
+$S->b_inlineScript =<<<EOF
 $("input[type='text']").on("keydown", function(e) {
   if(e.keyCode == 13) {
     $("input[type='submit']").trigger("click");
@@ -53,8 +53,8 @@ $top
 <p>You must run <b>server.js</b> on your <i>Server</i> machine from the command line: <b>node server.js</b>.<br>
 If you do not have the server running you will get browser error message <b>This site can't be reached</b> or something like that.<br>
 NOTE: you will have to change the https.createServer() section to use your certificates.</p>
-<a href="https://bartonphillips.com:3000/test2/Something/Special">get/Something/Special</a> This is <i>/test2/Something/Special</i>.<br>
-<a href="https://bartonphillips.com:3000/test/29">get/29</a> This is <i>/test/29</i><br>
+<a href="https://bartonphillips.com:3000/hi/Something/Special">/Something/Special</a> This is <i>/hi/Something/Special</i>.<br>
+<a href="https://bartonphillips.com:3000/hi/29">29</a> This is <i>/hi/29</i><br>
 You can enter either of these at the location bar.<br>
 <a href="https://bartonphillips.com:3000?name=Big Test&test=How big">Via a query string</a>
 This would be <i>/?name=Big Test&test=How big</i>. You could enter <i>/?name=Looks&test= good</i> at the location bar.<br>

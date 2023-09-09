@@ -12,7 +12,7 @@ echo <<<EOF
 </head>
 <body>
   <a href="./get/Something/Special">Something Different</a><br>
-  <a href="./get">More</a><br>
+  <a href="./get">Less</a><br>
 
   <a href="server.php?name=Big Test&test=How big">Big</a><br>
 
@@ -41,6 +41,11 @@ $("input[type='submit']").on("click", function() {
   });
 });
 </script>
+<form action="server.php" method="post">
+<input type="hidden" name="name" value="Hi">
+<input type="hidden" name="test" value="There">
+<button type="submit">Send Hi There to server.php</button>
+</form>
 </body>
 </html>
 EOF;

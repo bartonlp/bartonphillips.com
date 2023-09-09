@@ -26,11 +26,13 @@ function checkUser($S) {
   // Right now the following is a simpler way to do this.
   
   if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
-    $sql = "select name from members where email='$userEmail'";
+    $sql = "select email from members where email='$userEmail'";
 
-    if($n = $S->query($sql)) {
-      list($memberName) = $S->fetchrow('num');
-      if($memberName != "Barton Phillips") {
+    if(!$S->query($sql)) {
+      echo "<h1>Go Away</h1>";
+      exit();
+    } else {
+      if($S->fetchrow('num')[0] != 'bartonphillips@gmail.com') {
         echo "<h1>Go Away</h1>";
         exit();
       }

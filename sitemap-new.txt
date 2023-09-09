@@ -1,5 +1,6 @@
 [
   {"item": "index.php", "frequency": "daily", "priority": "1"},
+  {"item": "testfingerprintjs.php", "frequency": "daily", "priority": "1"},
   {"item": "articles/javascript-only.php", "frequency": "monthly", "priority": ".8"},
   {"item": "articles/buildawebsite.php", "frequency": "monthly", "priority": ".6"},
   {"item": "articles/dynamicscript.php", "frequency": "monthly", "priority": ".6"},
