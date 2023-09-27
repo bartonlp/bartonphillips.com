@@ -1,13 +1,15 @@
 <?php
-// BLP 2023-02-25 - use new approach
-// Register yours name and email address
+// Register yours name, finger and email address
 // This is for bartonphillips.com/index.php
 // BLP 2022-07-18 - There are now three places: bartonphillips.net/js/geo.js and the other two
 // below. 
 // NOTE *** There are only two places where the myip table is inserted or updated,
 // bonnieburch.com/addcookie.php and in bartonphillips.com/register.php.
+// NOTE *** This file is a little different, it use a POST or an Ajax call depending on wheather
+// javascript is available. See the if($_POST) bellow.
 
 /*
+// BLP 2023-09-27 - Add name to key.
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -15,7 +17,7 @@ CREATE TABLE `members` (
   `count` int DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`email`,`finger`)
+  PRIMARY KEY (`name`,`email`,`finger`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
   The myip table is in $S->masterdb (which should be 'bartonlp') database
@@ -32,7 +34,7 @@ CREATE TABLE `myip` (
 
 $_site = require_once(getenv("SITELOADNAME"));
 
-// The POST can happen from the <form> or if javascript is available via script. The javascript
+// BLP 2023-09-27 - The POST can happen from the <form> or if javascript is available via script. The javascript
 // will replace the <form> logic.
 
 if($_POST['page'] == 'finger') {
@@ -63,6 +65,8 @@ if($_POST['page'] == 'finger') {
     throw new Exception("register.php: members table for database bartonphillips does not exist");
   }
 
+  // BLP 2023-09-27 - Now the key is name, email and finger.
+  
   $S->query("insert into members (name, email, finger, count, created, lasttime) ".
                  "values('$name', '$email', '$visitor', 1, now(), now()) ".
                  "on duplicate key update count=count+1, lasttime=now()");
@@ -76,7 +80,9 @@ if($_POST['page'] == 'finger') {
                     'samesite' => 'Lax'    // None || Lax  || Strict // BLP 2021-12-20 -- changed to Lax
                    );
 
-  if(setcookie('SiteId', "$visitor:$email", $options) === false) {
+  // BLP 2023-09-27 - add name to cookie.
+  
+  if(setcookie('SiteId', "$name:$visitor:$email", $options) === false) {
     echo "Can't set SiteId cookie in register.php<br>";
     throw(new Exception("register.php: Can't set SiteId cookie"));
   }
@@ -99,7 +105,7 @@ if($_POST['page'] == 'finger') {
 
 $S = new $_site->className($_site);
 
-// Return Page
+// BLP 2023-09-27 - Return Page IF we do not have javascript!
 
 if($_GET['page'] == 'complete') {
   $S->title = "Regesteration Complete";
@@ -131,7 +137,7 @@ input[type="submit"] {
 EOF;
 
 // The javascript to get the finger etc.
-// NOTE if no javascript then we will use the <form> post and $_POST['visitor'] will not be set.
+// BLP 2023-09-27 - NOTE if no javascript then we will use the <form> post and $_POST['visitor'] will not be set.
 // If we do have javascript we replace the <div id='container'> contents with a new version that
 // does not have a <form>.
 
@@ -210,7 +216,7 @@ EOF;
 [$top, $footer] = $S->getPageTopBottom();
 
 // Render Page
-// Note that if we have javascript the <div id='container'> will all be replaced.
+// BLP 2023-09-27 - Note that if we have javascript the <div id='container'> will all be replaced.
 // The container only has a <form> if NO SCRIPT.
 
 echo <<<EOF

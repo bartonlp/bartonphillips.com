@@ -1,9 +1,8 @@
 <?php
-// BLP 2023-02-25 - no $h/$b
 // index.i.php
 // This is the main php include file. It is included in index.php
-// BLP 2022-04-18 - Removed all git related stuff as gitstatus.php stopped working.
-// See commit ca68a04b268483d180ea8a160fc4e90c185c2050 under bartonphillipsnet.
+// BLP 2023-09-27 - add name to SiteId
+
 /*
 // BLP 2023-09-27 - Modified members table. Added name a part of key.
 CREATE TABLE `members` (
@@ -83,7 +82,7 @@ EOF;
 // If we have a cookie and it is me then set $adminStuff
 // The $cookieIp is the last ip address for this browser/CPU from $_COOKIE
 
-if(!($fingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
+if(!($nameFingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
   $count = 0;
   $n = $S->query("select count from $S->masterdb.logagent where ip='$S->ip'");
   if($n = 1) goto onlyOne; // kinda hate to use a goto but what the hell
@@ -96,9 +95,9 @@ if(!($fingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
 <div class="hereMsg">You have been here $count time. Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
 EOF;
 } else { // There is a cookie
-  [$cookieFinger, $cookieEmail] = explode(':', $fingerEmail); // The cookie is 'IP:Email'
+  [$cookieName, $cookieFinger, $cookieEmail] = explode(':', $nameFingerEmail); // The cookie is 'name:finger:email'
 
-  $sql = "select name from members where finger='$cookieFinger' and email='$cookieEmail'";
+  $sql = "select name from members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'";
 
   if($S->query($sql)) {
     // Found the record.
