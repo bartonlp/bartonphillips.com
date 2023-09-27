@@ -4,7 +4,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
 $S->title = "PHP Client for Node Server";
-$S->banner = "<h1>$h->title</h1>";
+$S->banner = "<h1>$S->title</h1>";
 $S->preheadcomment =<<<EOF
 <!--
 This is the Client side of the node server.js.
@@ -43,7 +43,7 @@ $("input[type='submit']").on("click", function() {
 });
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom($h, $b);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top

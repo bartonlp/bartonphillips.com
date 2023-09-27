@@ -66,7 +66,6 @@ Today is: <span id="datetoday">$date</span>
 <div id="otherSites" class="mylinks">
 <a target="_blank" href="https://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
 <a target="_blank" href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
-<a target="_blank" href="https://www.allnaturalcleaningcompany.com"><button>All Natural Cleaning</button></a>
 <a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a target="_blank" href="https://www.jt-lawnservice.com"><button>JT Lawn Service</button></a>
@@ -75,7 +74,7 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
 <!-- BLP 2023-08-11 - not doing this (add a \) \$staticIp -->
 <a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="https://www.bartonphillips.com/fromrpi.php"><button>RPI</button></a>
+<a target="_blank" href="https://www.bartonphillips.org:8000"><button>RPI</button></a>
 </div>
 </section>
 

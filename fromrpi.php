@@ -1,4 +1,7 @@
 <?php
+// BLP 2023-09-21 - Don't need this now that I have https: via Letsencrypt. See the README.md at
+// https://bartonphillips.org:8000/certs/README.md
+//
 // Because all of the links are to bartonlp.org I can get the rpi index and just display it.
 // REMEMBER you need a .eval not .php because the .php will have been already evaluated. The .eval
 // can be a symlink.
@@ -18,16 +21,16 @@ require("../vendor/autoload.php"); // get the autoloader
 //}
 
 // Get the page from Rpi.
-
-$page = file_get_contents("http://bartonphillips.org:8000/index.eval");
+// BLP 2023-09-21 - Changed from http to https
+$page = file_get_contents("https://bartonphillips.org:8000/index.eval");
 
 // write it out to a temp file
 
 file_put_contents("tempindex.php", $page);
 
 // Get the mysitemap.json from the Rpi
-
-$_site = json_decode(stripComments(file_get_contents("http://bartonphillips.org:8000/mysitemap.json")));
+// BLP 2023-09-21 - Changed from http to https
+$_site = json_decode(stripComments(file_get_contents("https://bartonphillips.org:8000/mysitemap.json")));
 
 //vardump("site", $_site);
 

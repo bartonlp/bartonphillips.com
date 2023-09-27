@@ -5,6 +5,7 @@
 // BLP 2022-04-18 - Removed all git related stuff as gitstatus.php stopped working.
 // See commit ca68a04b268483d180ea8a160fc4e90c185c2050 under bartonphillipsnet.
 /*
+// BLP 2023-09-27 - Modified members table. Added name a part of key.
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -12,7 +13,7 @@ CREATE TABLE `members` (
   `count` int DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`email`,`finger`)
+  PRIMARY KEY (`name`,`email`,`finger`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
 The myip table is in $S->masterdb (which should be 'bartonlp') database

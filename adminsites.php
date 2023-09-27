@@ -12,7 +12,8 @@ return <<<EOF
 <li><a target="_blank" href="https://newbernrotary.org/wp-admin/">New Bern Rotary ADMIN</a></li>
 <li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">Bnai-sholem ADMIN</a></li>
 <li><a target="_blank" href="https://rivertownerentals.info/wp-admin">Rivertown Rental ADMIN</a></li>
-<li><a target="_blank" href="http://bartonphillips.org:8000/">RPI on 8000</a></li>
+<!-- <li><a target="_blank" href="http://bartonphillips.org:8000/">RPI on 8000</a></li> -->
+<li><a target="_blank" href="https://www.allnaturalcleaningcompany.com">End Of Life: All Natural Cleaning</a></li>
 <li><a target="_blank" href="/stocks/stock-price-update.php">Stock Quotes</a></li>
 <li><a target="_blank" href="/stocks/mutualiex.php">Mutual Funds Quotes</a></li>
 <li><a target="_blank" href="/stocks/stockaddedit.php">Add/Edit Stocks</a></li>

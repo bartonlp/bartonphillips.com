@@ -1,5 +1,9 @@
 <?php
-//$rand = base64_encode(rand());
+// This is a test of the Content-Security-Polocy.
+// The program can either be run without any arguments and will therefore generate NO errors,
+// or it can be run as 'csp-test2.php?err=true' and it should generate an error via the
+// 'cspreport.php' program. That program logs to 'error_log()'. See cspreport.php for details.
+
 $rand = base64_encode(bin2hex(openssl_random_pseudo_bytes(8)));
 
 if(!$_GET['err']) {
@@ -35,6 +39,9 @@ echo <<<EOF
 </head>
 <body>
 <h1>CSP TEST</h1>
+<p>This program uses 'Content-Security-Polocy'. I can be run either without a query or with one. If you enter the following query
+the 'Content-Security-Polocy' logs infomation: '?err=true'.</p>
+<hr>
 rand=$rand<br>
 $randlen
 <div id="date"></div>

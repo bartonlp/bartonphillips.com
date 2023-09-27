@@ -32,13 +32,17 @@ CREATE TABLE `myip` (
 
 $_site = require_once(getenv("SITELOADNAME"));
 
-//vardump("response", apache_response_headers());
-//vardump("request", apache_request_headers());
+// The POST can happen from the <form> or if javascript is available via script. The javascript
+// will replace the <form> logic.
 
 if($_POST['page'] == 'finger') {
   $S = new Database($_site);
 
-  $visitor = $_POST['visitor'];
+  // BLP 2023-09-19 - if we have no $visitor it probably means javascript is disabled by the user.
+  // Or a browser like lynx, wget, curl etc.
+
+  $visitor = $_POST['visitor'] ?? "NO SCRIPT";
+  
   $email = $_POST['email'];
   $name = $_POST['name'];
 
@@ -59,8 +63,6 @@ if($_POST['page'] == 'finger') {
     throw new Exception("register.php: members table for database bartonphillips does not exist");
   }
 
-  $visitor = $visitor ?? "NO SCRIPT";
-  
   $S->query("insert into members (name, email, finger, count, created, lasttime) ".
                  "values('$name', '$email', '$visitor', 1, now(), now()) ".
                  "on duplicate key update count=count+1, lasttime=now()");
@@ -75,13 +77,21 @@ if($_POST['page'] == 'finger') {
                    );
 
   if(setcookie('SiteId', "$visitor:$email", $options) === false) {
-    echo "Can't set cookie in register.php<br>";
-    throw(new Exception("register.php: Can't set cookie"));
+    echo "Can't set SiteId cookie in register.php<br>";
+    throw(new Exception("register.php: Can't set SiteId cookie"));
+  }
+
+  // BLP 2023-09-26 - set the BLP-finger
+
+  if(setcookie('BLP-Finger', "$visitor", $options) === false) {
+    echo "Can't set BLP-Finger cookie in register.php<br>";
+    throw(new Exception("register.php: Can't set BLP-Finger cookie"));
   }
   
   echo "$BLP";
-  error_log("register.php post: vistior=$visitor, email=$email, name=$name, test=". $_POST['test']);
+
   if($visitor == "NO SCRIPT") {
+    error_log("register.php post: NO SCRIPT probably javascript disabled or lynx, curl, wget etc., email=$email, name=$name");
     header("Location: https://www.bartonphillips.com/register.php?page=complete");
   }
   exit();
@@ -121,6 +131,9 @@ input[type="submit"] {
 EOF;
 
 // The javascript to get the finger etc.
+// NOTE if no javascript then we will use the <form> post and $_POST['visitor'] will not be set.
+// If we do have javascript we replace the <div id='container'> contents with a new version that
+// does not have a <form>.
 
 $S->b_inlineScript =<<<EOF
 'use strict';
@@ -130,6 +143,8 @@ const ajaxFile = "register.php";
 console.log(ajaxFile);
 console.log("lastId: "+lastId);
 //debugger; // BLP 2021-12-29 -- Force a breakpoint here
+
+// This is the version that replaces the contents of <div id='container'>
 
 let src = `
 <hr>
@@ -178,7 +193,7 @@ $("#submit").on("click", function(e) {
 
     $.ajax({
       url: ajaxFile,
-      data: { page: 'finger', visitor: visitorId, email: email, name: name, test: 'test' },
+      data: { page: 'finger', visitor: visitorId, email: email, name: name },
       type: 'post',
       success: function(data) {
         console.log("return: " + data);
@@ -195,12 +210,14 @@ EOF;
 [$top, $footer] = $S->getPageTopBottom();
 
 // Render Page
+// Note that if we have javascript the <div id='container'> will all be replaced.
+// The container only has a <form> if NO SCRIPT.
 
 echo <<<EOF
 $top
 <div id="container">
 <hr>
-<form action='register.php' method='post'> <!-- If no javascript -->
+<form action='register.php' method='post'> <!-- If no javascript we will use this post -->
 <h1>Register</h1>
 <table>
 <tbody>

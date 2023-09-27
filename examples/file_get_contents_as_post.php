@@ -74,10 +74,10 @@ $context  = stream_context_create($options);
 
 $tbl = file_get_contents("https://www.bartonphillips.com/examples/file_get_contents_as_post.php", false, $context);
 
-$h->title = "file_get_contents to do a Post";
-$h->banner = "<h1>$h->title</h1>";
+$S->title = "file_get_contents to do a Post";
+$S->banner = "<h1>$S->title</h1>";
 
-list($top, $footer) = $S->getPageTopBottom($h);
+[$top, $footer] = $S->getPageTopBottom();
 
 echo <<<EOF
 $top
