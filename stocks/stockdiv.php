@@ -14,7 +14,7 @@ function checkUser($S) {
   // Each has the same information: a fingerprint and a label for the device.
   // Right now the following is a simpler way to do this.
   
-  if($userEmail = explode(":", $_COOKIE['SiteId'])[1]) {
+  if($userEmail = explode(":", $_COOKIE['SiteId'])[2]) {
     $sql = "select email from members where email='$userEmail'";
 
     if(!$S->query($sql)) {

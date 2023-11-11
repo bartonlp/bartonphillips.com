@@ -3,17 +3,21 @@
 // This is the main php include file. It is included in index.php
 // BLP 2023-09-27 - add name to SiteId
 
+if(!class_exists("Database")) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
+
 /*
-// BLP 2023-09-27 - Modified members table. Added name a part of key.
+// BLP 2023-10-12 - Primary key is now (name,email,finger,ip)
+
 CREATE TABLE `members` (
-  `name` varchar(100) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `finger` varchar(50) NOT NULL,
+  `ip` varchar(20) DEFAULT NULL,
   `count` int DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`name`,`email`,`finger`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
+  PRIMARY KEY (`name`,`email`,`finger`,`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 The myip table is in $S->masterdb (which should be 'bartonlp') database
   'myIp' will be all of the computers that I have used in the last THREE days.
@@ -78,43 +82,67 @@ $locstr = <<<EOF
 EOF;
 
 // Do we have a cookie? If not offer to register
-// The 'SiteId' cookie is the finger and email address separated by a colen (:). 
+// The 'SiteId' cookie is the name, finger and email address separated by a colen (:). 
 // If we have a cookie and it is me then set $adminStuff
-// The $cookieIp is the last ip address for this browser/CPU from $_COOKIE
+
+// Do we have a SiteId cookie?
 
 if(!($nameFingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
   $count = 0;
-  $n = $S->query("select count from $S->masterdb.logagent where ip='$S->ip'");
-  if($n = 1) goto onlyOne; // kinda hate to use a goto but what the hell
-  
-  while([$cnt] = $S->fetchrow('num')) {
-    $count += $cnt;
-  }
 
-  $hereMsg =<<<EOF
+  // Has this ip ever visited our site?
+  
+  if($S->query("select count from $S->masterdb.logagent where ip='$S->ip' and site='$S->siteName'")) {
+    // Yes get the counts.
+    
+    while([$cnt] = $S->fetchrow('num')) {
+      $count += $cnt;
+    }
+
+    $hereMsg =<<<EOF
 <div class="hereMsg">You have been here $count time. Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
 EOF;
-} else { // There is a cookie
-  [$cookieName, $cookieFinger, $cookieEmail] = explode(':', $nameFingerEmail); // The cookie is 'name:finger:email'
-
-  $sql = "select name from members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'";
-
-  if($S->query($sql)) {
-    // Found the record.
-
-    [$memberName] = $S->fetchrow('num');
-    
-    $hereMsg = "<div class='hereMsg'>Welcome $memberName</div>";
-
-    if($cookieEmail == "bartonphillips@gmail.com") {
-      $adminStuff = require("adminsites.php");
-    }
-  } else { // Only been here one time so just show this message.
-onlyOne:
+  } else {
+    // This ip has never been here.
 
     $hereMsg = <<<EOF
 <div class="hereMsg">Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
 EOF;
+  }
+} else { // There is a cookie
+  [$cookieName, $cookieFinger, $cookieEmail] = explode(':', $nameFingerEmail); // The cookie is 'name:finger:email'
+
+  if($S->query("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'")) {
+    // Found the records.
+
+    while($ip = $S->fetchrow('num')[0]) {
+      if($ip == $S->ip) {
+        continue;
+      }
+
+      if(!$S->query("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName' and ip='$S->ip'")) {
+        // This ip does not exists for this key.
+        // So we should add a new record for this new ip.
+
+        $S->query("insert into bartonphillips.members (ip, name, email, finger, count, created, lasttime) ".
+                  "values('$S->ip', '$cookieName', '$cookieEmail', '$cookieFinger', 1, now(), now())");
+
+        $S->query("insert into $S->masterdb.myip (myIp, count, createtime, lasttime) ".
+                  "values('$S->ip', 1, now(), now()) ".
+                  "on duplicate key update count=count+1, lasttime=now()");
+        
+        error_log("index.i.php: new ip added to members table - $ip for $cookieName, $cookieEmail, $cookieFinger, insert/update myip count");
+      }
+    }
+
+    $hereMsg = "<div class='hereMsg'>Welcome $cookieName</div>";
+
+    if($cookieEmail == "bartonphillips@gmail.com") {
+      $adminStuff = require("adminsites.php");
+    }
+  } else { // Can't find the record
+    error_log("index.i.php: Not found in members table, $cookieFinger, $cookieEmail, $cookieName");
+    //echo "Not found in members table<br>";
   }
 }
 

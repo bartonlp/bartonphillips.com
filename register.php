@@ -9,18 +9,20 @@
 // javascript is available. See the if($_POST) bellow.
 
 /*
-// BLP 2023-09-27 - Add name to key.
+// BLP 2023-10-13 - added name and ip
+
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `finger` varchar(50) NOT NULL,
+  `ip` varchar(20) NOT NULL,
   `count` int DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`name`,`email`,`finger`)
+  PRIMARY KEY (`name`,`email`,`finger`,`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
-  The myip table is in $S->masterdb (which should be 'bartonlp') database
+  The myip table is in $S->masterdb (which should be 'barton') database
   'myIp' will be all of the computers that I have used in the last three days.
   
 CREATE TABLE `myip` (
@@ -44,11 +46,21 @@ if($_POST['page'] == 'finger') {
   // Or a browser like lynx, wget, curl etc.
 
   $visitor = $_POST['visitor'] ?? "NO SCRIPT";
-  
   $email = $_POST['email'];
   $name = $_POST['name'];
+  $ip = $_POST['ip']; // BLP 2023-10-06 - if we have an ip that means the <form> sent the post and this is curl like.
 
-  if($S->isBot($S->agent)) header("location: https://www.bartonphillips.com");
+  // BLP 2023-10-06 - moved this if from the bottom of POST. If 'NO SCRIPT' we need to log and goto
+  // complete.
+  
+  if($visitor == "NO SCRIPT") {
+    error_log("register.php post: ip=$ip, NO SCRIPT probably javascript disabled or lynx, curl, wget etc., email=$email, name=$name");
+    header("Location: https://www.bartonphillips.com/register.php?page=complete");
+  }
+
+  if($S->isBot($S->agent)) {
+    error_log("register.php POST page=finger: $name, $email, $visitor"); // $visitor may be NO SCRIPT
+  }
   
   if($email == "bartonphillips@gmail.com") {
     // Update the myip tables.
@@ -65,10 +77,10 @@ if($_POST['page'] == 'finger') {
     throw new Exception("register.php: members table for database bartonphillips does not exist");
   }
 
-  // BLP 2023-09-27 - Now the key is name, email and finger.
+  // BLP 2023-10-13 - Now the key is name, email, finger and ip.
   
-  $S->query("insert into members (name, email, finger, count, created, lasttime) ".
-                 "values('$name', '$email', '$visitor', 1, now(), now()) ".
+  $S->query("insert into members (ip, name, email, finger, count, created, lasttime) ".
+                 "values('$S->ip', '$name', '$email', '$visitor', 1, now(), now()) ".
                  "on duplicate key update count=count+1, lasttime=now()");
     
   $options =  array(
@@ -96,10 +108,6 @@ if($_POST['page'] == 'finger') {
   
   echo "$BLP";
 
-  if($visitor == "NO SCRIPT") {
-    error_log("register.php post: NO SCRIPT probably javascript disabled or lynx, curl, wget etc., email=$email, name=$name");
-    header("Location: https://www.bartonphillips.com/register.php?page=complete");
-  }
   exit();
 }
 
@@ -237,6 +245,7 @@ $top
 </table>
 <input id="submit" type="submit" value="Submit">
 <input type="hidden" name="page" value="finger">
+<input type="hidden" name="ip" value="$S->ip">
 </form>
 <hr>
 </div>

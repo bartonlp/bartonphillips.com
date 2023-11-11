@@ -21,7 +21,7 @@ $top
 <code>127.0.0.1 localhost</code>
 <p>Now if your add the line:</p>
 <code>127.0.0.1 www.mysite.com</code>
-<p>you can now access your website using your DNS name from your local browser. You can also have absolute links in your web pages
+<p>you can now access your website using your DNS name from your local browser. You can also have absolute links in your webpages
    like:</p>
 <code>&lt;a href=&quot;https://www.mysite.com/mypage.html&quot;&gt;Link to mypage&lt;/a&gt;</code>
 <p>and the link will get to your web server and not to your router's administration page.</p>

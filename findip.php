@@ -1,5 +1,5 @@
 <?php
-// BLP 2023-02-25 - use new approach
+// BLP 2023-10-05 - `browser` added to tracker table.
 // Given the ip find the records in tracker, geo, bots.
 /*
 CREATE TABLE `tracker` (
@@ -10,6 +10,7 @@ CREATE TABLE `tracker` (
   `finger` varchar(50) DEFAULT NULL,
   `nogeo` tinyint(1) DEFAULT NULL,
   `ip` varchar(40) DEFAULT NULL,
+  `browser` varchar(50) DEFAULT NULL,
   `agent` text,
   `referer` varchar(255) DEVAULT '',
   `starttime` datetime DEFAULT NULL,
@@ -80,7 +81,7 @@ $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 $T = new dbTables($S);
 
-$val = "select id,ip,site,page,botAs,finger,nogeo,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
+$val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
 
 // These MUST BE TRUE globals!!
 $fingers = [];
@@ -133,7 +134,7 @@ function getinfo($value, $sql=null) {
   }
   $keys = rtrim($keys, ',');
 
-  // If we are using ip use it if we are doing id set the $bitsWhere to the ip we got in the
+  // If we are using ip use it, if we are doing id set the $bitsWhere to the ip we got in the
   // callback.
   
   if(preg_match("~ip=['\"](.*)['\"]~", $where, $m)) {
@@ -183,10 +184,12 @@ function getinfo($value, $sql=null) {
   if($ip) {
     $loc = json_decode(file_get_contents("http://ipinfo.io/$ip")); // I could also use the class link in webstats.js
     $gpsloc = $loc->loc;
+    $hostby = gethostbyaddr($ip);
     $locstr = <<<EOF
 <p>User Information from "http://ipinfo.io/$ip"</p>
 
 <ul class="user-info">
+  <li>gethostbyaddr: <i class='green'>$hostby</i></li>
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
   <li>GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
@@ -205,8 +208,18 @@ EOF;
   } else {
     $badTbl = "<h1>Not in badplayer table</h1>";
   }
+
+  if(!empty($ip)) {
+    $sql = "select ip, site, page, bot, info, phone, lasttime from $S->masterdb.server where ip='$ip'";
+    $serverTbl = $T->maketable($sql, ['attr'=>['id'=>'server', 'border'=>'1']])[0];
+  }
+  if($serverTbl) {
+    $serverTbl = "<p>From server table</p>$serverTbl";
+  } else {
+    $serverTbl = "<h1>Not in server table</h1>";
+  }
   
-  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl];
+  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl];
 }
 
 // Start Here
@@ -215,13 +228,13 @@ if($_POST['page'] == 'find') {
   // Here value will be the full phrase "where id/ip=..."
   $value = $_POST['where'];
   $sql = $_POST['sql'];
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($value, $sql);
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl] = getinfo($value, $sql);
 } elseif($_GET['ip']) {
   $ip = "ip='{$_GET['ip']}'";
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($ip, $val);
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl] = getinfo($ip, $val);
 } elseif($_GET['id']) {
   $id = "id={$_GET['id']}";
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl] = getinfo($id, $val);
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl] = getinfo($id, $val);
 }
 
 $S->banner = "<h1>Find in Tracker</h1>";
@@ -229,13 +242,19 @@ $S->title = "Find in Tracker";
 
 $S->css =<<<EOF
 /* 4 is page*/
-#trackertbl td:nth-of-type(4) { overflow-x: auto; max-width: 150px; white-space: pre;}
-/* 8 is agent */
-#trackertbl td:nth-of-type(8) { overflow-x: auto; max-width: 200px; white-space: pre;}
-/* 9 is referer */
-#trackertbl td:nth-of-type(9) { overflow-x: auto; max-width: 200px; white-space: pre;}
-/* 10 is javascript */
-#trackertbl td:nth-of-type(10) { cursor: pointer;} 
+#trackertbl td:nth-of-type(4) {
+  overflow-x: auto; max-width: 150px; white-space: pre;
+  cursor: pointer;
+}
+/* 9 is agent */
+#trackertbl td:nth-of-type(9) {
+  overflow-x: auto; max-width: 200px; white-space: pre;
+  cursor: pointer;
+}
+/* 10 is referer */
+#trackertbl td:nth-of-type(10) { overflow-x: auto; max-width: 150px; white-space: pre;}
+/* 11 is javascript */
+#trackertbl td:nth-of-type(11) { cursor: pointer;} 
 #trackerContainer, #botsContainer, #mygeo, #badplayer, #daycounts {
   width: 100%;
 }
@@ -282,37 +301,12 @@ button { border-radius: 5px; background: green; color: white; font-size: 18px; }
   padding-bottom: 30px;
   border: 5px solid red;
 }
-#location li:nth-of-type(2) i { cursor: pointer; }
+#location li:nth-of-type(3) i { cursor: pointer; }
 .green { color: green; }
 .botas { color: green; }
 EOF;
 
-function setupjava($S) {
-  $start = TRACKER_START;
-  $load = TRACKER_LOAD;
-  $normal = TRACKER_NORMAL;
-  $noscript = TRACKER_NOSCRIPT;
-  $bvisibilitychange = BEACON_VISIBILITYCHANGE;
-  $bpagehide = BEACON_PAGEHIDE;
-  $bunload = BEACON_UNLOAD;
-  $bbeforeunload = BEACON_BEFOREUNLOAD;
-  $timer = TRACKER_TIMER;
-  $bot = TRACKER_BOT;
-  $css = TRACKER_CSS;
-  $me = TRACKER_ME;
-  $goto = TRACKER_GOTO; // Proxy
-  $goaway = TRACKER_GOAWAY; // unusal tracker.
-
-  $S->h_inlineScript = <<<EOF
-    const tracker = {
-  "$start": "Start", "$load": "Load", "$normal": "Normal", "$noscript": "NoScript",
-  "$bvisibilitychange": "B-VisChange", "$bpagehide": "B-PageHide", "$bunload": "B-Unload", "$bbeforeunload": "B-BeforeUnload",
-  "$timer": "Timer", "$bot": "BOT", "$css": "Csstest", "$me": "isMe", "$goto": "Proxy", "$goaway": "GoAway"
-  };
-  EOF;
-}
-
-setupjava($S);
+require_once("/var/www/bartonlp.com/otherpages/setupjava.i.php");
 
 $S->b_script =<<<EOF
 <script src="https://bartonphillips.net/js/jquery.mobile.custom.js"></script>
@@ -329,27 +323,40 @@ EOF;
 $S->noCounter = true; // No counter.
 
 $S->b_inlineScript =<<<EOF
-  // 8 is the agent
-  // When clicked show the whole agent string.
+  // 4 & 9 is the page & agent
+  // When clicked show the whole page or agent string.
 
-  $("body").on("click", "#trackertbl td:nth-child(8)", function(e) {
-    let ypos, xpos;
-    let pos = $(this).position();
-    xpos = pos.left - 300;
-    ypos = pos.top;
+  $("body").on("click", "#trackertbl td:nth-child(4), #trackertbl td:nth-child(9)", function(e) {
+    if(e.ctrlKey && $(this)[0].cellIndex == 8) {
+      const txt = $(this).text();
+      const pat = /(http.?:\/\/.*?)\)/;
+      const found = txt.match(pat);
+      //console.log("found:", found);
+      if(found) {
+        window.open(found[1], "bot");
+      }
+      e.stopPropagation();
+    } else {
+      let ypos, xpos;
+      let pos = $(this).position();
+      xpos = pos.left - 200;
+      ypos = pos.top;
 
-    $("#Human").remove();
-    $("#Agent").remove();
-    $("#trackertbl").append("<div id='Agent' style='position: absolute; top: "+ypos+"px; left: "+xpos+"px; "+
-        "background-color: white; border: 5px solid black; "+
-        "padding: 10px;'>"+$(this).text()+"</div>");
-    e.stopPropagation();
+      $("#Human").remove();
+      $("#Agent").remove();
+      $("#Page").remove();
+
+      $("#trackertbl").append("<div id='Agent' style='position: absolute; top: "+ypos+"px; left: "+xpos+"px; "+
+                              "background-color: white; border: 5px solid black; "+
+                              "padding: 10px;'>"+$(this).text()+"</div>");
+      e.stopPropagation();
+    }
   });
 
-  // 10 is the java script value.
+  // 11 is the java script value.
   // Show the human readable values.
 
-  $("body").on("click", "#trackertbl td:nth-child(10)", function(e) {
+  $("body").on("click", "#trackertbl td:nth-child(11)", function(e) {
     let js = parseInt($(this).text(), 16),
     h = '', ypos, xpos;
     let pos = $(this).position(); // get the top and left
@@ -364,6 +371,7 @@ $S->b_inlineScript =<<<EOF
     
     $("#Human").remove();
     $("#Agent").remove();
+    $("#Page").remove();
 
     $("#trackertbl").append("<div id='Human' style='position: absolute; top: "+ypos+"px; left: "+xpos+"px; "+
                  "background-color: white; border: 5px solid black; "+
@@ -377,6 +385,7 @@ $S->b_inlineScript =<<<EOF
   $("body").on("click", function(e) {
     $("#Human").remove();
     $("#Agent").remove();
+    $("#Page").remove();
   });
 EOF;
 
@@ -403,6 +412,7 @@ $top
 <div id='geo'>$geoTbl</div>
 <div id='dayrecord'>$dayrecords</div>
 <div id='badContainer'>$badTbl</div>
+<div id='serverContainer'>$serverTbl</div>
 <div id="outer">
 <div id="geocontainer"></div>
 <button id="removemsg">Click to remove map image</button>

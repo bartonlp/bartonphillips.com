@@ -210,7 +210,7 @@ Connection: Keep-Alive
 Content-Type: text/html; charset=utf-8
 </pre>
 
-<p>The HTML web page follows the <b>Response</b> header and starts out like this:</p>
+<p>The HTML webpage follows the <b>Response</b> header and starts out like this:</p>
 
 <pre>
 &lt;!DOCTYPE html&gt;

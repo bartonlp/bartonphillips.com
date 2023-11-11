@@ -19,36 +19,33 @@ echo <<<EOF
 $top
 <section id='projects'>
 <h2>GitHub and PHPClasses Projects</h2>
- 
-<h3>PHP SiteClass Mini Framework</h3>
-<p>This is a mini framework I have been using for almost 10 years. It has a database wrapper
+
+<h3>SimpleSiteClass Mini Framework</h3>
+<p>This is a mini framework I have been using for almost 20 years. It has a database wrapper
 and a number of methods that make my life a lot easier.</p>
-<p>For example every web page needs a
-&lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
+<p>For example every webpage needs a &lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
 (navigation and banner).
-The framework makes these
-things easy to live with.</p>
-<p>The database wrapper lets you use several popular database engines
-like 'mysql', 'mysqli', 'sqlite' and 'pod'. It is easy to use my framework with templeting
-engines like Twig.</p>
+The framework makes these things easy.</p>
+<p>The database wrapper lets you use the database engines 'mysqli'.
+It is easy to use my framework with templeting engines like Twig.</p>
 <p>This framework is not &quot;All Things to All People&quot; like a number
-of the well know frameworks try to be. This is a simple tool and therefore not nearly as
-complex as some of the popular frameworks out there.</p>
+of the well know frameworks. This is a simple tool and therefore not nearly as
+complex as some of the popular frameworks.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
-<p>The <b>SiteClass</b> framework is hosted at<br>
-<a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://github.com/bartonlp/SiteClass">GitHub
+<p>The <b>SimpleSiteClass</b> framework is hosted at<br>
+<a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://github.com/bartonlp/simple-site-class">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
 and also at
 <a target="_blank"
-href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://www.phpclasses.org/package/9105-PHP-Create-database-driven-Web-sites.html">
+href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://www.phpclasses.org/package/13039-PHP-Simple-Site-Class.html">
 <img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
 <br>Give it a try and let me know if you like it.</p>
 <hr>
 
 <h3>UpdateSite Class</h3>
-<p>This class works with SiteClass. It lets you create sections or articles in a webpage that can be edited via the
-web browser. The sections are stored in a database (MySql is prefered).</p>
+<p>It lets you create sections or articles in a webpage that can be edited via the
+web browser. The sections are stored in a MySql database.</p>
 <p>You can find my <b>UpdateSite Class</b> at<br>
 <a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://github.com/bartonlp/updatesite">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
@@ -59,7 +56,7 @@ href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&http://www.phpclasses.
 and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Documentation</a>.</p>
 <hr>
 
-<h3>PHP Slide Show Class</h3>
+<h3>Slide Show Class</h3>
 
 <p>This class can be used to present a slide show of images.
 It can extract lists of image files available on the local server or a remote Web server.</p>
@@ -84,7 +81,7 @@ href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://www.phpclasses
 alt="php classes logo" /></a></p>
 <hr>
 
-<h3>PHP MySql Slide Show Class</h3>
+<h3>MySql Slide Show Class</h3>
 
 <p>This package can be used to present a slide show from images listed in a database.
 The main class can retrieve lists of images to be displayed from a MySQL database table.</p>

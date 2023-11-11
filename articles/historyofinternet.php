@@ -1,5 +1,5 @@
 <?php
-// BLP 2023-02-25 - use new approach
+// The history of the Internet
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
@@ -496,7 +496,7 @@ into HEX but not easily into decimal. Other number bases that have been popular 
 and base 12 (duodecimal) to a much lesser extent.</p>
 
 
-<h2>From Tim Berners-Lee's first message (web page):</h2>
+<h2>From Tim Berners-Lee's first message (webpage):</h2>
 
 <blockquote>&quot;The World Wide Web (WWW) project aims to allow all links to be made to any information
 anywhere.  [...] The WWW project was started to allow high energy physicists to share data, news,

@@ -8,12 +8,7 @@
 
 // BLP 2023-09-07 - added to let me know if someone calls this directly.
  
-if(!class_exists("SiteClass")) {
-  $ip = $_SERVER['REMOTE_ADDR'];
-  error_log("bartonphillips.com/banner.i.php: Called directly: $ip");
-  echo "<h1>Not Authorized</h1><p>This file is not to be run directly, rather it is used by another file</p>";  
-  exit();
-}
+if(!class_exists("Database")) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
 
 return <<<EOF
 <header>

@@ -5,6 +5,9 @@
 </RequireAll>
 
 Header set Access-Control-Allow-Origin "*"
+# BLP 2023-10-10 - I do this in dbAbstract.class.php so it is done for all sites that use the
+# SiteClass or Database class.
+#Header set Accept-Ch "Sec-Ch-Ua-Platform,Sec-Ch-Ua-Platform-Version,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Arch"
 
 SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
 SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
@@ -18,6 +21,8 @@ RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 
 # rewrite the address of csstest.css to tracker.php?id=$1&csstest
 RewriteRule ^csstest-(.*)\.css$ https://bartonlp.com/otherpages/tracker.php?id=$1&page=csstest [L,QSA]
+# Just a test
+RewriteRule ^testimage.*\.png$ mytest.php [L,NC]
 
 # Keep others from looking at these files.
 #RewriteRule ^(\.git|other|script)/.*$ - [F,L]

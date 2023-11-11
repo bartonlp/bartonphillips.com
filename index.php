@@ -19,9 +19,32 @@ EOF;
 
 $S->b_script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
-  <script src='/index.js'></script>
   <script src='https://bartonphillips.net/js/maps.js'></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&callback=initMap&v=weekly" async></script>
+  <script>
+// This was formaly index.js now it is inline
+    
+'use strict';
+
+// If we have adminstuff we need another column.
+
+if(window.CSS) {
+  if(CSS.supports('display', 'grid') && $("#adminstuff").length != 0) {
+    $("#grid-section").css("grid-template-columns", "repeat(4, 1fr)");
+  }
+}
+
+// Local date/time for 'Today is' & 'Your Time is'. Uses phpdate.js
+// loaded in index.php
+
+setInterval(function() {
+  var d = date("l F j, Y");
+  var t = date("H:i:s T"); // from phpdate.js
+  $("#datetoday").html("<span class='green'>"+
+                       d+"</span><br>Your Time is: <span class='green'>"+
+                       t+"</span>");
+}, 1000);
+  </script>    
 EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
@@ -49,9 +72,9 @@ Today is: <span id="datetoday">$date</span>
 <p>
    This page is dynamically generated using PHP on our server at
    <a target="_blank" href="https://www.digitalocean.com/">DigitalOcean.com</a>.
-   Very little JavaScript is used in this page. We collect &quot;Google Analitics&quot, &quot;Google Maps&quot; geo-positioning data, fingerprint data,
-   and a COOKIE called 'mytime' which is used to tell how long some anonymous-someone has stayed on our site.
-   <a target="_blank" href="privacy.php">Our privacy statement</a>.</p>
+   Very little JavaScript is used in this page. We collect &quot;Google Analytics&quot, &quot;Google Maps&quot; geo-positioning data, fingerprint data,
+   and a COOKIE called 'mytime', which is used to tell how long some anonymous person has stayed on our site.
+   <a target="_blank" href="privacy.php">Privacy Statement</a>.</p>
 <p>
    <span class='red'>However</span>, some of the pages we link to do collect tracking information
    and COOKIES and make extensive use of JavaScript.
@@ -61,7 +84,7 @@ Today is: <span id="datetoday">$date</span>
 <!-- BLP 2021-03-25 - If we change this it will affect scraper-await-fetch.php -->
 <section id="others">
 <!-- BLP 2021-03-25 - end warning -->
-<h2>Visit one of the other web sites designed by Barton Phillips</h2>
+<h2>Visit one of the other websites designed by Barton Phillips</h2>
 <!-- Other Sites That I have made -->
 <div id="otherSites" class="mylinks">
 <a target="_blank" href="https://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
@@ -69,10 +92,10 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a target="_blank" href="https://www.jt-lawnservice.com"><button>JT Lawn Service</button></a>
+<a target="_blank" href="https://www.plumberdfw.com"><button>Little John Plumbing</button></a>
 <a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
-<!-- BLP 2023-08-11 - not doing this (add a \) \$staticIp -->
 <a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
 <a target="_blank" href="https://www.bartonphillips.org:8000"><button>RPI</button></a>
 </div>
@@ -142,14 +165,16 @@ $adminStuff
 <li><a target="_blank" href="/articles/urlcountrycodes.php">Find the country given a url country code</a><br>
 <li><a target="_blank" href="/articles/getcountryfromip.php">Get Country from IP Address</a></li>
 <li><a target="_blank" href="/articles/verifyemailaddress.php">Verify Email Address</a></li>
-<li><a target="_blank" href="/getIP.php">Check Ip Address</a></li>
+<li><a target="_blank" href="/getIP.php">Check IP Address</a></li>
 </ul>
 </section>
 
 <section id='projects'>
 <a target="_blank" href='projects.php'>My GitHub and PHPClasses projects</a>
 </section>
+
 <!-- A place for the geo stuff -->
+
 <div id="outer">
 <div id="geocontainer"></div>
 <button id="removemsg">Click to remove map image</button>
