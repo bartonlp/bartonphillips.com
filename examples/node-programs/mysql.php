@@ -8,7 +8,7 @@ $S->title = "Demo Program mysql.php";
 $S->banner = "<h1>$S->title</h1>";
 [$top, $footer] = $S->getPageTopBottom();
 
-$res = print_r($results, true);
+$res = "RES=" .print_r($__file, true);
 
 echo <<<EOF
 $top

@@ -22,7 +22,6 @@ And the forth (server):<br>
 <code>ssh -p2222 barton@bartonphillips.com</code></p>
 <p>For the browsers enter in the location bar of the browser:<br>
 <code>https://bartonphillips.org:{port}</code><br>
-For port 8000 (rpi) it needs to be <code>http://</code></p>
 <table border="3">
 <tr><td>Rpi ssh</td><td>4022</td></tr>
 <tr><td>HP ssh</td><td>2022</td></tr>

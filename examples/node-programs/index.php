@@ -1,9 +1,9 @@
 <?php
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
-
-$__FILENAME = __FILE__;
-require_once("addpage.php");
+//vardump("\$_SERVER", $_SERVER);
+$FILENAME = __FILE__;
+//require_once("addpage.php");
 
 $S->title = "Test for Server</title>";
 $S->banner = "<h1>$S->title</h1>";

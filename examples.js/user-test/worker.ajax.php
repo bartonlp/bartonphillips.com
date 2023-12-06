@@ -23,7 +23,7 @@ $_site = require_once(getenv("SITELOADNAME"));
 
 $_site->dbinfo->user = "test"; // use test user
 $_site->dbinfo->database = "test"; // and test database
-
+$_site->noTrack = true; // needed because user is test not barton.
 $S = new Database($_site); // Database does not do any counting and sets noTrack true by default.
 
 $sql = $_POST['sql'];

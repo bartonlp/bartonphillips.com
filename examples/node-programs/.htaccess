@@ -8,8 +8,10 @@ SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
 SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
 
 RewriteEngine on
+RewriteRule ^csstest-(.*)\.css$ https://bartonlp.com/otherpages/tracker.php?id=$1&page=csstest [L,QSA]
 RewriteRule ^$ altorouter.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . altorouter.php [L]
+

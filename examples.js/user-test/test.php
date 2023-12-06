@@ -10,6 +10,7 @@ $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 $_site->dbinfo->user = 'test'; // test user
 $_site->dbinfo->database = "test"; // and test database
+$_site->noTrack = true; // Set noTrack to true because the user is NOT barton. See Database CheckIfTablesExist().
 $X = new Database($_site);
 
 $S->banner = "<h1>Test of two databases</h1>";
@@ -24,6 +25,7 @@ while($row = $X->fetchrow("assoc")) {
 }
 echo <<<EOF
 $top
+<p>The two databases have different 'user' values. SiteClass is using 'user' <i>barton</i>. Database is using 'user' <i>test</i>.</p>
 <div>$msg1</div>
 <div>$msg2</div>
 $footer
