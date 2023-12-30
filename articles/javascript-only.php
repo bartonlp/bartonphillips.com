@@ -36,9 +36,7 @@ jQuery(document).ready(function($) {
 
   $("head").after("<body>");
   $("body").html("<h1><i>javascript</i> and <i>jQuery</i> but no <i>SiteClass</i></h1>"+
-  "<h3>This program does not have a fancy header or footer.</h3>" +
-  "This a another link as an example: <a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
-  "And another: <a href='dummy.php'>Dummy</a><br><br>"+
+  "<h3>This program does not have a fancy header or footer.</h3>"+
   "<a href='javascript-siteclass.php'>JavaScript only plus jQuery and SiteClass</a><br>"+
   "<a href='javascript-only-nojquery.html'>JavaScript only no jQuery or SiteClass</a><br>"+
   "<p>PHP file that created this page:</p>"+

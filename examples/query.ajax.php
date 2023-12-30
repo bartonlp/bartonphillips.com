@@ -9,7 +9,7 @@ $S = new Database($_site);
 
 if($sql = $_POST['sql']) {
   //error_log("sql" . print_r($_POST, true));
-  $S->query($sql);
+  $S->sql($sql);
   $rows = [];
   while($row = $S->fetchrow('assoc')) {
     $rows[] = $row;

@@ -48,7 +48,7 @@ if($ip = $_POST['ip']) {
   $sql = "select countryLONG from $S->masterdb.$table ".
           "where '$iplong' between ipFROM and ipTO";
 
-  $S->query($sql);
+  $S->sql($sql);
 
   list($name) = $S->fetchrow('num');
   echo $name;
@@ -79,7 +79,7 @@ $sql = "select ip, agent, page, lasttime, hex(isJavaScript), difftime ".
        "and isJavaScript != 0 and ip != '75.108.73.143' ".
        "and difftime > 60 order by lasttime";
 
-$S->query($sql);
+$S->sql($sql);
 
 // Get the result as we will do other sql querys inside the while.
 

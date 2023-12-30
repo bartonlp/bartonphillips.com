@@ -27,7 +27,7 @@ EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
 $sql = "select stock, price, qty from stocks where status in('active','mutual')";
-$S->query($sql);
+$S->sql($sql);
 
 $stocks = [];
 

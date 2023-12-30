@@ -22,7 +22,7 @@ use PHPHtmlParser\Dom;
 // We have two demo server function that return pieces of my webpage.
 // We use 'fetch()' instead of AJAX as it uses Promises and is easier to use.
 
-// If $_GET['page'] equals 'one'. This is a GET call from 'query()'
+// If $_GET['page'] equals 'one'. This is a GET call from 'sql()'
 
 if($_GET['page'] == 'one') {
   $dom = new Dom;
@@ -40,7 +40,7 @@ if($_GET['page'] == 'one') {
   exit();
 };
 
-// If $_POST['page'] equals 'two'. This a POST call from 'query()'
+// If $_POST['page'] equals 'two'. This a POST call from 'sql()'
 
 if($_POST['page'] == 'two') {
   $dom = new Dom;
@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
 
   // Get the two 'fetch()' items from the server.
 
-  query().then(d => {
+  sql().then(d => {
     // d has the two items r1 and r2.
 
     //console.log("d:", d);
@@ -142,7 +142,7 @@ r2:
 
   // an 'async function' that does a GET 'fetch()' and a POST 'fetch()'
 
-  async function query() {
+  async function sql() {
     // The information comes back as 'json' so convert it.
     // This could have all been done with a single fetch but I have used two for demo purpuses.
     // The fist does a GET and the second does a POST.

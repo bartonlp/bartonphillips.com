@@ -92,7 +92,7 @@ if(!($nameFingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
 
   // Has this ip ever visited our site?
   
-  if($S->query("select count from $S->masterdb.logagent where ip='$S->ip' and site='$S->siteName'")) {
+  if($S->sql("select count from $S->masterdb.logagent where ip='$S->ip' and site='$S->siteName'")) {
     // Yes get the counts.
     
     while([$cnt] = $S->fetchrow('num')) {
@@ -112,7 +112,7 @@ EOF;
 } else { // There is a cookie
   [$cookieName, $cookieFinger, $cookieEmail] = explode(':', $nameFingerEmail); // The cookie is 'name:finger:email'
 
-  if($S->query("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'")) {
+  if($S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'")) {
     // Found the records.
 
     while($ip = $S->fetchrow('num')[0]) {
@@ -120,14 +120,14 @@ EOF;
         continue;
       }
 
-      if(!$S->query("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName' and ip='$S->ip'")) {
+      if(!$S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName' and ip='$S->ip'")) {
         // This ip does not exists for this key.
         // So we should add a new record for this new ip.
 
-        $S->query("insert into bartonphillips.members (ip, name, email, finger, count, created, lasttime) ".
+        $S->sql("insert into bartonphillips.members (ip, name, email, finger, count, created, lasttime) ".
                   "values('$S->ip', '$cookieName', '$cookieEmail', '$cookieFinger', 1, now(), now())");
 
-        $S->query("insert into $S->masterdb.myip (myIp, count, createtime, lasttime) ".
+        $S->sql("insert into $S->masterdb.myip (myIp, count, createtime, lasttime) ".
                   "values('$S->ip', 1, now(), now()) ".
                   "on duplicate key update count=count+1, lasttime=now()");
         

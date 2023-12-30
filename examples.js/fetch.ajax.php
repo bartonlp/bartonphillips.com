@@ -30,16 +30,16 @@ if(isset($_POST['sql'])) {
   //error_log("sql: $sql");
 
   try {
-    $S->query($sql);
+    $S->sql($sql);
 
     if(preg_match("/insert/i", $sql)) {
-      $S->query("select TABLE_ROWS from information_schema.TABLES where TABLE_NAME='test'");
+      $S->sql("select TABLE_ROWS from information_schema.TABLES where TABLE_NAME='test'");
       list($cnt) = $S->fetchrow('num');
       //error_log("cnt: $cnt");
       $nn = $cnt - 20;
       //error_log("nn: $nn");
       if($cnt > 20) {
-        $n = $S->query("delete from test order by id asc limit $nn");
+        $n = $S->sql("delete from test order by id asc limit $nn");
         echo "DONE $n<br>";
         exit();
       }

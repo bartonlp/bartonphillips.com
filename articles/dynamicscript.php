@@ -283,7 +283,7 @@ dynamically create them was always a drawback.</p>
 </pre>
 And Here it is. Very simple if your browser supports <i>srcdoc</i>:</p>
 <iframe srcdoc='<h1>This way uses srcdoc</h1><p>Cool do you not think.</p>'></iframe>
-<p>Otherwise you and use the PHP or JavaScript approach.
+<p>Otherwise you can use the PHP or JavaScript approach.
 </p>
 
 <h3>Using PHP</h3>

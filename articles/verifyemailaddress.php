@@ -87,7 +87,7 @@ a comma. Elements can be encapsolated by double quotes if desired or if the elem
 <hr>
 <form action="$S->self" method="post">
 <p>Or if you want to validate only one email address just enter it below.</p>
-Enter Email address: <input type="text" name="emailaddress"/><br>
+Enter Email address: <input type="text" name="emailaddress" data-form-type="other"/><br>
 <input type="hidden" name="page" value="verifyone"/>
 <input type="submit" value="Submit"/>
 </form>
@@ -124,7 +124,7 @@ function verify($S, $DEBUG) {
     exit();
   }
   
-  $S->query("drop table if exists verifyemail");
+  $S->sql("drop table if exists verifyemail");
   $query = <<<EOF
 create table verifyemail (
   listId int(11) not null auto_increment,
@@ -135,7 +135,7 @@ create table verifyemail (
 );
 EOF;
 
-  $S->query($query);
+  $S->sql($query);
 
   //echo "file: $tempfile[0]<br>";
 
@@ -147,7 +147,7 @@ EOF;
         $ar[$i] = $S->escape($ar[$i]);
       }
       
-      $S->query("insert into verifyemail (contactName, contactEmail, teststatus) values('$ar[0]', '$ar[1]', 'nottested')");
+      $S->sql("insert into verifyemail (contactName, contactEmail, teststatus) values('$ar[0]', '$ar[1]', 'nottested')");
     }
   } else {
     echo "Can't open file $tempfile[0]<br>";
@@ -189,7 +189,7 @@ EOF;
   $domain = "bartonphillips.com";
   $from_mail = "barton@applitec.com"; //"barton@granbyrotary.org";
 
-  $n = $S->query("select listId, contactName, contactEmail from verifyemail where teststatus='nottested'");
+  $n = $S->sql("select listId, contactName, contactEmail from verifyemail where teststatus='nottested'");
 
   if(!$n) {
     echo "NO RECORDS\n$footer";
@@ -321,7 +321,7 @@ EOF;
         // OK
         if($DEBUG) echo "Email OK<br>\n";
         array_push($OKEmail, "$listId, $contactName, $contactEmail");
-        $S->query("update verifyemail set teststatus='ok' where listId='$listId'");
+        $S->sql("update verifyemail set teststatus='ok' where listId='$listId'");
         break;
       case 2:
         if($DEBUG) echo "Server Says Ok to Anything:  $contactName, $contactEmail<br>\n";
@@ -343,7 +343,7 @@ EOF;
       echo "$line<br>\n";
       if(preg_match("/^(\d+),/", $line, $m)) {
         $id = $m[1];
-        $S->query("update verifyemail set teststatus='bad' where listId='$id'");
+        $S->sql("update verifyemail set teststatus='bad' where listId='$id'");
       } else {
         echo "preg_match did not fine the id?<br>\n";
       }
@@ -355,7 +355,7 @@ EOF;
       echo "$line<br>\n";
       if(preg_match("/^(\d+),/", $line, $m)) {
         $id = $m[1];
-        $S->query("update verifyemail set teststatus='cantsay' where listId='$id'");
+        $S->sql("update verifyemail set teststatus='cantsay' where listId='$id'");
       } else {
         echo "preg_match did not fine the id?<br>\n";
       }

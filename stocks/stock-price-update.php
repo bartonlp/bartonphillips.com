@@ -28,7 +28,7 @@ function checkUser($S) {
   if($userEmail = explode(":", $_COOKIE['SiteId'])[2]) {
     $sql = "select email from members where email='$userEmail'";
 
-    if(!$S->query($sql)) {
+    if(!$S->sql($sql)) {
       echo "<h1>Go Away</h1>";
       exit();
     } else {
@@ -72,7 +72,7 @@ if($_GET['page'] == "EndOfDay") {
   
   $sql = "select stock, qty from stocks where status = 'active'";
   
-  $S->query($sql);
+  $S->sql($sql);
 
   while([$stock, $qty] = $S->fetchrow('num')) {
     $ar[$stock] = $qty;
@@ -101,7 +101,7 @@ if($_GET['page'] == "EndOfDay") {
   
   $sql = "select stock, qty from stocks where status = 'mutual'";
   
-  $S->query($sql);
+  $S->sql($sql);
 
   while([$stock, $qty] = $S->fetchrow('num')) {
     $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
@@ -123,7 +123,7 @@ if($_GET['page'] == "EndOfDay") {
   echo "\nStocks $date: $stocktotal";
   echo "\nTotal $date: $total\n";
 
-  $S->query("insert into stocktotals (dji, total, created) values('$dji', '$total', current_date()) " .
+  $S->sql("insert into stocktotals (dji, total, created) values('$dji', '$total', current_date()) " .
            "on duplicate key update dji='$dji', total='$total'");
   exit();
 }
@@ -142,7 +142,7 @@ if($_POST['page'] == 'web') {
   
   $sql = "select stock, price, qty, status, name from stocks where status!='mutual'";
   
-  $S->query($sql);
+  $S->sql($sql);
 
   while(list($stock, $price, $qty, $status, $company) = $S->fetchrow('num')) {
     $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
@@ -213,7 +213,7 @@ if($_POST['page'] == 'web') {
 
   $sql = "select stock, price, qty, name from stocks where status = 'mutual'";
   
-  $S->query($sql);
+  $S->sql($sql);
 
   $alphakey = require("/var/www/PASSWORDS/alpha-token");
 

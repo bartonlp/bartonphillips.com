@@ -17,7 +17,7 @@ if($_POST['page'] == 'sql') {
 
   // do a mysql query and then fetch the rows
   
-  $S->query($sql);
+  $S->sql($sql);
 
   while($row = $S->fetchrow('assoc')) {
     $rows[] = $row;

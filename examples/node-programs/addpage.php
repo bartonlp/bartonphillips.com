@@ -11,6 +11,6 @@ if(($__name = array_intersect([pathinfo($S->self)['filename']], ["altorouter", "
     vardump("m", $m);
     $__file = "($__name)>$m[1]";
     echo "$__file<br>";
-    $S->query("update $S->masterdb.tracker set page='$__file' where id=$S->LAST_ID");
+    $S->sql("update $S->masterdb.tracker set page='$__file' where id=$S->LAST_ID");
   }
 }

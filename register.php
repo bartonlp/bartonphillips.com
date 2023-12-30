@@ -68,18 +68,18 @@ if($_POST['page'] == 'finger') {
     $sql = "insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
            "on duplicate key update lasttime=now()";
 
-    $S->query($sql);
+    $S->sql($sql);
     $BLP = "?blp=8653";
   }
 
-  if(!$S->query("select TABLE_NAME from information_schema.tables ".
+  if(!$S->sql("select TABLE_NAME from information_schema.tables ".
             "where (table_schema = 'bartonphillips') and (table_name = 'members')")) {
     throw new Exception("register.php: members table for database bartonphillips does not exist");
   }
 
   // BLP 2023-10-13 - Now the key is name, email, finger and ip.
   
-  $S->query("insert into members (ip, name, email, finger, count, created, lasttime) ".
+  $S->sql("insert into members (ip, name, email, finger, count, created, lasttime) ".
                  "values('$S->ip', '$name', '$email', '$visitor', 1, now(), now()) ".
                  "on duplicate key update count=count+1, lasttime=now()");
     

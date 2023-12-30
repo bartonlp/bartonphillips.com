@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
   $("head").after("<body>");
   $("<hr><h1><i>javaScript</i> with <i>jQuery</i> and <i>SiteClass</i></h1>"+
     "<h3>This program uses jQuery and has a nice header and footer due to SiteClass.</h3>" +
-    "This a another link as an example: <a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
+    "This is another link as an example: <a href='https://www.littlejohnplumbing.com'>Little John Plumbing</a><br>"+
     "And another: <a href='dummy.php'>Dummy</a><br><br>"+
     "<a href='javascript-only-nojquery.html'>JavaScript only no jQuery or SiteClass</a><br>"+
     "<a href='javascript-only.php'>JavaScript only with jQuery and no SiteClass</a><br>"+

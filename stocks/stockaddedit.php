@@ -16,7 +16,7 @@ function checkUser($S) {
   if($userEmail = explode(":", $_COOKIE['SiteId'])[2]) {
     $sql = "select email from members where email='$userEmail'";
 
-    if(!$S->query($sql)) {
+    if(!$S->sql($sql)) {
       echo "<h1>Go Away</h1>";
       exit();
     } else {
@@ -42,7 +42,7 @@ if($_POST) {
   if($_POST['remove']) {
     $remove = strtoupper($_POST['remove']);
 
-    if(!$S->query("delete from stocks where stock='$remove'")) {
+    if(!$S->sql("delete from stocks where stock='$remove'")) {
       echo "<h1>Stock Symbol '$remove' Not Found in Database</h1>";
       exit();
     }
@@ -61,12 +61,12 @@ if($_POST) {
     $price = $price == "" ? 0 : $price;
         
     try {
-      @$S->query("insert into stocks (stock, qty, price, name, status) ".
+      @$S->sql("insert into stocks (stock, qty, price, name, status) ".
                  "value ('$stock', '$qty', '$price', '$name', '$status')");
     } catch(Exception $e) {
       if($e->getCode() == 1062) { // duplicate key
         // This is an edit
-        $S->query("update stocks set qty='$qty', ".
+        $S->sql("update stocks set qty='$qty', ".
                   "price='$price', name='$name', status='$status' ".
                   "where stock='$stock'");  
       } else {
@@ -87,7 +87,7 @@ $T = new dbTables($S);
 
 if($_GET['stock']) {
   $stock = $_GET['stock'];
-  $S->query("select * from stocks where stock='$stock'");
+  $S->sql("select * from stocks where stock='$stock'");
   $editrow = $S->fetchrow('assoc');
   if($editrow['qty'] == 0) $editrow['qty'] = '';
   if($editrow['price'] == 0) $editrow['price'] = '';

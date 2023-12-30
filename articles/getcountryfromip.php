@@ -95,7 +95,7 @@ if($ip = $_POST['ip']) {
   $sql = "select countryLONG from $S->masterdb.$table ".
          "where '$iplong' between ipFROM and ipTO";
 
-  $S->query($sql);
+  $S->sql($sql);
     
   [$name] = $S->fetchrow('num');
   

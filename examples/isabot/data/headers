@@ -5,3 +5,29 @@ Accept-Encoding: br,gzip
 Accept-Language: en
 Host: www.bartonphillips.com
 
+65.108.227.178
+Accept: text/html,text/plain,text/xml,text/*,application/xml,application/xhtml+xml,application/rss+xml,application/atom+xml,application/rdf+xml,application/php,application/x-php,application/x-httpd-php
+User-Agent: Mozilla/5.0 (compatible; MJ12bot/v1.4.8; http://mj12bot.com/)
+Accept-Encoding: br,gzip
+Accept-Language: en
+Host: www.bartonphillips.com
+
+195.252.232.86
+Host: www.bartonphillips.com
+Connection: keep-alive
+sec-ch-ua: "Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Linux"
+sec-ch-ua-full-version-list: "Not_A Brand";v="8.0.0.0", "Chromium";v="120.0.6099.109", "Google Chrome";v="120.0.6099.109"
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: https://www.bartonphillips.com/examples/isabot/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9,de;q=0.8,de-DE;q=0.7
+Cookie: BLP-geo=35.1642895%3A-76.964306; BLP-Finger=4cd66330bccc25864cbf353a7ba37c6a; SiteId=Barton%20Lewis%20Phillips%3A4cd66330bccc25864cbf353a7ba37c6a%3Abartonphillips%40gmail.com
+

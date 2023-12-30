@@ -109,7 +109,7 @@ class IsABot {
     // If $x was 1 or false we have returned with true and BOTAS_MATCH or we threw an exception.
     // $x is zero so there was NO match.
 
-    if($this->query("select type from bots where ip='$this->ip'")) { // Is it in the bots table?
+    if($this->sql("select type from bots where ip='$this->ip'")) { // Is it in the bots table?
       // Yes this ip is in the bots table.
 
       $tmp = '';
@@ -170,19 +170,19 @@ class IsABot {
       throw new Exception("isbot.class.php: Can't connect to database");
     }
 
-    $db->query("set time_zone='EST5EDT'");
+    $db->sql("set time_zone='EST5EDT'");
     $this->db = $db;
     $this->db->database = $database;
   }
 
   // Private Query method
   
-  private function query($query) {
+  private function sql($query) {
     $db = $this->db;
 
     self::$lastQuery = $query; // for debugging
 
-    $result = $db->query($query);
+    $result = $db->sql($query);
 
     // If $result is false then exit
     
@@ -237,7 +237,7 @@ class IsABot {
   private function addToBots() {
     $rob = $this->type ?? BOT_ISABOT;
 
-    $this->query("insert into bots (ip, site, page, agent, count, type, created, lasttime) ".
+    $this->sql("insert into bots (ip, site, page, agent, count, type, created, lasttime) ".
                  "values('$this->ip', '$this->site', '$this->page', '$this->agent', 1, $rob, now(), now()) ".
                  "on duplicate key update count=count+1, lasttime=now()");
   }

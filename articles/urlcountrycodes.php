@@ -46,7 +46,7 @@ $S->banner = "<h1>Country from URL sufix</h1>";
 [$top, $footer] = $S->getPageTopBottom();
 
 if($code = $_POST['code']) {
-  $n = $S->query("select description from urlcountrycodes where code='$code'");
+  $n = $S->sql("select description from urlcountrycodes where code='$code'");
   if($n) {
     $row = $S->fetchrow('num');
     $desc = $row[0];

@@ -19,8 +19,7 @@ document.head.innerHTML = "<title>JavaScript Only</title>"+
 
 document.body.innerHTML = "<h1><i>javascipt</i> Only no <i>jQuery</i> or <i>SiteClass</i></h1>"+
                           "<h3>This program is straight <i>HTML</i> and <i>javascript</i> and does not have a fancy header or footer.</h3>" +
-                          "This a another link as an example: <a href='https://www.allnaturalcleaningcompany.com'>All Natural</a><br>"+
-                          "And another: <a href='dummy.php'>Dummy</a><br><br>"+
+                          "<p>To see the source code you can use the Chrome DevTools.</p>"+
                           "<a href='javascript-siteclass.php'>JavaScript only plus jQuery and SiteClass</a><br>"+
                           "<a href='javascript-only.php'>JavaScript only with jQuery and no SiteClass</a><br><br>"+
                           "<a href='javascript-only-show.php?item=1'>This <i>HTML</i> file.</a><br>"+

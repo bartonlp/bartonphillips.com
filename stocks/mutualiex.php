@@ -35,12 +35,12 @@ function getmutualdata($mutual) {
 }
 
 if($_GET['page'] == "EndOfDay") {
-  $S->query("select stock, qty from stocks where status = 'mutual'");
+  $S->sql("select stock, qty from stocks where status = 'mutual'");
 
   while([$stock, $qty] = $S->fetchrow("num")) {
     [$date, $close] = getmutualdata($stock);
         
-    $S->query("insert into mutuals (date, stock, price, qty, created, lasttime) values('$date', '$stock', '$close', '$qty', now(), now()) ".
+    $S->sql("insert into mutuals (date, stock, price, qty, created, lasttime) values('$date', '$stock', '$close', '$qty', now(), now()) ".
               "on duplicate key update price='$close', qty='$qty', lasttime=now()");
   }
   echo "EndOfDay Done" . PHP_EOL;
@@ -84,7 +84,7 @@ $stocks = new stdClass;
 
 $sql = "select stock, qty from stocks where status = 'mutual'";
 
-$S->query($sql);
+$S->sql($sql);
 
 while([$stock, $qty] = $S->fetchrow("num")) {
   $mutual .= "$stock,";
@@ -99,7 +99,7 @@ foreach($stocks as $stock=>$qty) {
   $options = array('http' => array(
                                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                                    'method'  => 'POST',
-                                   'content' => http_build_query(array('mutual'=>$stock))
+                                   'content' => http_build_sql(array('mutual'=>$stock))
                                   )
                   );
 

@@ -17,7 +17,7 @@ function checkUser($S) {
   if($userEmail = explode(":", $_COOKIE['SiteId'])[2]) {
     $sql = "select email from members where email='$userEmail'";
 
-    if(!$S->query($sql)) {
+    if(!$S->sql($sql)) {
       echo "<h1>Go Away</h1>";
       exit();
     } else {
@@ -43,7 +43,7 @@ $prefix = "https://cloud.iexapis.com/stable";
 $token = require_once("/var/www/PASSWORDS/iex-token");
 
 $sql = "select stock, price, qty, status from stocks where status = 'active'";
-$S->query($sql);
+$S->sql($sql);
 
 $ar = [];
 $stocks = "";

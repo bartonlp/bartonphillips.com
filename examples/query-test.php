@@ -32,7 +32,7 @@ function request(url, params) {
 
 // This actually returns the promise from request.
 
-function query(sql) {
+function sql(sql) {
   return request("query.ajax.php", "sql=" + sql);
 }
 
@@ -40,7 +40,7 @@ function query(sql) {
 
 async function sql(sql) {
   try {
-    var rows = await query(sql);
+    var rows = await sql(sql);
     r = JSON.parse(rows);
     return r;
   } catch(err) {

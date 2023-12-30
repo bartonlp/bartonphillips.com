@@ -39,8 +39,7 @@
       "database": "bartonphillips",
       // "port": "", // if we need to change the port from the default.
       // "socket": "", // as above.
-      // "engine": "mysqli", // BLP 2023-11-13 - Currently the only
-      // engine so we don't need 'engine'.
+      "engine": "mysql", // Only used with PDO 
       "DUMMY": null // DUMMY at end with no comma    
     },
     /* NOTE the errorMode entries are all controlled by statics so they can be set or unset at any time.
@@ -121,7 +120,7 @@
     //"beaconLocation": "../includes/beacon.php",
     //
     "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
-    "trackerImgPhone": "/images/blp-image.png", // use the same photo for desktop and phone
+    //"trackerImgPhone": "/images/8080cpu.jpg", // use the same photo for desktop and phone
     "trackerImg2": "/images/146624.png", // only $this
     "EMAILADDRESS": "bartonphillips@gmail.com", // or $S->emailAddress
     "EMAILRETURN": "bartonphillips@gmail.com", // only $this

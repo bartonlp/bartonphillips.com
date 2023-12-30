@@ -45,18 +45,18 @@ try {
   if(preg_match("/insert/i", $sql)) {
     // We want to restrict the size of this table so check the TABLE_ROWS
 
-    $S->query("select count(*) from test");
+    $S->sql("select count(*) from test");
 
     $cnt = $S->fetchrow('num')[0];
     $nn = $cnt - 19; // This is the number to delete
 
     if($cnt > 20) {
-      $n = $S->query("delete from test order by id asc limit $nn"); // leave most resent 20
+      $n = $S->sql("delete from test order by id asc limit $nn"); // leave most resent 20
       $del = "Deleted $n items";
     }
   }
 
-  $n = $S->query($sql);
+  $n = $S->sql($sql);
 
   if(preg_match("/update|insert|delete/", $sql)) {
     echo json_encode(["DONE"=>"$del Rows Affected: $n"]);

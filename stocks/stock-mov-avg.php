@@ -17,7 +17,7 @@ $totalAmt = 0;
 $hi = 0;
 $low = 9999999999;
 
-$S->query("select total, dji, created from stocktotals order by created");
+$S->sql("select total, dji, created from stocktotals order by created");
 
 $djicnt = 0;
 $djitotal = 0;
@@ -67,9 +67,13 @@ $dowCur = preg_replace("~,~", '', $lastdji);
 $sign = ($dowCur < $dowHigh) ? '-' : '';
 $upDown = ($sign == '-') ? "down " : "up ";
 
-$dowDiff = $upDown . number_format(($dowTmpDiff = $dowHigh - $dowCur), 2);
-$dowDiffPer = $sign . number_format(($dowTmpDiff / $dowHigh) * 100) . "%";
-
+if($sign == "-") {
+  $dowDiff = $upDown . number_format(($dowTmpDiff = $dowHigh - $dowCur), 2);
+  $dowDiffPer = number_format(($dowTmpDiff / $dowHigh) * 100) . "%";
+} else {
+  $dowDiff = $upDown . number_format(($dowTmpDiff = $dowCur - $dowHigh), 2);
+  $dowDiffPer = number_format(($dowTmpDiff / $dowCur) * 100) . "%";
+}
 echo <<<EOF
 $top
 <hr>

@@ -4,7 +4,7 @@
 // recapcha secret key: 6LefxlMnAAAAAHWF6S3iofqztaqqiTFAwHfteHD6
 
 $_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site);
+$S = new SiteClass($_site);
 
 require_once("./index.i.php"); // Get the majority of the php
 
