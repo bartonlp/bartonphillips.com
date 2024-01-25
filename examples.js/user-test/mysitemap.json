@@ -14,7 +14,7 @@
         "host": "localhost",
         "user": "barton",
         "database": "barton", 
-        "engine": "mysqli",
+        "engine": "mysql",
         "DUMMY": null // Dummy at the end with no comma.
     },
     "errorMode": { // only $this. 

@@ -12,6 +12,7 @@ if($sql = $_POST['sql']) {
   $S->sql($sql);
   $rows = [];
   while($row = $S->fetchrow('assoc')) {
+    //error_log("row: ". print_r($row, true));
     $rows[] = $row;
   }
 

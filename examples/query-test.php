@@ -32,15 +32,15 @@ function request(url, params) {
 
 // This actually returns the promise from request.
 
-function sql(sql) {
+function query(sql) {
   return request("query.ajax.php", "sql=" + sql);
 }
 
-// Here is the 'async' sql function. It calls 'query' with a await which returns the promise.
+// Here is the 'async' query function. It calls 'query' with a await which returns the promise.
 
 async function sql(sql) {
   try {
-    var rows = await sql(sql);
+    var rows = await query(sql);
     r = JSON.parse(rows);
     return r;
   } catch(err) {

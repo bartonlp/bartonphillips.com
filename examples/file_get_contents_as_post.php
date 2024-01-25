@@ -60,7 +60,7 @@ $S = new $_site->className($_site); // $S gives access to my framework.
 $options = ['http' => [
   'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
   'method'  => 'POST',
-  'content' => http_build_sql(['page'=>'form', 'name'=>'Barton Phillips', 'email'=>'bartonphillips@gmail.com'])
+  'content' => http_build_query(['page'=>'form', 'name'=>'Barton Phillips', 'email'=>'bartonphillips@gmail.com'])
   ]
 ];
 

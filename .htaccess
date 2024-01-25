@@ -1,8 +1,6 @@
 # Apache2 2.4 uses Require
 
-<RequireAll>
- Require all granted
-</RequireAll>
+Require all granted
 
 Header set Access-Control-Allow-Origin "*"
 # BLP 2023-10-10 - I do this in dbAbstract.class.php so it is done for all sites that use the
@@ -22,7 +20,7 @@ RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 # rewrite the address of csstest.css to tracker.php?id=$1&csstest
 RewriteRule ^csstest-(.*)\.css$ https://bartonlp.com/otherpages/tracker.php?id=$1&page=csstest [L,QSA]
 # Just a test
-RewriteRule ^testimage.*\.png$ mytest.php [L,NC]
+#RewriteRule ^testimage.*\.png$ mytest.php [L,NC]
 
 # Keep others from looking at these files.
 #RewriteRule ^(\.git|other|script)/.*$ - [F,L]

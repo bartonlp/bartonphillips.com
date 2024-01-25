@@ -5,7 +5,7 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
 
-$tbl = (require(SITECLASS_DIR . "/whatisloaded.class.php"))[0];
+$tbl = (require(SITECLASS_DIR . "/whatisloaded.php"))[0];
 
 $S->title = "Display SiteClass Versions";
 $S->banner = "<h1>$S->title</h1>";

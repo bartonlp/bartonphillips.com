@@ -99,7 +99,7 @@ foreach($stocks as $stock=>$qty) {
   $options = array('http' => array(
                                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                                    'method'  => 'POST',
-                                   'content' => http_build_sql(array('mutual'=>$stock))
+                                   'content' => http_build_query(array('mutual'=>$stock))
                                   )
                   );
 

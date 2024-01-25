@@ -1,12 +1,11 @@
 <?php
 // Register yours name, finger and email address
 // This is for bartonphillips.com/index.php
-// BLP 2022-07-18 - There are now three places: bartonphillips.net/js/geo.js and the other two
-// below. 
-// NOTE *** There are only two places where the myip table is inserted or updated,
+// There are now three places: bartonphillips.net/js/geo.js and the other two below. 
+// NOTE *** There are two other places where the myip table is inserted or updated,
 // bonnieburch.com/addcookie.php and in bartonphillips.com/register.php.
-// NOTE *** This file is a little different, it use a POST or an Ajax call depending on wheather
-// javascript is available. See the if($_POST) bellow.
+// NOTE *** This file is a little different, it uses a POST or an Ajax call depending on wheather
+// javascript is available (ie. not curl, lync etc. or disabled in the browser). See the if($_POST) bellow.
 
 /*
 // BLP 2023-10-13 - added name and ip
@@ -36,30 +35,36 @@ CREATE TABLE `myip` (
 
 $_site = require_once(getenv("SITELOADNAME"));
 
-// BLP 2023-09-27 - The POST can happen from the <form> or if javascript is available via script. The javascript
-// will replace the <form> logic.
+// The POST can happen from the <form> or if javascript is available via script.
+// If javascript is available it will replace the <form> logic.
 
 if($_POST['page'] == 'finger') {
   $S = new Database($_site);
 
-  // BLP 2023-09-19 - if we have no $visitor it probably means javascript is disabled by the user.
-  // Or a browser like lynx, wget, curl etc.
+  // If we have no \$_POST['visitor'] it probably means javascript is disabled by the user or a browser like lynx, wget, curl etc.
 
   $visitor = $_POST['visitor'] ?? "NO SCRIPT";
   $email = $_POST['email'];
   $name = $_POST['name'];
-  $ip = $_POST['ip']; // BLP 2023-10-06 - if we have an ip that means the <form> sent the post and this is curl like.
+  $ip = $_POST['ip']; // If we have an ip that means the <form> sent the post and this is curl like.
 
-  // BLP 2023-10-06 - moved this if from the bottom of POST. If 'NO SCRIPT' we need to log and goto
-  // complete.
+  // If 'NO SCRIPT' we need to log and goto complete.
   
   if($visitor == "NO SCRIPT") {
     error_log("register.php post: ip=$ip, NO SCRIPT probably javascript disabled or lynx, curl, wget etc., email=$email, name=$name");
     header("Location: https://www.bartonphillips.com/register.php?page=complete");
+    exit();
   }
 
+  if(!$S->agent) {
+    error_log("register.php POST \$S->agent empty, ip=$ip, email=$email, name=$name");
+    header("Location: https://www.bartonphillips.com/register.php?page=complete");
+    exit();
+  }
+  
   if($S->isBot($S->agent)) {
-    error_log("register.php POST page=finger: $name, $email, $visitor"); // $visitor may be NO SCRIPT
+    error_log("register.php POST page=finger: $name, $email, $visitor");
+    header("Location: https://www.bartonphillips.com/register.php?page=complete");
   }
   
   if($email == "bartonphillips@gmail.com") {
@@ -123,6 +128,8 @@ if($_GET['page'] == 'complete') {
   echo <<<EOF
 $top
 <hr>
+<h3>You are either a ROBOT or you do not have JavaScript enables.</h3>
+<p>Therefore, you can not register.</p>
 <a href='/'>Return to Home Page</a>
 <hr>
 $footer
@@ -224,14 +231,19 @@ EOF;
 [$top, $footer] = $S->getPageTopBottom();
 
 // Render Page
-// BLP 2023-09-27 - Note that if we have javascript the <div id='container'> will all be replaced.
-// The container only has a <form> if NO SCRIPT.
+// Note that if we have javascript the <div id='container'> will all be replaced.
+// The container only has the <form> tag if NO SCRIPT.
 
 echo <<<EOF
 $top
 <div id="container">
 <hr>
-<form action='register.php' method='post'> <!-- If no javascript we will use this post -->
+<!--
+If javascript is not available, either because it is turned off in the browser or the client is curl, lynx etc.,
+then we will use this <form ...>. NOTE there is no 'visitor' in the \$_POST['visitor'].
+Therfore, 'finger' in the 'members' table is marked as 'NO SCRIPT'.
+-->
+<form action='register.php' method='post'>
 <h1>Register</h1>
 <table>
 <tbody>

@@ -13,12 +13,12 @@ $json = ['test1'=>"test one", 'test2'=>"test two"];
 
 $t->json = json_encode($json);
 
-// http_build_sql($query_data, ...) takes an object or array. $_site is an array.
+// http_build_query($query_data, ...) takes an object or array. $_site is an array.
 
 $options = ['http' => [
                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                        'method'  => 'POST',
-                       'content' => http_build_sql($t)
+                       'content' => http_build_query($t)
                                   ]
                                   ];
                 

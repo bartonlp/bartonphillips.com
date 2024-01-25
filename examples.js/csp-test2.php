@@ -47,7 +47,9 @@ $randlen
 <div id="date"></div>
 $request
 $response
+<p>Regular Image</p>
 <img src="https://bartonphillips.net/images/146624.png"><br>
+<p>base64 Image</p>
 <img src="$image"><br>
 <script nonce="$rand" src="https://code.jquery.com/jquery.min.js"></script>
 <script nonce="$rand" src="https://bartonphillips.net/js/phpdate.js"></script>

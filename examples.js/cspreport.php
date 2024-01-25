@@ -1,4 +1,8 @@
 <?php
+// This file is used by csp-test.php and csp-test2.php
+// It should not be called directly.
+
+if(!class_exists("Database")) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
 
 $input = file_get_contents("php://input");
 

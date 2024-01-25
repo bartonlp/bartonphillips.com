@@ -51,12 +51,13 @@ class IsABot {
   private $result;
   private static $lastQuery;
   private static $lastNonSelectResult;
-  private $ip;
-  private $agent;
-  private $site;
-  private $page;
+  public $ip;
+  public $agent;
+  public $site;
+  public $page;
   private $type;
   private $foundBotAs;
+  
   public function __construct($site, $type=null) {
     // Configure the database
 
@@ -87,6 +88,8 @@ class IsABot {
    */
   
   public function isBot(string $agent=null):array {
+    echo "ip=$this->ip<br>";
+
     $agent = $agent ?? $this->agent;
 
     $this->foundBotAs = null;
@@ -141,7 +144,7 @@ class IsABot {
         $this->foundBotAs = BOTAS_NOT;
         $this->isBot = false;
       }
-
+echo "isBot=$this->isBot, foundBotAs=$this->foundBotAs<br>";
       return [$this->isBot, $this->foundBotAs];
     }
 
@@ -170,7 +173,7 @@ class IsABot {
       throw new Exception("isbot.class.php: Can't connect to database");
     }
 
-    $db->sql("set time_zone='EST5EDT'");
+    $db->query("set time_zone='EST5EDT'");
     $this->db = $db;
     $this->db->database = $database;
   }
@@ -182,7 +185,7 @@ class IsABot {
 
     self::$lastQuery = $query; // for debugging
 
-    $result = $db->sql($query);
+    $result = $db->query($query);
 
     // If $result is false then exit
     
