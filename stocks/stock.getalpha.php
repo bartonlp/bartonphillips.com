@@ -1,6 +1,6 @@
 <?php
 // stock.getalpha.php
-// Get the info from Alphavantage and iex for one stock.
+// Get the info from Alphavantage for one stock.
 
 // https://www.alphavantage.co/documentation
 // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
@@ -15,32 +15,16 @@ if($stock = $_POST['stock']) {
   // BLP 2022-01-21 -- Get the keys form my secure location
   
   $alphakey = require_once("/var/www/PASSWORDS/alpha-token");
-  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
-  
+
   $str = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
   $alpha = json_decode(file_get_contents($str), true); // decode as an array
 
   $alpha = print_r($alpha, true);
-
-  $str = "https://cloud.iexapis.com/stable/stock/$stock/batch?types=quote&token=$iex_token";
-
-  $iex = print_r(json_decode(file_get_contents($str)), true);
-
-  $str = "https://cloud.iexapis.com/stable/stock/$stock/stats?token=$iex_token";
-
-  $iexstats = print_r(json_decode(file_get_contents($str), true), true);
   
   $S->title = "Raw Data";
-  $S->banner = "<h1>Raw Results From alpha and iex</h1>";
+  $S->banner = "<h1>Raw Results From alpha</h1>";
   $S->css =<<<EOF
 #alpha {
-  font-size: .7rem;
-  border: 1px solid black;
-  width: 100%;
-  padding: .5rem;
-  overflow: auto;
-}
-#iexstats, #iexquote {
   font-size: .7rem;
   border: 1px solid black;
   width: 100%;
@@ -58,14 +42,6 @@ $top
 <div id="alpha">
 $alpha
 </div>
-<h3>IEX STATS</h3>
-<div id="iexstats">
-$iexstats
-</div>
-<h3>IEX QUOTE</h3>
-<div id="iexquote">
-$iex
-</div>
 </pre>
 $footer
 EOF;
@@ -73,7 +49,7 @@ EOF;
 }
 
 $S->title = "Raw Data";
-$S->banner = "<h1>Raw Data From alpha and iex</h1>";
+$S->banner = "<h1>Raw Data From alpha</h1>";
 
 [$top, $footer] = $S->getPageTopBottom();
 

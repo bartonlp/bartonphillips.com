@@ -22,7 +22,19 @@ $router = new AltoRouter();
 $router->setBasePath('examples/node-programs/'); // This needs the trailing /
 
 $router->map('GET', '/', function() {
-  require('index.php');
+  require('start.php');
+});
+
+$router->map('GET', '/client', function() {
+  require('client.php');
+});
+
+$router->map('GET', '/clienthtml', function() {
+  require('client.html');
+});
+
+$router->map('GET', '/client-for-node-server', function() {
+  require('client-for-node-server.php');
 });
 
 $router->map('GET', '/get', function() {

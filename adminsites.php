@@ -2,27 +2,26 @@
 // This is a list of adminstuff. These are the links to all of my administration stuff
 // This should not be run directly from the browser.
 
-if(!class_exists("Database")) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
+$ip = $_SERVER['REMOTE_ADDR'];
+if($ip == "192.241.1332.229") $ip .= ":SERVER";
+$agent = $_SERVER['HTTP_USER_AGENT'];
+if(empty($agent)) $agent = "NO_AGENT";
+$self = htmlentities($_SERVER['PHP_SELF']);
+
+if(!class_exists("Database")) {
+  header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=Bartonphillips&page=$self, ip=$ip, agent=$agent");
+}
 
 return <<<EOF
 <!-- Admin text for all sights -->
 <section id='adminstuff'>
 <h2>Admin</h2>
 <ul>
-<li><a target="_blank" href="https://bartonlp.com/otherpages/webstats.php?blp=8653&site=$S->siteName">Webstats</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/webstats.php?blp=8653&site=$S->siteDomain">Webstats</a></li>
 <li><a target="_blank" href="getcookie.php?blp=8653">Get/Reset Cookie</a></li>
-<li><a target="_blank" href="https://newbernrotary.org/wp-admin/">New Bern Rotary ADMIN</a></li>
-<li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">Bnai-sholem ADMIN</a></li>
-<li><a target="_blank" href="https://rivertownerentals.info/wp-admin">Rivertown Rental ADMIN</a></li>
-<!-- <li><a target="_blank" href="http://bartonphillips.org:8000/">RPI on 8000</a></li> -->
-<li><a target="_blank" href="https://www.allnaturalcleaningcompany.com">End Of Life: All Natural Cleaning</a></li>
-<li><a target="_blank" href="/stocks/stock-price-update.php">Stock Quotes</a></li>
-<li><a target="_blank" href="/stocks/mutualiex.php">Mutual Funds Quotes</a></li>
-<li><a target="_blank" href="/stocks/stockaddedit.php">Add/Edit Stocks</a></li>
-<li><a target="_blank" href="/stocks/stockdiv.php">Stock Dividends</a></li>
-<li><a target="_blank" href="/stocks/stockvalue.php">Stock Value</a></li>
-<li><a target="_blank" href="/stocks/stock-mov-avg.php">Stock Info</a></li>
-<li><a target="_blank" href="/stocks/stock.getalpha.php">Raw Stock Info EIX & Alpha</a></li>
+<li><a target="_blank" href="https://bnai-sholem.com/rjwebbuilder">B'nai Sholem ADMIN</a></li>
+<li><a target="_blank" href="https://bartonphillips.org:8000/">RPI on 8000</a></li>
+<li><a target="_blank" href="/stocks/stock.getalpha.php">Alphavantage</a></li>
 <li><a target="_blank" href="/findip.php">Find in Tracker by IP</a></li>
 <li><a target="_blank" href="/myports.php">Port Numbers</a></li>
 <li><a target="_blank" href="/showErrorLog.php">Show PHP_ERROR.log</a></li>

@@ -30,13 +30,15 @@
     "address": "New Bern, North Carolina", // This goes in the footer and can be set via $S->address also
     "favicon": "https://bartonphillips.net/images/favicon.ico",
     "canonical": "https://www.bartonphillips.com",
-    // "defaultCss": true, // If this is set to true then NO default
+    // "defaultCss": true, // If this is set to true or false then NO default
     // header at all.
     "masterdb": "barton", // only $this
     "dbinfo": { // only $this
       "host": "localhost",
       "user": "barton", 
       "database": "bartonphillips",
+      // "password": "", // Usually not used as the valuse is retrieved
+      // from a file on disk.
       // "port": "", // if we need to change the port from the default.
       // "socket": "", // as above.
       "engine": "mysql", // Only used with PDO 
@@ -44,16 +46,16 @@
     },
     /* NOTE the errorMode entries are all controlled by statics so they can be set or unset at any time.
      * They are all available via the ErrorClass.
-     * ErrorClass::set{item name capitalized}() or
-     * ErrorClass::get{item name capitalized}()
+     * ErrorClass::set{item name leading capital}() or
+     * ErrorClass::get{item name leading capital}()
      */ 
     "errorMode": { // only $this. 
-      "development": true, // development automatically sets email to true.
+      "development": false, //true, // development automatically sets email to true.
                            // If development is true then noEmail will be
                            // set to true unless noEmail is set to false!
                            // Only false not null or just missing.
                            // The default is false.
-      "noEmail": null,   // Set it to null will not affect the true above which sets it to true also.
+      "noEmail": true, //null,   // Set it to null will not affect the true above which sets it to true also.
                         // The default is false.
       // "noHtml": false, // This is the default.
       // "noOutput": false, // This is the default.
@@ -64,7 +66,7 @@
                              // return to the caller.
       "DUMMY": null // DUMMY at end with no comma
     },
-    "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
+//    "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
     // BLP 2022-01-15 -- NOTE these are include via require() so these must be absolute
     // or relative paths not URLs
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
@@ -72,7 +74,7 @@
     "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
     "count": true, // only $this
     "ctrmsg": "Counter Reset: June 13, 2023", // also via $S for footer. The counter reset message.
-    // The following can also be set via $S which has presidence
+    // The following can also be set via $S 
     //
     // "nodb": true, // if true then we do not load Database
     // "noTrack": true, // if true we do not load tracker.js or tracker.php

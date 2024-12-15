@@ -19,7 +19,9 @@ $top
 <p>For the first three ssh entries:<br>
 <code>ssh -p{port} barton@bartonphillips.org</code><br>
 And the forth (server):<br>
-<code>ssh -p2222 barton@bartonphillips.com</code></p>
+<code>ssh -p2222 barton@bartonphillips.com</code><br>
+and the fifth (wordpress server):<br>
+<code>ssh barton@test.bartonphillips.org</code></p>
 <p>For the browsers enter in the location bar of the browser:<br>
 <code>https://bartonphillips.org:{port}</code><br>
 <table border="3">
@@ -27,11 +29,13 @@ And the forth (server):<br>
 <tr><td>HP ssh</td><td>2022</td></tr>
 <tr><td>Acer ssh</td><td>2023</td></tr>
 <tr><td>Server ssh<br>at bartonphillips.com</td><td>2222</td></tr>
+<tr><td>Wordpress Server ssh<br>at test.bartonphillips.org</td><td>22</td><tr>
 <tr><td>Browser Rpi</td><td>8000</td></tr>
 <tr><td>Browser Acer-Spin</td><td>8080</td></tr>
 <tr><td>Acer-Aspire5 ssh</td><td>2024</td></tr>
 <tr><td>Acer-Aspire5 http</td><td>8084</td></tr>
 </table>
+<p>On my local net</p>
 <table border="3">
 <tr><td>HpEnvy</td><td>192.168.4.20</td></tr>
 <tr><td>Rpi</td><td>192.168.4.13</td></tr>

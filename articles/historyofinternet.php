@@ -348,8 +348,11 @@ century and a half.</p>
   <li>2016 It is
     <a href="http://www.pcmag.com/article2/0,2817,2405038,00.asp">estimated</a>
     that Internet traffic will reach 1.3 zettabytes per year. About 3.4 billion Internet users.</li>
-  <li><span class="future">2017</span> <a href="http://www.cisco.com/c/en/us/solutions/collateral/service-provider/visual-networking-index-vni/vni-hyperconnectivity-wp.html">
-    Cisco Systems estimates</a> that by 2020 Internet traffic will reach 2.3 ZB per year.</li>
+  <li>2020 Internet traffic was 64.2 ZB of data.</li>
+  <li><span class="future">2023</span> <a href="http://www.cisco.com/c/en/us/solutions/collateral/service-provider/visual-networking-index-vni/vni-hyperconnectivity-wp.html">
+    Cisco Systems Report</a>. By end of 2024 Internet traffic is estimated to reach <a href="https://edgedelta.com/company/blog/how-much-data-is-created-per-day#:~:text=With%20the%20rise%20of%20social,by%20the%20end%20of%202024.147">147 ZB per year</a>.
+    Houshold Internet via fiber optic cable up to 8 Gbps from some providers.
+</li>
 </ul>
 </section>
 <section id="speed">
@@ -365,9 +368,9 @@ century and a half.</p>
   <li>1990's: WAN (T-1, ADSL, T-3, ATM) 1.5 Mbits/sec to 145 Mbits/sec.
     ADSL: downstream: 200-400 Mbits/sec, upstream: 384 Kbits/sec to 20 Mbits/sec.</li>
 
-  <li>2000's: WAN (SONET-OC-192) 10 Gbits/sec.</li>
-
-  <li>201x: WAN (SONET-OC-768) 40 Gbits/sec.</li>
+  <li>200x: WAN (SONET-OC-192) 10 Gbps, (SONET_OC-768) 40 Gbps.</li>
+  <li>201x to 2024: WAN Dense Wavelength Division Multiplexing (DWDM) 100 Tbps.
+      Optical transport networks (OTN) has grown due to its flexabiliy even though it lacks the top speeds of DWDM.</li>
 </ul>
 
 <p>In 2000 there were just under 150 million dial-up subscriptions in the 34 OECD (Organization for

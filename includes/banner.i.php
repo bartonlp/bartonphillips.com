@@ -7,8 +7,8 @@
 */
 
 // BLP 2023-09-07 - added to let me know if someone calls this directly.
- 
-if(!class_exists("Database")) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
+
+if(!class_exists('Database')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
 
 return <<<EOF
 <header>

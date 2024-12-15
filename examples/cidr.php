@@ -1,25 +1,46 @@
 <?php
 // Test the CIDR.php class
 
+$_site = require_once getenv("SITELOADNAME");
+
 require_once("CIDR.php");
 
-echo "<h1>Demo of the CIDR class</h1>";
-echo "<h2>DUBUG off then on.</h2>";
-for($i=0; $i<2; ++$i) {
-  CIDR::$DEBUG = $i;
-  echo "DEBUG is ". ($i ? "ON" : "OFF"). "<br>";
-  $ip = "2604:a880:1:20::5f4:1001";
-  $cidr = "2604:A880::/32";
+$S = new SiteClass($_site);
 
-  $what = CIDR::match($ip, $cidr);
-  echo "$ip is part of $cidr: " .($what ? 'true<br>' : 'false<br>');
-  $ip = "45.55.27.116";
-  $cidr = "45.55.0.0/16";
-  $what = CIDR::match($ip, $cidr);
-  echo "$ip is part of $cidr: " .($what ? 'true<br>' : 'false<br>');
-  $ip = "45.56.27.116";
-  $cidr = "45.56.0.0/18";
-  $what = CIDR::match($ip, $cidr);
-  echo "$ip is part of $cidr: " .($what ? 'true<br>' : 'false<br>');
-  echo "---------------------------------------<br>";
+$S->title = "IP to CIDR";
+$S->banner = "<h1>$S->title</h1>";
+
+[$top, $footer] = $S->getPageTopBottom();
+
+if($_POST['page'] == "find") {
+  extract($_POST); // $ip, $cidr, $page
+  
+  CIDR::$DEBUG = 0;
+  $what = CIDR::match($ip, $cidr) ? "true" : "false";
+  
+  echo <<<EOF
+$top
+<hr>
+<p>$ip is a part of $cidr: $what</p>
+<hr>
+$footer
+EOF;
+  exit();
 }
+
+echo <<<EOF
+$top
+<form method="post">
+<table>
+<tr><td>IP Address</td><td><input type="text" name="ip"></td></tr>
+<tr><td>CIDR</td><td><input type="text" name="cidr"></td></tr>
+</table>
+<button type="submit" name="page" value="find">Submit</button>
+</form>
+<hr>
+$footer
+EOF;
+
+  
+
+       

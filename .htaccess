@@ -10,6 +10,9 @@ Header set Access-Control-Allow-Origin "*"
 SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
 SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
 
+SetEnv SIMPLE_SITELOAD /var/www/vendor/bartonlp/simple-site-class/includes
+SetEnv SIMPLE_SITELOADNAME /var/www/vendor/bartonlp/simple-site-class/includes/simple-siteload.php
+
 # REWRITE SECTION
 RewriteEngine on
 

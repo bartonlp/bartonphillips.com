@@ -116,8 +116,8 @@ electronic or optical signals by the low-level hardware like Ethernet, SONET, et
 layer, the process has several levels. A final header is applied that contains a MAC (Media Access
 Control) address which is a <i>physical</i> layer-unique address. Every piece of network hardware
 has a unique six byte MAC address (2<sup>48</sup>, 281,474,976,710,656 or over 281 trillion
-addresses.) which is not as big an address as IPv6 but slightly larger than the <a
-href="http://www.usdebtclock.org/">US debt</a> and probably big enough for a little while.</p>
+addresses.) which is not as big an address as IPv6 but slightly larger than the
+US debt and probably big enough for a little while.</p>
 
 <p>The data is often then further packetized to suit the specific media's physical phenomenon. For
 example, optical fiber uses SONET which puts multiple pieces of user data into frames that travel

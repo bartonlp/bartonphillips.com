@@ -13,7 +13,7 @@ foreach($data as $d){
     $result .= $encrypted;
   }
 }
-echo "encrypted with public key", PHP_EOL;
+echo "encrypted with public key<br>";
 
 var_dump($result);
 
@@ -28,5 +28,5 @@ foreach($data as $d){
     $result .= $decrypted;
   }
 }
-echo "decrypted with private key", PHP_EOL;
+echo "<br>decrypted with private key<br>";
 var_dump($result);

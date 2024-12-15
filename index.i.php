@@ -3,7 +3,15 @@
 // This is the main php include file. It is included in index.php
 // BLP 2023-09-27 - add name to SiteId
 
-if(!class_exists("Database")) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
+$ip = $_SERVER['REMOTE_ADDR'];
+if($ip == "192.241.1332.229") $ip .= ":SERVER";
+$agent = $_SERVER['HTTP_USER_AGENT'];
+if(empty($agent)) $agent = "NO_AGENT";
+$self = htmlentities($_SERVER['PHP_SELF']);
+
+if(!class_exists("Database")) {
+  header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=Bartonphillips&page=$self, ip=$ip, agent=$agent");
+}
 
 /*
 // BLP 2023-10-12 - Primary key is now (name,email,finger,ip)

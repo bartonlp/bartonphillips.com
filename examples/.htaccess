@@ -1,18 +1,1 @@
 Options +Includes +Indexes
-<RequireAll>
- Require all granted
-</RequireAll>
-
-Header set Access-Control-Allow-Origin "*"
-
-SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
-SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
-
-RewriteEngine on
-
-# direct robots.txt to robots.php
-RewriteRule ^robots\.txt$ robots.php [L,NC]
-RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
-
-# rewrite the address of csstest.css to tracker.php?id=$1&csstest
-RewriteRule ^csstest-(.*)\.css$ https://bartonlp.com/otherpages/tracker.php?id=$1&page=csstest [L,QSA]

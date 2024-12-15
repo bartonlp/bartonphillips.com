@@ -1,6 +1,8 @@
 <?php
-// BLP 2023-10-05 - `browser` added to tracker table.
+// BLP 2024-12-15 - 
 // Given the ip find the records in tracker, geo, bots.
+// Given a 'where' clause.
+// Given an 'and' clause.
 /*
 CREATE TABLE `tracker` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -59,26 +61,47 @@ CREATE TABLE `badplayer` (
   `lasttime` datetime DEFAULT NULL,
   PRIMARY KEY (`ip`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `dayrecords` (
-  `fid` int DEFAULT NULL,
-  `ip` varchar(20) DEFAULT NULL,
-  `site` varchar(20) DEFAULT NULL,
-  `page` varchar(255) DEFAULT NULL,
-  `finger` varchar(20) DEFAULT NULL,
-  `jsin` varchar(10) DEFAULT NULL,
-  `jsout` varchar(20) DEFAULT NULL,
-  `dayreal` int DEFAULT NULL,
-  `rcount` int DEFAULT '0',
-  `daybots` int DEFAULT NULL,
-  `dayvisits` int DEFAULT NULL,
-  `visits` smallint DEFAULT '0',
-  `lasttime` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 */
 
 $_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site);
+ErrorClass::setDevelopment(true);
+$S = new SiteClass($_site);
+
+// BLP 2024-12-15 - Start
+$ref = $_SERVER['HTTP_REFERER'];
+
+if(!str_contains($ref, "bartonphillips.com")) {
+  echo <<<EOF
+<h1>Authorization Denied</h1>
+<p>Try <a href="https://bartonphillips.com/findip.php">findip.php</a>.</p>
+EOF;
+  $requestUri = urldecode($S->requestUri);
+
+  if(preg_match("~(?:ip='(.*?)')|(?:id='(.*?)')~", $requestUri, $m) !== false) {
+    if(!empty($m[1])) {
+      $x = "ip='$m[1]'";
+    } elseif(!empty($m[2])) {
+      $x = "id=$m[2]";
+    } else {
+      error_log("findip.php: $m does not have an id or ip, line=" . __LINE__);
+      exit();
+    }
+
+    $S->sql("select id, ip, site, page, botAs, agent, created from $S->masterdb.tracker where $x");
+    [$id, $ip, $site, $page, $botAs, $agent, $created] = $S->fetchrow('num');
+
+    $S->sql("insert into $S->masterdb.badplayer (ip, id, site, page, botAs, type, count, errno, errmsg, agent, created, lasttime) ".
+            "values('$ip', $id, '$site', '$page', '$botAs', 'AUTHORIZATION DENIED', 1, -999, 'Not called from showErrorLog.php or index.php', '$agent', '$created', now()) ".
+            "on duplicate key update count=count+1, lasttime=now()");
+
+    error_log("findip.php: NOT FROM showErrorLog.php, id=$id, ip=$ip, site=$site, page=$page, botAs=$botAs, agent=$agent, requestUri=$requestUri");
+  } else {
+    error_log("findip.php: preg_match() returned false. ERROR");
+  }
+  exit();
+}
+// BLP 2024-12-15 - End
+
 $T = new dbTables($S);
 
 $val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
@@ -87,24 +110,12 @@ $val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,hex(isja
 $fingers = [];
 $ip = null;
 
-function getinfo($value, $sql=null) {
-  global $S, $T, $fingers, $ip, $where, $by, $and, $sqlval;
+function getinfo($value=null, $sql) {
+  global $S, $T, $fingers, $sqlval;
 
-  // Here $where is either the id or ip value or the full phrase 'where id/ip=...'
-  // So if $value then we make it 'where $value' and if it is a POST that calls this we use the
-  // $_POST['where'] which is the full phrase 'where id/ip=...'
-
-  $where = $_POST['where'] ?? "where $value";
-  $by = $_POST['by'] ?? " order by starttime";
-  if(!str_contains($value, 'id=')) {
-    $and = $_POST['and'] ?? " and starttime>=current_date() - interval 10 day";
-  }
-  $sql = "$sql {$where}{$and}{$by}";
-  $sqlval = $sql;
-  $val = $sql;
-
-  //echo "$sql<br>";
-
+  $sql = "{$sql} {$value}";
+  $sqlval = $sql; // global used in first line of render.
+  
   $ip = null;
   
   function trackerCallback(&$row, &$desc) {
@@ -127,8 +138,9 @@ function getinfo($value, $sql=null) {
   }
 
   $trackerTbl = $T->maketable($sql, ['callback'=>'trackerCallback', 'attr'=>['id'=>'trackertbl', 'border'=>'1']])[0];
+
   $trackerTbl = $trackerTbl ?? "<h1>Not in tracker table</h1>";
-  
+
   foreach(array_keys($fingers) as $key) {
     $keys .= "'$key',";
   }
@@ -136,23 +148,22 @@ function getinfo($value, $sql=null) {
 
   // If we are using ip use it, if we are doing id set the $bitsWhere to the ip we got in the
   // callback.
-  
-  if(preg_match("~ip=['\"](.*)['\"]~", $where, $m)) {
-    $ip = $m[1];
-    $botsWhere = $where; // This is the full phrase.
-  } else {
-    $botsWhere = "where ip='$ip'"; // $ip from callback
-  }
 
-  // At this point $ip is either the ip form the $where or the ip from the callback.
+  if(preg_match("~ip=['\"](.*)['\"]~", $value, $m)) {
+    $ip = $m[1];
+    $botsWhere = "where ip='$ip'"; // This is the full phrase (via the global)
   
-  $sql = "select ip, agent, count, hex(robots) as robots, site, creation_time, lasttime from $S->masterdb.bots $botsWhere order by lasttime";
-  $botsTbl = $T->maketable($sql, ['attr'=>['id'=>'botstbl', 'border'=>'1']])[0];
+    // At this point $ip is either the ip form the $where or the ip from the callback.
   
-  if($botsTbl) {
-    $botsTbl = "<p>From bots table</p>$botsTbl";
-  } else {
-    $botsTbl = "<h1>Not in bots table</h1>";
+    $sql = "select ip, agent, count, hex(robots) as robots, site, creation_time, lasttime from $S->masterdb.bots $botsWhere order by lasttime";
+
+    $botsTbl = $T->maketable($sql, ['attr'=>['id'=>'botstbl', 'border'=>'1']])[0];
+  
+    if($botsTbl) {
+      $botsTbl = "<p>From bots table</p>$botsTbl";
+    } else {
+      $botsTbl = "<h1>Not in bots table</h1>";
+    }
   }
 
   $sql = "select lat, lon, finger, site, created, lasttime from $S->masterdb.geo where finger in($keys) order by lasttime";
@@ -166,32 +177,16 @@ function getinfo($value, $sql=null) {
     $geoTbl = "<h1>Not in geo table</h1>";
   }
 
-  // Again, $ip is either the original ip form $where or the ip from the callback, which could be
-  // null if there was no tracker record.
-  
-  if(!empty($ip)) {
-    $sql = "select fid, ip, site, page, jsin, jsout, dayreal, rcount, daybots, dayvisits, visits, lasttime ".
-           "from $S->masterdb.dayrecords where ip='$ip' order by lasttime";
-    $dayrecords = $T->maketable($sql, ['attr'=>['id'=>'dayrecords', 'border'=>'1']])[0];
-  }
-  
-  if($dayrecords) {
-    $dayrecords = "<p>From dayrecords table</p>$dayrecords";
-  } else {
-    $dayrecords = "<h1>Not in dayrecords table</h1>";
-  }
-
   if($ip) {
     $loc = json_decode(file_get_contents("http://ipinfo.io/$ip")); // I could also use the class link in webstats.js
     $gpsloc = $loc->loc;
     $hostby = gethostbyaddr($ip);
     $locstr = <<<EOF
 <p>User Information from "http://ipinfo.io/$ip"</p>
-
 <ul class="user-info">
   <li>gethostbyaddr: <i class='green'>$hostby</i></li>
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
-  <li>GPS Loc: <i class='green'>$loc->loc</i></li>
+  <li id="location">GPS Loc: <i class='green'>$loc->loc</i></li>
   <li>ISP: <i class='green'>$loc->org</i></li>
 </ul>
 EOF;
@@ -200,7 +195,7 @@ EOF;
   }
 
   if(!empty($ip)) {
-    $sql = "select ip, botAs, type, count, errno, errmsg, agent, lasttime from $S->masterdb.badplayer where ip='$ip'";
+    $sql = "select ip, botAs, type, count, errno, errmsg, agent, created, lasttime from $S->masterdb.badplayer where ip='$ip'";
     $badTbl = $T->maketable($sql, ['attr'=>['id'=>'badplayer', 'border'=>'1']])[0];
   }
   if($badTbl) {
@@ -209,32 +204,81 @@ EOF;
     $badTbl = "<h1>Not in badplayer table</h1>";
   }
 
-  if(!empty($ip)) {
-    $sql = "select ip, site, page, bot, info, phone, lasttime from $S->masterdb.server where ip='$ip'";
-    $serverTbl = $T->maketable($sql, ['attr'=>['id'=>'server', 'border'=>'1']])[0];
-  }
-  if($serverTbl) {
-    $serverTbl = "<p>From server table</p>$serverTbl";
-  } else {
-    $serverTbl = "<h1>Not in server table</h1>";
-  }
+  // BLP 2024-07-17 - add more info
   
-  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl];
+  $key = require '/var/www/PASSWORDS/Ip2Location-key';
+  $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
+  
+  $ipin = $_POST['ip'];
+  if(($json = file_get_contents("https://api.ip2location.io/?key=$key&ip=$ip")) === false) exit("<h1>Not a Valid IP</h1><p>ip2location failed</p>");
+  $info = json_decode($json);
+
+  $proxy = $info->is_proxy ? "true" : "false";
+
+  $ip2info = <<<EOF
+<table id="results" border='1'>
+<tr><td>IP Address</td><td>$ip</td></tr>
+<tr><td>Country Code</td><td>$info->country_code</td></tr>
+<tr><td>Country Name</td><td>$info->country_name</td></tr>
+<tr><td>Reagion</td><td>$info->region_name</td></tr>
+<tr><td>City</td><td>$info->city_name</td></tr>
+<tr><td>Zip Code</td><td>$info->zip_code</td></tr>
+<tr><td>Time Zone</td><td>$info->time_zone</td></tr>
+<tr><td>Autonomous System Number</td><td>AS$info->asn</td></tr>
+<tr><td>Autonomous System</td><td>$info->as</td></tr>
+<tr><td>Proxy</td><td>$proxy</td></tr>
+EOF;
+  
+  if(($json = file_get_contents("https://api-bdc.net/data/hazard-report?ip=$ip&key=$bigdatakey")) === false) exit("tor failed");
+  $istor = json_decode($json);
+  $tordisp = null;
+  foreach($istor as $k=>$v) {
+    if($v) {
+      $tordisp .= "<tr><td>$k</td><td>$v</td></tr>";
+    }
+  }
+
+  if(!empty($tordisp)) {
+    $ip2info .= $tordisp;
+  }
+              
+  if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bigdatakey")) === false) exit("tor failed");
+  $istor = json_decode($json);
+  $ip2info .= "<tr><td>RiskLevel</td><td>$istor->description</td></tr></table>";
+  
+  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $badTbl, $ip2info];
 }
 
 // Start Here
 
 if($_POST['page'] == 'find') {
-  // Here value will be the full phrase "where id/ip=..."
-  $value = $_POST['where'];
+  // If a POST
+  $where = $_POST['where'];
+  $and = $_POST['and'];
+  $by = $_POST['by'];
+  $value = "$where $and $by";
   $sql = $_POST['sql'];
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl] = getinfo($value, $sql);
-} elseif($_GET['ip']) {
-  $ip = "ip='{$_GET['ip']}'";
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl] = getinfo($ip, $val);
-} elseif($_GET['id']) {
-  $id = "id={$_GET['id']}";
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $dayrecords, $badTbl, $serverTbl] = getinfo($id, $val);
+  $sql = $sql ?? $val;
+} elseif($_GET) {
+  // If a GET
+  $sql = $_GET['sql'];
+  $where = $_GET['where'];
+  $and = $_GET['and'];
+  $by = $_GET['by'];
+  if(!str_contains($by, 'order')) {
+    error_log("findip.php GET, 'by' error: site=$S->site, ip=$S->ip, page=$S->self, agent=$S->agent");
+    exit('Go Away');
+  }
+  $value = "$where $and $by";
+  $sql = $sql ?? $val;
+} 
+      
+if(!empty($sql)) {
+  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $badTbl, $ip2info] = getinfo($value, $sql);
+} else {
+  $where = "where site='Bartonphillips'";
+  $and = "and lasttime>current_date()";
+  $by = "order by lasttime";
 }
 
 $S->banner = "<h1>Find in Tracker</h1>";
@@ -264,9 +308,9 @@ $S->css =<<<EOF
 /* agent field */
 #botsContainer td:nth-of-type(2) { word-break: break-all; width: 900px; }
 #botstbl, #mygeo, #dayrecords, #badplayer { width: 100%; }
-#badplayer td { padding-left: 10px; padding-right: 10px; }
+#badplayer td { padding-left: 10px; padding-right: 10px; font-size: 18px;}
 #form th { text-align: left; padding-right: 10px; font-size: 18px; }
-#location { font-size: 18px; }
+#locationx { font-size: 18px; }
 input { width: 1000px; font-size: 18px; padding-right: 10px; padding-left: 10px; }
 button { border-radius: 5px; background: green; color: white; font-size: 18px; }
 /* mygeo is the table */
@@ -301,9 +345,12 @@ button { border-radius: 5px; background: green; color: white; font-size: 18px; }
   padding-bottom: 30px;
   border: 5px solid red;
 }
-#location li:nth-of-type(3) i { cursor: pointer; }
+#location i { cursor: pointer; }
 .green { color: green; }
 .botas { color: green; }
+/* BLP 2024-07-17 - MORE */
+#ip2info { margin-top: 5px; margin-bottom: 20px; }
+#ip2info td { padding: 5px; }
 EOF;
 
 require_once("/var/www/bartonlp.com/otherpages/setupjava.i.php");
@@ -391,9 +438,11 @@ EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
 
+$sqlStatment = $sqlval ? "<p>Sql Statment:<br>$sqlval</p>" : null;
+
 echo <<<EOF
 $top
-<p>Sql Statment:<br>$sqlval</p>
+$sqlStatment
 <p>Select your query fields</p>
 <form method='post'>
 <table id='form'>
@@ -406,16 +455,15 @@ $top
 </table>
 <button type='submit' name='page' value='find'>Find</button>
 </form>
-<div id='location'>$locstr</div>
-<div id='trackerContainer'>$trackerTbl</div>
+<div id='locationx'>$locstr</div>
+<div id='ip2info'>$ip2info</div>
+<div id='trackerContainer'><p>From tracker table</p>$trackerTbl</div>
 <div id='botsContainer'>$botsTbl</div>
 <div id='geo'>$geoTbl</div>
-<div id='dayrecord'>$dayrecords</div>
 <div id='badContainer'>$badTbl</div>
-<div id='serverContainer'>$serverTbl</div>
 <div id="outer">
-<div id="geocontainer"></div>
-<button id="removemsg">Click to remove map image</button>
+  <div id="geocontainer"></div>
+  <button id="removemsg">Click to remove map image</button>
 </div>
 $footer
 EOF;

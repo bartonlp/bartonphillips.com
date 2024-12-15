@@ -1,6 +1,9 @@
 #!/usr/bin/php
 <?php
-$_site = require_once(getenv("SITELOADNAME"));
+// If $argv[1] is 'remove' and the file exists then it is rewritten.
+// if $argv[1] or $argv[2] is 'echo' then the new sitemap.xml is echoed to stdout.
+
+$_site = require_once '/var/www/vendor/bartonlp/site-class/includes/siteload.php';
 
 $path = $_site->path; //getcwd();
 //error_log("path: $path");
@@ -8,6 +11,9 @@ $path = $_site->path; //getcwd();
 $other = "$path/other";
 
 $date = date("Y-m-d");
+
+// If the gz file already exists check to see if $argv[1] == 'remove' if it is not then we exit and
+// do nothing. Otherwise we do the rest of the program and create a new gz file.
 
 if(file_exists("$other/Sitemap.$date.xml.gz")) {
   if($argv[1] != 'remove') {
@@ -25,10 +31,10 @@ $files = json_decode($file);
 
 $sitemap = <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 EOF;
 
@@ -71,5 +77,8 @@ file_put_contents("$path/Sitemap.xml", $sitemap);
 // Cull the field to only three
 
 exec("find $other -mtime +3 -exec rm '{}' \;");
+
+// If $argv[1] or $argv[2] is 'echo' display the $sitemap.
+// Note $argv[1] could be 'remove'.
 
 if($argv[1] == "echo" || $argv[2] == "echo") echo $sitemap;

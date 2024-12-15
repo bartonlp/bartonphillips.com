@@ -1,5 +1,4 @@
 <?php
-// BLP 2023-02-26 - use new approach
 // Demonstrates the use of a worker using AJAX calls (worker.ajax.php).
 // This is the main program it uses worker.worker.js and worker.ajax.php
 // See worker.ajax.php for a description of the 'test' table in the database 'test'.
@@ -8,6 +7,8 @@
 // It has some documentation at that site.
 // The worker.ajax.php uses the 'test' user and database while this program uses what is in
 // mysitemap.json (which is usualy user=barton, database=barton).
+
+//exit("<h1>Not Authorized</h1>");
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site); // $S gives access to my framework.

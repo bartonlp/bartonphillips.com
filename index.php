@@ -3,14 +3,30 @@
 // recapcha site key: 6LefxlMnAAAAALcjQAYEBYCOhBXpLDGEL0Q8NzMt
 // recapcha secret key: 6LefxlMnAAAAAHWF6S3iofqztaqqiTFAwHfteHD6
 
-$_site = require_once(getenv("SITELOADNAME"));
-$S = new SiteClass($_site);
+$_site = require_once getenv("SITELOADNAME"); 
+//$_site = require_once "/var/www/site-class/includes/autoload.php";
+//$_site = require_once "/var/www/simple-site-class/includes/simple-autoload.php"; // If you want to use the git
+//version at /var/www/site-class uncomment this will have the most current version of site-class.
 
-require_once("./index.i.php"); // Get the majority of the php
+$S = new SiteClass($_site); // This must be changed if you use SimpleSiteClass.
 
-$S->msg = "PhpVersion: " . PHP_VERSION;
-$S->msg1 = "<br>SiteClass Version: " . SITE_CLASS_VERSION;
+require_once "./index.i.php"; // Get the majority of the php
 
+$S->msg = "PhpVersion: " . PHP_VERSION .
+          '<br><a href="https://www.digitalocean.com/?refcode=b0cc31a0e083&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge">'.
+          '<img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg" alt="DigitalOcean Referral Badge" /></a>';
+
+ob_start(); // Start output buffering
+require "/var/www/composer.lock";
+$x= ob_get_clean();
+
+if(($n = preg_match("~\"url\": \"https://github.com/bartonlp/site-class.git\",\n *\"reference\": \"(.*?)\"~", $x, $m)) === false) {
+  exit("ERROR");
+}
+$reporef = substr($m[1], 0, 7);
+
+$S->msg1 = "<br>{$S->__toString()}={$S->getVersion()}, engine={$S->dbinfo->engine}<br>".
+           "siteload=" . SITELOAD_VERSION . ", reporef=$reporef";
 $S->title = "Barton Phillips";
 $S->desc = "Interesting Things, About the Internet, Tips and Tutorials";
 $S->link = <<<EOF
@@ -20,7 +36,7 @@ EOF;
 $S->b_script = <<<EOF
   <script src='https://bartonphillips.net/js/phpdate.js'></script>
   <script src='https://bartonphillips.net/js/maps.js'></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&callback=initMap&v=weekly" async></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&loading=async&callback=initMap&v=weekly" async></script>
   <script>
 // This was formaly index.js now it is inline
     
@@ -72,9 +88,10 @@ Today is: <span id="datetoday">$date</span>
 <p>
    This page is dynamically generated using PHP on our server at
    <a target="_blank" href="https://www.digitalocean.com/">DigitalOcean.com</a>.
-   Very little JavaScript is used in this page. We collect &quot;Google Analytics&quot, &quot;Google Maps&quot; geo-positioning data, fingerprint data,
-   and a COOKIE called 'mytime', which is used to tell how long some anonymous person has stayed on our site.
-   <a target="_blank" href="privacy.php">Privacy Statement</a>.</p>
+   Very little JavaScript is used in this page. We collect &quot;Google Analytics&quot, &quot;Google Maps&quot; geo-positioning data and fingerprint data.
+   <a target="_blank" href="privacy.php">Privacy Statement</a>.
+</p>
+
 <p>
    <span class='red'>However</span>, some of the pages we link to do collect tracking information
    and COOKIES and make extensive use of JavaScript.
@@ -87,17 +104,16 @@ Today is: <span id="datetoday">$date</span>
 <h2>Visit one of the other websites designed by Barton Phillips</h2>
 <!-- Other Sites That I have made -->
 <div id="otherSites" class="mylinks">
-<a target="_blank" href="https://www.bnai-sholem.com"><button>Temple B'nai Sholem</button></a>
-<a target="_blank" href="https://newbernrotary.org"><button>New Bern Breakfast Rotary Club</button></a>
 <a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a target="_blank" href="https://www.jt-lawnservice.com"><button>JT Lawn Service</button></a>
-<a target="_blank" href="https://www.plumberdfw.com"><button>Little John Plumbing</button></a>
+<a target="_blank" href="https://www.littlejohnplumbing.com"><button>Little John Plumbing</button></a>
 <a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
 <a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="https://www.bartonphillips.org:8000"><button>RPI</button></a>
+<a target="_blank" href="https://rpi.bartonphillips.org"><button>RPI</button></a>
+<a target="_blank" href="articles/Stories.php"><button>My Stories</button></a>
 </div>
 </section>
 
@@ -117,10 +133,10 @@ Today is: <span id="datetoday">$date</span>
 <!-- BLP 2021-03-25 - End warning -->
 <h2 class="center">Interesting Sites</h2>
 <ul>
+<li><a target="_blank" href="https://www.bnai-sholem.com">Temple B'nai Sholem</a></li>
+<li><a target="_blank" href="https://newbernrotary.org">New Bern Breakfast Rotary Club</a></li>
 <li><a target="_blank" href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a target="_blank" href="https://www.raspberrypi.org/">RaspberryPi</a></li>
-<li><a target="_blank" href="https://developers.google.com/web/">Google/Web</a></li>
-<li><a target="_blank" href="https://rivertownerentals.info/">Rivertowne Rentals</a></li>
 </ul>
 </section>
 
@@ -153,6 +169,7 @@ $adminStuff
 <li><a target="_blank" href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a></li>
 <li><a target="_blank" href="articles/easter-example.php">When is Easter and other holidays related to Easter?</a></li>
 <li><a target="_blank" href="articles/cssvariables.php">Use CSS var(--variable) to do 'hover' etc.</a></li>
+<li><a target="_blank" href="/articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a target="_blank" href="/examples.js/javascript-messages">Here are some interesting files that use popups</a></li>
 </ul>
 
@@ -161,9 +178,10 @@ $adminStuff
 <li><a target="_blank" href="/articles/showCookies.php">Show the PHP and JavaScript Cookies</a></li>
 <li><a target="_blank" href="/showmarkdown.php">Display <b>Markdown</b> files</a></li> <!-- needs to be in DOCROOT -->
 <li><a target="_blank" href="/articles/base64.php">Decode Base 64</a></li>
-<li><a target="_blank" href="/articles/filereader.php">Using the File interface (File, FileReader, FileList, Blob)</a></li>
 <li><a target="_blank" href="/articles/urlcountrycodes.php">Find the country given a url country code</a><br>
 <li><a target="_blank" href="/articles/getcountryfromip.php">Get Country from IP Address</a></li>
+<li><a target="_blank" href="/articles/findinfofromip.php">Get More Info from IP Address</a></li>
+<li><a target="_blank" href="/articles/iprangetocidr.php">Get the CIDR block given an IP range</a></li>
 <li><a target="_blank" href="/articles/verifyemailaddress.php">Verify Email Address</a></li>
 <li><a target="_blank" href="/getIP.php">Check IP Address</a></li>
 </ul>

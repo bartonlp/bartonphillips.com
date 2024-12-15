@@ -17,7 +17,8 @@ To run the server.js you must be on the server (bartonphillips.com) in the the
 /var/www/bartonphillips.com/examples/node-programs directory.
 NOTE: You must open up port 3000 with 'sudo ufw allow 3000' before this will work. After you are finished
 do 'sudo ufw status numbered' and then use the numbers to remove the port: 'sudo ufw remove <number>'.
-Then you should run 'node server.js'.
+Then you should run 'sudo node server.js'.
+You must use sudo because I need to access the letsencrypt credentials which are only available to root.
 It will output 'server is running on port 3000'. As you interact with this client you will see
 'console.log' messages under the initial message. NOTE: you will have to change the https.createServer() section
 to use your certificates.
@@ -60,7 +61,8 @@ $top
 <p>This is a PHP program. It does not run via the <b>server.js</b></p>
 <hr>
 <h2>This program requires that the <i>'node'</i> server be running on port 3000</h2>
-<p>You must run <b>server.js</b> on your <i>Server</i> machine from the command line: <b>node server.js</b>.<br>
+<p>You must run <b>server.js</b> on your <i>Server</i> machine from the command line: <b>sudo node server.js</b>.<br>
+<span class="notes">NOTE:</span> You must use 'sudo' to access the https credentials.<br>
 <span class="notes">NOTE:</span> You must open up port 3000 with 'sudo ufw allow 3000' before this will work.<br>
 If you do not have the server running you will get browser error message <b>This site can't be reached</b> or something like that.<br>
 <span class="notes">NOTE:</span> you will have to change the https.createServer() section to use your certificates.<br>

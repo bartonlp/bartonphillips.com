@@ -28,6 +28,10 @@ function getmutualdata($mutual) {
   //$close = $ar['Time Series (Daily)'][$date]['4. close'];
 
   $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$mutual&apikey=$alphakey";
+/*  if(($tmp = file_get_contents($url)) === false) {
+    error_log("stocks/mutualiex.php: file_get_contents() returned false: url=$url");
+  }*/
+  
   $ar = json_decode(file_get_contents($url), true);
   $close = $ar['Global Quote']['05. price'];
   $date = $ar['Global Quote']['07. latest trading day'];

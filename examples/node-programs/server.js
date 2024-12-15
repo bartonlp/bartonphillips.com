@@ -66,8 +66,8 @@ const PORT = 3000;
 // We create the server with our certs.
 
 https.createServer({
-  cert: fs.readFileSync('/etc/letsencrypt/live/www.bartonphillips.com/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/www.bartonphillips.com/privkey.pem')
+  cert: fs.readFileSync('/etc/letsencrypt/live/bartonlp.org/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/bartonlp.org/privkey.pem')
 }, app)
 .listen(PORT, () => {
   console.log(`serever is runing at port ${PORT}`);

@@ -46,24 +46,25 @@ if($_POST['page'] == 'finger') {
   $visitor = $_POST['visitor'] ?? "NO SCRIPT";
   $email = $_POST['email'];
   $name = $_POST['name'];
+
   $ip = $_POST['ip']; // If we have an ip that means the <form> sent the post and this is curl like.
 
+  if(!$S->agent) {
+    error_log("register.php POST NO-AGENT \$S->agent empty, ip=$ip, email=$email, name=$name");
+    header("Location: https://www.bartonphillips.com/register.php?page=complete");
+    exit();
+  }
+  
   // If 'NO SCRIPT' we need to log and goto complete.
   
   if($visitor == "NO SCRIPT") {
-    error_log("register.php post: ip=$ip, NO SCRIPT probably javascript disabled or lynx, curl, wget etc., email=$email, name=$name");
+    error_log("register.php post: ip=$ip, NO SCRIPT probably javascript disabled or lynx, curl, wget etc., email=$email, name=$name, agent=$S->agent");
     header("Location: https://www.bartonphillips.com/register.php?page=complete");
     exit();
   }
 
-  if(!$S->agent) {
-    error_log("register.php POST \$S->agent empty, ip=$ip, email=$email, name=$name");
-    header("Location: https://www.bartonphillips.com/register.php?page=complete");
-    exit();
-  }
-  
   if($S->isBot($S->agent)) {
-    error_log("register.php POST page=finger: $name, $email, $visitor");
+    error_log("register.php POST IS-BOT agent=$S->agent, $name, $email, $visitor");
     header("Location: https://www.bartonphillips.com/register.php?page=complete");
   }
   
@@ -186,6 +187,8 @@ let src = `
 <hr>
 `;
 
+// Replace the 'container' with the html above. We have JavaScript
+
 $("#container").html(src);
 
 $("#submit").on("click", function(e) {
@@ -239,6 +242,7 @@ $top
 <div id="container">
 <hr>
 <!--
+This container us usually replaced by the text in JavaScript.
 If javascript is not available, either because it is turned off in the browser or the client is curl, lynx etc.,
 then we will use this <form ...>. NOTE there is no 'visitor' in the \$_POST['visitor'].
 Therfore, 'finger' in the 'members' table is marked as 'NO SCRIPT'.

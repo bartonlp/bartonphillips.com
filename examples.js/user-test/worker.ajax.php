@@ -16,28 +16,36 @@ The standard mysitemap.json has my normal database stuff. We change it here to u
 user and the 'test' database which has the 'test' table.
 */
 
+//exit("<h1>Not Authorized</h1>");
+
 $_site = require_once(getenv("SITELOADNAME"));
 
-//ErrorClass::setNobacktrace(true);
-//ErrorClass::setErrlast(true);
+//ErrorClass::setNoEmail(false);
+ErrorClass::setErrlast(true);
 
-$_site->dbinfo->user = "test"; // use test user
+$_site->dbinfo->user = "barton"; // use test user
 $_site->dbinfo->database = "test"; // and test database
 $_site->noTrack = true; // needed because user is test not barton.
 $S = new Database($_site); // Database does not do any counting and sets noTrack true by default.
 
-$sql = $_POST['sql'];
+//error_log("POST: ".print_r($_POST, true));
+
+if($_POST['page'] != 'start') {
+  echo "ERROR: This program should not be run directly. Run 'worker.main.php' instead.<br>";
+  error_log("worker.ajax.php, ERROR: This program should not be run directly. Run 'worker.main.php' instead. $S->ip, $S->self, $S->agent");
+  exit();
+}
+
+if(empty($sql = $_POST['sql'])) {;
+  echo json_encode(["ERROR"=>"No sql statment"]);
+  exit();
+} 
 
 // We are using fetch() in worker.worker.js so we need to get the data from 'php://input'
 
 //$sql = file_get_contents("php://input");
 //error_log("worker.ajax.php, php://input=$sql");
 //exit();
-
-if(empty($sql)) {
-  echo json_encode(["ERROR"=>"No sql statment"]);
-  exit();
-}
 
 // We could be passed something that will not work
 
@@ -51,7 +59,7 @@ try {
     $nn = $cnt - 19; // This is the number to delete
 
     if($cnt > 20) {
-      $n = $S->sql("delete from test order by id asc limit $nn"); // leave most resent 20
+      $n = $S->sql("delete from test order by lasttime asc limit $nn"); // leave most resent 20
       $del = "Deleted $n items";
     }
   }
@@ -82,5 +90,3 @@ try {
   throw(new Exception($e));
 }
 
-echo "ERROR: This program should not be run directly. Run 'worker.main.php' instead.<br>";
-error_log("worker.ajax.php, ERROR: This program should not be run directly. Run 'worker.main.php' instead.");

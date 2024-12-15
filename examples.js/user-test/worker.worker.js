@@ -18,9 +18,9 @@ addEventListener("message", function(evt) {
 
 function sendText(txt) {
   // Use fetch() to send and receive the data.
-  
+  console.log(txt);
   let ret = fetch("worker.ajax.php", {
-    body: "sql=" +txt, // This is just plain sql
+    body: "&page=start&sql=" +txt, // This is just plain sql
     method: "POST",
     headers: {
       'content-type': 'application/x-www-form-urlencoded'

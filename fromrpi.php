@@ -12,27 +12,25 @@
 // stream_wrapper_register() function.
 
 require("../vendor/autoload.php"); // get the autoloader 
-
-// Function to strip comments from our json file.
-
-//function stripComments($x) {
-//  $pat = '~".*?"(*SKIP)(*FAIL)|(?://[^\n]*)|(?:#[^\n]*)|(?:/\*.*?\*/)~s';
-//  return preg_replace($pat, "", $x);
-//}
+require("../vendor/bartonlp/site-class/includes/database-engines/helper-functions.php");
 
 // Get the page from Rpi.
+// This has to be named eval or anything that does not get run through a supplemental program like
+// PHP.
 // BLP 2023-09-21 - Changed from http to https
-$page = file_get_contents("https://bartonphillips.org:8000/index.eval");
+
+$page = file_get_contents("https://bartonphillips.org:8000/index.eval"); // This is a symlink to index.php
 
 // write it out to a temp file
+// This works because the bartonphillips.com directory has group www-date and rwx privilages.
 
 file_put_contents("tempindex.php", $page);
 
 // Get the mysitemap.json from the Rpi
 // BLP 2023-09-21 - Changed from http to https
-$_site = json_decode(stripComments(file_get_contents("https://bartonphillips.org:8000/mysitemap.json")));
 
-//vardump("site", $_site);
+$_site = json_decode(stripComments(file_get_contents("https://bartonphillips.org:8000/mysitemap.json")));
+if($_site === null) { echo "site null<br>"; exit("site null"); }
 
 // Fix up the information so it works here.
 

@@ -23,10 +23,10 @@ $top
 <h3>SimpleSiteClass Mini Framework</h3>
 <p>This is a mini framework I have been using for almost 20 years. It has a database wrapper
 and a number of methods that make my life a lot easier.</p>
-<p>For example every webpage needs a &lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
+<p>For example, every webpage needs a &lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
 (navigation and banner).
 The framework makes these things easy.</p>
-<p>The database wrapper lets you use the database engines 'mysqli'.
+<p>The database wrapper lets you use the database engines 'mysqli' or 'PDO'. PDO supports 'mysql' and 'sqlite' (sqlite3).
 It is easy to use my framework with templeting engines like Twig.</p>
 <p>This framework is not &quot;All Things to All People&quot; like a number
 of the well know frameworks. This is a simple tool and therefore not nearly as

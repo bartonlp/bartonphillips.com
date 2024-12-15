@@ -6,6 +6,8 @@
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
+// Delete all errors from delname.
+
 if($_POST['delete']) {
   $delname = $_POST['delname'];
   
@@ -25,6 +27,8 @@ if($_POST['delete']) {
   header("refresh:0.02;url=showErrorLog.php?page=$delname");
   exit();
 }
+
+// If '$page' is set get the page data, else get either PHP_ERRORS.log or PHP_ERRORS_CLI.log
 
 if($page = $_GET["page"]) {
   $output = file_get_contents($page);
@@ -50,6 +54,9 @@ if(!$output) {
   $output = "<h1>No Data in $logname</h1>";
 } else {
   $output = preg_replace(["~ America/New_York~", "~-2022~"], '', $output);
+  // BLP 2024-11-15 - make home ip red.
+  $output = preg_replace(["~(195\.252\.232\.86)~", "~(192\.241\.132\.229)~"], "<span style='color: red'>$1</span>", $output);
+
   $output = preg_replace("~(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~", "<span class='ip'>$1</span>", $output);
   $output = preg_replace("~(tracker: |beacon:  )(\d+),~", "$1<span class='id'>$2</span>", $output);
   // BLP 2023-10-27 - 'id(value)' is from tracker when the ID_IS_NOT_NUMERIC. This does not happen
@@ -76,9 +83,12 @@ let del = localStorage.getItem("ShowPhpErrorLog"); // BLP 2023-10-27 - load the 
 console.log("DEL: ", del);
 $("#del-time").html("<p>Last Delete Time: " + del + "</p>");
 
-$(".ip").on("click", function(e) {
+$(".ip,.id").on("click", function(e) {
   let thisIp = $(this).text();
-  window.open("findip.php?ip="+thisIp, "_blank");
+  let cl = e.currentTarget.className;
+  window.open("findip.php?where=" +encodeURIComponent("where " +cl+"='" +thisIp+ "'")+"&and=" +encodeURIComponent("and lasttime>current_date() -interval 5 day")+
+              "&by=" +encodeURIComponent("order by lasttime"), "_blank");
+
   $(this).css({ background: "green", color: "white"});
 });
 EOF;

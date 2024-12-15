@@ -1,17 +1,11 @@
-Header set Access-Control-Allow-Origin *
-# Apache2 2.4 uses Require
-Require all granted
-
-Options +Includes
-
-SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
-SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
+# NOTE: even though this inherets from bartonphillips.com and bartonphillips.com/examples it does not display the directory
+# because we redirect to altorouter.php. The examples directory's .htaccess has 'Options +Includes +Indexes' but altorouter.php gets
+# controll first!
 
 RewriteEngine on
-RewriteRule ^csstest-(.*)\.css$ https://bartonlp.com/otherpages/tracker.php?id=$1&page=csstest [L,QSA]
 RewriteRule ^$ altorouter.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . altorouter.php [L]
 
