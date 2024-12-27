@@ -1,21 +1,13 @@
 <?php
-/* BLP 2022-04-09 -
-   if nodb or noTrack then the $image* file are all null. 
-   $image1, $image2, $image3 and $mainTitle are set by SiteClass.
-
-   There is no $h->siteDomain currenlty.
-*/
-
-// BLP 2023-09-07 - added to let me know if someone calls this directly.
+// BLP 2024-12-16 - Added <style> in <noscript>.
+// See footer.i.php for the ending </div>
 
 if(!class_exists('Database')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
 
 return <<<EOF
 <header>
   <!-- bartonphillips.com/includes/banner.i.php -->
-  <a href="$h->logoAnchor">
-    <!-- The logo line is changes by tracker.js -->
-    $image1</a>
+  <a href="$h->logoAnchor">$image1</a>
   $image2
   $mainTitle
   <noscript>
@@ -24,6 +16,9 @@ return <<<EOF
       Your browser either does not support <b>JavaScripts</b> or you have JavaScripts disabled, in either case your browsing
       experience will be significantly impaired. If your browser supports JavaScripts but you have it disabled consider enabaling
       JavaScripts conditionally if your browser supports that. Sorry for the inconvienence.</p>
+    <p>The rest of this page will not be displayed.</p>
+    <style>#content { display: none; }</style>
   </noscript>
 </header>
+<div id="content"> <!-- BLP 2024-12-16 - See footer.i.php for ending </div>. -->
 EOF;

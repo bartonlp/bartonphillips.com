@@ -50,6 +50,7 @@ return <<<EOF
 $geo
 $b->script
 $b->inlineScript
+</div> <!-- Ending for <div id="content". See banner.i.php -->
 </body>
 </html>
 EOF;

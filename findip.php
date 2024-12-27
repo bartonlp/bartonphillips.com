@@ -77,24 +77,31 @@ if(!str_contains($ref, "bartonphillips.com")) {
 EOF;
   $requestUri = urldecode($S->requestUri);
 
+  $errMsg = 'Not called from showErrorLog.php';
+  
   if(preg_match("~(?:ip='(.*?)')|(?:id='(.*?)')~", $requestUri, $m) !== false) {
     if(!empty($m[1])) {
       $x = "ip='$m[1]'";
     } elseif(!empty($m[2])) {
       $x = "id=$m[2]";
     } else {
-      error_log("findip.php: $m does not have an id or ip, line=" . __LINE__);
-      exit();
+      $errMsg = "Not called from index.php";
+      $ip = $S->ip;
+      $id = 999;
+      $created = date("Y-m-d H:i:s");
+      goto SKIP_SELECT;
     }
 
-    $S->sql("select id, ip, site, page, botAs, agent, created from $S->masterdb.tracker where $x");
+    $S->sql("select id, ip, site, page, botAs, agent, starttime from $S->masterdb.tracker where $x");
     [$id, $ip, $site, $page, $botAs, $agent, $created] = $S->fetchrow('num');
 
+SKIP_SELECT:
+    
     $S->sql("insert into $S->masterdb.badplayer (ip, id, site, page, botAs, type, count, errno, errmsg, agent, created, lasttime) ".
-            "values('$ip', $id, '$site', '$page', '$botAs', 'AUTHORIZATION DENIED', 1, -999, 'Not called from showErrorLog.php or index.php', '$agent', '$created', now()) ".
+            "values('$ip', $id, '$site', '$page', '$botAs', 'AUTHORIZATION DENIED', 1, -999, '$errMsg', '$agent', '$created', now()) ".
             "on duplicate key update count=count+1, lasttime=now()");
 
-    error_log("findip.php: NOT FROM showErrorLog.php, id=$id, ip=$ip, site=$site, page=$page, botAs=$botAs, agent=$agent, requestUri=$requestUri");
+    error_log("findip.php: $errMsg, id=$id, ip=$ip, site=$site, page=$page, botAs=$botAs, agent=$agent, requestUri=$requestUri");
   } else {
     error_log("findip.php: preg_match() returned false. ERROR");
   }
