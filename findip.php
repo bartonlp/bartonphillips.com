@@ -63,9 +63,13 @@ CREATE TABLE `badplayer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 */
 
-$_site = require_once(getenv("SITELOADNAME"));
+//$_site = require_once(getenv("SITELOADNAME"));
+$_site = require_once "/var/www/site-class/includes/autoload.php";
 ErrorClass::setDevelopment(true);
 $S = new SiteClass($_site);
+
+// BLP 2024-12-15 - Start
+$ref = $_SERVER['HTTP_REFERER'];
 
 // BLP 2024-12-15 - Start
 $ref = $_SERVER['HTTP_REFERER'];
@@ -111,7 +115,8 @@ SKIP_SELECT:
 
 $T = new dbTables($S);
 
-$val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime from $S->masterdb.tracker ";
+$val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime ".
+       "from $S->masterdb.tracker ";
 
 // These MUST BE TRUE globals!!
 $fingers = [];
@@ -260,6 +265,7 @@ EOF;
 
 if($_POST['page'] == 'find') {
   // If a POST
+
   $where = $_POST['where'];
   $and = $_POST['and'];
   $by = $_POST['by'];
@@ -292,6 +298,10 @@ $S->banner = "<h1>Find in Tracker</h1>";
 $S->title = "Find in Tracker";
 
 $S->css =<<<EOF
+/* 2 is ip address */
+#trackertbl td:nth-of-type(2) {
+  cursor: pointer;
+}
 /* 4 is page*/
 #trackertbl td:nth-of-type(4) {
   overflow-x: auto; max-width: 150px; white-space: pre;
@@ -377,6 +387,20 @@ EOF;
 $S->noCounter = true; // No counter.
 
 $S->b_inlineScript =<<<EOF
+  // 2 is the ip
+
+  $("body").on("dblclick", "#trackertbl td:nth-child(2)", function(e) {
+    const myip = $(this).text();
+
+/*    $.ajax("./findip.php", {
+      data: {page: "find", where: "where ip='" +myip+"'", and: "and lasttime>current_date() -interval 5 day", by: "order by lasttime"},
+      type: "get"
+    });
+*/
+    window.location.replace("https://bartonphillips.com/findip.php?where=where%20ip%3D%27"+myip+"%27&and=and%20lasttime>current_date()%20-interval%205%20day&by=order%20by%20lasttime%20desc");
+    e.stopPropagation();
+  });
+
   // 4 & 9 is the page & agent
   // When clicked show the whole page or agent string.
 

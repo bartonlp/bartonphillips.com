@@ -17,6 +17,8 @@
  * $S = new SiteClass($_site);
  * Therefore to change things like siteName or any of the items marked
  * as 'only $this' the values of $_site need to be changes.
+ * They can be changed via $S but it will not have any effect on the
+ * values of $this which are set by the class constructor.
  */
 // BLP 2023-08-09 - Added trackerImgPhone.
 {
@@ -66,7 +68,7 @@
                              // return to the caller.
       "DUMMY": null // DUMMY at end with no comma
     },
-//    "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
+    "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
     // BLP 2022-01-15 -- NOTE these are include via require() so these must be absolute
     // or relative paths not URLs
     "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
@@ -108,8 +110,8 @@
     // "noEmailAddress": true,
     //
     // The ***Location entries let me put the elements of SiteClass in
-    // other locations. This would be required of someone downloaded
-    // SiteClass etc. and using the examples.
+    // other locations. This would be required if someone downloaded
+    // SiteClass etc. and was using the examples.
     //"trackerLocation": "the location of tracker.php",
     //"trackerLocationJs": "the location of tracker.js",
     //"beaconLocation": "the location of beacon.php",
@@ -117,10 +119,6 @@
     // geoAjax.php at github.com/bartonlp/bartonphillips.net
     //"imagesLocation": "https://bartonphillips.org/vendor/bartonlp/site-class/examples",
     //"defaultImage": "./images/146624.png",
-    //"trackerLocation": "../includes/tracker.php",
-    //"trackerLocationJs": "../includes/tracker.js",
-    //"beaconLocation": "../includes/beacon.php",
-    //
     "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
     //"trackerImgPhone": "/images/8080cpu.jpg", // use the same photo for desktop and phone
     "trackerImg2": "/images/146624.png", // only $this

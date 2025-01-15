@@ -18,10 +18,10 @@ $S->msg = "PhpVersion: " . PHP_VERSION .
 
 ob_start(); // Start output buffering
 require "/var/www/composer.lock";
-$x= ob_get_clean();
+$x = ob_get_clean();
 
 if(($n = preg_match("~\"url\": \"https://github.com/bartonlp/site-class.git\",\n *\"reference\": \"(.*?)\"~", $x, $m)) === false) {
-  exit("ERROR");
+  exit("index.php, preg_match returned false: ERROR");
 }
 $reporef = substr($m[1], 0, 7);
 
@@ -64,6 +64,28 @@ setInterval(function() {
 EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
+
+// Check If this is a high risk IP. Comes from index.i.php
+
+if($istor->risk === "High") {
+  echo <<<EOF
+$top
+<hr>
+<h2>You are a High Risk BOT</h2>
+<p>Nothing here to see.</p>
+<hr>
+$footer
+EOF;
+
+  error_log("index.php: High risk ip found via https://api-bdc.net/data/user-risk?ip=$istor->ip");
+  
+  $sql = "insert into $S->masterdb.badplayer (ip, site, page, type, count, errno, errmsg, agent, created, lasttime) ".
+  "values('$istor->ip', '$S->siteName', '$S->self', 'HIGH RISK IP', 1, '-999', 'High risk ip found', '$S->agent', now(), now()) ".
+  "on duplicate key update count=count+1, lasttime=now()";
+
+  $S->sql($sql);
+  exit();
+}
 
 // ***************
 // Render the page

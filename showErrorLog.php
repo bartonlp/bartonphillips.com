@@ -4,7 +4,9 @@
 // BLP 2023-10-27 - This also shows how to set 'localstorage' via PHP and read it back via javascript
 
 $_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site);
+//$_site = require_once "/var/www/site-class/includes/autoload.php";
+
+$S = new SiteClass($_site);
 
 // Delete all errors from delname.
 
@@ -87,7 +89,7 @@ $(".ip,.id").on("click", function(e) {
   let thisIp = $(this).text();
   let cl = e.currentTarget.className;
   window.open("findip.php?where=" +encodeURIComponent("where " +cl+"='" +thisIp+ "'")+"&and=" +encodeURIComponent("and lasttime>current_date() -interval 5 day")+
-              "&by=" +encodeURIComponent("order by lasttime"), "_blank");
+              "&by=" +encodeURIComponent("order by lasttime desc"), "_blank");
 
   $(this).css({ background: "green", color: "white"});
 });

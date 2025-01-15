@@ -18,7 +18,7 @@ $top
     information about your ISP and possibly your computer. You can always opt out of providing geo-location information.
     This site uses <b>PHP</b> and the server can collect anonymous information even if you have JavaScript disabled.</p>
   <p>If you have looked at our source code, you have probably seen <b>tracker.js</b> and <b>geo.js</b> loading
-    <i>jquery</i>. Those programs collect anonymous information and adds it to our
+    <i>jQuery</i>. Those programs collect anonymous information and adds it to our
     databases.</p>
   <p>If you really want to surf the web anonymously, go to your local library and use one
     of its computers. Don't take your cell phone and wear dark classes and a COVID mask. Also, don't park near the library.
@@ -31,7 +31,7 @@ $top
   <p>We will never sell your information (as anonymous as it is) to any third party.</p>
 
   <p>If you want to see what information we collect, visit
-    <a target="_blank" href="https://bartonphillips.net/webstats.php?blp=8653&site=$S->siteName">Webstats</a>.</p>
+    <a target="_blank" href="https://bartonphillips.net/webstats.php?blp=8653&site=$S->siteDomain">Webstats</a>.</p>
   <p>Good luck and have fun.</p>
 <hr>
 $footer

@@ -71,6 +71,15 @@ EOF;
 $cmd = "https://ipinfo.io/$S->ip";
 $loc = json_decode(file_get_contents($cmd));
 
+$bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
+//$ip = '45.148.10.172';
+if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bigdatakey")) === false) {
+  error_log("index.i.php: api-bdc.net/data/user-rick failed for ip=$ip, key=$bigdatakey");
+} else {
+  $istor = json_decode($json);
+  $istor->ip = $ip;
+}
+
 $clientname = gethostbyaddr($S->ip);
 
 $locstr = <<<EOF
@@ -85,6 +94,7 @@ $locstr = <<<EOF
   <li>ISP: <i class='green'>$loc->org</i></li>
   <li id="geo">Your Location: <i class='green'></i></li>
   <li id="finger">Your fingerprint: <i class='green'></i></li>
+  <li>Your record: <i class='green'>$S->LAST_ID</i></li>
 </ul>
 <span id="TrackerCount"></span>
 EOF;
