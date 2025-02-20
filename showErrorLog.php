@@ -1,14 +1,114 @@
 <?php
 // BLP 2023-02-25 - use new approach
 // Show the PHP_ERRORS.log or PHP_ERRORS_CLI.log and allow it the be emptied.
-// BLP 2023-10-27 - This also shows how to set 'localstorage' via PHP and read it back via javascript
+// BLP 2025-02-09 - Reworked getting the lines.
 
 $_site = require_once(getenv("SITELOADNAME"));
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
 
+$_site->noGeo = true;
+
+function parsedata($output) {
+  $lines = "";
+  $extra = "";
+  
+  // Loop through the lines of the file.
+
+  foreach($output as $v) {
+    // Don't display lines with showErrorLog.php or my ip address.
+  
+    if(preg_match("~page=/showErrorLog.php|ip=195.252.232.86, site=Bartonphillips~", $v) !== 0) {
+      continue;
+    }
+    
+    // If the line does not start with '[' then it is a continuation of the previous line.
+    // Add it to $extra and continue.
+
+    if(preg_match("~^\[~", $v) === 0) {
+      $extra .= $v;
+      continue;
+    } else {
+      // If there is data in $extra then add it to the table and reset $extra.
+
+      if(!empty($extra)) {
+        //echo "last: " . htmlspecialchars($tbl, ENT_QUOTES, 'UTF-8') . "<br>";
+        $tbl .= "<td colspan='5'>$extra</td></tr>";
+        $extra = '';
+        $lines .= $tbl;
+        // This then contines to parse the current $v.
+      }
+    }
+
+    // Standard tracker or beacon with id, ip, site, page and rest.
+
+    $err = preg_match("~\[(.*?) .*?\] (.*?): id=(.*?), ip=(.*?), site=(.*?), page=(.*?), (.*)$~", $v, $m);
+    
+    if($err === 0) { // The above patter does NOT match.
+      // If there was no match then try both time, some item: and everything else.
+
+      preg_match("~\[(.*?) .*?\] (.*?): (.*)$~", $v, $m);
+
+      // Did we find the word 'exception' or 'error' in the third match (item)?
+      // The \] .*? gathers the possible prefixes, like Pdo or Value. Then (?:?i:exception|error)
+      // is a NON capture grouping that is caseless (?i:). I tried some of the other suggestion in
+      // the PHP Subpatterns manual section but this is the only one that worked.
+
+      if(preg_match("~\] .*?(?:?i:.*?exception|.*?error)~", $m[3]) === 0) { // (?:?i: works everything else seems to not work.
+        // If we did not find 'error' then this is a tracker or beacon with no id or ip.
+
+        $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td colspan='6'>{$m[3]}</td></tr>";
+      } else {
+        // This has 'error' with no id or ip.
+
+        $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td>";
+        $extra = ""; // this is all of the rest of this line.
+        continue;
+      }
+    } else { // This is a tracker or beacon with id and ip.
+      // $err was not zero and the pattern did match.
+      
+      $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td>{$m[3]}</td><td>{$m[4]}</td><td>{$m[5]}</td><td>{$m[6]}</td><td>{$m[7]}</td></tr>";
+    }
+
+    // Now fix the span for id and ip everywhere in the table.
+
+    $tbl = preg_replace(["~(<td>|id=)(\d{7})~", "~(<td>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
+
+    $lines .= $tbl;
+  }
+
+  // If there was not a line after the $extra data.
+  // First remove spaces then check empty.
+  
+  if(!empty(trim($extra))) {
+    // There is a valid line in $extra so that is the last thing in the error log.
+    
+    $lines .= $tbl . "<td colspan='5'>$extra</td></tr>"; // $tbl is the start of the line and $extra is the remainder.
+  }
+
+  return $lines;
+}
+
 $S = new SiteClass($_site);
 
-// Delete all errors from delname.
+// Ajax call from JavaScript
+
+if($_POST['page'] == "newdata") {
+  $output = file($_POST['file']);
+  if($output) {
+    $dataStr =  parsedata($output);
+    $nodata = 'false';
+  } else {
+    $dataStr = "<h1>No Data in " . basename($_POST['file']) . "</h1>";
+    $nodata = 'true';
+  }
+
+  $ret = json_encode([$dataStr, $nodata]);
+  echo $ret;
+  exit();
+}
+
+// Form POST. Delete all errors from delname.
 
 if($_POST['delete']) {
   $delname = $_POST['delname'];
@@ -18,22 +118,16 @@ if($_POST['delete']) {
     exit();
   }
 
-  // BLP 2023-10-27 - Here I want to set the localstorage for this computer.
-  // I can echo a <script>
-  // Then I must wait a little while before reloading the program.
-  // If I just do 'header("location: showErrorLog.php");'
-  // it does not work. Even a small delay is sufficent as long as we get to the exit().
-  
   $del = date("Y-m-d H:i:s");
-  echo "<script>localStorage.setItem('ShowPhpErrorLog', '$del');</script>";
-  header("refresh:0.02;url=showErrorLog.php?page=$delname");
-  exit();
+
+  // Because this is a 'form' post I can just drop into the normal GET logic.
 }
 
 // If '$page' is set get the page data, else get either PHP_ERRORS.log or PHP_ERRORS_CLI.log
+// NOTE if we drop through from the 'form' post page will still be set.
 
 if($page = $_GET["page"]) {
-  $output = file_get_contents($page);
+  $output = file($page);
 } else {
   $S->title = "Get Page";
   $S->banner = "<h1>Select Error Log</h1>";
@@ -53,20 +147,11 @@ EOF;
 $logname = basename($page);
 
 if(!$output) { 
-  $output = "<h1>No Data in $logname</h1>";
+  $dataStr = "<h1>No Data in $logname</h1>";
+  $nodata = 'true';
 } else {
-  $output = preg_replace(["~ America/New_York~", "~-2022~"], '', $output);
-  // BLP 2024-11-15 - make home ip red.
-  $output = preg_replace(["~(195\.252\.232\.86)~", "~(192\.241\.132\.229)~"], "<span style='color: red'>$1</span>", $output);
-
-  $output = preg_replace("~(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~", "<span class='ip'>$1</span>", $output);
-  $output = preg_replace("~(tracker: |beacon:  )(\d+),~", "$1<span class='id'>$2</span>", $output);
-  // BLP 2023-10-27 - 'id(value)' is from tracker when the ID_IS_NOT_NUMERIC. This does not happen
-  // much.
-  $output = preg_replace("~(id\(value\)=)(\d+)~", "$1<span class='id'>$2</span>", $output);
-  // BLP 2023-10-27 - 'id=' is from checktracker2.php.
-  $output = preg_replace("~(id=)(\d+)~", "$i<span class='id'>$2</span>", $output);
-  $output = "<pre>$output</pre>";
+  $dataStr = parsedata($output);
+  $nodata = 'false';
 }
 
 $S->title = "Show Error Log";
@@ -74,6 +159,7 @@ $S->banner = "<h1>Show $logname</h1>";
 
 $S->css =<<<EOF
 #output { width: 100%; font-size: 18px; overflow-x: scroll; }
+#table td { padding: 5px; }
 #delete_button { border-radius: 5px; font-size: var(--blpFontSize); background: red; color: white; }
 .ip, .id { cursor: pointer; };
 EOF;
@@ -81,23 +167,136 @@ EOF;
 $S->noCounter = true;
 
 $S->b_inlineScript = <<<EOF
-let del = localStorage.getItem("ShowPhpErrorLog"); // BLP 2023-10-27 - load the time from localStorage.
-console.log("DEL: ", del);
+let win = null;
+const showErrorLogUrl = window.location.pathname;
+console.log(showErrorLogUrl);
+const del = "$del";
+const file = "$page";
+console.log("page=" + file);
+console.log("Last Delete time: ", del);
+let tbl;
+let dataStr;
+let hdr;
+let nodata;
+
 $("#del-time").html("<p>Last Delete Time: " + del + "</p>");
 
-$(".ip,.id").on("click", function(e) {
-  let thisIp = $(this).text();
-  let cl = e.currentTarget.className;
-  window.open("findip.php?where=" +encodeURIComponent("where " +cl+"='" +thisIp+ "'")+"&and=" +encodeURIComponent("and lasttime>current_date() -interval 5 day")+
-              "&by=" +encodeURIComponent("order by lasttime desc"), "_blank");
+$("body").on("click",".ip,.id", function(e) {
+  // If we already have a findip.php opned by this function, close it.
+
+  if(win && !win.closed) {
+    win.close();
+  }
+
+  const idOrIp = $(this).text(); //.split("=")[1];
+  const cl = e.currentTarget.className;
+
+  const where = "where " +cl+"='" +idOrIp+ "'";
+  const and = "and lasttime>current_date() -interval 5 day";
+  const by = "order by lasttime desc";
+
+  const data = JSON.stringify([where, and, by]); 
+  
+  win = window.open("findip.php?data=" + data, "_blank");
 
   $(this).css({ background: "green", color: "white"});
 });
+
+// This is the AJAX function that gets the data from 'newdata'
+
+function doAjax() {
+  $.ajax({
+    url: showErrorLogUrl,
+    data: { page: "newdata", file: file },
+    type: "post",
+    success: function(data) {
+      // Post data to #output
+
+      [data, nodata] = JSON.parse(data);
+
+      if(nodata == "true") {
+        tbl = data;
+      } else {
+        tbl = `
+<table id="table" border="1">
+<thead>
+\${hdr}
+</thead>
+<tbody>
+\${data}
+</tbody>
+</table>
+`;
+      }
+
+      $("#output").html(tbl);
+      if(nodata == 'true') {
+        $("#table thead tr").remove();
+      }
+    },
+    error: function(err) {
+      console.log("ERROR:", err);
+    }
+  });
+}
+
+// Set up a timer
+// Check which log we are using and set time accordingly.
+
+function waitForPeriod(dly) {
+  const now = new Date();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+
+  // Calculate the delay until the next quarter-hour
+  const delay = (dly - (minutes % dly)) * 60 * 1000 - seconds * 1000;
+
+  console.log("Waiting for", delay / 1000, "seconds until the next period.");
+
+  setTimeout(function() {
+    doAjax();
+    waitForPeriod(dly);
+  }, delay);
+}
+
+if(file == "/var/www/PHP_ERRORS_CLI.log") {
+  waitForPeriod(15);
+  hdr = "<th>Time</th><th>Item</th><th colspan='5'>Information<th></tr>";
+} else {
+  waitForPeriod(1);
+  hdr = `
+<tr><th>Time</th><th>Item</th><th>ID</th><th>IP</th><th>Site</th><th>Page</th><th>Rest</th></tr>
+<tr><th>Time</th><th>Item</th><th colspan='5'>Rest</th></tr>
+`;
+}
+console.log("nodata=$nodata");
+
+nodata = "$nodata";
+
+dataStr = `$dataStr`;
+
+if(nodata == 'true') {
+  tbl = dataStr;
+} else {
+  tbl = `
+<table id="table" border="1">
+<thead>
+\${hdr}
+</thead>
+<tbody>
+\${dataStr}
+</tbody>
+</table>
+`;
+}
+
+$("#output").html(tbl);
+if(nodata == "true") {
+  $("#table thead tr").remove();
+}
 EOF;
 
 [$top, $footer] = $S->getPageTopBottom();
-
-header("refresh:1800; url=showErrorLog.php?page=$page"); // 30 min
 
 echo <<<EOF
 $top
@@ -108,7 +307,8 @@ $top
 <div id="del-time"></div>
 </form>
 <hr>
-<div id='output'>$output</div>
+<div id='output'>
+</div>
 <hr>
 $footer
 EOF;
