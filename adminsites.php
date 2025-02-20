@@ -26,8 +26,6 @@ return <<<EOF
 <li><a target="_blank" href="/myports.php">Port Numbers</a></li>
 <li><a target="_blank" href="/showErrorLog.php">Show PHP_ERROR.log</a></li>
 <li><a target="_blank" href="/showmodsec.php">Show Mod Sec log</a></li>
-<li><a target="_blank" href="/examples/">examples</a></li>
-<li><a target="_blank" href="/examples.js/">examples.js</a></li>
 <li><a target="_blank" href="/test_examples/">examples just for testing</a></li>
 </ul>
 </section>
