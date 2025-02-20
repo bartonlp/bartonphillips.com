@@ -74,10 +74,15 @@ $loc = json_decode(file_get_contents($cmd));
 $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
 //$ip = '45.148.10.172';
 if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bigdatakey")) === false) {
-  error_log("index.i.php: api-bdc.net/data/user-rick failed for ip=$ip, key=$bigdatakey");
+  error_log("index.i.php: ip=$ip, key=$bigdatakey, api-bdc.net/data/user-rick failed");
 } else {
   $istor = json_decode($json);
+  $istor = json_decode($json);
+  $istor->id = $S->LAST_ID;
   $istor->ip = $ip;
+  $istor->site = $S->siteName;
+  $istor->page = $S->self;
+  $istor->agent = $S->agent;
 }
 
 $clientname = gethostbyaddr($S->ip);
@@ -149,7 +154,7 @@ EOF;
                   "values('$S->ip', 1, now(), now()) ".
                   "on duplicate key update count=count+1, lasttime=now()");
         
-        error_log("index.i.php: new ip added to members table - $ip for $cookieName, $cookieEmail, $cookieFinger, insert/update myip count");
+        error_log("index.i.php: ip=$ip, new ip added to members tabl for $cookieName, $cookieEmail, $cookieFinger, insert/update myip count");
       }
     }
 
@@ -173,6 +178,6 @@ if($BLP == "8653" && !$adminStuff) {
   // if we didn't load adminsites above then who is this? I guess I will still let them see the
   // adminsite. I will review logs and decide.
 
-  error_log("bartonphillips.com/index.i.php. The secret code was given as a query: $S->ip, $S->agent");
+  error_log("index.i.php: ip=$S->ip, agent=$S->agent. The secret code was given as a query");
   $adminStuff = require("adminsites.php");
 }

@@ -3,18 +3,27 @@
 // recapcha site key: 6LefxlMnAAAAALcjQAYEBYCOhBXpLDGEL0Q8NzMt
 // recapcha secret key: 6LefxlMnAAAAAHWF6S3iofqztaqqiTFAwHfteHD6
 
+$nonce = base64_encode(bin2hex(openssl_random_pseudo_bytes(8)));
+header("Content-Security-Policy: 
+    default-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net https://code.jquery.com; 
+    connect-src 'self' https://bartonlp.com/otherpages/js https://bartonlp.com/otherpages https://bartonlp.com/otherpages/beacon.php https://bartonlp.com/otherpages/tracker.php https://bartonlp.com/otherpages/geoAjax.php https://bartonphillips.net https://code.jquery.com https://maps.googleapis.com;
+    script-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net/js https://maps.googleapis.com https://code.jquery.com 'nonce-ZGE5NDdiMzY5ODc1ZThhNA=='; // 'unsafe-inline' 'unsafe-eval';
+    img-src 'self' data: https://bartonphillips.net https://bartonlp.com/otherpages https://bartonlp.com/otherpages/tracker.php https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg;
+    report-uri https://bartonphillips.com/examples.js/cspreport2.php");
+
 $_site = require_once getenv("SITELOADNAME"); 
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
 //$_site = require_once "/var/www/simple-site-class/includes/simple-autoload.php"; // If you want to use the git
 //version at /var/www/site-class uncomment this will have the most current version of site-class.
 
 $S = new SiteClass($_site); // This must be changed if you use SimpleSiteClass.
+$S->nonce = $nonce;
 
 require_once "./index.i.php"; // Get the majority of the php
 
 $S->msg = "PhpVersion: " . PHP_VERSION .
-          '<br><a href="https://www.digitalocean.com/?refcode=b0cc31a0e083&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge">'.
-          '<img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg" alt="DigitalOcean Referral Badge" /></a>';
+          "<br><a href='https://www.digitalocean.com/?refcode=b0cc31a0e083&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge'>".
+          "<img nonce='$nonce' src='https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg' alt='DigitalOcean Referral Badge' /></a>";
 
 ob_start(); // Start output buffering
 require "/var/www/composer.lock";
@@ -34,10 +43,10 @@ $S->link = <<<EOF
 EOF;
 
 $S->b_script = <<<EOF
-  <script src='https://bartonphillips.net/js/phpdate.js'></script>
-  <script src='https://bartonphillips.net/js/maps.js'></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&loading=async&callback=initMap&v=weekly" async></script>
-  <script>
+  <script nunce='$nunce' src='https://bartonphillips.net/js/phpdate.js'></script>
+  <script nunce='$nunce' src='https://bartonphillips.net/js/maps.js'></script>
+  <script nunce='$nunce' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&loading=async&callback=initMap&v=weekly" async></script>
+  <script nunce='$nunce'>
 // This was formaly index.js now it is inline
     
 'use strict';
@@ -77,10 +86,10 @@ $top
 $footer
 EOF;
 
-  error_log("index.php: High risk ip found via https://api-bdc.net/data/user-risk?ip=$istor->ip");
+  error_log("index.php: id=$istor->id, ip=$istor->ip, site=$istor->site, page=$istor->page, High risk ip found via https://api-bdc.net");
   
-  $sql = "insert into $S->masterdb.badplayer (ip, site, page, type, count, errno, errmsg, agent, created, lasttime) ".
-  "values('$istor->ip', '$S->siteName', '$S->self', 'HIGH RISK IP', 1, '-999', 'High risk ip found', '$S->agent', now(), now()) ".
+  $sql = "insert into $S->masterdb.badplayer (id, ip, site, page, type, count, errno, errmsg, agent, created, lasttime) ".
+  "values('$istor->id', '$istor->ip', '$istor->site', '$istor->page', 'HIGH RISK IP', 1, '-999', 'High risk ip found', '$S->agent', now(), now()) ".
   "on duplicate key update count=count+1, lasttime=now()";
 
   $S->sql($sql);
@@ -129,7 +138,6 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
 <a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
 <a target="_blank" href="https://www.jt-lawnservice.com"><button>JT Lawn Service</button></a>
-<a target="_blank" href="https://www.littlejohnplumbing.com"><button>Little John Plumbing</button></a>
 <a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
 <a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
 <a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
@@ -159,6 +167,8 @@ Today is: <span id="datetoday">$date</span>
 <li><a target="_blank" href="https://newbernrotary.org">New Bern Breakfast Rotary Club</a></li>
 <li><a target="_blank" href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a target="_blank" href="https://www.raspberrypi.org/">RaspberryPi</a></li>
+<li><a target="_blank" href="https://www.littlejohnplumbing.com">Little John Plumbing</a></li>
+
 </ul>
 </section>
 

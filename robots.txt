@@ -2,7 +2,7 @@ User-agent: PetalBot
 Disallow: /
 
 User-agent: *
-Crawl-delay: 10
+Crawl-delay: 60
 Disallow: /Archive/
 Disallow: /webstats.php
 Disallow: /webstats-ajax.php

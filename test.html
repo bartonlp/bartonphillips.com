@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+<button id="but">Something New</button>
+<div id="div"></div>
+
+<script>
+const div = document.querySelector('#div');
+const but = document.querySelector("#but");
+but.addEventListener("click", function(e) {
+  const one = 1;
+  const str = "This is a string";
+  let output = `<pre>${one}
+${str}
+Just plain text.</pre>`;
+  div.innerHTML = output;
+});
+</script>
+</body>
+</html>
+

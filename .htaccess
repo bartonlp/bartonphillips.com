@@ -3,6 +3,10 @@
 Require all granted
 
 Header set Access-Control-Allow-Origin "*"
+#Header set Access-Control-Allow-Origin: "bartonphillips.com" 
+#Header set Access-Control-Allow-Methods: "GET, POST"
+#Header set Access-Control-Allow-Headers: "Content-Type, Authorization"
+
 # BLP 2023-10-10 - I do this in dbAbstract.class.php so it is done for all sites that use the
 # SiteClass or Database class.
 #Header set Accept-Ch "Sec-Ch-Ua-Platform,Sec-Ch-Ua-Platform-Version,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Arch"
