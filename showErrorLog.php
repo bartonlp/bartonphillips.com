@@ -2,6 +2,9 @@
 // BLP 2023-02-25 - use new approach
 // Show the PHP_ERRORS.log or PHP_ERRORS_CLI.log and allow it the be emptied.
 // BLP 2025-02-09 - Reworked getting the lines.
+// BLP 2025-02-20 - More rework. Add more comments and add a version
+
+define('SHOWERRORLOG_VERSION', 'showErrorLog-1.0.1'); // BLP 2025-02-20 - fixed 'PHP Parse Errors'
 
 $_site = require_once(getenv("SITELOADNAME"));
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
@@ -25,43 +28,42 @@ function parsedata($output) {
     // Add it to $extra and continue.
 
     if(preg_match("~^\[~", $v) === 0) {
-      $extra .= $v;
+      $extra .= htmlentities($v);
       continue;
     } else {
       // If there is data in $extra then add it to the table and reset $extra.
 
       if(!empty($extra)) {
-        //echo "last: " . htmlspecialchars($tbl, ENT_QUOTES, 'UTF-8') . "<br>";
         $tbl .= "<td colspan='5'>$extra</td></tr>";
         $extra = '';
-        $lines .= $tbl;
+        $lines .= $tbl; // Update lines here.
         // This then contines to parse the current $v.
       }
     }
 
     // Standard tracker or beacon with id, ip, site, page and rest.
 
-    $err = preg_match("~\[(.*?) .*?\] (.*?): id=(.*?), ip=(.*?), site=(.*?), page=(.*?), (.*)$~", $v, $m);
+    $err = preg_match("~\[(.*? .*?) .*?\] (.*?): id=(.*?), ip=(.*?), site=(.*?), page=(.*?), (.*)$~", $v, $m);
     
     if($err === 0) { // The above patter does NOT match.
-      // If there was no match then try both time, some item: and everything else.
+      // If there was no match then 'some item:' and everything else.
 
-      preg_match("~\[(.*?) .*?\] (.*?): (.*)$~", $v, $m);
+      preg_match("~\[(.*? .*?) .*?\] (.*?): (.*)$~", $v, $m);
 
-      // Did we find the word 'exception' or 'error' in the third match (item)?
+      // Now check if the word 'exception' or 'error' in the noncapture group.
       // The \] .*? gathers the possible prefixes, like Pdo or Value. Then (?:?i:exception|error)
       // is a NON capture grouping that is caseless (?i:). I tried some of the other suggestion in
       // the PHP Subpatterns manual section but this is the only one that worked.
 
-      if(preg_match("~\] .*?(?:?i:.*?exception|.*?error)~", $m[3]) === 0) { // (?:?i: works everything else seems to not work.
-        // If we did not find 'error' then this is a tracker or beacon with no id or ip.
+      if(preg_match("~\] (?:?i:.*?exception|.*?error)~", $m[2]) === 0) { 
+        // If we did not find 'exception' or 'error' then this is a tracker, beacon or something else with no id or ip.
 
         $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td colspan='6'>{$m[3]}</td></tr>";
       } else {
-        // This has 'error' with no id or ip.
+        // This has 'exception' or 'error' with no id or ip.
 
         $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td>";
-        $extra = ""; // this is all of the rest of this line.
+        $extra = htmlentities($m[3]);
         continue;
       }
     } else { // This is a tracker or beacon with id and ip.
@@ -70,10 +72,12 @@ function parsedata($output) {
       $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td>{$m[3]}</td><td>{$m[4]}</td><td>{$m[5]}</td><td>{$m[6]}</td><td>{$m[7]}</td></tr>";
     }
 
-    // Now fix the span for id and ip everywhere in the table.
+    // Now add a span for id and ip everywhere in the $tbl.
 
     $tbl = preg_replace(["~(<td>|id=)(\d{7})~", "~(<td>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
 
+    // Finally add $tbl to the accumulator $lines
+    
     $lines .= $tbl;
   }
 
@@ -295,6 +299,8 @@ if(nodata == "true") {
   $("#table thead tr").remove();
 }
 EOF;
+
+$S->msg = "Version: ". SHOWERRORLOG_VERSION . "<br>";
 
 [$top, $footer] = $S->getPageTopBottom();
 

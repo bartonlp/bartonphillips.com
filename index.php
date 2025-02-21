@@ -11,6 +11,8 @@ header("Content-Security-Policy:
     img-src 'self' data: https://bartonphillips.net https://bartonlp.com/otherpages https://bartonlp.com/otherpages/tracker.php https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg;
     report-uri https://bartonphillips.com/examples.js/cspreport2.php");
 
+define('BLP_INDEX_VERSION', "BLP-index-1.0.0"); // BLP 2025-02-20 -
+
 $_site = require_once getenv("SITELOADNAME"); 
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
 //$_site = require_once "/var/www/simple-site-class/includes/simple-autoload.php"; // If you want to use the git
@@ -23,7 +25,8 @@ require_once "./index.i.php"; // Get the majority of the php
 
 $S->msg = "PhpVersion: " . PHP_VERSION .
           "<br><a href='https://www.digitalocean.com/?refcode=b0cc31a0e083&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge'>".
-          "<img nonce='$nonce' src='https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg' alt='DigitalOcean Referral Badge' /></a>";
+          "<img nonce='$nonce' src='https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg' alt='DigitalOcean Referral Badge' /></a>".
+          "<br>Version: " . BLP_INDEX_VERSION;
 
 ob_start(); // Start output buffering
 require "/var/www/composer.lock";
