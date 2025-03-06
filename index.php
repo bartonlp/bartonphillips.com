@@ -9,7 +9,7 @@ header("Content-Security-Policy:
     connect-src 'self' https://bartonlp.com/otherpages/js https://bartonlp.com/otherpages https://bartonlp.com/otherpages/beacon.php https://bartonlp.com/otherpages/tracker.php https://bartonlp.com/otherpages/geoAjax.php https://bartonphillips.net https://code.jquery.com https://maps.googleapis.com;
     script-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net/js https://maps.googleapis.com https://code.jquery.com 'nonce-ZGE5NDdiMzY5ODc1ZThhNA=='; // 'unsafe-inline' 'unsafe-eval';
     img-src 'self' data: https://bartonphillips.net https://bartonlp.com/otherpages https://bartonlp.com/otherpages/tracker.php https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg;
-    report-uri https://bartonphillips.com/examples.js/cspreport2.php");
+    report-uri https://bartonlp/otherpages/cspreport2.php");
 
 define('BLP_INDEX_VERSION', "BLP-index-1.0.0"); // BLP 2025-02-20 -
 

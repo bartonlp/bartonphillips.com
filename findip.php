@@ -448,6 +448,15 @@ EOF;
 
 require_once("/var/www/bartonlp.com/otherpages/setupjava.i.php"); // added to h_inlineScript.
 
+// BLP 2025-03-06 - add tablesort. newtblsort.css does not change the header css.
+// tablesorter-master/dist/css/theme.blue.min.css does.
+
+$S->link = <<<EOF
+  <link rel="stylesheet" href="https://bartonphillips.net/css/newtblsort.css">
+EOF;
+
+$S->h_script = "<script src='https://bartonphillips.net/tablesorter-master/dist/js/jquery.tablesorter.min.js'></script>";
+
 $S->b_script =<<<EOF
 <script src="https://bartonphillips.net/js/jquery.mobile.custom.js"></script>
 <!-- UI for drag and drop and touch-punch for mobile drag -->
@@ -463,6 +472,18 @@ EOF;
 $S->noCounter = true; // No counter.
 
 $S->b_inlineScript =<<<EOF
+  let headers = {};
+    
+  // Disable all columns except 12 and 15
+
+  for(let i = 0; i < 16; i++) {
+    if(i !== 12 && i !== 15) {
+      headers[i] = { sorter: false };
+    }
+  }
+
+  $("#trackertbl").tablesorter({theme: 'blue', headers: headers});
+
   // 1 is the ID, 2 is IP.
 
   $("body").on("click", ".id, .ip", function(e) {

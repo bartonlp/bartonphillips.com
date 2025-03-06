@@ -4,12 +4,26 @@
 // BLP 2025-02-09 - Reworked getting the lines.
 // BLP 2025-02-20 - More rework. Add more comments and add a version
 
-define('SHOWERRORLOG_VERSION', 'showErrorLog-1.0.1'); // BLP 2025-02-20 - fixed 'PHP Parse Errors'
+define('SHOWERRORLOG_VERSION', 'showErrorLog-1.0.2'); // BLP 2025-02-25 - add 'span' for all ip/id
 
 $_site = require_once(getenv("SITELOADNAME"));
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
-
+ErrorClass::setDevelopment(true);
 $_site->noGeo = true;
+
+// preg_replace_callback function
+
+function fixdiff($m) {
+  $seconds = (int)$m[2];
+  $hours = floor($seconds / 3600);
+  $minutes = floor(($seconds % 3600) / 60);
+  $seconds = $seconds % 60;
+  $time = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+
+  return $m[1].$time;
+}
+
+// parsedata in $output.
 
 function parsedata($output) {
   $lines = "";
@@ -23,11 +37,17 @@ function parsedata($output) {
     if(preg_match("~page=/showErrorLog.php|ip=195.252.232.86, site=Bartonphillips~", $v) !== 0) {
       continue;
     }
+
+    // Look for difftime and convert seconds into h:m:s
     
+    $v = preg_replace_callback("~(difftime=)(\d*\.?\d*)~", "fixdiff", $v);
+
     // If the line does not start with '[' then it is a continuation of the previous line.
     // Add it to $extra and continue.
 
     if(preg_match("~^\[~", $v) === 0) {
+      // Add span for id/ip
+
       $extra .= htmlentities($v);
       continue;
     } else {
@@ -35,6 +55,8 @@ function parsedata($output) {
 
       if(!empty($extra)) {
         $tbl .= "<td colspan='5'>$extra</td></tr>";
+        $tbl = preg_replace(["~(<td.*?>|id=)(\d{7})~i", "~(<td.*?>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
+
         $extra = '';
         $lines .= $tbl; // Update lines here.
         // This then contines to parse the current $v.
@@ -43,7 +65,7 @@ function parsedata($output) {
 
     // Standard tracker or beacon with id, ip, site, page and rest.
 
-    $err = preg_match("~\[(.*? .*?) .*?\] (.*?): id=(.*?), ip=(.*?), site=(.*?), page=(.*?), (.*)$~", $v, $m);
+    $err = preg_match("~\[(.*? .*?) .*?\] (.*?): (id=.*?), (ip=.*?), (site=.*?), (page=.*?), (.*)$~", $v, $m);
     
     if($err === 0) { // The above patter does NOT match.
       // If there was no match then 'some item:' and everything else.
@@ -58,12 +80,16 @@ function parsedata($output) {
       if(preg_match("~\] (?:?i:.*?exception|.*?error)~", $m[2]) === 0) { 
         // If we did not find 'exception' or 'error' then this is a tracker, beacon or something else with no id or ip.
 
-        $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td colspan='6'>{$m[3]}</td></tr>";
+        // BLP 2025-02-24 - Add span for id or ip.
+        
+        $tbl = preg_replace(["~(<td.*?>|id=)(\d{7})~i", "~(<td.*?>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $m[3]);        
+        error_log("showErrorLog: span group, $tbl, line=". __LINE__);
+        $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td colspan='5'>{$tbl}</td></tr>";
       } else {
         // This has 'exception' or 'error' with no id or ip.
 
         $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td>";
-        $extra = htmlentities($m[3]);
+        $extra = htmlentities($m[3]) . " ";
         continue;
       }
     } else { // This is a tracker or beacon with id and ip.
@@ -101,7 +127,12 @@ if($_POST['page'] == "newdata") {
   $output = file($_POST['file']);
   if($output) {
     $dataStr =  parsedata($output);
-    $nodata = 'false';
+    if(empty($dataStr)) {
+      $dataStr = "<h1>No Data in " . basename($_POST['file']) . "</h1>";
+      $nodata = 'true';
+    } else {
+      $nodata = 'false';
+    }
   } else {
     $dataStr = "<h1>No Data in " . basename($_POST['file']) . "</h1>";
     $nodata = 'true';
@@ -124,7 +155,11 @@ if($_POST['delete']) {
 
   $del = date("Y-m-d H:i:s");
 
-  // Because this is a 'form' post I can just drop into the normal GET logic.
+  // I need to call the GET to keep from having $_POST still have the delete. $delname is the name
+  // of the error log to use.
+
+  header("Location: /showErrorLog.php?page=$delname");
+  exit();
 }
 
 // If '$page' is set get the page data, else get either PHP_ERRORS.log or PHP_ERRORS_CLI.log
@@ -132,6 +167,20 @@ if($_POST['delete']) {
 
 if($page = $_GET["page"]) {
   $output = file($page);
+  $logname = basename($page);
+
+  if(!$output) { 
+    $dataStr = "<h1>No Data in $logname</h1>";
+    $nodata = 'true';
+  } else {
+    $dataStr = parsedata($output);
+    if(empty($dataStr)) {
+      $dataStr = "<h1>No Data in $logname</h1>";
+      $nodata = 'true';
+    } else {
+      $nodata = 'false';
+    }
+  }
 } else {
   $S->title = "Get Page";
   $S->banner = "<h1>Select Error Log</h1>";
@@ -148,27 +197,17 @@ EOF;
   exit();
 }
 
-$logname = basename($page);
-
-if(!$output) { 
-  $dataStr = "<h1>No Data in $logname</h1>";
-  $nodata = 'true';
-} else {
-  $dataStr = parsedata($output);
-  $nodata = 'false';
-}
-
 $S->title = "Show Error Log";
 $S->banner = "<h1>Show $logname</h1>";
+$S->noCounter = true; // Don't show the counter.
 
 $S->css =<<<EOF
 #output { width: 100%; font-size: 18px; overflow-x: scroll; }
 #table td { padding: 5px; }
+#table td:nth-of-type(7) { word-break: break-word; }
 #delete_button { border-radius: 5px; font-size: var(--blpFontSize); background: red; color: white; }
 .ip, .id { cursor: pointer; };
 EOF;
-
-$S->noCounter = true;
 
 $S->b_inlineScript = <<<EOF
 let win = null;
@@ -208,20 +247,33 @@ $("body").on("click",".ip,.id", function(e) {
 
 // This is the AJAX function that gets the data from 'newdata'
 
-function doAjax() {
-  $.ajax({
-    url: showErrorLogUrl,
-    data: { page: "newdata", file: file },
-    type: "post",
-    success: function(data) {
-      // Post data to #output
+function doAjax(dly) {
+  // The CRON job runs every 1/4 of an hour. If we don't wait a little then the CRON job and this
+  // will run at the same time and we will have to wait till the next 1/4 hour before the refresh
+  // happens.
 
-      [data, nodata] = JSON.parse(data);
+  let delay;
 
-      if(nodata == "true") {
-        tbl = data;
-      } else {
-        tbl = `
+  if(dly == 15) {
+    delay = 30000; // Wait for 30 second and then do the ajax
+  } else {
+    delay = 0; // Do the ajax imediatly.
+  }
+
+  setTimeout(function() {
+    $.ajax({
+      url: showErrorLogUrl,
+      data: { page: "newdata", file: file },
+      type: "post",
+      success: function(data) {
+        // Post data to #output
+
+        [data, nodata] = JSON.parse(data);
+
+        if(nodata == "true") {
+          tbl = data;
+        } else {
+          tbl = `
 <table id="table" border="1">
 <thead>
 \${hdr}
@@ -231,17 +283,18 @@ function doAjax() {
 </tbody>
 </table>
 `;
-      }
+        }
 
-      $("#output").html(tbl);
-      if(nodata == 'true') {
-        $("#table thead tr").remove();
+        $("#output").html(tbl);
+        if(nodata == 'true') {
+          $("#table thead tr").remove();
+        }
+      },
+      error: function(err) {
+        console.log("ERROR:", err);
       }
-    },
-    error: function(err) {
-      console.log("ERROR:", err);
-    }
-  });
+    });
+  }, delay);
 }
 
 // Set up a timer
@@ -258,21 +311,19 @@ function waitForPeriod(dly) {
   console.log("Waiting for", delay / 1000, "seconds until the next period.");
 
   setTimeout(function() {
-    doAjax();
+    doAjax(dly);
     waitForPeriod(dly);
   }, delay);
 }
 
 if(file == "/var/www/PHP_ERRORS_CLI.log") {
-  waitForPeriod(15);
-  hdr = "<th>Time</th><th>Item</th><th colspan='5'>Information<th></tr>";
+  waitForPeriod(15); // CRON updates this every 15 minutes. We wait a minute more.
 } else {
   waitForPeriod(1);
-  hdr = `
-<tr><th>Time</th><th>Item</th><th>ID</th><th>IP</th><th>Site</th><th>Page</th><th>Rest</th></tr>
-<tr><th>Time</th><th>Item</th><th colspan='5'>Rest</th></tr>
-`;
 }
+
+hdr = "<th>Time</th><th>Item</th><th colspan='5'>Information</th></tr>";
+
 console.log("nodata=$nodata");
 
 nodata = "$nodata";
@@ -313,8 +364,7 @@ $top
 <div id="del-time"></div>
 </form>
 <hr>
-<div id='output'>
-</div>
+<div id='output'></div>
 <hr>
 $footer
 EOF;
