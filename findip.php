@@ -5,7 +5,7 @@
 // Given an 'and' clause.
 /*
 CREATE TABLE `tracker` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `botAs` varchar(30) DEFAULT NULL,
   `site` varchar(25) DEFAULT NULL,
   `page` varchar(255) NOT NULL DEFAULT '',
@@ -315,7 +315,7 @@ if(!str_contains($ref, "bartonphillips.com")) {
 EOF;
   $requestUri = urldecode($S->requestUri);
 
-  $errMsg = 'Not called from showErrorLog.php';
+  $errMsg = 'Not called from bartonphillips.com';
   
   if(preg_match("~(?:ip='(.*?)')|(?:id='(.*?)')~", $requestUri, $m) !== false) {
     if(!empty($m[1])) {
@@ -323,7 +323,6 @@ EOF;
     } elseif(!empty($m[2])) {
       $x = "id=$m[2]";
     } else {
-      $errMsg = "Not called from index.php";
       $ip = $S->ip;
       $id = 999;
       $created = date("Y-m-d H:i:s");
@@ -336,7 +335,7 @@ EOF;
 SKIP_SELECT:
 
     if(!$ip) {
-      $ip = $seachIp;
+      $ip = $searchIp;
       $errMsg .= ": NO IP from tracker table, using \$searchIp=$ip";
     }
     if(!$id) $id = "NO ID from tracker table";
@@ -455,6 +454,8 @@ $S->link = <<<EOF
   <link rel="stylesheet" href="https://bartonphillips.net/css/newtblsort.css">
 EOF;
 
+// BLP 2025-03-06 - tablesorter is the most recent version 2.32.0
+
 $S->h_script = "<script src='https://bartonphillips.net/tablesorter-master/dist/js/jquery.tablesorter.min.js'></script>";
 
 $S->b_script =<<<EOF
@@ -472,9 +473,11 @@ EOF;
 $S->noCounter = true; // No counter.
 
 $S->b_inlineScript =<<<EOF
+  // Set up tablesorter
+
   let headers = {};
     
-  // Disable all columns except 12 and 15
+  // Disable all columns except 12 and 15 (starttime, lasttime). Note tablesorter is zero based.
 
   for(let i = 0; i < 16; i++) {
     if(i !== 12 && i !== 15) {
@@ -484,7 +487,7 @@ $S->b_inlineScript =<<<EOF
 
   $("#trackertbl").tablesorter({theme: 'blue', headers: headers});
 
-  // 1 is the ID, 2 is IP.
+  // td 1 is the ID, td 2 is IP.
 
   $("body").on("click", ".id, .ip", function(e) {
     const idOrIp = $(this).text();
@@ -514,22 +517,29 @@ $S->b_inlineScript =<<<EOF
     });
   });
 
-  // 4 & 9 is the page & agent
+  // td 4 & 9 are the page and agent
   // When clicked show the whole page or agent string.
 
   $("body").on("click", "#trackertbl td:nth-child(4), #trackertbl td:nth-child(5),"+
                         "#trackertbl td:nth-child(6), #trackertbl td:nth-child(9), #trackertbl td:nth-child(10)",
                         function(e) {
+    // A ctrl key and cellIndex 8 which is td 9.
+
     if(e.ctrlKey && $(this)[0].cellIndex == 8) {
       const txt = $(this).text();
-      const pat = /(http.?:\/\/.*?)\)/;
+      const pat = /(https?:\/\/.*?)(?:\)|;)/; // The text must start with http etc.
       const found = txt.match(pat);
-      //console.log("found:", found);
+
       if(found) {
+        // open the window in a new tab.
+
         window.open(found[1], "bot");
       }
       e.stopPropagation();
     } else {
+      // Note ctrl key and cellIndex 8
+      // Just a normal click.
+
       let ypos, xpos;
       let pos = $(this).position();
       xpos = pos.left - 200;
@@ -546,7 +556,7 @@ $S->b_inlineScript =<<<EOF
     }
   });
 
-  // 11 is the java script value.
+  // td 11 is the java script value.
   // Show the human readable values.
 
   $("body").on("click", "#trackertbl td:nth-child(11)", function(e) {

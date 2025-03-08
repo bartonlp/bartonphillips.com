@@ -34,7 +34,7 @@ function parsedata($output) {
   foreach($output as $v) {
     // Don't display lines with showErrorLog.php or my ip address.
   
-    if(preg_match("~page=/showErrorLog.php|ip=195.252.232.86, site=Bartonphillips~", $v) !== 0) {
+    if(preg_match("~(?:page=/showErrorLog.php|ip=195.252.232.86, site=Bartonphillips)~", $v) !== 0) {
       continue;
     }
 
