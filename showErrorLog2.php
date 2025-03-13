@@ -158,7 +158,7 @@ if($_POST['delete']) {
   // I need to call the GET to keep from having $_POST still have the delete. $delname is the name
   // of the error log to use.
 
-  header("Location: /showErrorLog.php?page=$delname");
+  header("Location: /showErrorLog2.php?page=$delname");
   exit();
 }
 
@@ -189,8 +189,8 @@ if($page = $_GET["page"]) {
   echo <<<EOF
 $top
 <hr>
-<a href="showErrorLog.php?page=/var/www/PHP_ERRORS.log">PHP_ERRORS.log</a><br>
-<a href="showErrorLog.php?page=/var/www/PHP_ERRORS_CLI.log">PHP_ERRORS_CLI.log</a><br>
+<a href="showErrorLog2.php?page=/var/www/PHP_ERRORS.log">PHP_ERRORS.log</a><br>
+<a href="showErrorLog2.php?page=/var/www/PHP_ERRORS_CLI.log">PHP_ERRORS_CLI.log</a><br>
 <hr>
 $footer
 EOF;
@@ -224,13 +224,11 @@ let nodata;
 
 $("#del-time").html("<p>Last Delete Time: " + del + "</p>");
 
+// I am clicking on id or ip. I need the myOtherTab to be set via localStoarage.
+
+let myOtherTab = null;
+
 $("body").on("click",".ip,.id", function(e) {
-  // If we already have a findip.php opned by this function, close it.
-
-  if(win && !win.closed) {
-    win.close();
-  }
-
   const idOrIp = $(this).text(); //.split("=")[1];
   const cl = e.currentTarget.className;
 
@@ -238,9 +236,49 @@ $("body").on("click",".ip,.id", function(e) {
   const and = "and lasttime>current_date() -interval 5 day";
   const by = "order by lasttime desc";
 
-  const data = JSON.stringify([where, and, by]); 
-  
-  win = window.open("findip.php?data=" + data, "_blank");
+  const data = [where, and, by];
+
+  let recievedResponse = false;
+
+  const channel = new BroadcastChannel('myOtherTab');
+
+  function openOrReuseMyOtherTab(data) {
+    recievedResponse = false;
+
+    channel.postMessage({ type: 'is_open?' });
+
+    // Wait 500ms to see if myprogram3.php responds
+    setTimeout(() => {
+      if(!recievedResponse) {
+        data = JSON.stringify(data);
+        myOtherTab = window.open('findip2.php?data=' + data, 'myOtherTab');
+        // Save myOtherTab in localStarage.
+        localStorage.setItem("myOtherTab", JSON.stringify('findip2.php'));
+
+        myOtherTab.focus();
+      } else {
+        // Send data once the tab is confirmed
+        sendDataToMyOtherTab(data);
+      }
+    }, 500);
+  }
+
+  // Listen for responses from findip2.php
+
+  channel.onmessage = (event) => {
+    if(event.data.type === 'is_open') {
+      recievedResponse = true; // findip2.php is open!
+    }
+  };
+
+  function sendDataToMyOtherTab(data) {
+    data = JSON.stringify(data);
+    channel.postMessage({ type: 'update', payload: data });
+    const myOtherTab = JSON.parse(localStorage.getItem("myOtherTab"));
+    myOtherTab.focus();
+  }
+
+  openOrReuseMyOtherTab({ message: data });
 
   $(this).css({ background: "green", color: "white"});
 });
