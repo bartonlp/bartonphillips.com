@@ -23,10 +23,11 @@ return <<<EOF
 <li><a target="_blank" href="https://bartonphillips.org:8000/">RPI on 8000</a></li>
 <li><a target="_blank" href="/stocks/stock.getalpha.php">Alphavantage</a></li>
 <li><a target="_blank" href="/findip.php">Find in Tracker by IP</a></li>
-<li><a target="_blank" href="/myports.php">Port Numbers</a></li>
-<li><a target="_blank" href="/showErrorLog.php">Show PHP_ERROR.log</a></li>
+<li><a target="_blank" href="/logs.php">Show PHP_ERROR.log</a></li>
 <li><a target="_blank" href="/showmodsec.php">Show Mod Sec log</a></li>
 <li><a target="_blank" href="/showfail2.php">Show fail2 log</a></li>
+<li><a target="_blank" href="https://bartonlp.com/otherpages/csp-errors.log">Show csp-errors log</a></li>
+<li><a target="_blank" href="/myports.php">Port Numbers</a></li>
 <li><a target="_blank" href="/test_examples/">examples just for testing</a></li>
 </ul>
 </section>

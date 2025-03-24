@@ -186,6 +186,8 @@ function escapeHtml(unsafe) {
     .replace(/'/g, "&#039;");
 }
 
+let myOtherTab = null;
+
 $(".ip").on("click", function(e) {
   const ip =$(this).text();
   console.log("ip: " + ip);
@@ -194,9 +196,47 @@ $(".ip").on("click", function(e) {
   const and = "and lasttime>current_date() -interval 5 day";
   const by = "order by lasttime desc";
 
-  const data = JSON.stringify([where, and, by]); 
-  
-  window.open("findip.php?data=" + data, "_blank");
+  //const data = JSON.stringify({ message: [where, and, by] }); 
+  const data = [where, and, by];
+  //window.open("findip.php?data=" + data, "_blank");
+
+  let recievedResponse = false;
+
+  const channel = new BroadcastChannel('myOtherTab');
+
+  function openOrReuseMyOtherTab(data) {
+    recievedResponse = false;
+
+    channel.postMessage({ type: 'is_open?' });
+
+    // Wait 500ms to see if myprogram3.php responds
+    setTimeout(() => {
+      if(!recievedResponse) {
+        data = JSON.stringify(data);
+        myOtherTab = window.open('findip2.php?data=' + data, 'myOtherTab');
+        myOtherTab.focus();
+      } else {
+        // Send data once the tab is confirmed
+        sendDataToMyOtherTab(data);
+      }
+    }, 500);
+  }
+
+  // Listen for responses from findip2.php
+
+  channel.onmessage = (event) => {
+    if(event.data.type === 'is_open') {
+      recievedResponse = true; // findip2.php is open!
+    }
+  };
+
+  function sendDataToMyOtherTab(data) {
+    data = JSON.stringify(data);
+    channel.postMessage({ type: 'update', payload: data });
+    myOtherTab.focus();
+  }
+
+  openOrReuseMyOtherTab({ message: data });
 
   $(this).css({ background: "green", color: "white"});
 });

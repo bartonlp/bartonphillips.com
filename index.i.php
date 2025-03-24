@@ -1,16 +1,16 @@
 <?php
 // index.i.php
 // This is the main php include file. It is included in index.php
-// BLP 2023-09-27 - add name to SiteId
 
-$ip = $_SERVER['REMOTE_ADDR'];
+$id = $S->LAST_ID;
+$ip = $S->ip;
 if($ip == "192.241.1332.229") $ip .= ":SERVER";
-$agent = $_SERVER['HTTP_USER_AGENT'];
+$agent = $S->agent;
 if(empty($agent)) $agent = "NO_AGENT";
-$self = htmlentities($_SERVER['PHP_SELF']);
+$self = $S->self;
 
 if(!class_exists("Database")) {
-  header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=Bartonphillips&page=$self, ip=$ip, agent=$agent");
+  header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=Bartonphillips&page=$self&ip=$ip&agent=$agent");
 }
 
 /*
@@ -47,7 +47,6 @@ $date = date("l F j, Y H:i:s T");
 // if this is a bot don't bother with getting a location. And it will not have a SiteId.
 
 if($S->isBot) {
-  //echo "BOT<br>";
   $locstr = <<<EOF
 <ul class="user-info">
   <li style="color: red">You Are a Robot</li>
@@ -114,7 +113,7 @@ if(!($nameFingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
   $count = 0;
 
   // Has this ip ever visited our site?
-  
+
   if($S->sql("select count from $S->masterdb.logagent where ip='$S->ip' and site='$S->siteName'")) {
     // Yes get the counts.
     
@@ -123,44 +122,51 @@ if(!($nameFingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
     }
 
     $hereMsg =<<<EOF
-<div class="hereMsg">You have been here $count time. Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
+<div class="hereMsg">You have been here $count time. Why not <a href="https://www.bartonphillips.com/register1.php?myid=$id&myip=$ip">Register</a></div>
 EOF;
   } else {
     // This ip has never been here.
 
     $hereMsg = <<<EOF
-<div class="hereMsg">Why not <a href="https://www.bartonphillips.com/register.php">Register</a></div>
+<div class="hereMsg">Why not <a href="https://www.bartonphillips.com/register1.php?myid=$id&myip=$ip">Register</a></div>
 EOF;
   }
 } else { // There is a cookie
   [$cookieName, $cookieFinger, $cookieEmail] = explode(':', $nameFingerEmail); // The cookie is 'name:finger:email'
 
+  // Primary key is(name, email, finger, ip). We are missing ip so we will get multiple rows.
+  
   if($S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'")) {
     // Found the records.
 
-    while($ip = $S->fetchrow('num')[0]) {
-      if($ip == $S->ip) {
+    $r = $S->getResult();
+    
+    while($myip = $S->fetchrow($r, 'num')[0]) {
+      if($myip == $ip) { // If the $myip from members is the same as $ip from $S->ip ($ip) continue.
         continue;
       }
 
-      if(!$S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName' and ip='$S->ip'")) {
+      // Primary key is(name, email, finger, ip)
+      if(!$S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName' and ip='$myip'")) {
         // This ip does not exists for this key.
         // So we should add a new record for this new ip.
 
         $S->sql("insert into bartonphillips.members (ip, name, email, finger, count, created, lasttime) ".
-                  "values('$S->ip', '$cookieName', '$cookieEmail', '$cookieFinger', 1, now(), now())");
+                  "values('$myip', '$cookieName', '$cookieEmail', '$cookieFinger', 1, now(), now())");
 
         $S->sql("insert into $S->masterdb.myip (myIp, count, createtime, lasttime) ".
-                  "values('$S->ip', 1, now(), now()) ".
+                  "values('$myip', 1, now(), now()) ".
                   "on duplicate key update count=count+1, lasttime=now()");
         
-        error_log("index.i.php: ip=$ip, new ip added to members tabl for $cookieName, $cookieEmail, $cookieFinger, insert/update myip count");
+        error_log("index.i.php: ip=$myip, new ip added to members tabl for $cookieName, $cookieEmail, $cookieFinger, ".
+                  "insert/update myip count, line=". __LINE__);
       }
     }
 
     $hereMsg = "<div class='hereMsg'>Welcome $cookieName</div>";
 
     if($cookieEmail == "bartonphillips@gmail.com") {
+      $hereMsg .= "<a href='/register1.php?myid=$id&myip=$ip'>Re-register?</a>";
       $adminStuff = require("adminsites.php");
     }
   } else { // Can't find the record
@@ -169,15 +175,6 @@ EOF;
   }
 }
 
-// BLP 2023-07-24 - fingers no longer used.
-//$fingers = file_get_contents("https://bartonphillips.net/myfingerprints.json");
-//$fingers = require_once("/var/www/bartonphillipsnet/myfingerprints.php");  
-//vardump("fingers", $fingers);
-
 if($BLP == "8653" && !$adminStuff) {
-  // if we didn't load adminsites above then who is this? I guess I will still let them see the
-  // adminsite. I will review logs and decide.
-
-  error_log("index.i.php: ip=$S->ip, agent=$S->agent. The secret code was given as a query");
-  $adminStuff = require("adminsites.php");
+  error_log("index.i.php: ip=$ip, agent=$agent. The secret code was given as a query, line=". __LINE__);
 }

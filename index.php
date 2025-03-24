@@ -91,9 +91,8 @@ EOF;
 
   error_log("index.php: id=$istor->id, ip=$istor->ip, site=$istor->site, page=$istor->page, High risk ip found via https://api-bdc.net");
   
-  $sql = "insert into $S->masterdb.badplayer (id, ip, site, page, type, count, errno, errmsg, agent, created, lasttime) ".
-  "values('$istor->id', '$istor->ip', '$istor->site', '$istor->page', 'HIGH RISK IP', 1, '-999', 'High risk ip found', '$S->agent', now(), now()) ".
-  "on duplicate key update count=count+1, lasttime=now()";
+  $sql = "insert into $S->masterdb.badplayer (id, ip, site, page, type, errno, errmsg, agent, created, lasttime) ".
+  "values('$istor->id', '$istor->ip', '$istor->site', '$istor->page', 'HIGH RISK IP', '-999', 'High risk ip found', '$S->agent', now(), now())";
 
   $S->sql($sql);
   exit();
