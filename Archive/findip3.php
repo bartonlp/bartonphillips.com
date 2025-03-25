@@ -6,15 +6,16 @@
 /*
 CREATE TABLE `tracker` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `botAs` varchar(30) DEFAULT NULL,
+  `botAs` varchar(100) DEFAULT NULL,
   `site` varchar(25) DEFAULT NULL,
   `page` varchar(255) NOT NULL DEFAULT '',
   `finger` varchar(50) DEFAULT NULL,
   `nogeo` tinyint(1) DEFAULT NULL,
-  `ip` varchar(40) DEFAULT NULL,
   `browser` varchar(50) DEFAULT NULL,
+  `ip` varchar(40) DEFAULT NULL,
+  `count` int DEFAULT '1',
   `agent` text,
-  `referer` varchar(255) DEVAULT '',
+  `referer` varchar(255) DEFAULT '',
   `starttime` datetime DEFAULT NULL,
   `endtime` datetime DEFAULT NULL,
   `difftime` varchar(20) DEFAULT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE `tracker` (
   KEY `ip` (`ip`),
   KEY `lasttime` (`lasttime`),
   KEY `starttime` (`starttime`)
-) ENGINE=MyISAM AUTO_INCREMENT=6242964 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=7483166 DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE `bots` (
   `ip` varchar(40) NOT NULL DEFAULT '',

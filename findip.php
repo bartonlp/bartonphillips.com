@@ -12,6 +12,7 @@ CREATE TABLE `tracker` (
   `finger` varchar(50) DEFAULT NULL,
   `nogeo` tinyint(1) DEFAULT NULL,
   `ip` varchar(40) DEFAULT NULL,
+  `count` int DEFAULT 1,
   `browser` varchar(50) DEFAULT NULL,
   `agent` text,
   `referer` varchar(255) DEVAULT '',

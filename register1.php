@@ -18,6 +18,7 @@ CREATE TABLE `tracker` (
   `nogeo` tinyint(1) DEFAULT NULL,
   `browser` varchar(50) DEFAULT NULL,
   `ip` varchar(40) DEFAULT NULL,
+  `count` int DEFAULT 1,
   `agent` text,
   `referer` varchar(255) DEFAULT '',
   `starttime` datetime DEFAULT NULL,
