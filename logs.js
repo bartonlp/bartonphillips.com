@@ -1,4 +1,4 @@
-// This is used by logs.php. It also loads findip2.php via
+// This is used by logs.php. It also loads findip.php via
 // window.open().
 
 'use strict';
