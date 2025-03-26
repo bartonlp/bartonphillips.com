@@ -112,7 +112,7 @@ function getinfo($value=null, $sql) {
   
   if(empty($trackerTbl)) {
     $trackerTbl = "<h1>Not in tracker table</h1>";
-    error_log("findip ip empty: $value, line=". __LINE__);
+    error_log("findip \$trackerTbl empty: $value, line=". __LINE__);
     $botsTbl = $locstr = $geoTbl = $badTbl = $ip2info = null;
   } else {
     // Good id so we can press on with the $ip and $finger form trackerCallback().
@@ -267,7 +267,13 @@ if($_POST['page'] == 'find') { // 'find' has two modes one with 'type' the other
   // If a GET. We send the information in data as json.
 
   $tmp = $_GET['data'];
-  $data = json_decode($tmp, true); 
+  $data = json_decode($tmp, true);
+
+  // If called from showmodsec.php
+
+  if($data['message']) {
+    $data = $data['message'];
+  }
 
   // Now use the information in data. data[0] is where, data[1] is and data[3] is by.
   

@@ -1,6 +1,8 @@
 <?php
+// This is a link in adminsites.php that says 'Show PHP Error.log'
+
 $_site = require_once getenv("SITELOADNAME");
-ErrorClass::setDevelopment(true);
+//ErrorClass::setDevelopment(true);
 $S = new SiteClass($_site);
 
 function fixdiff($m) {
@@ -38,14 +40,14 @@ function parsedata($output) {
     if(preg_match("~^\[~", $v) === 0) {
       // Add span for id/ip
 
-      $extra .= htmlentities($v);
+      $extra .= preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $v);
       continue;
     } else {
       // If there is data in $extra then add it to the table and reset $extra.
 
       if(!empty($extra)) {
         $tbl .= "<td colspan='5'>$extra</td></tr>";
-        $tbl = preg_replace(["~(<td.*?>|id=)(\d{7})~i", "~(<td.*?>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
+        $tbl = preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
 
         $extra = '';
         $lines .= $tbl; // Update lines here.
@@ -72,14 +74,14 @@ function parsedata($output) {
 
         // BLP 2025-02-24 - Add span for id or ip.
         
-        $tbl = preg_replace(["~(<td.*?>|id=)(\d{7})~i", "~(<td.*?>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $m[3]);        
+        $tbl = preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $m[3]);        
 
         $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td colspan='5'>{$tbl}</td></tr>";
       } else {
         // This has 'exception' or 'error' with no id or ip.
 
         $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td>";
-        $extra = htmlentities($m[3]) . " ";
+        $extra = ($m[3]) . " ";
         continue;
       }
     } else { // This is a tracker or beacon with id and ip.
@@ -90,7 +92,7 @@ function parsedata($output) {
 
     // Now add a span for id and ip everywhere in the $tbl.
 
-    $tbl = preg_replace(["~(<td>|id=)(\d{7})~", "~(<td>|ip=)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})~"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
+    $tbl = preg_replace(["~(<td>|id=)('?\d{7}'?)~", "~(<td>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
 
     // Finally add $tbl to the accumulator $lines
     
@@ -102,7 +104,7 @@ function parsedata($output) {
   
   if(!empty(trim($extra))) {
     // There is a valid line in $extra so that is the last thing in the error log.
-    
+    $extra = preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $extra); 
     $lines .= $tbl . "<td colspan='5'>$extra</td></tr>"; // $tbl is the start of the line and $extra is the remainder.
   }
 
@@ -179,7 +181,7 @@ $top
 <hr>
 <!-- Log Selection -->
 <label>Select Log File:</label>
-<select id="log-selector">
+<select id="log-selector" onchange="switchLog()">
   <option value="/var/www/PHP_ERRORS.log">PHP_ERRORS.log</option>
   <option value="/var/www/PHP_ERRORS_CLI.log">PHP_ERRORS_CLI.log</option>
 </select>

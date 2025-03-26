@@ -49,6 +49,7 @@ return <<<EOF
 </footer>
 </div> <!-- Ending for <div id="content". See banner.i.php -->
 $geo
+$b->extra
 $b->script
 $b->inlineScript
 </body>

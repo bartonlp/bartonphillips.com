@@ -49,6 +49,7 @@ $S->b_script = <<<EOF
   <script nunce='$nunce' src='https://bartonphillips.net/js/phpdate.js'></script>
   <script nunce='$nunce' src='https://bartonphillips.net/js/maps.js'></script>
   <script nunce='$nunce' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&loading=async&callback=initMap&v=weekly" async></script>
+  <script nunce='$nunce' src='/logging.js'></script>
   <script nunce='$nunce'>
 // This was formaly index.js now it is inline
     

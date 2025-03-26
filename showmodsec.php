@@ -213,7 +213,7 @@ $(".ip").on("click", function(e) {
     setTimeout(() => {
       if(!recievedResponse) {
         data = JSON.stringify(data);
-        myOtherTab = window.open('findip2.php?data=' + data, 'myOtherTab');
+        myOtherTab = window.open('findip.php?data=' + data, 'myOtherTab');
         myOtherTab.focus();
       } else {
         // Send data once the tab is confirmed
@@ -222,11 +222,11 @@ $(".ip").on("click", function(e) {
     }, 500);
   }
 
-  // Listen for responses from findip2.php
+  // Listen for responses from findip.php
 
   channel.onmessage = (event) => {
     if(event.data.type === 'is_open') {
-      recievedResponse = true; // findip2.php is open!
+      recievedResponse = true; // findip.php is open!
     }
   };
 

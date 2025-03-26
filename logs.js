@@ -1,3 +1,4 @@
+// logs.php is a link in adminsites.php that says "Show PHP Error.log"
 // This is used by logs.php. It also loads findip.php via
 // window.open().
 
