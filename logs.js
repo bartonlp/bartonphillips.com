@@ -6,22 +6,40 @@
 
 // There are global to this file.
 
-const startLogName = "/var/www/PHP_ERRORS.log"; // Default log file
+// The names of the files.
+
+const php_errors_log = "/var/www/PHP_ERRORS.log"; 
+const php_errors_cli_log = "/var/www/PHP_ERRORS_CLI.log";
+const interaction_log = "/var/www/bartonlp.com/otherpages/interaction.log";
+const interaction_table = "TABLE"; // Special case, this is for the MySql interaction table.
+
 const logsUrl = 'logs.php'; // Name of the url used in Ajax calls.
-let logFile = startLogName
+let logFile = php_errors_log;
 let idOrIp; // The ip or id value.
 
+// Switch log files. There are three files and one table.
+
 function switchLog() {
-  logFile = document.getElementById("log-selector").value;
+  logFile = document.getElementById("log-selector").value; // Get the logFile name.
   localStorage.removeItem('logFilter');
 
   let date = null;
 
-  if(logFile == startLogName) {
-    date = localStorage.getItem("err-del");
-  } else {
-    date = localStorage.getItem("err-cli-del");
+  switch(logFile) {
+    case php_errors_log:
+      date = localStorage.getItem("err-del");
+      break;
+    case interaction_table:
+      date = localStorage.getItem("err-table-del");
+      break;
+    case php_errors_cli_log:
+      date = localStorage.getItem("err-interaction-del");
+      break;
+    case interaction_table:
+      date = localStorage.getItem("err-cli-del");
+      break;
   }
+  
   if(date) $("#del-time").html(`Last time deleted: ${date}`);
 
   loadLogs();
@@ -32,16 +50,24 @@ function deleteLog() {
     url: logsUrl,
     data: { delete: 'delete', delname: logFile },
     type: "post",
-    success: function(data) {
-      console.log("date: ", data);
-      if(logFile == startLogName) {
-        localStorage.setItem("err-del", data);
-      } else {
-        localStorage.setItem("err-cli-del", data);
+    success: function(date) {
+      console.log("date: ", date);
+      
+      switch(logFile) {
+        case php_errors_log:
+          date = localStorage.setItem("err-del", date);
+          break;
+        case interaction_table:
+          date = localStorage.setItem("err-table-del", date);
+          break;
+        case php_errors_cli_log:
+          date = localStorage.setItem("err-interaction-del", date);
+          break;
+        case interaction_table:
+          date = localStorage.setItem("err-cli-del", date);
+          break;
       }
-      $("#del-time").html(`Last time deleted: ${data}`);
-      logFile = $("#log_name").text();
-      loadLogs();
+      refresh();
     },
     error: function(err) {
       console.log("ERROR: ", err);
@@ -56,11 +82,11 @@ function loadLogs(callback) {
   .then(response => response.json())
   .then(data => {
     //console.log("data:", data);
-    document.getElementById("log-content").innerHTML = `<table id='table' border='1'>${data[0]}</table>`;
+    document.getElementById("log-content").innerHTML = data[0];
     if(callback) callback();
     waitForPeriod(1);
   })
-  .catch(error => console.error("Error loading logs:", error));
+  .catch(error => console.log('Error loading logs:', error));
 }
 
 function refresh() {

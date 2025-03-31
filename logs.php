@@ -18,9 +18,27 @@ function fixdiff($m) {
 // parsedata in $output.
 
 function parsedata($output) {
+  global $S;
+  
   $lines = "";
   $extra = "";
 
+  // Are we going to get the interaction table information?
+  if($output === "TABLE") {
+    // Yes
+    function interaction_callback(&$desc) {
+      $desc = preg_replace("~^(.*?)<td>(\d{7})</td><td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>(.*)~",
+                       "$1<td class='id'>$2</td><td class='ip'>$3</td>$4", $desc);
+    }
+
+    $sql = "select time, id, ip, site, page, event, count from $S->masterdb.interaction where time>=current_date() order by lasttime";
+    $T = new dbTables($S);
+    $lines = $T->maketable($sql, ['callback2'=>'interaction_callback', 'attr' => ['id'=>'interaction', 'border'=>'1']])[0];
+    //$lines = $T->makeresultrows($sql, "<tr><td>*</td>", ['return'=>false, 'callback2'=>'interaction_callback']);
+
+    return $lines;
+  }
+  
   // Loop through the lines of the file.
 
   foreach($output as $v) {
@@ -30,6 +48,26 @@ function parsedata($output) {
       continue;
     }
 
+    // Look for 'Interaction:' (note capitalI)
+
+    if(str_contains($v, ' Interaction:')) {
+      // This is from the interaction.log file.
+      
+      if($tbl = preg_replace("~^(\[.*?\]) (interaction): (id=)'?(\d{7})'?,( ip=)'?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'?,(.*)$~i",
+                             "<tr><td>$1</td><td>$2</td><td>$3<span class='id'>$4</span></td><td>$5<span class='ip'>$6</span></td><td>$7</td><tr>", $v)) {
+
+        // This is the new line.
+        
+        $lines .= $tbl; // Add the fixed line to $lines
+        continue; // And continue until end.
+      } else if($tbl === null) {
+        error_log("logs.php: ERROR preg_replace");
+        exit();
+      }
+    }
+
+    // If we get here then file is PHP_ERRORS.log or PHP_ERRORS_CLI.log
+    
     // Look for difftime and convert seconds into h:m:s
     
     $v = preg_replace_callback("~(difftime=)(\d*\.?\d*)~", "fixdiff", $v);
@@ -40,14 +78,14 @@ function parsedata($output) {
     if(preg_match("~^\[~", $v) === 0) {
       // Add span for id/ip
 
-      $extra .= preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $v);
+      $extra .= preg_replace(["~(<td.*?>|id=)'?(\d{7})'?~i", "~(<td.*?>|ip=)'?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'?~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $v);
       continue;
     } else {
       // If there is data in $extra then add it to the table and reset $extra.
 
       if(!empty($extra)) {
         $tbl .= "<td colspan='5'>$extra</td></tr>";
-        $tbl = preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
+        $tbl = preg_replace(["~(<td.*?>|id=)'?(\d{7})'?~i", "~(<td.*?>|ip=)'?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'?~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
 
         $extra = '';
         $lines .= $tbl; // Update lines here.
@@ -74,7 +112,7 @@ function parsedata($output) {
 
         // BLP 2025-02-24 - Add span for id or ip.
         
-        $tbl = preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $m[3]);        
+        $tbl = preg_replace(["~(<td.*?>|id=)'?(\d{7})'?~i", "~(<td.*?>|ip=)'?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'?~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $m[3]);        
 
         $tbl = "<tr><td>{$m[1]}</td><td>{$m[2]}</td><td colspan='5'>{$tbl}</td></tr>";
       } else {
@@ -92,7 +130,7 @@ function parsedata($output) {
 
     // Now add a span for id and ip everywhere in the $tbl.
 
-    $tbl = preg_replace(["~(<td>|id=)('?\d{7}'?)~", "~(<td>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
+    $tbl = preg_replace(["~(<td>|id=)'?(\d{7})'?~", "~(<td>|ip=)'?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'?~"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $tbl);
 
     // Finally add $tbl to the accumulator $lines
     
@@ -104,7 +142,7 @@ function parsedata($output) {
   
   if(!empty(trim($extra))) {
     // There is a valid line in $extra so that is the last thing in the error log.
-    $extra = preg_replace(["~(<td.*?>|id=)('?\d{7}'?)~i", "~(<td.*?>|ip=)('?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'?)~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $extra); 
+    $extra = preg_replace(["~(<td.*?>|id=)'?(\d{7})'?~i", "~(<td.*?>|ip=)'?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'?~i"] , ["$1<span class='id'>$2</span>","$1<span class='ip'>$2</span>"], $extra); 
     $lines .= $tbl . "<td colspan='5'>$extra</td></tr>"; // $tbl is the start of the line and $extra is the remainder.
   }
 
@@ -116,8 +154,12 @@ function parsedata($output) {
 if (isset($_GET['action'])) {
   if ($_GET['action'] === 'show_logs') {
     $logFile = $_GET['logFile'] ?? '/var/www/PHP_ERRORS.log';
-    $output = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
+    if($logFile === "TABLE") {
+      $output = "TABLE";
+    } else {
+      $output = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    }
+    
     if($output) {
       $dataStr =  parsedata($output);
       if(empty($dataStr)) {
@@ -125,6 +167,9 @@ if (isset($_GET['action'])) {
         $nodata = 'true';
       } else {
         $nodata = 'false';
+        if(!str_contains($dataStr, '<table')) {
+          $dataStr = "<table id='table' border='1'>$dataStr</table>";
+        }
       }
     } else {
       $dataStr = "<h1>No Data in " . basename($logFile) . "</h1>";
@@ -148,11 +193,18 @@ if ($_POST['delete']) {
   $delname = $_POST['delname'];
   //error_log("logs.php: delname=$delname");
 
-  if (file_put_contents($delname, '') === false) {
-    vardump("error", error_get_last());
-    exit();
+  if($delname === "TABLE") {
+    $S->sql("delete from $S->masterdb.interaction where time>=current_date() order by lasttime");
+    //error_log("****logs.php: delete");
+  } else {
+    if(file_put_contents($delname, '') === false) {
+      // This vardump will be sent back to the JavaScript.
+    
+      vardump("error", error_get_last());
+      exit();
+    }
   }
-
+  
   $del = date("Y-m-d H:i:s");
   echo $del;
   exit();
@@ -161,8 +213,13 @@ if ($_POST['delete']) {
 $S->title = "Log Viewer";
 $S->banner = "<h1>$S->title</h1>";
 $S->css =<<<EOF
-#table td { padding: 5px; }
+#interaction { max-width: 100%; width: 100%; }
+#table td, #interaction td { padding: 5px; }
+#table td:nth-of-type(6) { overflow-x: auto; max-width: 200px; white-space: pre; }
 #table td:nth-of-type(7) { word-break: break-word; }
+/**/
+#interaction td:nth-of-type(5), #interaction td:nth-of-type(6) { overflow-x: auto; max-width: 350px; white-space: pre; }
+#interaction td:nth-of-type(7) { width: 50px; }
 .id, .ip { cursor: pointer; }
 #del-time { font-size: var(--blpFontSize); font-weight: bold; }
 #log_name { font-size: var(--blpFontSize); font-weight: bold; }
@@ -184,6 +241,8 @@ $top
 <select id="log-selector" onchange="switchLog()">
   <option value="/var/www/PHP_ERRORS.log">PHP_ERRORS.log</option>
   <option value="/var/www/PHP_ERRORS_CLI.log">PHP_ERRORS_CLI.log</option>
+  <option value="/var/www/bartonlp.com/otherpages/interaction.log">interaction.log</option>
+  <option value="TABLE">interacton table</option>
 </select>
 <button id="select_button" onclick="switchLog()">Switch Log</button>
 <div id="log_name"></div>
