@@ -57,7 +57,7 @@ ErrorClass::setDevelopment(true);
 $S = new SiteClass($_site);
 $T = new dbTables($S);
 
-$val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime ".
+$val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,count,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime ".
        "from $S->masterdb.tracker ";
 
 // These MUST BE TRUE globals!!
@@ -382,10 +382,10 @@ $S->css =<<<EOF
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
 }
-/* 11 is javascript */
-#trackertbl td:nth-of-type(11) { cursor: pointer;}
-/* 12 is error */
-#trackertbl td:nth-of-type(12) {
+/* 12 is javascript */
+#trackertbl td:nth-of-type(12) { cursor: pointer;}
+/* 13 is error */
+#trackertbl td:nth-of-type(13) {
   overflow-x: auto;
   max-width: 100px;
   white-space: pre;
@@ -523,10 +523,10 @@ $S->b_inlineScript =<<<EOF
 
   let headers = {};
     
-  // Disable all columns except 12 and 15 (starttime, lasttime). Note tablesorter is zero based.
+  // Disable all columns except 13 and 16 (starttime, lasttime). Note tablesorter is zero based.
 
   for(let i = 0; i < 16; i++) {
-    if(i !== 12 && i !== 15) {
+    if(i !== 13 && i !== 16) {
       headers[i] = { sorter: false };
     }
   }
@@ -563,14 +563,17 @@ $S->b_inlineScript =<<<EOF
     });
   });
 
-  // td 4 & 9 are the page and agent
-  // When clicked show the whole page or agent string.
+  // These tds each have cursor: pointer.
+  // If td 4=page, 5=botAs, 6=finger, 9=agent, 10=referer and 13=error. 
+  // When clicked show the whole cell item.
+  // ALSO if Ctrl Key is pressed on td 9 (agent) we open a new tab with the agents bot information
+  // website.
 
   $("body").on("click", "#trackertbl td:nth-of-type(4), #trackertbl td:nth-of-type(5), "+
                         "#trackertbl td:nth-of-type(6), #trackertbl td:nth-of-type(9), "+
-                        "#trackertbl td:nth-of-type(10), #trackertbl td:nth-of-type(12)",
+                        "#trackertbl td:nth-of-type(10), #trackertbl td:nth-of-type(13)",
                         function(e) {
-    // A ctrl key and cellIndex 8 which is td 9.
+    // A ctrl key and cellIndex 8 which is td 9 (agent).
 
     if(e.ctrlKey && $(this)[0].cellIndex == 8) {
       const txt = $(this).text();
@@ -590,7 +593,7 @@ $S->b_inlineScript =<<<EOF
       let ypos, xpos;
       let pos = $(this).position();
       xpos = pos.left - 200;
-      ypos = pos.top;
+      ypos = pos.top + 30;
 
       removeAll();
 
@@ -601,11 +604,11 @@ $S->b_inlineScript =<<<EOF
     }
   });
 
-  // trackertbl td 11 is the java script value.
+  // trackertbl td 12 is the java script value.
   // botstbl td 4 is the robots value
   // Show the human readable values.
 
-  $("body").on("click", "#trackertbl td:nth-of-type(11), #botstbl td:nth-of-type(4)", function(e) {
+  $("body").on("click", "#trackertbl td:nth-of-type(12), #botstbl td:nth-of-type(4)", function(e) {
     let js = parseInt($(this).text(), 16),
     h = '', ypos, xpos;
     let human;

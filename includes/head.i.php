@@ -25,7 +25,7 @@ define('HEAD_I_VERSION', "head.i.php-1.0.0");
 */
 
 // BLP 2023-09-07 - added to let me know if someone calls this directly.
-if(!class_exists('Database')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=bartonphillips.com&page=/head.i.php");
+if(!class_exists('dbPdo')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=bartonphillips.com&page=/head.i.php");
 
 return <<<EOF
 <head>

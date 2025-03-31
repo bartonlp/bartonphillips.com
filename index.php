@@ -11,14 +11,13 @@ header("Content-Security-Policy:
     img-src 'self' data: https://bartonphillips.net https://bartonlp.com/otherpages https://bartonlp.com/otherpages/tracker.php https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg;
     report-uri https://bartonlp/otherpages/cspreport2.php");
 
-define('BLP_INDEX_VERSION', "BLP-index-1.0.0"); // BLP 2025-02-20 -
+define('BLP_INDEX_VERSION', "BLP-index-1.1.0"); // BLP 2025-03-28 - 
 
 $_site = require_once getenv("SITELOADNAME"); 
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
-//$_site = require_once "/var/www/simple-site-class/includes/simple-autoload.php"; // If you want to use the git
-//version at /var/www/site-class uncomment this will have the most current version of site-class.
 
 $S = new SiteClass($_site); // This must be changed if you use SimpleSiteClass.
+
 $S->nonce = $nonce;
 
 require_once "./index.i.php"; // Get the majority of the php
@@ -49,7 +48,6 @@ $S->b_script = <<<EOF
   <script nunce='$nunce' src='https://bartonphillips.net/js/phpdate.js'></script>
   <script nunce='$nunce' src='https://bartonphillips.net/js/maps.js'></script>
   <script nunce='$nunce' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6GtUwyWp3wnFH1iNkvdO9EO6ClRr_pWo&loading=async&callback=initMap&v=weekly" async></script>
-  <script nunce='$nunce' src='/logging.js'></script>
   <script nunce='$nunce'>
 // This was formaly index.js now it is inline
     

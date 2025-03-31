@@ -1,8 +1,9 @@
 <?php
 // BLP 2024-12-16 - Added <style> in <noscript>.
 // See footer.i.php for the ending </div>
+// $image1, $image2, $image2, $mainTitle and $h->logoAnchor are all form SiteClass getPageBanner().
 
-if(!class_exists('Database')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php");
+if(!class_exists('dbPdo')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=bartonphillips.com&page=banner.i.php");
 
 return <<<EOF
 <header>
