@@ -7,6 +7,7 @@
 CREATE TABLE `tracker` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `botAs` varchar(30) DEFAULT NULL,
+  `botAsBits int DEFAULT 0,
   `site` varchar(25) DEFAULT NULL,
   `page` varchar(255) NOT NULL DEFAULT '',
   `finger` varchar(50) DEFAULT NULL,
@@ -21,7 +22,7 @@ CREATE TABLE `tracker` (
   `difftime` varchar(20) DEFAULT NULL,
   `isJavaScript` int DEFAULT '0',
   `error` varchar(256) DEFAULT NULL,
-  `lasttime` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `site` (`site`),
   KEY `ip` (`ip`),
@@ -29,16 +30,17 @@ CREATE TABLE `tracker` (
   KEY `starttime` (`starttime`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6242964 DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE `bots` (
-  `ip` varchar(40) NOT NULL DEFAULT '',
-  `agent` text NOT NULL,
-  `count` int DEFAULT NULL,
-  `robots` int DEFAULT '0',
-  `site` varchar(255) DEFAULT NULL,
-  `creation_time` datetime DEFAULT NULL,
-  `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`ip`,`agent`(254))
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `bots3` (
+  `ip` varchar(50) NOT NULL COMMENT 'big enough to handle IP6',
+  `agent` text NOT NULL COMMENT 'big enough to handle anything',
+  `count` int DEFAULT '1' COMMENT 'the number of time this has been updated',
+  `robots` int DEFAULT NULL COMMENT 'bit mapped values as above see defines.php',
+  `site` int DEFAULT NULL COMMENT 'bitmasked values of sites see defines.php',
+  `page` varchar(255) DEFAULT NULL COMMENT 'the page on my site',
+  `created` datetime DEFAULT NULL COMMENT 'when record created',
+  `lasttime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'auto, the lasttime this was updated',
+  UNIQUE KEY `ip_agent_page` (`ip`,`agent`(255),`page`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `geo` (
   `lat` varchar(50) NOT NULL,
@@ -47,7 +49,7 @@ CREATE TABLE `geo` (
   `site` varchar(100) DEFAULT NULL,
   `ip` varchar(20) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `lasttime` datetime DEFAULT NULL
+  `lasttime` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 */
 
@@ -57,7 +59,8 @@ ErrorClass::setDevelopment(true);
 $S = new SiteClass($_site);
 $T = new dbTables($S);
 
-$val = "select id,ip,site,page,botAs,finger,nogeo,browser,agent,referer,count,hex(isjavascript) as java,error,starttime,endtime,difftime,lasttime ".
+$val = "select id, ip, site, page, botAs, hex(botAsBits) as botAsBits, finger, nogeo, browser, agent, referer, count, hex(isjavascript) as java, ".
+       "error, starttime, endtime, difftime, lasttime ".
        "from $S->masterdb.tracker ";
 
 // These MUST BE TRUE globals!!
@@ -131,7 +134,7 @@ function getinfo($value=null, $sql) {
 
     //  Create the bots table
 
-    $sql = "select ip, agent, count, hex(robots) as robots, site, creation_time, lasttime from $S->masterdb.bots where ip='$ip' order by lasttime";
+    $sql = "select ip, agent, count, hex(robots) as robots, site, created, lasttime from $S->masterdb.bots3 where ip='$ip' order by lasttime";
 
     $botsTbl = $T->maketable($sql, ['attr'=>['id'=>'botstbl', 'border'=>'1']])[0];
 
@@ -328,8 +331,8 @@ EOF;
       goto SKIP_SELECT;
     }
 
-    $S->sql("select id, ip, site, page, botAs, agent, starttime from $S->masterdb.tracker where $x");
-    [$id, $ip, $site, $page, $botAs, $agent, $created] = $S->fetchrow('num');
+    $S->sql("select id, ip, site, page, botAs, botAsBits, agent, starttime from $S->masterdb.tracker where $x");
+    [$id, $ip, $site, $page, $botAs, $botAsBits, $agent, $created] = $S->fetchrow('num'); // BLP 2025-04-07 - $botAs is now the botAsBits field.
 
 SKIP_SELECT:
 
@@ -340,9 +343,10 @@ SKIP_SELECT:
     if(!$id) $id = "NO ID from tracker table";
 
     // In this table id is a varchar(30)
+    // BLP 2025-04-07 - badplayer now also has botAsBits.
     
-    $S->sql("insert into $S->masterdb.badplayer (ip, id, site, page, botAs, type, errno, errmsg, agent, created, lasttime) ".
-            "values('$ip', '$id', '$site', '$page', '$botAs', 'AUTHORIZATION DENIED', -999, '$errMsg', '$agent', '$created', now())");
+    $S->sql("insert into $S->masterdb.badplayer (ip, id, site, page, botAs, botAsBits, type, errno, errmsg, agent, created, lasttime) ".
+            "values('$ip', '$id', '$site', '$page', '$botAs', $botAsBits, 'AUTHORIZATION DENIED', -999, '$errMsg', '$agent', '$created', now())");
 
     error_log("findip.php: $errMsg, id=$id, ip=$ip, site=$site, page=$page, botAs=$botAs, agent=$agent, requestUri=$requestUri");
   } else {
@@ -367,8 +371,13 @@ $S->css =<<<EOF
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
 }
-/* 6 is finger */
+/* 6 is botAsBits */
 #trackertbl td:nth-of-type(6) {
+  max-width: 20px;
+  cursor: pointer;
+}
+/* 7 is finger */
+#trackertbl td:nth-of-type(7) {
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
 }
@@ -570,8 +579,8 @@ $S->b_inlineScript =<<<EOF
   // website.
 
   $("body").on("click", "#trackertbl td:nth-of-type(4), #trackertbl td:nth-of-type(5), "+
-                        "#trackertbl td:nth-of-type(6), #trackertbl td:nth-of-type(9), "+
-                        "#trackertbl td:nth-of-type(10), #trackertbl td:nth-of-type(13)",
+                        "#trackertbl td:nth-of-type(7), #trackertbl td:nth-of-type(10), "+
+                        "#trackertbl td:nth-of-type(11), #trackertbl td:nth-of-type(14)",
                         function(e) {
     // A ctrl key and cellIndex 8 which is td 9 (agent).
 
@@ -604,20 +613,20 @@ $S->b_inlineScript =<<<EOF
     }
   });
 
+  // trackertbl td 7 is botAsBits
   // trackertbl td 12 is the java script value.
   // botstbl td 4 is the robots value
+  // botstbl td 5 is the site value
   // Show the human readable values.
 
-  $("body").on("click", "#trackertbl td:nth-of-type(12), #botstbl td:nth-of-type(4)", function(e) {
+  $("body").on("click", "#trackertbl td:nth-of-type(6), #trackertbl td:nth-of-type(13), #botstbl td:nth-of-type(4), #botstbl td:nth-of-type(5)", function(e) {
     let js = parseInt($(this).text(), 16),
     h = '', ypos, xpos;
     let human;
 
-    // Make it look like a hex. Then and it with 0x100 if it is true
+    // Make it look like a hex. Then 'and' it with 0x100 if it is true
     // then make js 0x1..
-    
-    //if('0x'+js & 0x100) js='0x'+js;
-    
+        
     let table = $(this).closest("table");
     let pos = $(this).position(); // get the top and left
     
@@ -626,23 +635,49 @@ $S->b_inlineScript =<<<EOF
 
     if(table.attr("id") != 'trackertbl') {
       // Robots (bots table)
-      
-      human = robots; // robots was set in webstats.php in the inlineScript.
-      
-      xpos = pos.left + $(this).width() + 17; // add the one border and one padding (15px) plus a mig.
+
+      const tdIndex = $(this).index();
+      if(tdIndex == 3) {
+        // robots
+        human = robots; // robots was set in webstats.php in the inlineScript.
+      } else if(tdIndex == 4) {
+        // site
+        const tmp = {
+             'bartonphillips.com': 1,
+             'bartonphillips.net': 2,
+             'bartonlp.com': 4,
+             'bartonlp.org': 8,
+             'bonnieburch.com': 0x10,
+             'newbernzig.com': 0x20,
+             'newbern-nc.info': 0x40,
+             'jt-lawnservice.com': 0x80,
+             'swam.us': 0x100
+        };
+        human = Object.fromEntries(
+          Object.entries(tmp).map(([domain, bit]) => [bit, domain])
+        );
+      }
+     
+      xpos = pos.left + $(this).width() - 180; // add the one border and one padding (15px) plus a mig.
     } else {
       // Tracker table.
-      
-      human = tracker; // tracker was set in webstats.php in the inlineScript
-      
+
+      const tdIndex = $(this).index();
+      if(tdIndex == 5) {
+        // this is human = robots
+        human = robots;
+      } else if(tdIndex == 12) {
+        // this is human = tracker
+        human = tracker; // tracker was set in webstats.php in the inlineScript
+      }
       xpos = pos.left - 300; // Push this to the left so it will render full size
     }
-    ypos = pos.top;
+    ypos = pos.top + 30;
 
     //console.log("human:", human);
 
     for(let [k, v] of Object.entries(human)) {
-      h += (js & k) ? v + "<br>" : '';
+      h += (js & +k) ? v + "<br>" : ''; // +k forces a string to a number.
     }
 
     removeAll();

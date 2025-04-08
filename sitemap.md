@@ -1,32 +1,5 @@
-/*
- * SPECIAL json for use by siteload.php. Normal json will not allow
- * comments. The siteload.php program removes the comments and then
- * passes the result to json_decode(), so after the comments are
- * revomve the file MUST be legal parsable json.
- * 
- * Note that the entries marked 'only $this' could be changed after
- * SiteClass or Database class are instantiated but it would have
- * little to no affect. Some items make sense to be placed into the
- * class properties because they will be used in the 'getPage...()'
- * functions which are methods of SiteClass. See
- * https://github.com/bartonlp/site-class for more information. Look
- * specifically at SiteClass.class.php and the getPace*() methods which
- * are pretty well documented.
- * This file is read by the siteload.php program like this:
- * $_site = require_once getenv("SITELOADNAME);
- * $S = new SiteClass($_site);
- * Therefore to change things like siteName or any of the items marked
- * as 'only $this' the values of $_site need to be changes.
- * They can be changed via $S but it will not have any effect on the
- * values of $this which are set by the class constructor.
- * Note: a list of all of the possible values can be found in
- * sitemap.md at bartonphillips.com.
- */
-// BLP 2025-04-05 - siteName has been changed in ALL mysitemap.json
-// file on this server. It is now the same as siteDomain. I may remove
-// one or the other of them in the future.
-{
-
+# This is a list of the available properties that can be set via $S and $_site.
+```
     "siteDomain": "bartonphillips.com", // only $this
     "siteName": "bartonphillips.com", // only $this
     "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $S
@@ -130,4 +103,4 @@
     "EMAILADDRESS": "bartonphillips@gmail.com", // or $S->emailAddress
     "EMAILRETURN": "bartonphillips@gmail.com", // only $this
     "EMAILFROM": "webmaster@bartonphillips.com" // only $this
-}
+```

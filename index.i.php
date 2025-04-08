@@ -49,7 +49,7 @@ $date = date("l F j, Y H:i:s T");
 if($S->isBot) {
   $locstr = <<<EOF
 <ul class="user-info">
-  <li style="color: red">You Are a Robot</li>
+  <li style="color: red">You Are a Robot. If you are not a robot click <a href="NotARobot.php">NotARobot</a></li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
 </ul>
 EOF;

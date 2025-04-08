@@ -15,6 +15,7 @@ define('BLP_INDEX_VERSION', "BLP-index-1.1.0"); // BLP 2025-03-28 -
 
 $_site = require_once getenv("SITELOADNAME"); 
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
+//$_site->forceBot = true;
 
 $S = new SiteClass($_site); // This must be changed if you use SimpleSiteClass.
 
@@ -182,6 +183,7 @@ $adminStuff
 <li><a target="_blank" href="articles/howtheinternetworks.php">How It Works</a></li>
 <li><a target="_blank" href="articles/howtowritehtml.php">How To Write HTML</a></li>
 <li><a target="_blank" href="articles/buildawebsite.php">Build a Website</a></li>
+<li><a target="_blank" href="errors-with-dignity.php">The Dignity of Error Messages</a></li>
 </ul>
 </section>
 </div>
