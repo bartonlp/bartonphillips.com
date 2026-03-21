@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2020",              // Use a modern JS version
+    "lib": ["dom", "es2020"],        // Include browser and modern JS APIs
+    "module": "es2020",              // Or "commonjs" if you're using Node.js modules
+    "moduleResolution": "node",
+    "strict": true,                  // Optional: enables strict typing
+    "esModuleInterop": true,
+    "allowJs": true,                 // If mixing JS and TS
+    "checkJs": true,                 // If you want JS files type-checked too
+    "outDir": "./dist",              // Output directory for compiled JS
+    "sourceMap": true                // Optional: useful for debugging
+  },
+  "include": ["./**/*.ts", "**/*.d.ts"],
+  "exclude": ["node_modules"]
+}

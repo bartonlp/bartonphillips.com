@@ -1,13 +1,9 @@
 <?php
-// BLP 2023-02-25 - use new approach
-// Show the PHP_ERRORS.log or PHP_ERRORS_CLI.log and allow it the be emptied.
-// BLP 2025-02-09 - Reworked getting the lines.
-// BLP 2025-02-20 - More rework. Add more comments and add a version
+// Show the PHP_ERRORS.log or PHP_ERRORS_CLI.log and other
 
 define('SHOWERRORLOG_VERSION', 'showErrorLog-1.0.2'); // BLP 2025-02-25 - add 'span' for all ip/id
 
 $_site = require_once(getenv("SITELOADNAME"));
-//$_site = require_once "/var/www/site-class/includes/autoload.php";
 ErrorClass::setDevelopment(true);
 $_site->noGeo = true;
 
@@ -33,9 +29,11 @@ function parsedata($output) {
 
   foreach($output as $v) {
     // Don't display lines with showErrorLog.php or my ip address.
-  
-    if(preg_match("~(?:page=/showErrorLog.php|ip=195.252.232.86, site=Bartonphillips)~", $v) !== 0) {
-      continue;
+
+    if($_REQUEST['show']) {
+      if(preg_match("~(?:page=/showErrorLog.php~") !== 0) continue;
+    } else {
+      if(preg_match("~(?:page=/showErrorLog.php|ip=195.252.232.86, site=Bartonphillips)~", $v) !== 0) continue;
     }
 
     // Look for difftime and convert seconds into h:m:s

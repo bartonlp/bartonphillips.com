@@ -3,19 +3,9 @@
 Require all granted
 
 Header set Access-Control-Allow-Origin "*"
-#Header set Access-Control-Allow-Origin: "bartonphillips.com" 
-#Header set Access-Control-Allow-Methods: "GET, POST"
-#Header set Access-Control-Allow-Headers: "Content-Type, Authorization"
 
-# BLP 2023-10-10 - I do this in dbAbstract.class.php so it is done for all sites that use the
-# SiteClass or Database class.
-#Header set Accept-Ch "Sec-Ch-Ua-Platform,Sec-Ch-Ua-Platform-Version,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Arch"
-
-SetEnv SITELOAD /var/www/vendor/bartonlp/site-class/includes
-SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/includes/siteload.php
-
-SetEnv SIMPLE_SITELOAD /var/www/vendor/bartonlp/simple-site-class/includes
-SetEnv SIMPLE_SITELOADNAME /var/www/vendor/bartonlp/simple-site-class/includes/simple-siteload.php
+SetEnv SITELOADNAME /var/www/vendor/bartonlp/site-class/src/siteload.php
+SetEnv AUTOLOADNAME /var/www/vendor/bartonlp/site-class/src/autoload.php
 
 # REWRITE SECTION
 RewriteEngine on
@@ -26,28 +16,54 @@ RewriteRule ^Sitemap\.xml$ sitemap.php [L,NC]
 
 # rewrite the address of csstest.css to tracker.php?id=$1&csstest
 RewriteRule ^csstest-(.*)\.css$ https://bartonlp.com/otherpages/tracker.php?id=$1&page=csstest [L,QSA]
-# Just a test
-#RewriteRule ^testimage.*\.png$ mytest.php [L,NC]
 
 # Keep others from looking at these files.
-#RewriteRule ^(\.git|other|script)/.*$ - [F,L]
-#RewriteRule ^(\.gitignore|mysitemap\.json|sitemap-new\.txt)$  - [F,L]
+RewriteRule ^(\.git|other|script)/.*$ - [F,L]
+RewriteRule ^(\.gitignore|mysitemap\.json|sitemap-new\.txt)$  - [F,L]
 
 FileETag All
 
-# BEGIN EXPIRES
-ExpiresActive On
-ExpiresDefault "access plus 10 day"
-ExpiresByType text/html A0
-ExpiresByType application/x-javascript A0
-ExpiresByType application/javascript A0
-ExpiresByType text/css "access plus 1 month"
-ExpiresByType text/plain "access plus 1 month"
-ExpiresByType image/gif "access plus 1 month"
-ExpiresByType image/png "access plus 1 month"
-ExpiresByType image/jpeg "access plus 1 month"
-ExpiresByType application/x-icon "access plus 1 year"
-# END EXPIRES
+# Enable Cache-Control headers
+# I am using cacheBuster for css, JavaScript, favicon
+<IfModule mod_headers.c>
+
+  # HTML - no caching
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # json and xml--30 days
+  <FilesMatch "\.(json|xml)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # Text files - moderate caching (30 days)
+  <FilesMatch "\.(txt)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # Images - long caching (30 days)
+  <FilesMatch "\.(gif|png|jpe?g)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # Icons - long and immutable (1 year)
+  <FilesMatch "\.(ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # JavaScript - long and immutable (1 year, with cache buster)
+  <FilesMatch "\.(js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # CSS - long and immutable (1 year, with cache buster)
+  <FilesMatch "\.(css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+</IfModule>
+
 
 AddOutputFilterByType DEFLATE \
   "application/atom+xml" \
@@ -78,3 +94,7 @@ AddOutputFilterByType DEFLATE \
   "text/x-component" \
   "text/xml"
  
+# ChatGPT.
+AddType application/font-woff2 .woff2
+AddType font/woff .woff
+AddType font/ttf .ttf

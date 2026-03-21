@@ -24,6 +24,7 @@
 .subtitles { /* the h3's */
   line-height: 0;
 }
+.small-caps { font-variant: small-caps; }
 #location i { cursor: pointer; }
 #geo i { cursor: pointer; }
 #removemsg {

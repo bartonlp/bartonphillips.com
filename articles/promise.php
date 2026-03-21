@@ -1,8 +1,7 @@
 <?php
-// BLP 2023-02-25 - use new approach
 // Test various AJAX and Promise calls.
-// This uses ../examples/uptime.php and
-// ..examples/query.ajax.php for Ajax calls.
+// This uses ../test_examples/examples/uptime.php and
+// ../test_examples/examples/query.ajax.php for Ajax calls.
 
 // Load info from mysitemap.json for use by my framework SiteClass.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
@@ -31,12 +30,12 @@ if($_POST['page'] == 'ajax') {
 // Get this file for display below.
 
 $promiseText = escapeltgt(file_get_contents("promise.php"));
-$uptest = escapeltgt(file_get_contents("../examples/uptest.php"));
-$query = escapeltgt(file_get_contents("../examples/query.ajax.php"));
+$uptest = escapeltgt(file_get_contents("../test_examples/examples/uptest.php"));
+$query = escapeltgt(file_get_contents("../test_examples/examples/query.ajax.php"));
 
 // Set up the scripts for my framework
 
-$S->extra = <<<EOF
+$S->b_script = <<<EOF
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 
@@ -112,7 +111,7 @@ jQuery(document).ready(function($) {
   // Make an ajax call to another file. Returns 'This is from RPI' which is my RPI server at home.
   if(CORSflag) {
     $.ajax({
-      url: '../examples/uptest.php',
+      url: '../test_examples/examples/uptest.php',
       data: { test: 'yes' },
       dataType: 'json'
     }).done(function(d) {
@@ -131,7 +130,7 @@ jQuery(document).ready(function($) {
 
 function sendText(txt) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '../examples/query.ajax.php', true);
+  xhr.open('POST', '../test_examples/examples/query.ajax.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function(e) {
     if (this.status == 200) {
@@ -166,7 +165,7 @@ function sendForm(form) {
 // Another RAW Javascript function.
 
 var req = new XMLHttpRequest();
-req.open("GET", "../examples/uptest.php" , true);
+req.open("GET", "../test_examples/examples/uptest.php" , true);
 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
 req.onload = function() {

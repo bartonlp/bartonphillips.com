@@ -1,9 +1,10 @@
 <?php
-// BLP 2025-04-08 - Changed $b-> to $f->
+// bottom area
 
 if(!class_exists('dbPdo')) header("location: https://bartonlp.com/otherpages/NotAuthorized.php?site=bartonphillips.com&page=footer.i.php");
 
 return <<<EOF
+</div> <!-- Ending for <div id="content". See banner.i.php -->
 <footer>
   <!-- bartonphillips.com/includes/footer.i.php -->
   $f->aboutwebsite
@@ -20,7 +21,6 @@ return <<<EOF
   $f->lastmod
   $f->msg2
 </footer>
-</div> <!-- Ending for <div id="content". See banner.i.php -->
 $f->geo
 $f->extra
 $f->script

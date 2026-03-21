@@ -19,7 +19,8 @@ let myOtherTab = null;
 
 $("body").on("click",".ip,.id", function(e) {
   const idOrIp = $(this).text(); //.split("=")[1];
-  const cl = e.currentTarget.className;
+  if($(this).hasClass('ip')) cl = 'ip';
+  else cl = 'id';
 
   const where = "where " +cl+"='" +idOrIp+ "'";
   const and = "and lasttime>current_date() -interval 5 day";

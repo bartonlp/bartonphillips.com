@@ -22,112 +22,116 @@
  * Note: a list of all of the possible values can be found in
  * sitemap.md at bartonphillips.com.
  */
-// BLP 2025-04-05 - siteName has been changed in ALL mysitemap.json
-// file on this server. It is now the same as siteDomain. I may remove
-// one or the other of them in the future.
+// BLP 2026-01-26 - added 'doSiteClass': true, this will use FULL
+// SiteClass. In 'doSiteClass' is false or simpley not used, it has
+// limited features.
 {
+  "doSiteClass": true, // This should be true so we are using full SiteClass!
+  "count": true, // only $this
 
-    "siteDomain": "bartonphillips.com", // only $this
-    "siteName": "bartonphillips.com", // only $this
-    "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $S
-    "path": "/var/www/bartonphillips.com", // only $this
-    "className": "SiteClass", // only $this. Not all programs use this, some instantiate SiteClass directly
-    "copyright": "Barton L. Phillips", // also via $S
-    "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com", // also via $S
-    "address": "New Bern, North Carolina", // This goes in the footer and can be set via $S->address also
-    "favicon": "https://bartonphillips.net/images/favicon.ico",
-    "canonical": "https://www.bartonphillips.com",
-    // "defaultCss": true, // If this is set to true or false then NO default
-    // header at all.
-    "masterdb": "barton", // only $this
-    "dbinfo": { // only $this
-      "host": "localhost",
-      "user": "barton", 
-      "database": "bartonphillips",
-      // "password": "", // Usually not used as the valuse is retrieved
-      // from a file on disk.
-      // "port": "", // if we need to change the port from the default.
-      // "socket": "", // as above.
-      "engine": "mysql", // Only used with PDO 
-      "DUMMY": null // DUMMY at end with no comma    
-    },
-    /* NOTE the errorMode entries are all controlled by statics so they can be set or unset at any time.
-     * They are all available via the ErrorClass.
-     * ErrorClass::set{item name leading capital}() or
-     * ErrorClass::get{item name leading capital}()
-     */ 
-    "errorMode": { // only $this. 
-      "development": false, //true, // development automatically sets email to true.
-                           // If development is true then noEmail will be
-                           // set to true unless noEmail is set to false!
-                           // Only false not null or just missing.
-                           // The default is false.
-      "noEmail": true, //null,   // Set it to null will not affect the true above which sets it to true also.
-                        // The default is false.
-      // "noHtml": false, // This is the default.
-      // "noOutput": false, // This is the default.
-      // "noBacktrace": false, // this is the default.
-      // "errLast": false, // this is the default. If true the file that
-                          // caused the error is shown.
-      // "exitonError": true // this is the default. If false then we
-                             // return to the caller.
-      "DUMMY": null // DUMMY at end with no comma
-    },
-    "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
-    // BLP 2022-01-15 -- NOTE these are include via require() so these must be absolute
-    // or relative paths not URLs
-    "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
-    "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
-    "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
-    "count": true, // only $this
-    "ctrmsg": "Counter Reset: June 13, 2023", // also via $S for footer. The counter reset message.
-    // The following can also be set via $S 
-    //
-    // "nodb": true, // if true then we do not load Database
-    // "noTrack": true, // if true we do not load tracker.js or tracker.php
-    // "base": "path to the base",
-    // "preheadercomment": "<!--Commint wrapped in comment marks-->",
-    // "lang": "en",
-    // "htmlextra": "something extra",
-    // "doctype", "<!DOCTYPE html>",
-    // "defaultCss": false, // also via $S
-    // "defaultImage": "This is the image that is used by tracker
-    // instead of https://bartonphillips.net/images/plank.png
-    // "imageLocation": "This is the location of images instead of the
-    // default of https://bartonphillips.net.
-    // "title": "goes in <title>",
-    // "desc": "some description",
-    // "keywords": "bunch of keywords",
-    //
-    // The following can also be set via $S for the footer 
-    //
-    // "msg": "some message", 
-    // "msg2": "some message",
-    // "msg2": "some message",
-    // "noCounter": true,
-    // "nofooter": true,
-    // "noLastmod": true,
-    // "noCopyright": true,
-    // "copyright": "This is the copyright",
-    // "aboutwebsite": "<h2><a target='_blank' href='phpinfo.php'>Something Special</a></h2>",
-    // "noAddress": true,
-    // "address": "Here at Home",
-    // "noEmailAddress": true,
-    //
-    // The ***Location entries let me put the elements of SiteClass in
-    // other locations. This would be required if someone downloaded
-    // SiteClass etc. and was using the examples.
-    //"trackerLocation": "the location of tracker.php",
-    //"trackerLocationJs": "the location of tracker.js",
-    //"beaconLocation": "the location of beacon.php",
-    //"geoLocation": "Your location", // you can find geo.js and
-    // geoAjax.php at github.com/bartonlp/bartonphillips.net
-    //"imagesLocation": "https://bartonphillips.org/vendor/bartonlp/site-class/examples",
-    //"defaultImage": "./images/146624.png",
-    "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
-    //"trackerImgPhone": "/images/8080cpu.jpg", // use the same photo for desktop and phone
-    "trackerImg2": "/images/146624.png", // only $this
-    "EMAILADDRESS": "bartonphillips@gmail.com", // or $S->emailAddress
-    "EMAILRETURN": "bartonphillips@gmail.com", // only $this
-    "EMAILFROM": "webmaster@bartonphillips.com" // only $this
+  "siteDomain": "bartonphillips.com", // only $this
+  "siteName": "bartonphillips.com", // only $this
+  "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $S
+  "path": "/var/www/bartonphillips.com", // only $this
+  "className": "SiteClass", // only $this. Not all programs use this, some instantiate SiteClass directly
+  "copyright": "Barton L. Phillips", // also via $S
+  "author": "Barton L. Phillips, mailto:bartonphillips@gmail.com", // also via $S
+  "address": "New Bern, North Carolina", // This goes in the footer and can be set via $S->address also
+  "favicon": "https://bartonphillips.net/images/favicon.ico",
+  "canonical": "https://www.bartonphillips.com",
+  // "defaultCss": false, // If this is set to false then NO default
+  // header at all.
+  "masterdb": "barton", // only $this
+  "dbinfo": { // only $this
+    "host": "localhost",
+    "user": "barton", 
+    "database": "bartonphillips",
+    // "password": "", // Usually not used as the valuse is retrieved
+    // from a file on disk.
+    // "port": "", // if we need to change the port from the default.
+    // "socket": "", // as above.
+    "engine": "mysql", // Only used with PDO
+    //"engine": "sqlite", // Don't use it except experment.
+    "DUMMY": null // DUMMY at end with no comma    
+  },
+  /* NOTE the errorMode entries are all controlled by statics so they can be set or unset at any time.
+   * They are all available via the ErrorClass.
+   * ErrorClass::set{item name leading capital}() or
+   * ErrorClass::get{item name leading capital}()
+   */ 
+  "errorMode": { // only $this. 
+    "development": true, //true, // development automatically sets email to true.
+                         // If development is true then noEmail will be
+                         // set to true unless noEmail is set to false!
+                         // Only false not null or just missing.
+                         // The default is false.
+    "noEmail": true,     // Set it to null will not affect the true above which sets it to true also.
+    // The default is false.
+    // "noHtml": false, // This is the default.
+    // "noOutput": false, // This is the default.
+    // "noBacktrace": false, // this is the default.
+    // "errLast": false, // this is the default. If true the file that
+                         // caused the error is shown.
+    // "exitonError": true, // this is the default. If false then we
+                            // return to the caller.
+    "DUMMY": null // DUMMY at end with no comma
+  },
+  "memberTable": "members", // only $this. Currently bartonphillips.com is the ONLY one with a member table!
+  // NOTE these are include via require() so these must be absolute
+  // or relative paths not URLs
+  "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
+  "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
+  "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
+
+  "ctrmsg": "Counter Reset: April 20, 2025", // also via $S for footer. The counter reset message.
+  // The following can also be set via $S 
+  //
+  // "nodb": true, // if true then we do not load Database
+  // "noTrack": true, // if true we do not load tracker.js or tracker.php
+  // "base": "path to the base",
+  // "preheadercomment": "<!--Commint wrapped in comment marks-->",
+  // "lang": "en",
+  // "htmlextra": "something extra",
+  // "doctype", "<!DOCTYPE html>",
+  // "defaultCss": false, // also via $S
+  // "defaultImage": "This is the image that is used by tracker
+  // instead of https://bartonphillips.net/images/plank.png
+  // "imageLocation": "This is the location of images instead of the
+  // default of https://bartonphillips.net.
+  // "title": "goes in <title>",
+  // "desc": "some description",
+  // "keywords": "bunch of keywords",
+  //
+  // The following can also be set via $S for the footer 
+  //
+  // "msg": "some message", 
+  // "msg2": "some message",
+  // "msg2": "some message",
+  // "noCounter": true,
+  // "nofooter": true,
+  // "noLastmod": true,
+  // "noCopyright": true,
+  // "copyright": "This is the copyright",
+  // "aboutwebsite": "<h2><a target='_blank' href='phpinfo.php'>Something Special</a></h2>",
+  // "noAddress": true,
+  // "address": "Here at Home",
+  // "noEmailAddress": true,
+  //"defaultImage": "./images/146624.png",
+
+  // The ***Location entries let me put the elements of SiteClass in
+  // other locations. This would be required if someone downloaded
+  // SiteClass etc. and was using the examples. These NUST be a URL. 
+  //"trackerLocation": "the location of tracker.php",
+  //"trackerLocationJs": "the location of tracker.js",
+  //"beaconLocation": "the location of beacon.php",
+  //"geoLocation": "Your location", // you can find geo.js and
+  // geoAjax.php at github.com/bartonlp/bartonphillips.net
+  //"imagesLocation": "https://bartonphillips.org/vendor/bartonlp/site-class/examples",
+
+  "trackerImg1": "/images/blp-image.png", // only $this. The trackerImg must have a slash before or make them a full url.
+  //"trackerImgPhone": "/images/8080cpu.jpg", // use the same photo for desktop and phone
+  "trackerImg2": "/images/146624.png", // only $this
+  "EMAILADDRESS": "bartonphillips@gmail.com", // or $S->emailAddress
+  "EMAILRETURN": "bartonphillips@gmail.com", // only $this
+  "EMAILFROM": "webmaster@bartonphillips.com" // only $this
 }

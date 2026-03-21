@@ -45,6 +45,7 @@ date_default_timezone_set("America/New_York");
 $date = date("l F j, Y H:i:s T");
 
 // if this is a bot don't bother with getting a location. And it will not have a SiteId.
+//$S->isBot = true; // Can be set to true to force a bot.
 
 if($S->isBot) {
   $locstr = <<<EOF
@@ -76,7 +77,6 @@ if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bi
   error_log("index.i.php: ip=$ip, key=$bigdatakey, api-bdc.net/data/user-rick failed");
 } else {
   $istor = json_decode($json);
-  $istor = json_decode($json);
   $istor->id = $S->LAST_ID;
   $istor->ip = $ip;
   $istor->site = $S->siteName;
@@ -87,6 +87,7 @@ if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bi
 $clientname = gethostbyaddr($S->ip);
 
 $locstr = <<<EOF
+<span id="geomessage"></span>
 <ul class="user-info">
   $ref
   <li>User Agent String is:<br>
@@ -114,7 +115,7 @@ if(!($nameFingerEmail = $_COOKIE['SiteId'])) { // NO COOKIE
 
   // Has this ip ever visited our site?
 
-  if($S->sql("select count from $S->masterdb.logagent where ip='$S->ip' and site='$S->siteName'")) {
+  if($S->sql("select count from $S->masterdb.logagent where ip=? and site=?", [$S->ip, $S->siteName])) {
     // Yes get the counts.
     
     while([$cnt] = $S->fetchrow('num')) {
@@ -136,7 +137,8 @@ EOF;
 
   // Primary key is(name, email, finger, ip). We are missing ip so we will get multiple rows.
   
-  if($S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName'")) {
+  if($S->sql("select ip from bartonphillips.members where finger=? and email=? and name=?",
+            [$cookieFinger, $cookieEmail, $cookieName])) {
     // Found the records.
 
     $r = $S->getResult();
@@ -147,18 +149,27 @@ EOF;
       }
 
       // Primary key is(name, email, finger, ip)
-      if(!$S->sql("select ip from bartonphillips.members where finger='$cookieFinger' and email='$cookieEmail' and name='$cookieName' and ip='$myip'")) {
+      if(!$S->sql("select ip from bartonphillips.members where finger=? and email=? and name=? and ip=?",
+                 [$cookieFinger, $$cookieEmail, $cookieName, $myip])) {
         // This ip does not exists for this key.
         // So we should add a new record for this new ip.
 
-        $S->sql("insert into bartonphillips.members (ip, name, email, finger, count, created, lasttime) ".
-                  "values('$myip', '$cookieName', '$cookieEmail', '$cookieFinger', 1, now(), now())");
+        try {
+          $S->sql("insert into bartonphillips.members (ip, name, email, finger, count, created, lasttime) ".
+                  "values(?, ?, ?, ?, 1, now(), now())",
+                  [$myip, $cookieName, $cookieEmail, $cookieFinger]);
+        } catch(Exception $e) {
+          $code = $e->getCode();
+          $msg = $e->getMessage();
+          error_log("index.i.php. Warning: $code, $msg, line=" . __LINE__);
+        }
 
         $S->sql("insert into $S->masterdb.myip (myIp, count, createtime, lasttime) ".
-                  "values('$myip', 1, now(), now()) ".
-                  "on duplicate key update count=count+1, lasttime=now()");
-        
-        error_log("index.i.php: ip=$myip, new ip added to members tabl for $cookieName, $cookieEmail, $cookieFinger, ".
+                "values(?, 1, now(), now()) ".
+                "on duplicate key update count=count+1, lasttime=now()",
+                [$myip]);
+
+        error_log("index.i.php: ip=$myip, new ip added to members table for $cookieName, $cookieEmail, $cookieFinger, ".
                   "insert/update myip count, line=". __LINE__);
       }
     }
@@ -176,5 +187,7 @@ EOF;
 }
 
 if($BLP == "8653" && !$adminStuff) {
+  // Get adminstuff even though it is not ME. I have the secret code.
+  $adminStuff = require("adminsites.php");
   error_log("index.i.php: ip=$ip, agent=$agent. The secret code was given as a query, line=". __LINE__);
 }

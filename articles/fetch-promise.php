@@ -1,5 +1,4 @@
 <?php
-// BLP 2023-02-25 - use new approach
 // Test various 'fetch' instead of AJAX calls.
 // Load info from mysitemap.json for use by my framework SiteClass.
 // Check SiteClass out at https://github.com/bartonlp/site-class.
@@ -30,12 +29,12 @@ if($_POST['page'] == 'ajax') {
 // Get this file for display below.
 
 $promiseText = escapeltgt(file_get_contents("fetch-promise.php"));
-$uptest = escapeltgt(file_get_contents("../examples/uptest.php"));
-$query = escapeltgt(file_get_contents("../examples/query.ajax.php"));
+$uptest = escapeltgt(file_get_contents("../test_examples/examples/uptest.php"));
+$query = escapeltgt(file_get_contents("../test_examples/examples/query.ajax.php"));
 
 // Set up the scripts for my framework
 
-$S->extra = <<<EOF
+$S->b_script = <<<EOF
 <script src="https://bartonphillips.net/js/syntaxhighlighter.js"></script>
 <link rel='stylesheet' href="https://bartonphillips.net/css/theme.css">
 
@@ -67,7 +66,7 @@ $(function() {
   // Using JSON.stringify() and sending it as 'application/json'
   // The return is text (data.text())
 
-  fetch("../examples/testpost.php", {
+  fetch("../test_examples/examples/testpost.php", {
     body: JSON.stringify({test: "yes", something: "a test"}), // This could be a variable
     method: "POST",
     headers: {
@@ -89,7 +88,7 @@ $(function() {
     $("#response").html("ERROR from AJAX");
   });
   
-  getIt('get', '/examples/uptest.php?test=yes')
+  getIt('get', '../test_examples/examples/uptest.php?test=yes')
   .then(data => {
     console.log("DATA", data);
     $("#startup").html("fetch: " + data.TEST);
@@ -107,7 +106,7 @@ $(function() {
   $("#send").on("click", function() {
     // Setup the select for the curtime().
 
-    getIt('post', '/examples/query.ajax.php', "sql=select curtime() as data")
+    getIt('post', '../test_examples/examples/query.ajax.php', "sql=select curtime() as data")
     .then(data => {
       console.log("query.ajax:", data);
       $("#response").html(data[0].data);

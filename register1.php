@@ -11,14 +11,14 @@
 /*
 CREATE TABLE `tracker` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `botAs` varchar(100) DEFAULT NULL,
+  `botAsBits` int DEFAULT '0',
   `site` varchar(25) DEFAULT NULL,
   `page` varchar(255) NOT NULL DEFAULT '',
   `finger` varchar(50) DEFAULT NULL,
   `nogeo` tinyint(1) DEFAULT NULL,
   `browser` varchar(50) DEFAULT NULL,
   `ip` varchar(40) DEFAULT NULL,
-  `count` int DEFAULT 1,
+  `count` int DEFAULT '1',
   `agent` text,
   `referer` varchar(255) DEFAULT '',
   `starttime` datetime DEFAULT NULL,
@@ -26,36 +26,25 @@ CREATE TABLE `tracker` (
   `difftime` varchar(20) DEFAULT NULL,
   `isJavaScript` int DEFAULT '0',
   `error` varchar(256) DEFAULT NULL,
-  `lasttime` datetime DEFAULT NULL,
+  `lasttime` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `site` (`site`),
   KEY `ip` (`ip`),
   KEY `lasttime` (`lasttime`),
   KEY `starttime` (`starttime`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=7781205 DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE `bots` (
-  `ip` varchar(40) NOT NULL DEFAULT '',
-  `agent` text NOT NULL,
-  `count` int DEFAULT NULL,
-  `robots` int DEFAULT '0',
-  `site` varchar(255) DEFAULT NULL,
-  `creation_time` datetime DEFAULT NULL,
-  `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`ip`,`agent`(254))
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-CREATE TABLE `bots2` (
-  `ip` varchar(40) NOT NULL DEFAULT '',
-  `agent` text NOT NULL,
-  `page` text,
-  `date` date NOT NULL,
-  `site` varchar(50) NOT NULL DEFAULT '',
-  `which` int NOT NULL DEFAULT '0',
-  `count` int DEFAULT NULL,
-  `lasttime` datetime DEFAULT NULL,
-  PRIMARY KEY (`ip`,`agent`(254),`date`,`site`,`which`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `bots3` (
+  `ip` varchar(50) NOT NULL COMMENT 'big enough to handle IP6',
+  `agent` text COMMENT 'big enough to handle anything',
+  `count` int DEFAULT '1' COMMENT 'the number of time this has been updated',
+  `robots` int DEFAULT '0' COMMENT 'bit mapped values as above see defines.php',
+  `site` int DEFAULT '0' COMMENT 'bitmasked values of sites see defines.php',
+  `page` varchar(255) DEFAULT '' COMMENT 'the page on my site',
+  `created` datetime DEFAULT NULL COMMENT 'when record created',
+  `lasttime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'auto, the lasttime this was updated',
+  UNIQUE KEY `ip_agent_page` (`ip`,`agent`(255),`page`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `members` (
   `name` varchar(100) DEFAULT NULL,
@@ -80,7 +69,7 @@ CREATE TABLE `myip` (
 $_site = require_once getenv("SITELOADNAME"); // Get $_site. The post will use Database and the main render will use SiteClass.
 
 // Small helper function for $_POST['page'] == 'finger'.
-// Update the tracker table and the two bots tables bots and bots2.
+// Update the tracker table and the bots3 table.
 
 function updateTables($id, $ip, $agent, $S) {
   // I can using a single MySql statment.
@@ -95,21 +84,18 @@ function updateTables($id, $ip, $agent, $S) {
   //  END 
   // WHERE id = $id;
   
-  $S->sql("update $S->masterdb.tracker set isJavaScript=isJavaScript | " . TRACKER_BOT .
+  $S->sql("update $S->masterdb.tracker set isJavaScript=isJavaScript|" . TRACKER_BOT .
           ", error=case when error is null then 'register' ".
           "when error not like '%register%' then concat(error, ',register') ".
           "else error end " .
           "where id=$id");
   
-  // I should be able to insert/update bots and bot2
+  // Update bots3. Setup $botAsBits and $page.
 
-  $S->sql("insert into $S->masterdb.bots (ip, agent, count, robots, site, creation_time, lasttime) ".
-          "values('$ip', '$agent', 1, ". BOTS_SITECLASS . ", '$S->siteName', now(), now()) ".
-          "on duplicate key update robots=robots | " . BOTS_SITECLASS . ", count=count+1, lasttime=now()");
-
-  $S->sql("insert into $S->masterdb.bots2 (ip, agent, page, date, site, which, count, lasttime) ".
-          "values('$ip', '$agent', '$S->self', date(now()), '$S->siteName', " . BOTS_SITECLASS . ", 1, lasttime=now()) ".
-          "on duplicate key update count=count+1, lasttime=now()");
+  $botAsBits = BOTS_SITECLASS;
+  $page = basename($S->self);
+  
+  $S->updateBots3($ip, $agent, $page, $S->siteName, $botAsBits);
 }
 
 // *****************************************************************************
@@ -131,16 +117,16 @@ if($_POST['page'] == 'finger') {
   if(!$visitor || !$S->agent || ($bot = $S->isBot($S->agent)) === true) {
     $bot = $bot ? "true" : "false";
     
-    error_log("register.php post: myid=$myid, myip=$myip, agent=$S->agent, isBot=$bot ".
+    error_log("register.php finger: myid=$myid, myip=$myip, agent=$S->agent, isBot=$bot ".
               "email=$email, name=$name, line=". __LINE__);
 
-    updateTables($myid, $myip, $agent, $S);
+    updateTables($myid, $myip, $S->agent, $S);
     
     header("Location: https://www.bartonphillips.com/register1.php?page=complete");
     exit();
   }
 
-  // At this point I know that this was an AJAX call not a POST, so $BLP will be returned via an
+  // At this point I know that this was an AJAX call not a POST, so we returned 'blp=8653' via an
   // echo.
   
   if($email == "bartonphillips@gmail.com") {
@@ -151,8 +137,6 @@ if($_POST['page'] == 'finger') {
 
     $S->sql("insert into $S->masterdb.myip (myIp, createtime, lasttime) values('$S->ip', now(), now()) " .
             "on duplicate key update lasttime=now()");
-    
-    $BLP = "blp=8653";
   }
 
   // The key is name, email, finger and ip.
@@ -174,7 +158,7 @@ if($_POST['page'] == 'finger') {
   $options =  array(
                     'expires' => date('U') + 31536000,
                     'path' => '/',
-                    'domain' => "." . $S->siteDomain, // leading dot for compatibility or use subdomain
+                    'domain' => "." . $S->siteName, // leading dot for compatibility or use subdomain
                     'secure' => true,      // or false
                     'httponly' => false,    // or true. If true javascript can't be used.
                     'samesite' => 'Lax'    // None || Lax  || Strict // BLP 2021-12-20 -- changed to Lax
@@ -192,7 +176,7 @@ if($_POST['page'] == 'finger') {
     throw(new Exception("register.php: Can't set BLP-Finger cookie"));
   }
   
-  echo "$BLP"; // Ajax return value.
+  echo "blp=8653"; // Ajax return value.
 
   exit();
 }
@@ -313,7 +297,7 @@ $("#submit").on("click", function(e) {
       success: function(data) {
         console.log("return: " + data);
 
-        if(data === 'blp-8653') {
+        if(data === 'blp=8653') {
           $("#container").html("<hr><h1>Registration Complete</h1><a href='/?" + data + "'>Return to Home Page</a><hr>");
         } else {
           document.documentElement.innerHTML = data;
@@ -339,7 +323,7 @@ $top
 The contents of this container are usually replaced by the text from JavaScript.
 If JavaScript is not available, either because it is turned off in the browser or the client is curl, lynx etc.,
 then we will use this <form ...>. NOTE there is no 'visitor' in the \$_POST['visitor'].
-Therfore, 'finger' in the 'members' table is marked as 'NO SCRIPT'.
+Therfore, 'finger' in the 'members' table is null.
 -->
 <div id="container">
 <hr>

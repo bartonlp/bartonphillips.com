@@ -1,4 +1,4 @@
-// logs.php is a link in adminsites.php that says "Show PHP Error.log"
+// logs.php is a link in adminsites.php that says "Show Info Logs"
 // This is used by logs.php. It also loads findip.php via
 // window.open().
 
@@ -10,7 +10,7 @@
 
 const php_errors_log = "/var/www/PHP_ERRORS.log"; 
 const php_errors_cli_log = "/var/www/PHP_ERRORS_CLI.log";
-const interaction_log = "/var/www/bartonlp.com/otherpages/interaction.log";
+const loginfo = "/var/www/data/info.log";
 const interaction_table = "TABLE"; // Special case, this is for the MySql interaction table.
 
 const logsUrl = 'logs.php'; // Name of the url used in Ajax calls.
@@ -33,10 +33,10 @@ function switchLog() {
       date = localStorage.getItem("err-table-del");
       break;
     case php_errors_cli_log:
-      date = localStorage.getItem("err-interaction-del");
-      break;
-    case interaction_table:
       date = localStorage.getItem("err-cli-del");
+      break;
+    case loginfo:
+      date = localStorage.getItem("loginfo");
       break;
   }
   
@@ -55,18 +55,21 @@ function deleteLog() {
       
       switch(logFile) {
         case php_errors_log:
-          date = localStorage.setItem("err-del", date);
+          localStorage.setItem("err-del", date);
           break;
         case interaction_table:
-          date = localStorage.setItem("err-table-del", date);
+          localStorage.setItem("err-table-del", date);
           break;
         case php_errors_cli_log:
-          date = localStorage.setItem("err-interaction-del", date);
+          localStorage.setItem("err-cli-del", date);
           break;
-        case interaction_table:
-          date = localStorage.setItem("err-cli-del", date);
+        case loginfo:
+          localStorage.setItem("loginfo", date);
           break;
       }
+
+      $("#del-time").html(`Last time deleted: ${date}`);
+      
       refresh();
     },
     error: function(err) {
@@ -78,11 +81,11 @@ function deleteLog() {
 function loadLogs(callback) {
   $("#log_name").html(logFile);
 
-  fetch(`logs.php?action=show_logs&logFile=${logFile}`)
+  fetch(`${logsUrl}?action=show_logs&logFile=${logFile}`)
   .then(response => response.json())
   .then(data => {
-    //console.log("data:", data);
-    document.getElementById("log-content").innerHTML = data[0];
+    //console.log("data:", data[0]);
+    document.getElementById("scroll-wrapper").innerHTML = data[0];
     if(callback) callback();
     waitForPeriod(1);
   })
@@ -125,7 +128,7 @@ function waitForPeriod(dly) {
 
 $("body").on("click",".ip,.id", function(e) {
   idOrIp = $(this).text(); // Id or Ip values from td 3 or 4.
-  const cl = e.currentTarget.className; // This is the class 'id' or 'ip'
+  const cl = $(this).hasClass('ip') ? 'ip' : 'id';
 
   if(e.ctrlKey) {
     // I want to toggle between showing only rows with this value and
@@ -189,7 +192,7 @@ $("body").on("click",".ip,.id", function(e) {
       data: { action: "find_ip", data: data },
       type: "get",
       success: function(ok) {
-        console.log("data: ", ok);
+        //console.log("data: ", data);
         window.open(`/findip.php?data=${data}`, "mytab");
       },
       error: function(err) {
@@ -204,3 +207,68 @@ $("body").on("click",".ip,.id", function(e) {
 // Start: Set del-time
 
 switchLog();
+
+// table pop up
+/*
+function showViewportSize() {
+  const vp = document.createElement('div');
+  vp.style.position = 'fixed';
+  vp.style.top = '0';
+  vp.style.left = '0';
+  vp.style.background = 'rgba(255,255,255,0.8)';
+  vp.style.padding = '2px 5px';
+  vp.style.zIndex = '9999';
+  document.body.appendChild(vp);
+
+  function updateSize() {
+    vp.textContent = `(${window.innerWidth}px)x(${window.innerHeight}px)`;
+  }
+
+  window.addEventListener('resize', updateSize);
+  updateSize();
+}
+showViewportSize();
+*/
+
+(function() {
+  const wrapper = document.getElementById("scroll-wrapper");
+
+  function centerScrollWrapper() {
+    const rect = wrapper.getBoundingClientRect();
+    const scrollY = window.scrollY + rect.top - (window.innerHeight - rect.height) / 2;
+    window.scrollTo({ top: scrollY, behavior: 'smooth' });
+  }
+
+  function lockScroll() {
+    // Only for desktop
+    if (!('ontouchstart' in window)) {
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function unlockScroll() {
+    document.body.style.overflow = '';
+  }
+
+  function setupScrollControl() {
+    if (window.innerWidth < 1600) {
+      // Lock/unlock scroll on hover (desktop)
+      wrapper.addEventListener('mouseenter', lockScroll);
+      wrapper.addEventListener('mouseleave', unlockScroll);
+
+      // Center on first interaction
+      wrapper.addEventListener('mouseenter', centerScrollWrapper);
+
+      // For mobile: center on first tap only
+      wrapper.addEventListener('touchstart', centerScrollWrapper);
+    } else {
+      wrapper.removeEventListener('mouseenter', lockScroll);
+      wrapper.removeEventListener('mouseleave', unlockScroll);
+      wrapper.removeEventListener('mouseenter', centerScrollWrapper);
+      wrapper.removeEventListener('tourchstart', centerScrollWrapper);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', setupScrollControl);
+  window.addEventListener('resize', setupScrollControl);
+})();

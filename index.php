@@ -3,30 +3,52 @@
 // recapcha site key: 6LefxlMnAAAAALcjQAYEBYCOhBXpLDGEL0Q8NzMt
 // recapcha secret key: 6LefxlMnAAAAAHWF6S3iofqztaqqiTFAwHfteHD6
 
+// ***********************************************************************
+// This requires 'doSiteClass = true;' Any except 'test_examples/' must be
+// used with the FULL SiteClass!!! The Simple SiteClass will fail unless
+// more work is adding additional file. As now we have only 'logagent'
+// in 'sqlite'. We use the file 'bartonphillips' and I can use 'sqlite3'
+// to use it.
+// ***********************************************************************
+
+// The Content-Security-Policy is very hard to get to work. So currently index.php is the only
+// thing that uses it. I have enabled $this->nonce in SiteClass getPageHead so if I every start
+// using Content-Security-Policy in other files it should work OK.
+
 $nonce = base64_encode(bin2hex(openssl_random_pseudo_bytes(8)));
-header("Content-Security-Policy: 
-    default-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net https://code.jquery.com; 
-    connect-src 'self' https://bartonlp.com/otherpages/js https://bartonlp.com/otherpages https://bartonlp.com/otherpages/beacon.php https://bartonlp.com/otherpages/tracker.php https://bartonlp.com/otherpages/geoAjax.php https://bartonphillips.net https://code.jquery.com https://maps.googleapis.com;
-    script-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net/js https://maps.googleapis.com https://code.jquery.com 'nonce-ZGE5NDdiMzY5ODc1ZThhNA=='; // 'unsafe-inline' 'unsafe-eval';
-    img-src 'self' data: https://bartonphillips.net https://bartonlp.com/otherpages https://bartonlp.com/otherpages/tracker.php https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg;
-    report-uri https://bartonlp/otherpages/cspreport2.php");
+//header("Content-Security-Policy:
+/*
+header("Content-Security-Policy-Report-Only: " .
+  "default-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net https://code.jquery.com; " .
+  "connect-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net https://code.jquery.com https://maps.googleapis.com; " .
+  "script-src 'self' https://bartonlp.com/otherpages https://bartonphillips.net/js https://maps.googleapis.com https://code.jquery.com 'nonce-$nonce'; " .
+  "img-src 'self' data: https://bartonphillips.net https://bartonlp.com/otherpages https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg; " .
+  "report-uri https://bartonlp.com/otherpages/cspreport2.php"
+);
+*/
 
-define('BLP_INDEX_VERSION', "BLP-index-1.1.0"); // BLP 2025-03-28 - 
+define('BLP_INDEX_VERSION', "BLP-index-1.3.1"); 
 
-$_site = require_once getenv("SITELOADNAME"); 
-//$_site = require_once "/var/www/site-class/includes/autoload.php";
+$_site = require_once getenv("SITELOADNAME");
+//$_site = require_once getenv("AUTOLOADNAME");
+//$_site = require_once "/home/barton/site-class/includes/autoload.php"; // MUST be the same as in require.
+
 //$_site->forceBot = true;
+ErrorClass::setDevelopment(true);
+$S = new SiteClass($_site);
 
-$S = new SiteClass($_site); // This must be changed if you use SimpleSiteClass.
-
-$S->nonce = $nonce;
+$S->nonce = $nonce; // Set up nonce for SiteClass getPageHead method.
 
 require_once "./index.i.php"; // Get the majority of the php
+
+// Message at the $bottom.
 
 $S->msg = "PhpVersion: " . PHP_VERSION .
           "<br><a href='https://www.digitalocean.com/?refcode=b0cc31a0e083&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge'>".
           "<img nonce='$nonce' src='https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg' alt='DigitalOcean Referral Badge' /></a>".
           "<br>Version: " . BLP_INDEX_VERSION;
+
+// Get the current value of the composer version of SiteClass we are using
 
 ob_start(); // Start output buffering
 require "/var/www/composer.lock";
@@ -37,13 +59,21 @@ if(($n = preg_match("~\"url\": \"https://github.com/bartonlp/site-class.git\",\n
 }
 $reporef = substr($m[1], 0, 7);
 
+// Put the $reporef into msg1. This also goes into $bottom.
+
 $S->msg1 = "<br>{$S->__toString()}={$S->getVersion()}, engine={$S->dbinfo->engine}<br>".
            "siteload=" . SITELOAD_VERSION . ", reporef=$reporef";
+
+// Set title and desc (description).
+
 $S->title = "Barton Phillips";
 $S->desc = "Interesting Things, About the Internet, Tips and Tutorials";
-$S->link = <<<EOF
-<link rel='stylesheet' href='/index.css'>
-EOF;
+
+// Set up the cssLink. This can be a string or an array of css files.
+
+$S->cssLink = '/index.css';
+
+// Set up the $bottom scripts
 
 $S->b_script = <<<EOF
   <script nunce='$nunce' src='https://bartonphillips.net/js/phpdate.js'></script>
@@ -71,11 +101,13 @@ setInterval(function() {
   $("#datetoday").html("<span class='green'>"+
                        d+"</span><br>Your Time is: <span class='green'>"+
                        t+"</span>");
-}, 1000);
+                       }, 1000);
   </script>    
 EOF;
 
-[$top, $footer] = $S->getPageTopBottom();
+// Get the page top and bottom
+
+[$top, $bottom] = $S->getPageTopBottom();
 
 // Check If this is a high risk IP. Comes from index.i.php
 
@@ -86,15 +118,15 @@ $top
 <h2>You are a High Risk BOT</h2>
 <p>Nothing here to see.</p>
 <hr>
-$footer
+$bottom
 EOF;
 
-  error_log("index.php: id=$istor->id, ip=$istor->ip, site=$istor->site, page=$istor->page, High risk ip found via https://api-bdc.net");
-  
-  $sql = "insert into $S->masterdb.badplayer (id, ip, site, page, type, errno, errmsg, agent, created, lasttime) ".
-  "values('$istor->id', '$istor->ip', '$istor->site', '$istor->page', 'HIGH RISK IP', '-999', 'High risk ip found', '$S->agent', now(), now())";
+  error_log("index.php: id=$istor->id, ip=$istor->ip, site=$istor->site, page=$istor->page,
+High risk ip found via https://api-bdc.net");
 
-  $S->sql($sql);
+  $S->sql("insert ignore into $S->masterdb.badplayer (id, ip, site, page, type, errno, errmsg, agent, created, lasttime) ".
+          "values(?, ?, ?, >, 'HIGH RISK IP', '-999', 'High risk ip found', ?, now(), now())",
+          [$istor->id, $istor->ip, $istor->site, $istor->page, $S->agent]);
   exit();
 }
 
@@ -108,9 +140,8 @@ $top
 <section id='browser-info'>
 <!-- Either 'You have been here nn' or 'Welcome' with user name -->
 $hereMsg
-<p id="geomessage"></p>
 <div class="locstr">
-   Our domain is <i>bartonphillips.com</i><br/>
+   Our domain is <i>bartonphillips.com</i><br>
 <!-- Location information if NOT a bot -->
    $locstr
 Start: <span class='green'>$date in New Bern, NC</span><br>
@@ -137,14 +168,12 @@ Today is: <span id="datetoday">$date</span>
 <h2>Visit one of the other websites designed by Barton Phillips</h2>
 <!-- Other Sites That I have made -->
 <div id="otherSites" class="mylinks">
-<a target="_blank" href="https://www.newbern-nc.info"><button>The Tyson Group</button></a>
-<a target="_blank" href="https://www.newbernzig.com"><button>New Bern Zig</button></a>
-<a target="_blank" href="https://www.jt-lawnservice.com"><button>JT Lawn Service</button></a>
-<a target="_blank" href="https://www.swam.us"><button>Southwest Aquatic Master</button></a>
-<a target="_blank" href="https://www.bartonlp.org"><button>bartonlp.org</button></a>
-<a target="_blank" href="https://www.bonnieburch.com"><button>Bonnie's Home Page</button></a>
-<a target="_blank" href="https://www.bartonphillips.org"><button>Home HP</button></a>
-<a target="_blank" href="https://rpi.bartonphillips.org"><button>RPI</button></a>
+<a target="_blank" href="https://www.jt-lawnservice.com?nonce=$nonce"><button>JT Lawn Service</button></a>
+<a target="_blank" href="https://www.swam.us?nonce=$nonce"><button>Southwest Aquatic Master</button></a>
+<a target="_blank" href="https://www.bartonlp.org?nonce=$nonce"><button>bartonlp.org</button></a>
+<a target="_blank" href="https://www.bonnieburch.com?nonce=$nonce"><button>Bonnie's Home Page</button></a>
+<a target="_blank" href="https://www.bartonphillips.org?nonce=$nonce"><button>Home HP</button></a>
+<a target="_blank" href="https://rpi.bartonphillips.org?nonce=$nonce"><button>RPI</button></a>
 <a target="_blank" href="articles/Stories.php"><button>My Stories</button></a>
 </div>
 </section>
@@ -165,12 +194,13 @@ Today is: <span id="datetoday">$date</span>
 <!-- BLP 2021-03-25 - End warning -->
 <h2 class="center">Interesting Sites</h2>
 <ul>
-<li><a target="_blank" href="https://www.bnai-sholem.com">Temple B'nai Sholem</a></li>
-<li><a target="_blank" href="https://newbernrotary.org">New Bern Breakfast Rotary Club</a></li>
+<li><a target="_blank" href="https://newbernrotary.org">New Bern Breakfast Rotary</a></li>
 <li><a target="_blank" href="https://www.wunderground.com/weather/us/nc/newbern/28560">Weather Underground</a></li>
 <li><a target="_blank" href="https://www.raspberrypi.org/">RaspberryPi</a></li>
 <li><a target="_blank" href="https://www.littlejohnplumbing.com">Little John Plumbing</a></li>
-
+<li><a target="_blank" href="https://rivertownerentals.com">
+R<span class="small-caps">ivertowne <span class="red">rentals</span></span></a></li>
+<li><a target="_blank" href="https://www.newbernzig.com">New Bern Zig</a></li>
 </ul>
 </section>
 
@@ -198,7 +228,7 @@ $adminStuff
 <li><a target="_blank" href="articles/fetch-promise.php">Use 'fetch' and Promise</a></li>
 <li><a target="_blank" href="articles/async-await-2.php">Use 'async/await'</a></li>
 <li><a target="_blank" href="articles/scraper-await-fetch.php">How To Scrape a Website</a></li>
-<li><a target="_blank" href="/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
+<li><a target="_blank" href="/test_examples/examples.js/user-test/worker.main.php">Demo using a Worker</a></li>
 <li><a target="_blank" href="articles/linuxmint-from-iso.php">How to Install Linux via ISO from your hard drive</a></li>
 <li><a target="_blank" href="articles/dynamicscript.php">Dynamically create script tags and IFRAMES using PHP or JavaScript</a></li>
 <li><a target="_blank" href="articles/localstorage.php">Local Storage Example: How To Resize An Image With JavaScript</a></li>
@@ -226,7 +256,7 @@ $adminStuff
 <a target="_blank" href='projects.php'>My GitHub and PHPClasses projects</a>
 </section>
 
-<!-- A place for the geo stuff -->
+<!-- A place for the geo pop-up in 'outer' and 'geocontainer' -->
 
 <div id="outer">
 <div id="geocontainer"></div>
@@ -234,5 +264,5 @@ $adminStuff
 </div>
 
 <hr>
-$footer
+$bottom
 EOF;

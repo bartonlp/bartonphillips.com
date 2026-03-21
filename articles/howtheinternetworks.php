@@ -1,8 +1,9 @@
 <?php
 // BLP 2023-02-25 - use new approach
 
-$_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site);
+$_site = require_once getenv("SITELOADNAME");
+
+$S = new SiteClass($_site);
 
 $S->title = "How the Internet Works";
 $S->banner = "<h1 class='center'>How the Internet Works</h1><hr>";
@@ -242,6 +243,4 @@ browser and sends the <b>Response</b> data to the browser.</p>
 <hr>
 $footer
 EOF;
-
-
 

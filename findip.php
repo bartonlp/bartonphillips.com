@@ -57,65 +57,65 @@ $_site = require_once(getenv("SITELOADNAME"));
 //$_site = require_once "/var/www/site-class/includes/autoload.php";
 ErrorClass::setDevelopment(true);
 $S = new SiteClass($_site);
-$T = new dbTables($S);
+$T = New dbTables($S);
 
-$val = "select id, ip, site, page, botAs, hex(botAsBits) as botAsBits, finger, nogeo, browser, agent, referer, count, hex(isjavascript) as java, ".
+$val = "select id, ip, site, page, hex(botAsBits) as botAsBits, finger, nogeo, browser, agent, referer, count, hex(isjavascript) as java, ".
        "error, starttime, endtime, difftime, lasttime ".
        "from $S->masterdb.tracker ";
 
-// These MUST BE TRUE globals!!
-$fingers = []; // from the tracker table
-$ip = null; // also from tracker
-// ****************************
-
-function getinfo($value=null, $sql) {
-  // If the 'where' clause had ip='...' then $ip has that value.
-  // Otherwise $ip is null.
-  
-  global $S, $T, $fingers, $sqlval, $ip;
-
+$getinfo = function($value=null, $sql) use ($S, $T, &$fingers, &$sqlval, &$ip, &$id, &$agent, &$page) {
   $sql = "{$sql} {$value}";
   $sqlval = $sql; // global used in first line of render.
 
   // Callback for tracker
+  // uses the makeresultrow method because maketable is not set to true.
   
-  function trackerCallback(&$row, &$desc) {
-    global $fingers, $ip; // these are true globals, outside of getinfo().
-
+  $trackerCallback = function(&$cellStr, &$row) use (&$fingers, &$ip, &$agent, &$page) {
+    // Do this only once. When $ip is set so are $agent and $page.
+    
     if(is_null($ip)) { // If the 'where' clause had ip='...' then ip is already set!
-      $ip = $row['ip']; // Do this once. Get ip from tracker table
+      $ip = $row['ip'];
+      //if(preg_match("~\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}~", $ip) === 0) logInfo("findip.php callback: No ip=$ip");
     }
-      
-    $row['referer'] = basename($row['referer']);
+
+    // Do these only if they are not set.
+    
+    $agent = $agent ?? $row['agent'];
+    $page = $page ?? $row['page']; 
+          
+    $ref = basename($row['referer']);
+
+    $cellStr = preg_replace_callback("~(<td class=.*?referer.*?>).*?</td>~", function($m) use ($ref) {
+      return "$m[1] $ref</td>";
+    }, $cellStr);
     
     if($row['finger'] != '') {
       $fingers[] = $row['finger'];
     }
     
     $t = $row['difftime'];
+
     $hr = $t/3600;
     $min = ($t%3600)/60;
     $sec = ($t%3600)%60;
-    $row['difftime'] = sprintf("%u:%02u:%02u", $hr, $min, $sec);
-  }
+    $time = sprintf("%u:%02u:%02u", $hr, $min, $sec);
 
-  // Desc callback for tracker
-  
-  function trackerCallback2(&$desc) {
-    // Add a id and ip class to the first and second td.
-    
-    $desc = preg_replace("~<tr><td>(.*?)</td><td>(.*?)</td>~", "<tr><td class='id'>$1</td><td class='ip'>$2</td>", $desc);
-  }
+    $cellStr = preg_replace_callback("~(<td class=.*?difftime.*?>).*?</td>~", function($m) use ($time) {
+      return "$m[1] $time</td>";
+    }, $cellStr);
+  };
 
-  // Create tracker table
+  // Create tracker table. Use new makerow method. Add true as third argument.
   
-  $trackerTbl = $T->maketable($sql, ['callback'=>'trackerCallback', 'callback2' => 'trackerCallback2', 'attr'=>['id'=>'trackertbl', 'border'=>'1']])[0];
+  $trackerTbl = $T->maketable($sql,
+                              ['callback'=>$trackerCallback,
+                               'attr'=>['id'=>'trackertbl', 'border'=>'1']], true)[0];
 
   // If $trackerTbl is empty then there is NO ip and nothing will work.
   
   if(empty($trackerTbl)) {
     $trackerTbl = "<h1>Not in tracker table</h1>";
-    error_log("findip \$trackerTbl empty: $value, line=". __LINE__);
+    logInfo("findip \$trackerTbl empty: $value, line=". __LINE__);
     $botsTbl = $locstr = $geoTbl = $badTbl = $ip2info = null;
   } else {
     // Good id so we can press on with the $ip and $finger form trackerCallback().
@@ -132,114 +132,114 @@ function getinfo($value=null, $sql) {
     }
     $vals = rtrim($vals, ','); // BLP 2025-01-30 - remove trailing comma.
 
-    //  Create the bots table
+    //  Create the bots3 tables
 
-    $sql = "select ip, agent, count, hex(robots) as robots, site, created, lasttime from $S->masterdb.bots3 where ip='$ip' order by lasttime";
+    $sql = "select ip, agent, page, count, hex(robots) as robots, hex(site) as site, created, lasttime ".
+           "from $S->masterdb.bots3 where ip='$ip' and agent='$agent' and page='$page' order by lasttime desc";
 
-    $botsTbl = $T->maketable($sql, ['attr'=>['id'=>'botstbl', 'border'=>'1']])[0];
+    $botsTbl = $T->maketable($sql, ['attr'=>['id'=>'botstbl', 'border'=>'1']], true)[0];
 
-    $botsTbl = empty($botsTbl) ? "<h1>Not in bots table</h1>" : "<h1>From bots table</h1>$botsTbl";
+    $botsTbl = empty($botsTbl) ? "<h1>Not in bots3 table for 'ip', 'agent', 'page'</h1>" : "<h1>From bots3 table for 'ip', 'agent', 'page'</h1>$botsTbl";
+
+    $sql = "select ip, agent, page, count, hex(robots) as robots, hex(site) as site, created, lasttime ".
+           "from $S->masterdb.bots3 where ip='$ip' order by lasttime desc";
+    
+    $botsIpTbl = $T->maketable($sql, ['attr'=>['id'=>'botsiptbl', 'border'=>'1']], true)[0];
+
+    $botsIpTbl = empty($botsIpTbl) ? "<h1>Not in bots3 table for 'ip'</h1>" : "<h1>From bots3 table for 'ip'</h1>$botsIpTbl";
 
     // Create the geo table. $vals is a string created from the $fingers array. This is from trackerCallback().
 
-    $sql = "select lat, lon, finger, site, created, lasttime from $S->masterdb.geo where finger in($vals) order by lasttime";
-
     if($vals) {
-      $geoTbl = $T->maketable($sql, ['attr'=>['id'=>'mygeo', 'border'=>'1']])[0];
+      $sql = "select lat, lon, finger, site, created, lasttime from $S->masterdb.geo where finger in($vals) order by lasttime desc";
+      $geoTbl = $T->maketable($sql, ['attr'=>['id'=>'mygeo', 'border'=>'1']], true)[0];
     }
 
     $geoTbl = empty($geoTbl) ? "<h1>Not in geo table</h1>" : "<p>From geo table</p>$geoTbl";
 
     // Create the $locstr from ipinfo.io.
 
-    if($ip) {
+    if(preg_match("~\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}~", $ip) === 1) { // A real ip
       $loc = json_decode(file_get_contents("http://ipinfo.io/$ip")); // I could also use the class link in webstats.js
       $gpsloc = $loc->loc;
       $hostby = gethostbyaddr($ip);
       $locstr = <<<EOF
-  <p>User Information from "http://ipinfo.io/$ip"</p>
-  <ul class="user-info">
-    <li>gethostbyaddr: <i class='green'>$hostby</i></li>
-    <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
-    <li id="location">GPS Loc: <i class='green'>$loc->loc</i></li>
-    <li>ISP: <i class='green'>$loc->org</i></li>
-  </ul>
-  EOF;
+<p>User Information from "http://ipinfo.io/$ip"</p>
+<ul class="user-info">
+  <li>gethostbyaddr: <i class='green'>$hostby</i></li>
+  <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
+  <li id="location">GPS Loc: <i class='green'>$loc->loc</i></li>
+  <li>ISP: <i class='green'>$loc->org</i></li>
+ </ul>
+EOF;
+
+      // Create additional info from api.ip2location.io
+
+      $key = require '/var/www/PASSWORDS/Ip2Location-key';
+      $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
+
+      // If this fails it will throw an exception
+      
+      $json = file_get_contents("https://api.ip2location.io/?key=$key&ip=$ip");
+
+      $info = json_decode($json);
+
+      $proxy = $info->is_proxy ? "true" : "false";
+
+      $ip2info = <<<EOF
+<table id="results" border='1'>
+<tr><td>IP Address</td><td>$ip</td></tr>
+<tr><td>Country Code</td><td>$info->country_code</td></tr>
+<tr><td>Country Name</td><td>$info->country_name</td></tr>
+<tr><td>Reagion</td><td>$info->region_name</td></tr>
+<tr><td>City</td><td>$info->city_name</td></tr>
+<tr><td>Zip Code</td><td>$info->zip_code</td></tr>
+<tr><td>Time Zone</td><td>$info->time_zone</td></tr>
+<tr><td>Autonomous System Number</td><td>AS$info->asn</td></tr>
+<tr><td>Autonomous System</td><td>$info->as</td></tr>
+<tr><td>Proxy</td><td>$proxy</td></tr>
+EOF;
+      // Get info from api-bdc.net
+      // If file_get_contents fails it throws and exception.
+      
+      $json = file_get_contents("https://api-bdc.net/data/hazard-report?ip=$ip&key=$bigdatakey");
+
+      $istor = json_decode($json);
+      //vardump("findip: istor", $istor);
+
+      $tordisp = null;
+
+      foreach($istor as $k=>$v) { // The informaton is in key value pairs.
+        if($v === 0 || !empty($v)) {
+          $tordisp .= "<tr><td>$k</td><td>$v</td></tr>";
+        }
+      }
+
+      $ip2info .= empty($tordisp) ? "<tr><td colspan='2'>No api-bdc.net Info</td></tr>" : $tordisp;
+
+      // Get the RiskLevel from api-bdc.net
+
+      $json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bigdatakey");
+
+      $istor = json_decode($json);
+
+      $ip2info .= empty($istor->description) ? "<tr><td colspan='2'>No RiskLevel found</td></tr></table>" :
+                  "<tr><td>RiskLevel</td><td>$istor->description</td></tr></table>";
+
+      $sql = "select ip, hex(botAsBits) as botAsBits, type, errno, errmsg, agent, created, lasttime ".
+             "from $S->masterdb.badplayer where ip='$ip' order by lasttime";
+
+      $badTbl = $T->maketable($sql, ['attr'=>['id'=>'badplayer', 'border'=>'1']], true)[0];
     } else {
+      logInfo("findip: No ip ($ip), id=$id");
       $locstr = "<h1>No Location Data Available from <i>http://ipinfo.io</i></h1>";
     }
 
-    // Create the badplayer table if ip is not empty.
-
-    if(!empty($ip)) {
-      $sql = "select ip, botAs, type, errno, errmsg, agent, created, lasttime from $S->masterdb.badplayer where ip='$ip' order by lasttime";
-      $badTbl = $T->maketable($sql, ['attr'=>['id'=>'badplayer', 'border'=>'1']])[0];
-    }
-
     $badTbl = empty($badTbl) ? "<h1>Not in badplayer table</h1>" : "<h1>From badplayer table</h1>$badTbl";
-
-    // Create additional info from api.ip2location.io
-
-    $key = require '/var/www/PASSWORDS/Ip2Location-key';
-    $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
-
-    if(($json = file_get_contents("https://api.ip2location.io/?key=$key&ip=$ip")) === false) {
-      error_log("findip: ip2location failed");
-      exit("<h1>Not a Valid IP</h1><p>ip2location failed</p>");
-    }
-
-    $info = json_decode($json);
-
-    $proxy = $info->is_proxy ? "true" : "false";
-
-    $ip2info = <<<EOF
-  <table id="results" border='1'>
-  <tr><td>IP Address</td><td>$ip</td></tr>
-  <tr><td>Country Code</td><td>$info->country_code</td></tr>
-  <tr><td>Country Name</td><td>$info->country_name</td></tr>
-  <tr><td>Reagion</td><td>$info->region_name</td></tr>
-  <tr><td>City</td><td>$info->city_name</td></tr>
-  <tr><td>Zip Code</td><td>$info->zip_code</td></tr>
-  <tr><td>Time Zone</td><td>$info->time_zone</td></tr>
-  <tr><td>Autonomous System Number</td><td>AS$info->asn</td></tr>
-  <tr><td>Autonomous System</td><td>$info->as</td></tr>
-  <tr><td>Proxy</td><td>$proxy</td></tr>
-  EOF;
-
-    // Get info from api-bdc.net
-
-    if(($json = file_get_contents("https://api-bdc.net/data/hazard-report?ip=$ip&key=$bigdatakey")) === false) {
-      error_log("findip: Call to 'https://api-bdc.net/data/hazard-report?ip=$ip&key=$bigdatakey' failed");
-      exit("<h1>tor failed 1</h1>");
-    }
-
-    $istor = json_decode($json);
-    //vardump("findip: istor", $istor);
-
-    $tordisp = null;
-
-    foreach($istor as $k=>$v) { // The informaton is in key value pairs.
-      if($v === 0 || !empty($v)) {
-        $tordisp .= "<tr><td>$k</td><td>$v</td></tr>";
-      }
-    }
-
-    $ip2info .= empty($tordisp) ? "<tr><td colspan='2'>No api-bdc.net Info</td></tr>" : $tordisp;
-
-    // Get the RiskLevel from api-bdc.net
-
-    if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bigdatakey")) === false) {
-      error_log("findip: get RiskLevel from api-bdc.net failed");
-      exit("<h1>tor failed 2</h1>");
-    }
-    $istor = json_decode($json);
-
-    $ip2info .= empty($istor->description) ? "<tr><td colspan='2'>No RiskLevel found</td></tr></table>" :
-                "<tr><td>RiskLevel</td><td>$istor->description</td></tr></table>";
   }
 
-  return [$trackerTbl, $botsTbl, $locstr, $geoTbl, $badTbl, $ip2info];
-}
+  return [$trackerTbl, $botsTbl, $botsIpTbl, $locstr, $geoTbl, $badTbl, $ip2info];
+};
 
 // ********************************
 // Start Here
@@ -249,23 +249,31 @@ if($_POST['page'] == 'find') { // 'find' has two modes one with 'type' the other
   // If a POST
 
   $where = $_POST['where'];
-  preg_match("~ip='(\d+\.\d+\.\d+\.\d+)'~", $where, $m);
-  $searchIp = $m[1];
-  
+  preg_match("~(?:(ip)='(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'|(id)='(\d+)')~", $where, $m);
+  logInfo("**findip: post ". print_r($m, true));
+  if($m[1] == 'ip') {
+    $searchIp = $m[2];
+  } else {
+    $id = $m[4];
+  }
+  logInfo("**findip: post id=$id");
+
   $and = $_POST['and'];
   $by = $_POST['by'];
   $value = "$where $and $by";
   $sql = $_POST['sql'] ?? $val;
 
-  // If type is 'post' just get the raw array and echo it.
+  //logInfo("where=$where, and=$and, by=$by, sql=$sql");
+  
+  // If type is 'post' just get the raw array and echo it back to the AJAX caller.
   
   if($_POST['type'] == 'post') {
-    $data = json_encode(getinfo($value, $sql));
+    $data = json_encode($getinfo($value, $sql));
     echo $data;
     exit();
   }
-  // If not type fall through. We can do this because this post was from a <form.
-  // If the post was from AJAX then 'type' is set to true and the data is returned to the caller.
+  // FROM a <form>
+  // If type does not equal 'post' fall through. We can do this because this post was from a <form>.
 } elseif($_GET) {
   // If a GET. We send the information in data as json.
 
@@ -278,24 +286,34 @@ if($_POST['page'] == 'find') { // 'find' has two modes one with 'type' the other
     $data = $data['message'];
   }
 
-  // Now use the information in data. data[0] is where, data[1] is and data[3] is by.
+  // Now use the information in data. data[0] is 'where', data[1] is 'and' data[3] is 'by'.
   
   $where = $data[0];
-  preg_match("~ip='(\d+\.\d+\.\d+\.\d+)'~", $where, $m);
-  $searchIp = $m[1];
+  logInfo("**findip: where=|$where|");
+
+  preg_match("~(?:(ip)='(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'|(id)='(\d+)')~", $where, $m);
+  logInfo("**findip: ". print_r($m, true));
+  if($m[1] == 'ip') {
+    $searchIp = $m[2];
+  } else {
+    $id = $m[4];
+  }
+  logInfo("**findip: id=$id");
   $and = $data[1];
   $by = $data[2];
   if(!str_contains($by, 'order')) {
-    error_log("findip.php GET, 'by' error: id=$S->LAST_ID, ip=$S->ip, site=$S->site, page=$S->self, agent=$S->agent");
+    logInfo("findip.php GET, 'by' error: id=$S->LAST_ID, ip=$S->ip, site=$S->site, page=$S->self, agent=$S->agent");
     exit('Go Away');
   }
+  
   $value = "$where $and $by";
   $sql = $val;
 }
+
 $ip = $searchIp;
 
 if(!empty($sql)) {
-  [$trackerTbl, $botsTbl, $locstr, $geoTbl, $badTbl, $ip2info] = getinfo($value, $sql);
+  [$trackerTbl, $botsTbl, $botsIpTbl, $locstr, $geoTbl, $badTbl, $ip2info] = $getinfo($value, $sql);
   $ip = $searchIp;
 } else {
   $sql = $val;
@@ -331,8 +349,8 @@ EOF;
       goto SKIP_SELECT;
     }
 
-    $S->sql("select id, ip, site, page, botAs, botAsBits, agent, starttime from $S->masterdb.tracker where $x");
-    [$id, $ip, $site, $page, $botAs, $botAsBits, $agent, $created] = $S->fetchrow('num'); // BLP 2025-04-07 - $botAs is now the botAsBits field.
+    $S->sql("select id, ip, site, page, botAsBits, agent, starttime from $S->masterdb.tracker where $x");
+    [$id, $ip, $site, $page, $botAsBits, $agent, $created] = $S->fetchrow('num'); 
 
 SKIP_SELECT:
 
@@ -343,63 +361,67 @@ SKIP_SELECT:
     if(!$id) $id = "NO ID from tracker table";
 
     // In this table id is a varchar(30)
-    // BLP 2025-04-07 - badplayer now also has botAsBits.
     
-    $S->sql("insert into $S->masterdb.badplayer (ip, id, site, page, botAs, botAsBits, type, errno, errmsg, agent, created, lasttime) ".
-            "values('$ip', '$id', '$site', '$page', '$botAs', $botAsBits, 'AUTHORIZATION DENIED', -999, '$errMsg', '$agent', '$created', now())");
+    $S->sql("insert into $S->masterdb.badplayer (ip, id, site, page, botAsBits, type, errno, errmsg, agent, created, lasttime) ".
+            "values('$ip', '$id', '$site', '$page', $botAsBits, 'AUTHORIZATION DENIED', -999, '$errMsg', '$agent', '$created', now())");
 
-    error_log("findip.php: $errMsg, id=$id, ip=$ip, site=$site, page=$page, botAs=$botAs, agent=$agent, requestUri=$requestUri");
+    logInfo("findip.php: $errMsg, id=$id, ip=$ip, site=$site, page=$page, botAsBits=$botAsBits, agent=$agent, requestUri=$requestUri");
   } else {
-    error_log("findip.php: preg_match() returned false. ERROR");
+    logInfo("findip.php: preg_match() returned false. ERROR");
   }
   exit();
 }
 // BLP 2024-12-15 - End
 
+// CSS
+
 $S->css =<<<EOF
-/* 2 is ip address */
-#trackertbl td:nth-of-type(1), #trackertbl td:nth-of-type(2) {
+/* 1 is id, 2 is ip address */
+/*#trackertbl td:nth-of-type(1), #trackertbl td:nth-of-type(2) {
   cursor: pointer;
-}
+}*/
+.id, .ip { cursor: pointer; }
 /* 4 is page*/
-#trackertbl td:nth-of-type(4) {
+/*#trackertbl td:nth-of-type(4) {
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
-}
-/* 5 is botAs */
-#trackertbl td:nth-of-type(5) {
-  overflow-x: auto; max-width: 100px; white-space: pre;
-  cursor: pointer;
-}
-/* 6 is botAsBits */
-#trackertbl td:nth-of-type(6) {
+}*/
+.page { overflow-x: auto; max-width: 100px; white-space: pre; cursor: pointer; }
+/* 5 is botAsBits */
+/*#trackertbl td:nth-of-type(5) {
   max-width: 20px;
   cursor: pointer;
-}
-/* 7 is finger */
-#trackertbl td:nth-of-type(7) {
+}*/
+.botAsBits { max-width: 20px; cursor: pointer; }
+/* 6 is finger */
+/*#trackertbl td:nth-of-type(6) {
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
-}
+}*/
+.finger { overflow-x: auto; max-width: 100px; white-space: pre; cursor: pointer; }
 /* 9 is agent */
-#trackertbl td:nth-of-type(9) {
+/*#trackertbl td:nth-of-type(9) {
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
-}
+}*/
+.agent { overflow-x: auto; max-width: 100px; white-space: pre; cursor: pointer; }
 /* 10 is referer */
-#trackertbl td:nth-of-type(10) {
+/*#trackertbl td:nth-of-type(10) {
   overflow-x: auto; max-width: 100px; white-space: pre;
   cursor: pointer;
-}
+}*/
+.referer { overflow-x: auto; max-width: 100px; white-space: pre; cursor: pointer; }
 /* 12 is javascript */
-#trackertbl td:nth-of-type(12) { cursor: pointer;}
+/*#trackertbl td:nth-of-type(12) { cursor: pointer;}*/
+.java { cursor: pointer; }
 /* 13 is error */
-#trackertbl td:nth-of-type(13) {
+/*#trackertbl td:nth-of-type(13) {
   overflow-x: auto;
   max-width: 100px;
   white-space: pre;
   cursor: pointer;
-}
+}*/
+.error { overflow-x: auto; max-width: 100px; white-space: pre; cursor: pointer; }
 
 #trackerContainer, #botsContainer, #mygeo, #badplayer, #daycounts {
   width: 100%;
@@ -409,9 +431,10 @@ $S->css =<<<EOF
 #botsContainer td { padding-left: 10px; padding-right: 10px; }
 /* agent field */
 #botsContainer td:nth-of-type(2) { word-break: break-all; width: 900px; }
-#botstbl, #mygeo, #dayrecords, #badplayer { width: 100%; }
-#botstbl { position: relative; }
-#botstbl td:nth-of-type(4) { cursor: pointer; }
+#botstbl, #botsiptbl, #mygeo, #dayrecords, #badplayer { width: 100%; }
+#botstbl, #botsiptbl { position: relative; }
+#botstbl td:nth-of-type(5), #botstbl td:nth-of-type(6),
+#botsiptbl td:nth-of-type(5), #botsiptbl td:nth-of-type(6) { cursor: pointer; }
 #badplayer td { padding-left: 10px; padding-right: 10px; font-size: 18px;}
 #form th { text-align: left; padding-right: 10px; font-size: 18px; }
 #locationx { font-size: 18px; }
@@ -456,6 +479,8 @@ button { border-radius: 5px; background: green; color: white; font-size: 18px; }
 #ip2info { margin-top: 5px; margin-bottom: 20px; }
 #ip2info td { padding: 5px; }
 EOF;
+
+$S->cssLink = "findip.css";
 
 // setupjava.i.php puts the information for the JavaScript used in the popup for the isJavaScript
 // human information. It goes into h_inlineScript. If we add anything else to h_inlineScript it
@@ -573,16 +598,16 @@ $S->b_inlineScript =<<<EOF
   });
 
   // These tds each have cursor: pointer.
-  // If td 4=page, 5=botAs, 6=finger, 9=agent, 10=referer and 13=error. 
+  // If td 4=page, 6=finger, 9=agent, 10=referer and 13=error. 
   // When clicked show the whole cell item.
   // ALSO if Ctrl Key is pressed on td 9 (agent) we open a new tab with the agents bot information
   // website.
 
-  $("body").on("click", "#trackertbl td:nth-of-type(4), #trackertbl td:nth-of-type(5), "+
-                        "#trackertbl td:nth-of-type(7), #trackertbl td:nth-of-type(10), "+
-                        "#trackertbl td:nth-of-type(11), #trackertbl td:nth-of-type(14)",
+  $("body").on("click", "#trackertbl td:nth-of-type(4), "+
+                        "#trackertbl td:nth-of-type(6), #trackertbl td:nth-of-type(9), "+
+                        "#trackertbl td:nth-of-type(10), #trackertbl td:nth-of-type(13)",
                         function(e) {
-    // A ctrl key and cellIndex 8 which is td 9 (agent).
+    // A ctrl key and cellIndex 7 which is td 8 (agent).
 
     if(e.ctrlKey && $(this)[0].cellIndex == 8) {
       const txt = $(this).text();
@@ -593,10 +618,13 @@ $S->b_inlineScript =<<<EOF
         // open the window in a new tab.
 
         window.open(found[1], "bot");
+      } else {
+        $(this).css({color: 'red'});
       }
+
       e.stopPropagation();
     } else {
-      // Note ctrl key and cellIndex 8
+      // Note ctrl key and cellIndex 7
       // Just a normal click.
 
       let ypos, xpos;
@@ -613,13 +641,17 @@ $S->b_inlineScript =<<<EOF
     }
   });
 
-  // trackertbl td 7 is botAsBits
+  // trackertbl td 5 is botAsBits
   // trackertbl td 12 is the java script value.
-  // botstbl td 4 is the robots value
-  // botstbl td 5 is the site value
+  // botstbl td 5 is the robots value
+  // botstbl td 6 is the site value
+  // botsiptbl td 5 is the robots value
+  // botsiptbl td 6 is the site value
   // Show the human readable values.
 
-  $("body").on("click", "#trackertbl td:nth-of-type(6), #trackertbl td:nth-of-type(13), #botstbl td:nth-of-type(4), #botstbl td:nth-of-type(5)", function(e) {
+  $("body").on("click", `#trackertbl td:nth-of-type(5), #trackertbl td:nth-of-type(12), 
+#botstbl td:nth-of-type(5), #botstbl td:nth-of-type(6),
+#botsiptbl td:nth-of-type(5), #botsiptbl td:nth-of-type(6)`, function(e) {
     let js = parseInt($(this).text(), 16),
     h = '', ypos, xpos;
     let human;
@@ -637,10 +669,10 @@ $S->b_inlineScript =<<<EOF
       // Robots (bots table)
 
       const tdIndex = $(this).index();
-      if(tdIndex == 3) {
+      if(tdIndex == 4) {
         // robots
         human = robots; // robots was set in webstats.php in the inlineScript.
-      } else if(tdIndex == 4) {
+      } else if(tdIndex == 5) {
         // site
         const tmp = {
              'bartonphillips.com': 1,
@@ -651,7 +683,8 @@ $S->b_inlineScript =<<<EOF
              'newbernzig.com': 0x20,
              'newbern-nc.info': 0x40,
              'jt-lawnservice.com': 0x80,
-             'swam.us': 0x100
+             'swam.us': 0x100,
+             'NO_SITE': 0x10000
         };
         human = Object.fromEntries(
           Object.entries(tmp).map(([domain, bit]) => [bit, domain])
@@ -663,10 +696,10 @@ $S->b_inlineScript =<<<EOF
       // Tracker table.
 
       const tdIndex = $(this).index();
-      if(tdIndex == 5) {
+      if(tdIndex === 4) {
         // this is human = robots
         human = robots;
-      } else if(tdIndex == 12) {
+      } else if(tdIndex == 11) {
         // this is human = tracker
         human = tracker; // tracker was set in webstats.php in the inlineScript
       }
@@ -728,7 +761,10 @@ $sqlStatment
 <div id='locationx'>$locstr</div>
 <div id='ip2info'>$ip2info</div>
 <div id='trackerContainer'>$trackerTbl</div>
-<div id='botsContainer'>$botsTbl</div>
+<div id='botsContainer'>
+$botsTbl<br>
+$botsIpTbl
+</div>
 <div id='geo'>$geoTbl</div>
 <div id='badContainer'>$badTbl</div>
 <div id="outer">

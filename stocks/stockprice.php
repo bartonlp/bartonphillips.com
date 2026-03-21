@@ -14,9 +14,11 @@ CREATE TABLE `stocks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 */
 
-//exit("<h1>cloud.ipxapis.com No Longer Has a Free Subscription</h1>");
 
 $_site = require_once(getenv("SITELOADNAME"));
+ErrorClass::setDevelopment(true);
+
+require './StockApi.php';
 
 function checkUser($S) {
   // I could also look at the fingerprint for my know devices.
@@ -57,113 +59,42 @@ CREATE TABLE `stocktotals` (
 if($_GET['page'] == "EndOfDay") {
   $S = new Database($_site);
 
-  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
-
-  // Get our stocks
+  echo "<h1>Start</h1>";
+  echo str_repeat(' ', 4096); // Pad to fill buffer
+  ob_flush();
+  flush();
   
-  $sql = "select stock, qty from stocks where status = 'active'";
+  $stock = new StocksApi($S);
+
+  $data = $stock->getQuotes();
+
+  $djiPrice = $data->dji->price;
+  $total = $data->data->grandTotal;
   
-  $S->sql($sql);
+  $stock = new StocksApi($S);
+  $stock->putStockTotals([$djiPrice, $total]);
+  $stock->updateStocksMoving();
 
-  while([$stock, $qty] = $S->fetchrow('num')) {
-    $ar[$stock] = $qty;
-  }
-
-  $symboleList = implode(",", array_keys($ar));
-
-  $str = "https://api.iex.cloud/v1/data/core/iex_tops/$symboleList?token=$iex_token";
-
-  $iex = json_decode(file_get_contents($str), true); // decode as an array
-
-  $total = $stocktotal = $mutual = 0;
-  $value = 0;
-
-  for($i=0; $i < count($iex); ++$i) {
-    $x = $iex[$i];
-    $z = $x['symbol'];
-    $price = $y[$z]['price'] = $x['lastSalePrice'];
-    $y[$z]['time'] = $x['lastSaleTime'];
-    $y[$z]['volume'] = $x['volume'];
-
-    $S->sql("insert into stocksmoving values('$z', '$price', now())");
-  }
-  
-  foreach($y as $k=>$v) {
-    $value = $y[$k]['price'] * $ar[$k]; // price * qty
-    echo "$k: price={$y[$k]['price']}, total price=$value, qty= $ar[$k]<br>";
-    $stocktotal += $value;
-  }
-
-  // Now get the mutual funds via alpha
-
-  $alphakey = require("/var/www/PASSWORDS/alpha-token");
-  
-  $sql = "select stock, qty from stocks where status = 'mutual'";
-  
-  $S->sql($sql);
-
-  while([$stock, $qty] = $S->fetchrow('num')) {
-    $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
-
-    $alpha = json_decode(file_get_contents($url), true)['Global Quote'];
-  
-    $mdate = $alpha['07. latest trading day'];
-    $close = $alpha['05. price'];
-    $value = $close * $qty;
-    $mutual += $value;
-    echo "$stock: $value, $qty -- $mdate<br>";
-  }
-  $total = $stocktotal + $mutual;
-  $total = number_format(round($total, 2), 2);
-  $mutual = number_format(round($mutual, 2), 2);
-  $stocktotal = number_format(round($stocktotal, 2), 2);
-  $date = date("Y-m-d H:i:s");
-  echo "\nMutuals $mdate: $mutual";
-  echo "\nStocks $date: $stocktotal";
-  echo "\nTotal $date: $total<br>";
-
-  $S->sql("insert into stocktotals (total, created) values('$total', current_date()) " .
-           "on duplicate key update total='$total'");
+  echo "<h1>Done</h1>";
   exit();
 }
 
 // AJAX from stock-price-quote.js
 // Get info from stocks table.
-// This now uses IEX for stocks and Alpha mutual funds.
 
 if($_POST['page'] == 'web') {
   $S = new Database($_site); // All we need here is the database.
 
-  $alphakey = require("/var/www/PASSWORDS/alpha-token");
-  $iex_token = require("/var/www/PASSWORDS/iex-token");
-
-  $sql = "select stock, price, qty, status, name from stocks where status='active'";
-  
-  $S->sql($sql);
-
-  while([$stock, $price, $qty, $status, $company] = $S->fetchrow('num')) {
-    $ar[$stock] = ["price"=>$price, "qty"=>$qty, "status"=>$status, "company"=>$company];
-    $stocks .= "$stock,";
-  }
-
-  $stocks = rtrim($stocks, ',');
-  
-  $str = "https://api.iex.cloud/v1/data/core/iex_tops/$stocks?token=$iex_token";
-  $iex = json_decode(file_get_contents($str), true); // decode as an array
-
-  for($i=0; $i < count($iex); ++$i) {
-    $x = $iex[$i];
-    $ar[$x['symbol']]['currPrice'] = $x['lastSalePrice'];
-    $ar[$x['symbol']]['currTime'] = $x['lastSaleTime'];
-    $ar[$x['symbol']]['volume'] = $x['volume'];
-  }
-  //error_log("stockprice.php ret: ".print_r($ar, true));
-  $ret = json_encode($ar);
+  $stock = new StocksApi($S);
+  $data = $stock->getQuotes();
+    
+  $ret = json_encode($data);
+  header('Content-Type: application/json');
   echo $ret;
   exit();
 }
 
-$S = new $_site->className($_site);
+$S = new SiteClass($_site);
 
 //checkUser($S);
 
@@ -191,15 +122,15 @@ $S->css =<<<EOF
 body {
   font-family: "Roboto";
 }
-/*#stocks { width: 100%; }*/
+#DJIA { cursor: pointer; }
 #stocks th, #mutuals th {
   padding: .3rem;
 }
-#stocks td, #mutuals td {
+#stocks td {
   padding: .3rem;
   text-align: right;
 }
-#stocks td:first-child, #mutuals td:first-child {
+#stocks .stock {
   background-color: lightblue;
   color: black;
   text-align: left;
@@ -208,12 +139,12 @@ body {
   line-height: 60%;
   cursor: pointer;
 }
-#stocks td:nth-of-type(2), #mutuals td:nth-of-type(2) {
+.price {
   width: 6.5rem;
 }
 /* The first td has stock and company each in a span. This is the second span which is company */
 /* Use Roboto Bold for the company spans. */
-#stocks td:first-child span:last-child, #mutuals td:first-child span:last-child {
+.coname {
   font-family: "Roboto bold";
   font-size: .5rem;
   line-height: 0;
@@ -222,29 +153,17 @@ body {
 select {
   font-size: 1rem;
 }
+.red { color: red; }
 /* Use Roboto Bold for 'Buy Price/% Diff' */
-#stocks td:nth-child(4), #mutuals td:nth-child(4) {
+.buyprice {
   font-family: "Roboto bold";
 }
 /* make stocks and mutuals line up on the fist five */
-#stocks td:nth-of-type(3), #stocks td:nth-of-type(4), #stocks td:nth-of-type(5),
-#mutuals td:nth-of-type(3), #mutuals td:nth-of-type(4), #mutuals td:nth-of-type(5) {
+.buyprice, .qtyval, .changeinfo {
   width: 6.5rem;
 }
-/*#mutuals { width: 100%; }*/
-#mutuals td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4), td:nth-of-type(5) { text-align: right; }
-/*#totals { width: 500px; }*/
-/* Use Roboto Bold for the 'totals' table right below 'stocks' table */
-#totals th {
-  font-family: "Roboto bold";
-  text-align: left;
-  width: 13rem;
-  padding: 0 .3rem 0 .3rem;
-}
-#totals th:last-child {
-  text-align: right;
-  width: 6.5rem;
-}
+.buyTotal, .grandTotal, .divTotal { text-align: right; }
+.grandTotal, .divTotal { vertical-align: top; }
 #attribution { margin-top: 10px; }
 /* A span to make negative values red */
 .neg {
@@ -266,19 +185,20 @@ $S->banner = "<h1>Stock Quotes</h1>";
 
 // Put the js at the end just befor the closing </body>
 
-$S->b_script = "<script src='stockprice.js'></script>";
+$S->b_script = "<script src='/dist/stockprice.js'></script>";
 
 [$top, $footer] = $S->getPageTopBottom();
 
 // Render page with the 'loading' icon. Once the worker get all of the data the
-// stock-price-update.js will rerender the page with all of the data.
+// stockprice.js will rerender the page with all of the data.
 date_default_timezone_set('America/New_York');
 $date = date("r T", time());
 
 echo <<<EOF
 $top
 <hr>
-<h4>Today is: $date</h4>            
+<h4>Today is: $date</h4>
+<h3><span id="DJIA" onclick='gotoDJIA()'>Dow Jones Industrial Average</span> is <span id="DJI"></span></h3>
 
 <div id="selectstatus"></div>
 

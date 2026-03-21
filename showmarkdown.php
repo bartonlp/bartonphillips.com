@@ -1,5 +1,4 @@
 <?php
-// BLP 2023-02-25 - use new approach
 // Show the markdown file
   
 $_site = require_once(getenv("SITELOADNAME"));

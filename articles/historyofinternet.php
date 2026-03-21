@@ -2,7 +2,7 @@
 // The history of the Internet
 
 $_site = require_once(getenv("SITELOADNAME"));
-$S = new $_site->className($_site);
+$S = new SiteClass($_site);
 
 $S->css =<<<EOF
 #images table, #images img {

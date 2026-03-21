@@ -1,7 +1,7 @@
 <?php
 // BLP 2023-02-25 - use new approach.
 
-$_site = require_once(getenv("SITELOADNAME"));
+$_site = require_once getenv("SITELOADNAME");
         
 $S = new $_site->className($_site);
 
