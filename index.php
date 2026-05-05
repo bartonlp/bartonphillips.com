@@ -174,6 +174,7 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.bonnieburch.com?nonce=$nonce"><button>Bonnie's Home Page</button></a>
 <a target="_blank" href="https://www.bartonphillips.org?nonce=$nonce"><button>Home HP</button></a>
 <a target="_blank" href="https://rpi.bartonphillips.org?nonce=$nonce"><button>RPI</button></a>
+<a target="_blank" href="https://spin.bartonphillips.org?nonc=$nonce"><button>Spin</button></a>
 <a target="_blank" href="articles/Stories.php"><button>My Stories</button></a>
 </div>
 </section>

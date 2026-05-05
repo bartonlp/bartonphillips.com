@@ -1,4 +1,16 @@
 <?php
+/*
+15-minute Delayed US Stock Market Data | Historical Index Data: Enabled
+To access 15-minute delayed US stock market data, please append entitlement=delayed to the data request. For example:
+https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&entitlement=delayed&apikey=GD5L5XHCYXSSF4QQ
+https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&entitlement=delayed&apikey=GD5L5XHCYXSSF4QQ
+https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&entitlement=delayed&apikey=GD5L5XHCYXSSF4QQ
+
+Tip: you can also access 15-minute delayed technical indicators with similar URL configurations. For example:
+https://www.alphavantage.co/query?function=SMA&symbol=IBM&interval=5min&time_period=10&series_type=close&entitlement=delayed&apikey=GD5L5XHCYXSSF4QQ
+Tip: for historical index data, not extra entitlement parameter is needed. For example:
+https://www.alphavantage.co/query?function=INDEX_DATA&symbol=DJI&interval=daily&apikey=GD5L5XHCYXSSF4QQ
+*/
 
 /**
  * Format as money with Dollar sign and commas and a period at two decimal places.
@@ -166,7 +178,7 @@ class StocksApi {
     $json = file_get_contents($url);
 
     $data = json_decode($json, true);
-
+    error_log("data: " . print_r($data, true));
     $price = $data['Global Quote']['05. price'] ?? 0;
     $high = $data['Global Quote']['03. high'] ?? 0;
     $low = $data['Global Quote']['04. low'] ?? 0;
