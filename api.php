@@ -5,9 +5,12 @@
  */
 
 $_site = require_once getenv("SITELOADNAME");
+
+//******
+// IMPORTANT Must use 'barton'. The mysitemap.jso is in 'bartonphillips' WE MUST CHANGE IT HERE
 $_site->dbinfo->database = "barton"; // This is 'bartonphillips'in the mysitemap.json, make it barton.
-//$engine = $_site->dbinfo->engine = "sqlite";
-$engine = $_site->dbinfo->engine = "mysql";
+//******
+
 $db = new dbPdo($_site);
 
 header('Content-Type: application/json');
