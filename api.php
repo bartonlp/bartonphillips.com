@@ -140,7 +140,9 @@ lasttime = datetime('now','localtime')";
     break;
 }
 
+/*
 file_put_contents('/tmp/api_hits.log',
   date('c') . ", type=$type, n=$n, count=$count, query=$query, params=" . print_r($params, true) . ", data=". print_r($data, true) ."\n",
   FILE_APPEND
                  );
+*/
