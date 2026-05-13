@@ -170,8 +170,8 @@ EOF;
                 "on duplicate key update count=count+1, lasttime=now()",
                 [$myip]);
 
-        error_log("index.i.php: ip=$myip, new ip added to members table for $cookieName, $cookieEmail, $cookieFinger, ".
-                  "insert/update myip count, line=". __LINE__);
+        //error_log("index.i.php: ip=$myip, new ip added to members table for $cookieName, $cookieEmail, $cookieFinger, ".
+        //          "insert/update myip count, line=". __LINE__);
       }
     }
 

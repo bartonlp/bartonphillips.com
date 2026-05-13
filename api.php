@@ -1,7 +1,8 @@
 <?php
-/*
- * Simple JSON API endpoint for SELECT queries only
-
+/**
+ * This is in bartonphillips.com. It uses api.php which can use a remote (like HP-envy, Rpi and Spin)
+ * and with a remote mysitemap.json uses "webServer": true. The api.php does DigitalOcean server and
+ * SiteClass.
  */
 
 $_site = require_once getenv("SITELOADNAME");
@@ -11,9 +12,12 @@ $_site = require_once getenv("SITELOADNAME");
 $_site->dbinfo->database = "barton"; // This is 'bartonphillips'in the mysitemap.json, make it barton.
 //******
 
+/**
+ * Use either 'sqlite' or 'mysql'
+ */
 //$_site->dbinfo->engine = "sqlite";
-
-$engine = $_site->dbinfo->engine;
+$_site->dbinfo->engine = "mysql";
+$engine = $_site->dbinfo->engine; // Detemin which server we use.
 
 $db = new dbPdo($_site);
 
@@ -29,11 +33,9 @@ if(!is_array($input)) {
   exit;
 }
 
-// --- defaults ---
-$table = $input['table'] ?? 'logagent';
 $type = $input['type'];
 
-// --- whitelist tables ---
+// --- whitelist tables --- It is only 'logagent' for now.
 $allowedTables = ['logagent'];
 
 if(!in_array($table, $allowedTables)) {
@@ -65,20 +67,19 @@ switch($type) {
       $data[] = $row;
     }
 
+    $count = count($data);
+
     echo json_encode([
                       'query' => $query,   // optional: remove in production
-                      'count' => count($data),
+                      'count' => $count,
                       'params'=> $params,
                       'data'  => $data,
                      ]);
-
-    $count = count($data);
-
     break;
   case 'insert':
-    $site  = $input['site']  ?? '';
-    $ip    = $input['ip']    ?? '';
-    $agent = $input['agent'] ?? '';
+    $site  = $input['site'];
+    $ip    = $input['ip'];
+    $agent = $input['agent'];
       
     $params = [$site,
                $ip,
