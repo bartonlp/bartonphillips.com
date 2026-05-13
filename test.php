@@ -5,14 +5,19 @@ $_site->dbinfo->engine = "sqlite";
 //vardump("site", $_site);
 
 $S = new dbPdo($_site);
-//echo "test<br>";
-
 $site = $S->siteName;
 $ip = $S->ip;
 $agent = $S->agent;
 
+//$site = "Rpi";
+//$ip = "192.168.4.20";
+//$agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36";
+
 try {
-  $S->sql("select * from logagent where lasttime > datetime('now', '-1 day') order by lasttime");
+  $S->sql("select * from logagent where site=? and ip=? and agent=? and
+lasttime > datetime('now', '-1 day') order by lasttime",
+         [$site, $ip, $agent]);
+  
   while($tbl = $S->fetchrow("num")) {
     vardump("tbl", $tbl);
   }

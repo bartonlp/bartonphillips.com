@@ -69,6 +69,7 @@ EOF;
 // Use ipinfo.io to get the country for the ip
 
 $cmd = "https://ipinfo.io/$S->ip";
+
 $loc = json_decode(file_get_contents($cmd));
 
 $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
