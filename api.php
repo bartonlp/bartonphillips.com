@@ -16,12 +16,13 @@ $_site->dbinfo->database = "barton"; // This is 'bartonphillips'in the mysitemap
  * Use either 'sqlite' or 'mysql'
  */
 //$_site->dbinfo->engine = "sqlite";
-$_site->dbinfo->engine = "mysql";
+//$_site->dbinfo->engine = "mysql";
 $engine = $_site->dbinfo->engine; // Detemin which server we use.
 
 $db = new dbPdo($_site);
 
 header('Content-Type: application/json');
+
 
 // --- read JSON input ---
 $input = json_decode(file_get_contents('php://input'), true);
@@ -36,11 +37,13 @@ if(!is_array($input)) {
 $type = $input['type'];
 
 // --- whitelist tables --- It is only 'logagent' for now.
-$allowedTables = ['logagent'];
+$allowedTables = ['logagent', 'tracker', 'counter'];
+
+$table = $input['table'];
 
 if(!in_array($table, $allowedTables)) {
   http_response_code(400);
-  error_log("bartonphillips.com api.php: error=invalid table, not logagent");
+  error_log("bartonphillips.com api.php: error=invalid table, not logagent.");
   exit;
 }
 
