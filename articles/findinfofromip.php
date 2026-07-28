@@ -16,8 +16,8 @@ EOF;
 
   // BLP 2024-07-17 - add more info
   
-  $key = require '/var/www/PASSWORDS/Ip2Location-key';
-  $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
+  $key = require '/home/barton/PASSWORDS/Ip2Location-key';
+  $bigdatakey = require '/home/barton/PASSWORDS/BigDataCloudAPI-key';
   
   $ip = $_POST['ip'];
   

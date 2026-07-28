@@ -22,7 +22,7 @@ This site has projects created by Barton Phillips.
 The From address must be setup in **sendgrid.com**. Goto settings and then **Sender  
 Authentication**. Follow instructions. NOTE: do not use the full url only the part before the domain name.
 
-Sendgrid Info
-https://sendgrid.com/en-us
-https://www.twilio.com/en-us/sendgrid/email-api
+Sendgrid Info  
+https://sendgrid.com/en-us  
+https://www.twilio.com/en-us/sendgrid/email-api  
 twilio recovery code: DRJLGSEGS49SL3G1YV2RGP9X

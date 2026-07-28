@@ -20,26 +20,25 @@ $top
 <section id='projects'>
 <h2>GitHub and PHPClasses Projects</h2>
 
-<h3>SimpleSiteClass Mini Framework</h3>
-<p>This is a mini framework I have been using for almost 20 years. It has a database wrapper
-and a number of methods that make my life a lot easier.</p>
-<p>For example, every webpage needs a &lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
+<h3>SiteClass Framework</h3>
+<p>The framework is using it for more than 20 years. It is a database wrapper
+and a number of methods that make my life a lot easier.
+For example, every webpage needs a &lt;head&gt; section and usually a &lt;footer&gt; as well as a &lt;header&gt;
 (navigation and banner).
-The framework makes these things easy.</p>
-<p>The database wrapper lets you use the database engines 'mysqli' or 'PDO'. PDO supports 'mysql' and 'sqlite' (sqlite3).
-It is easy to use my framework with templeting engines like Twig.</p>
-<p>This framework is not &quot;All Things to All People&quot; like a number
+The framework makes these things easy.
+The database wrapper lets you use the database engines. PDO supports 'mysql' and 'sqlite' (sqlite3).
+This framework is not &quot;All Things to All People&quot; like a number
 of the well know frameworks. This is a simple tool and therefore not nearly as
 complex as some of the popular frameworks.</p>
 <p>If you just have three or four virtual hosted sites and you need a quick way to get
 everything working this is pretty easy.</p>
-<p>The <b>SimpleSiteClass</b> framework is hosted at<br>
-<a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://github.com/bartonlp/simple-site-class">GitHub
-<img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
-and also at
+<p>The <b>SiteClass</b> framework is hosted at<br>
+<a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://github.com/bartonlp/site-class">
+GitHub <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a>
+<!--and also at
 <a target="_blank"
-href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://www.phpclasses.org/package/13039-PHP-Simple-Site-Class.html">
-<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.
+href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://www.phpclasses.org/package/13039-PHP-Site-Class.html">
+<img src="https://bartonphillips.net/images/phpclasses-logo.gif" width='180' height='59'></a>.-->
 <br>Give it a try and let me know if you like it.</p>
 <hr>
 
@@ -59,16 +58,14 @@ and the <a target="_blank" href="https://bartonlp.github.io/updatesite">Document
 <h3>Slide Show Class</h3>
 
 <p>This class can be used to present a slide show of images.
-It can extract lists of image files available on the local server or a remote Web server.</p>
-
-<p>The image list is served to the browser which retrieves it with Javascript code that
+It can extract lists of image files available on the local server or a remote Web server.
+The image list is served to the browser which retrieves it with Javascript code that
 performs AJAX requests to obtain the images to display.</p>
 
 <p>For local server images the class returns a list of image file names.
 For remote Web server, it retrieves a given remote page and parses it to return the
-list of GIF, JPEG and PNG images linked from that page.</p>
-
-<p>The Javascript libraries provided within this package control the
+list of GIF, JPEG and PNG images linked from that page.
+The Javascript libraries provided within this package control the
 slide show presentation.</p>
   
 <p>You can find my <b>Slide Show Class</b> at<br>
@@ -84,9 +81,8 @@ alt="php classes logo" /></a></p>
 <h3>MySql Slide Show Class</h3>
 
 <p>This package can be used to present a slide show from images listed in a database.
-The main class can retrieve lists of images to be displayed from a MySQL database table.</p>
-
-<p>The class can also add or update the slideshow image lists in the database table.
+The main class can retrieve lists of images to be displayed from a MySQL database table.
+The class can also add or update the slideshow image lists in the database table.
 The actual images can be stored on the filesystem or in the MySql table as base64 data.</p>
   
 <p>You can find my <b>MySql Slide Show Class</b> at<br>
@@ -99,8 +95,8 @@ The actual images can be stored on the filesystem or in the MySql table as base6
 
 <h3>RssFeed Class</h3>
 
-<p>This package can read and get information from an RSS feed. It is simple to use.</p>
-<p>You can find my <b>RssFeed Class</b> at<br>
+<p>This package can read and get information from an RSS feed. It is simple to use.
+You can find my <b>RssFeed Class</b> at<br>
 <a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://github.com/bartonlp/rssfeed">GitHub
 <img id="octocat" src="https://bartonphillips.net/images/Octocat.jpg"></a> and also at
 <a target="_blank" href="https://bartonlp.com/otherpages/goto.php?blp=ingrid&https://www.phpclasses.org/package/10074-PHP-Read-RSS-feeds.html">

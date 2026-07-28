@@ -3,7 +3,8 @@
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new SiteClass($_site);
-$S->banner = "<hr><h1 style='text-align: left'>Your IP Address is: $S->ip</h1>";
+$S->banner = "<hr><h1 style='text-align: left'>Your IP Address is: $S->ip<br>
+Your DigitalOcean Server is: $S->xip</h1>";
 
 $S->nofooter = true;
 

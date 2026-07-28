@@ -10,7 +10,7 @@ exit("<h1>cloud.ipxapis.com No Longer Has a Free Subscription</h1>");
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
 
-$iex_token = require_once("/var/www/PASSWORDS/iex-token");
+$iex_token = require_once("/home/barton/PASSWORDS/iex-token");
 
 $S->title = "Stock Values";
 $S->banner = "<h1>Stock Values</h1>";

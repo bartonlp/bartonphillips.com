@@ -14,7 +14,7 @@ if($stock = $_POST['stock']) {
   $stock = strtoupper($stock);
   // BLP 2022-01-21 -- Get the keys form my secure location
   
-  $alphakey = require_once("/var/www/PASSWORDS/alpha-prem-token");
+  $alphakey = require_once("/home/barton/PASSWORDS/alpha-prem-token");
 
   $str = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$stock&apikey=$alphakey";
   $alpha = json_decode(file_get_contents($str), true); // decode as an array

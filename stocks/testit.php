@@ -2,7 +2,7 @@
 $_site = require_once getenv("SITELOADNAME");
 $S = new SiteClass($_site);
 
-$alphaKey = require '/var/www/PASSWORDS/alpha-prem-token';
+$alphaKey = require '/home/barton/PASSWORDS/alpha-prem-token';
 $url = "https://www.alphavantage.co/query?function=:function&symbol=:stock&apikey=$alphaKey";
 
 $urlTmp = str_replace(':stock', 'DIA', $url);

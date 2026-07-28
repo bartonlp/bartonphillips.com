@@ -1,7 +1,5 @@
 <?php
-// BLP 2023-02-25 - use new approach
 // scraper-await-fetch.php
-// BLP 2021-09-26 -- remove hard r1, r2 and get it from bartonphillips.com/index.php
 // Demo shows how to use PHPHtmlParser to scrape a webpage.
 // The demo uses an 'async function' to get two set of information from my website.
 // It uses a GET and a POST 'fetch' and awaits each and then returns the two results.
@@ -13,11 +11,23 @@
 // https://github.com/bartonlp/site-class
 
 // Instanciate the SiteClass
+/*
+$html = file_get_contents("https://www.bartonphillips.com/index.php");
+
+$dom = new DOMDocument();
+@$dom->loadHTML($html);
+
+$xpath = new DOMXPath($dom);
+
+$others = $xpath->query("//*[@id='others']")->item(0);
+$interesting = $xpath->query("//*[@id='interesting']")->item(0);
+
+echo $dom->saveHTML($others);
+echo $dom->saveHTML($interesting);
+*/
 
 $_site = require_once(getenv("SITELOADNAME"));
 $S = new $_site->className($_site);
-
-use PHPHtmlParser\Dom;
 
 // We have two demo server function that return pieces of my webpage.
 // We use 'fetch()' instead of AJAX as it uses Promises and is easier to use.
@@ -25,33 +35,39 @@ use PHPHtmlParser\Dom;
 // If $_GET['page'] equals 'one'. This is a GET call from 'sql()'
 
 if($_GET['page'] == 'one') {
-  $dom = new Dom;
-  // grab the file. We need the HTML not PHP so we use the 'https' protocal.
-  // The returned information is just the html.
-  
-  $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
+  $dom = new DOMDocument();
 
-  // Get everything from the <section> with the id of 'others'
-  $mysite = $x->find("#others");
+  $html = file_get_contents("https://www.bartonphillips.com/index.php");
+  @$dom->loadHTML($html);
+
+  $xpath = new DOMXPath($dom);
+
+  $others = $xpath->query("//*[@id='others']")->item(0);
   
-  $ret = ['mysite'=>trim($mysite->innerHTML)]; //BLP 2021-09-26 -- remove leading and trailing spaces
-  $ret = json_encode($ret);
-  echo $ret;
-  exit();
+  $others = $dom->saveHTML($others);
+    
+  error_log("others: $others");
+  echo $others;
+  exit;
 };
 
 // If $_POST['page'] equals 'two'. This a POST call from 'sql()'
 
-if($_POST['page'] == 'two') {
-  $dom = new Dom;
-  // Same as above.
-  $x = $dom->loadFromUrl("https://www.bartonphillips.com/index.php");
-  // This time we get two <h2> item from each section.
-  $interesting = $x->find("#interesting")->innerHTML;
-  $ret = ['interesting'=>trim($interesting)]; // BLP 2021-09-26 -- remove leading and trailing spaces
-  
-  $ret = trim(json_encode($ret));
-  echo $ret;
+$input = file_get_contents("php://input");
+
+$get = json_decode($input, true);
+
+if($get['body'] == "page=two") {
+  $dom = new DOMDocument();
+  $html = file_get_contents("https://www.bartonphillips.com/index.php");
+  @$dom->loadHTML($html);
+
+  $xpath = new DOMXPath($dom);
+
+  $interesting = $xpath->query("//*[@id='interesting']")->item(0);
+  $interesting = $dom->saveHTML($interesting);
+  error_log("interesting: $interesting");
+  echo $interesting;
   exit();
 }
 
@@ -114,47 +130,50 @@ jQuery(document).ready(function($) {
   sql().then(d => {
     // d has the two items r1 and r2.
 
-    //console.log("d:", d);
+    console.log("d:", d);
 
-    let r1 = d.r1.mysite;
-    r1 = r1.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;").replaceAll(/&gt; /g, "&gt;&#10;");
+    let r1 = d.r1; //.others; //mysite;
+    //r1 = r1.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;").replaceAll(/&gt; /g, "&gt;&#10;");
 
-    //console.log("r1:", r1);
+    console.log("r1:", r1);
     
     $("#r1").html(r1);
     
-    let r2 = d.r2.interesting;
-    r2 = r2.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;").replaceAll(/&gt; /g, "&gt;&#10;");
+    let r2 = d.r2; //.interesting;
+    //r2 = r2.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;").replaceAll(/&gt; /g, "&gt;&#10;");
 
-    //console.log("r2:", r2);
+    console.log("r2:", r2);
 
     $("#r2").html(r2);
     
     $("#info").html(
 `r1:
 <div id='r1'>
-\${d.r1.mysite}</div>
+\${r1}</div>
 r2:
 <div id="r2">
-\${d.r2.interesting}</div>`);
+\${r2}</div>`);
   })
-  .catch(err => console.log(err)); // catch any errors
-
+  .catch(err => {
+    console.log("ERROR: " +err); // catch any errors
+  });
   // an 'async function' that does a GET 'fetch()' and a POST 'fetch()'
 
   async function sql() {
-    // The information comes back as 'json' so convert it.
-    // This could have all been done with a single fetch but I have used two for demo purpuses.
-    // The fist does a GET and the second does a POST.
+    let r1 = await fetch("scraper-await-fetch.php?page=one").then(data => data.text()); //json());
 
-    let r1 = await fetch("scraper-await-fetch.php?page=one").then(data => data.json());
+    const payload = JSON.stringify({
+      body: "page=two"
+    });
+    
     let r2 = await fetch("scraper-await-fetch.php", {
-      body: "page=two", // make this look like form data
       method: 'POST',
       headers: {
-        'content-type': 'application/x-www-form-urlencoded' // We need the x-www-form-urlencoded type
-      }
-    }).then(data => data.json());
+      //'content-type': 'application/x-www-form-urlencoded'
+      'content-type': 'application/json'
+    },
+      body: payload
+    }).then(data => data.text()); //json());
 
     return {r1: r1, r2: r2};
   };

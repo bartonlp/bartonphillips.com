@@ -56,7 +56,7 @@ CREATE TABLE `stocktotals` (
 if($_GET['page'] == "EndOfDay") {
   $S = new Database($_site);
 
-  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
+  $iex_token = require_once("/home/barton/PASSWORDS/iex-token");
 
   // Get our stocks
 
@@ -94,7 +94,7 @@ if($_GET['page'] == "EndOfDay") {
 
   // Now get the mutual funds via alpha
 
-  $alphakey = require("/var/www/PASSWORDS/alpha-token");
+  $alphakey = require("/home/barton/PASSWORDS/alpha-token");
   
   $sql = "select stock, qty from stocks where status = 'mutual'";
   
@@ -135,7 +135,7 @@ if($_POST['page'] == 'web') {
 
   // Get token from secure location.
 
-  $iex_token = require_once("/var/www/PASSWORDS/iex-token");
+  $iex_token = require_once("/home/barton/PASSWORDS/iex-token");
 
   $str = "https://api.iex.cloud/v1/data/core/quote/DIA?token=$iex_token"; 
   $iex = json_decode(file_get_contents($str));
@@ -190,7 +190,7 @@ if($_POST['page'] == 'web') {
   
   $S->sql($sql);
 
-  $alphakey = require("/var/www/PASSWORDS/alpha-token");
+  $alphakey = require("/home/barton/PASSWORDS/alpha-token");
 
   while([$mutual, $mprice, $qty, $company] = $S->fetchrow('num')) {
     $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$mutual&apikey=$alphakey";

@@ -1,4 +1,17 @@
 /*
+ * This is mysitemap.json for bartonphillips.com
+ * This should be "doSiteClass": true, "count": true, ...
+ * "dbinfo": {
+ *   "host": "localhost",
+ *   "user": "barton", 
+ *   "database": "bartonphillips",
+ *   "engine": "mysql",
+ * } ...
+ * "headFile": "/var/www/bartonphillips.com/includes/head.i.php",
+ * "bannerFile": "/var/www/bartonphillips.com/includes/banner.i.php",
+ * "footerFile": "/var/www/bartonphillips.com/includes/footer.i.php",
+ * These are the most important. NOTE: "barton" should be in 
+ * 
  * SPECIAL json for use by siteload.php. Normal json will not allow
  * comments. The siteload.php program removes the comments and then
  * passes the result to json_decode(), so after the comments are
@@ -27,11 +40,15 @@
 // limited features.
 {
   "doSiteClass": true, // This should be true so we are using full SiteClass!
-  "count": true, // only $this
+  //"count": true, // only $this
 
-  "siteDomain": "bartonphillips.com", // only $this
-  "siteName": "bartonphillips.com", // only $this
-  "mainTitle": "<h1>Barton Phillips Home Page</h1>", // also $S
+  "siteDomain": "bartonphillips.com",
+  "siteName": "bartonphillips.com", 
+  "mainTitle": "<h1>Barton Phillips Home Page</h1>",
+  // If $this->banner use it, if mainTitle use it,
+  // if "mainTitle": null, use title with <h1>,
+  // if "mainTitle": "" use nothing.
+  "title": "this title",
   "path": "/var/www/bartonphillips.com", // only $this
   "className": "SiteClass", // only $this. Not all programs use this, some instantiate SiteClass directly
   "copyright": "Barton L. Phillips", // also via $S

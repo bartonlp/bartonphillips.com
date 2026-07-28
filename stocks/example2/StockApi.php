@@ -49,7 +49,7 @@ class StocksApi {
     $this->db = $db = $siteClass;
     $this->mydb = $db->dbinfo->database;
 
-    $this->alphaKey = $alphaKey = require '/var/www/PASSWORDS/alpha-prem-token';
+    $this->alphaKey = $alphaKey = require '/home/barton/PASSWORDS/alpha-prem-token';
     $this->url = "https://www.alphavantage.co/query?function=:function&symbol=:stock&apikey=$alphaKey";
 
     $this->userAgent = $UA ?? "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) ".

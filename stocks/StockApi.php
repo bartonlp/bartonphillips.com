@@ -123,7 +123,7 @@ class StocksApi {
 
     // Get the Alpha key from a safe place.
     
-    $this->alphaKey = $alphaKey = require '/var/www/PASSWORDS/alpha-prem-token';
+    $this->alphaKey = $alphaKey = require '/home/barton/PASSWORDS/alpha-prem-token';
     $this->url = "https://www.alphavantage.co/query?function=:function&symbol=:stock&apikey=$alphaKey";
 
     // Use the $UA arg or the default.

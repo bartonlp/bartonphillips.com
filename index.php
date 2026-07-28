@@ -30,16 +30,12 @@ header("Content-Security-Policy-Report-Only: " .
 define('BLP_INDEX_VERSION', "BLP-index-1.3.1"); 
 
 $_site = require_once getenv("SITELOADNAME");
-//$_site = require_once getenv("AUTOLOADNAME");
-//$_site = require_once "/home/barton/site-class/includes/autoload.php"; // MUST be the same as in require.
-
-//$_site->forceBot = true;
 ErrorClass::setDevelopment(true);
 $S = new SiteClass($_site);
-
+//vardump("S", $S);
 $S->nonce = $nonce; // Set up nonce for SiteClass getPageHead method.
 
-require_once "./index.i.php"; // Get the majority of the php
+require "./index.i.php"; // Get the majority of the php
 
 // Message at the $bottom.
 
@@ -162,6 +158,11 @@ Today is: <span id="datetoday">$date</span>
 </p>
 </section>
 
+<section id='projects'>
+<a target="_blank" href='projects.php'>My GitHub and PHPClasses projects</a><br>
+<a target="_blank" href='https://bartonphillips.org/docs'>SiteClass Documents</a>
+</section>
+
 <!-- BLP 2021-03-25 - If we change this it will affect scraper-await-fetch.php -->
 <section id="others">
 <!-- BLP 2021-03-25 - end warning -->
@@ -175,6 +176,8 @@ Today is: <span id="datetoday">$date</span>
 <a target="_blank" href="https://www.bartonphillips.org?nonce=$nonce"><button>Home HP</button></a>
 <a target="_blank" href="https://rpi.bartonphillips.org?nonce=$nonce"><button>RPI</button></a>
 <a target="_blank" href="https://spin.bartonphillips.org?nonc=$nonce"><button>Spin</button></a>
+<a target="_blank" href="https://hp2.bartonphillips.org?nonc=$nonce"><button>HP2</button></a>
+<a target="_blank" href="https://aspine.bartonphillips.org?nonc=$nonce"><button>Aspine</button></a>
 <a target="_blank" href="articles/Stories.php"><button>My Stories</button></a>
 </div>
 </section>

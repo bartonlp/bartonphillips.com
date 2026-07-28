@@ -19,7 +19,6 @@ return <<<EOF
 <ul>
 <li><a target="_blank" href="https://bartonlp.com/otherpages/webstats.php?blp=8653&site=$S->siteDomain">Webstats</a></li>
 <li><a target="_blank" href="getcookie.php?blp=8653">Get/Reset Cookie</a></li>
-<li><a target="_blank" href="https://bartonphillips.org:8000/">RPI on 8000</a></li>
 <li><a target="_blank" href="/stocks/stock.getalpha.php">Alphavantage</a></li>
 <li><a target="_blank" href="/findip.php">Find in Tracker</a></li>
 <li><a target="_blank" href="/logs.php">Show Info Logs</a></li>
@@ -29,7 +28,6 @@ return <<<EOF
 <li><a target="_blank" href="/myports.php">Port Numbers</a></li>
 <li><a target="_blank" href="/stocks/stockprice.php">Stock Prices</a></li>
 <li><a target="_blank" href="/stocks/stockaddedit.php">Add/Edit Stocks</a></li>
-<li><a target="_blank" href="/test_examples/">examples just for testing</a></li>
 </ul>
 </section>
 EOF;

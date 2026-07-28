@@ -175,8 +175,8 @@ EOF;
 
       // Create additional info from api.ip2location.io
 
-      $key = require '/var/www/PASSWORDS/Ip2Location-key';
-      $bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
+      $key = require '/home/barton/PASSWORDS/Ip2Location-key';
+      $bigdatakey = require '/home/barton/PASSWORDS/BigDataCloudAPI-key';
 
       // If this fails it will throw an exception
       

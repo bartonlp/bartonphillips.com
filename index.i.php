@@ -4,7 +4,7 @@
 
 $id = $S->LAST_ID;
 $ip = $S->ip;
-if($ip == "192.241.1332.229") $ip .= ":SERVER";
+if($ip == DO_SERVER) $ip .= ":SERVER";
 $agent = $S->agent;
 if(empty($agent)) $agent = "NO_AGENT";
 $self = $S->self;
@@ -72,7 +72,7 @@ $cmd = "https://ipinfo.io/$S->ip";
 
 $loc = json_decode(file_get_contents($cmd));
 
-$bigdatakey = require '/var/www/PASSWORDS/BigDataCloudAPI-key';
+$bigdatakey = require '/home/barton/PASSWORDS/BigDataCloudAPI-key';
 //$ip = '45.148.10.172';
 if(($json = file_get_contents("https://api-bdc.net/data/user-risk?ip=$ip&key=$bigdatakey")) === false) {
   error_log("index.i.php: ip=$ip, key=$bigdatakey, api-bdc.net/data/user-rick failed");
@@ -94,6 +94,7 @@ $locstr = <<<EOF
   <li>User Agent String is:<br>
     <i class='green'>$S->agent</i></li>
   <li>IP Address: <i class='green'>$S->ip</i></li>
+  <li>Server: <i class='green'>$S->xip</i></li>
   <li>Clientname: <i class='green'>$clientname</i></li>
   <li>Location: <i class='green'>$loc->city, $loc->region $loc->postal</i></li>
   <li id="location">GPS Loc: <i class='green'>$loc->loc</i></li>
@@ -137,13 +138,14 @@ EOF;
   [$cookieName, $cookieFinger, $cookieEmail] = explode(':', $nameFingerEmail); // The cookie is 'name:finger:email'
 
   // Primary key is(name, email, finger, ip). We are missing ip so we will get multiple rows.
-  
+ 
   if($S->sql("select ip from bartonphillips.members where finger=? and email=? and name=?",
             [$cookieFinger, $cookieEmail, $cookieName])) {
+
     // Found the records.
 
     $r = $S->getResult();
-    
+
     while($myip = $S->fetchrow($r, 'num')[0]) {
       if($myip == $ip) { // If the $myip from members is the same as $ip from $S->ip ($ip) continue.
         continue;
@@ -151,7 +153,7 @@ EOF;
 
       // Primary key is(name, email, finger, ip)
       if(!$S->sql("select ip from bartonphillips.members where finger=? and email=? and name=? and ip=?",
-                 [$cookieFinger, $$cookieEmail, $cookieName, $myip])) {
+                   [$cookieFinger, $$cookieEmail, $cookieName, $myip])) {
         // This ip does not exists for this key.
         // So we should add a new record for this new ip.
 

@@ -20,7 +20,7 @@ $S = new $_site->className($_site);
 function getmutualdata($mutual) {
   // Ues alphavantage.co as iex no longer seems to support my mutual funds.
   
-  $alphakey = require("/var/www/PASSWORDS/alpha-token");
+  $alphakey = require("/home/barton/PASSWORDS/alpha-token");
   // BLP 2022-11-19 - on Nov 4 they made the following an extra charge item. So I will use
   // GLOBAL_QUOTE instead.
   //$url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$mutual&apikey=$alphakey";
